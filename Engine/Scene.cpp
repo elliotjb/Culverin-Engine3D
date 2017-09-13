@@ -13,15 +13,17 @@ Scene::~Scene()
 
 bool Scene::Start()
 {
-	return false;
+
+	return true;
 }
 
 update_status Scene::Update(float dt)
 {
-	return update_status();
+
+	return UPDATE_CONTINUE;
 }
 
 bool Scene::CleanUp()
 {
-	return false;
+	return true;
 }

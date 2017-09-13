@@ -9,6 +9,7 @@ Application::Application()
 	camera = new ModuleCamera3D(this);
 	physics = new ModulePhysics3D(this);
 	player = new ModulePlayer(this);
+	scene = new Scene(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -23,6 +24,8 @@ Application::Application()
 
 	// Players
 	AddModule(player);
+
+	AddModule(scene);
 
 	// Scenes
 	player->Disable_whitout();

@@ -22,6 +22,9 @@
     <Filter Include="Engine\Modules\Scene">
       <UniqueIdentifier>{6b6604d6-5443-4ace-bc98-2b5ec7a6644c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\UI">
+      <UniqueIdentifier>{3a461483-07e2-49b8-874c-558975aee6e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -87,6 +90,24 @@
     <ClInclude Include="Scene.h">
       <Filter>Engine\Modules\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="imgui-1.51\imconfig.h">
+      <Filter>Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.51\imgui.h">
+      <Filter>Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.51\imgui_internal.h">
+      <Filter>Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.51\stb_rect_pack.h">
+      <Filter>Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.51\stb_textedit.h">
+      <Filter>Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.51\stb_truetype.h">
+      <Filter>Engine\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -142,6 +163,15 @@
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Engine\Modules\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui-1.51\imgui.cpp">
+      <Filter>Engine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui-1.51\imgui_demo.cpp">
+      <Filter>Engine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui-1.51\imgui_draw.cpp">
+      <Filter>Engine\UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
