@@ -18,7 +18,6 @@ bool Scene::Start()
 	glewInit();
 	ImGui_ImplSdlGL3_Init(App->window->window);
 
-
 	return true;
 }
 
@@ -27,6 +26,16 @@ update_status Scene::Update(float dt)
 	ImGui_ImplSdlGL3_NewFrame(App->window->window);
 
 	ImGui::ShowTestWindow();
+
+	ImGui::Begin("CLOSE APP"); 
+	static int clicked = 0;
+	if (ImGui::Button("CLICK HERE"))
+		clicked++;
+	if (clicked & 1)
+	{
+		return UPDATE_STOP;
+	}
+	ImGui::End();
 
 	ImGui::Render();
 
