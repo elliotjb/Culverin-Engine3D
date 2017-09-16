@@ -14,6 +14,8 @@
 #include "../Engine/SDL/include/SDL_syswm.h"
 #include "../Engine/GL3W/include/glew.h"
 
+#pragma comment (lib, "GL3W/libx86/glew32.lib") /*link Microsoft OpenGL lib*/
+
 // Data
 static double       g_Time = 0.0f;
 static bool         g_MousePressed[3] = { false, false, false };
