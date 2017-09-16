@@ -36,4 +36,4 @@ enum update_status
 #define WIN_BORDERLESS false
 #define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC true
-#define TITLE "Race JE"
+#define TITLE "3D Engine J.E."
