@@ -77,12 +77,10 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
-    <ClInclude Include="imgui-1.51\imconfig.h" />
-    <ClInclude Include="imgui-1.51\imgui.h" />
-    <ClInclude Include="imgui-1.51\imgui_internal.h" />
-    <ClInclude Include="imgui-1.51\stb_rect_pack.h" />
-    <ClInclude Include="imgui-1.51\stb_textedit.h" />
-    <ClInclude Include="imgui-1.51\stb_truetype.h" />
+    <ClInclude Include="imconfig.h" />
+    <ClInclude Include="imgui.h" />
+    <ClInclude Include="imgui_impl_sdl_gl3.h" />
+    <ClInclude Include="imgui_internal.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModulePhysics3D.h" />
@@ -99,15 +97,19 @@
     <ClInclude Include="PhysVehicle3D.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="stb_rect_pack.h" />
+    <ClInclude Include="stb_textedit.h" />
+    <ClInclude Include="stb_truetype.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="glmath.cpp" />
-    <ClCompile Include="imgui-1.51\imgui.cpp" />
-    <ClCompile Include="imgui-1.51\imgui_demo.cpp" />
-    <ClCompile Include="imgui-1.51\imgui_draw.cpp" />
+    <ClCompile Include="imgui.cpp" />
+    <ClCompile Include="imgui_demo.cpp" />
+    <ClCompile Include="imgui_draw.cpp" />
+    <ClCompile Include="imgui_impl_sdl_gl3.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
