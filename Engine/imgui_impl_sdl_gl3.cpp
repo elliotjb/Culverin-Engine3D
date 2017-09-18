@@ -10,9 +10,9 @@
 #include "imgui_impl_sdl_gl3.h"
 
 // SDL,GL3W
-#include "../Engine/SDL/include/SDL.h"
-#include "../Engine/SDL/include/SDL_syswm.h"
-#include "../Engine/GL3W/include/glew.h"
+#include "SDL/include/SDL.h"
+#include "SDL/include/SDL_syswm.h"
+#include "GL3W/include/glew.h"
 
 #pragma comment (lib, "GL3W/libx86/glew32.lib") /*link Microsoft OpenGL lib*/
 

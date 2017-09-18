@@ -73,8 +73,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Algorithm\Random\LCG.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Geometry\AABB.h" />
+    <ClInclude Include="Geometry\AABB2D.h" />
+    <ClInclude Include="Geometry\Capsule.h" />
+    <ClInclude Include="Geometry\Circle.h" />
+    <ClInclude Include="Geometry\Frustum.h" />
+    <ClInclude Include="Geometry\GeometryAll.h" />
+    <ClInclude Include="Geometry\GeomType.h" />
+    <ClInclude Include="Geometry\HitInfo.h" />
+    <ClInclude Include="Geometry\KDTree.h" />
+    <ClInclude Include="Geometry\Line.h" />
+    <ClInclude Include="Geometry\LineSegment.h" />
+    <ClInclude Include="Geometry\OBB.h" />
+    <ClInclude Include="Geometry\PBVolume.h" />
+    <ClInclude Include="Geometry\Plane.h" />
+    <ClInclude Include="Geometry\Polygon.h" />
+    <ClInclude Include="Geometry\Polyhedron.h" />
+    <ClInclude Include="Geometry\QuadTree.h" />
+    <ClInclude Include="Geometry\Ray.h" />
+    <ClInclude Include="Geometry\Sphere.h" />
+    <ClInclude Include="Geometry\Triangle.h" />
+    <ClInclude Include="Geometry\TriangleMesh.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="imconfig.h" />
@@ -82,6 +104,41 @@
     <ClInclude Include="imgui_impl_sdl_gl3.h" />
     <ClInclude Include="imgui_internal.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="MathBuildConfig.h" />
+    <ClInclude Include="MathGeoLib.h" />
+    <ClInclude Include="MathGeoLibFwd.h" />
+    <ClInclude Include="Math\assume.h" />
+    <ClInclude Include="Math\BitOps.h" />
+    <ClInclude Include="Math\Complex.h" />
+    <ClInclude Include="Math\CoordinateAxisConvention.h" />
+    <ClInclude Include="Math\FixedPoint.h" />
+    <ClInclude Include="Math\float2.h" />
+    <ClInclude Include="Math\float3.h" />
+    <ClInclude Include="Math\float3x3.h" />
+    <ClInclude Include="Math\float3x4.h" />
+    <ClInclude Include="Math\float4.h" />
+    <ClInclude Include="Math\float4x4.h" />
+    <ClInclude Include="Math\float4x4_neon.h" />
+    <ClInclude Include="Math\float4x4_sse.h" />
+    <ClInclude Include="Math\float4_neon.h" />
+    <ClInclude Include="Math\float4_sse.h" />
+    <ClInclude Include="Math\FloatCmp.h" />
+    <ClInclude Include="Math\MathAll.h" />
+    <ClInclude Include="Math\MathConstants.h" />
+    <ClInclude Include="Math\MathFunc.h" />
+    <ClInclude Include="Math\MathLog.h" />
+    <ClInclude Include="Math\MathNamespace.h" />
+    <ClInclude Include="Math\MathTypes.h" />
+    <ClInclude Include="Math\MatrixProxy.h" />
+    <ClInclude Include="Math\myassert.h" />
+    <ClInclude Include="Math\Polynomial.h" />
+    <ClInclude Include="Math\Quat.h" />
+    <ClInclude Include="Math\quat_simd.h" />
+    <ClInclude Include="Math\Rect.h" />
+    <ClInclude Include="Math\Reinterpret.h" />
+    <ClInclude Include="Math\SSEMath.h" />
+    <ClInclude Include="Math\sse_mathfun.h" />
+    <ClInclude Include="Math\TransformOps.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModulePhysics3D.h" />
     <ClInclude Include="ModulePlayer.h" />
@@ -101,10 +158,26 @@
     <ClInclude Include="stb_textedit.h" />
     <ClInclude Include="stb_truetype.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Time\Clock.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Algorithm\Random\LCG.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Geometry\AABB.cpp" />
+    <ClCompile Include="Geometry\Capsule.cpp" />
+    <ClCompile Include="Geometry\Circle.cpp" />
+    <ClCompile Include="Geometry\Frustum.cpp" />
+    <ClCompile Include="Geometry\Line.cpp" />
+    <ClCompile Include="Geometry\LineSegment.cpp" />
+    <ClCompile Include="Geometry\OBB.cpp" />
+    <ClCompile Include="Geometry\Plane.cpp" />
+    <ClCompile Include="Geometry\Polygon.cpp" />
+    <ClCompile Include="Geometry\Polyhedron.cpp" />
+    <ClCompile Include="Geometry\Ray.cpp" />
+    <ClCompile Include="Geometry\Sphere.cpp" />
+    <ClCompile Include="Geometry\Triangle.cpp" />
+    <ClCompile Include="Geometry\TriangleMesh.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
@@ -113,6 +186,20 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Math\BitOps.cpp" />
+    <ClCompile Include="Math\float2.cpp" />
+    <ClCompile Include="Math\float3.cpp" />
+    <ClCompile Include="Math\float3x3.cpp" />
+    <ClCompile Include="Math\float3x4.cpp" />
+    <ClCompile Include="Math\float4.cpp" />
+    <ClCompile Include="Math\float4x4.cpp" />
+    <ClCompile Include="Math\MathFunc.cpp" />
+    <ClCompile Include="Math\MathLog.cpp" />
+    <ClCompile Include="Math\MathOps.cpp" />
+    <ClCompile Include="Math\Polynomial.cpp" />
+    <ClCompile Include="Math\Quat.cpp" />
+    <ClCompile Include="Math\SSEMath.cpp" />
+    <ClCompile Include="Math\TransformOps.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
@@ -125,6 +212,12 @@
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Time\Clock.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Geometry\KDTree.inl" />
+    <None Include="Geometry\QuadTree.inl" />
+    <None Include="Math\Matrix.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
