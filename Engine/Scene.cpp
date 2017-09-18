@@ -27,7 +27,9 @@ update_status Scene::Update(float dt)
 
 	ImGui::ShowTestWindow();
 
+	// CLOSE APP WINDOW --------
 	ImGui::Begin("CLOSE APP"); 
+
 	static int clicked = 0;
 	if (ImGui::Button("CLICK HERE"))
 		clicked++;
@@ -35,7 +37,14 @@ update_status Scene::Update(float dt)
 	{
 		return UPDATE_STOP;
 	}
+
+	static int i1 = 0;
+	ImGui::SliderInt("slider int", &i1, 0, 5);
+	static float f1 = 0.123f, f2 = 0.0f;
+	ImGui::SliderFloat("slider float", &f1, 0.0f, 1.0f, "%.3f");
+
 	ImGui::End();
+	// --------------------------
 
 	ImGui::Render();
 
