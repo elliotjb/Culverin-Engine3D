@@ -7,6 +7,7 @@
 #include "p2Point.h"
 #include "p2List.h"
 #include "MathGeoLib.h"
+#include "p2DynArray.h"
 
 class ModuleGUI : public Module
 {
@@ -21,12 +22,12 @@ public:
 	void ShowExampleAppConsole();
 
 public:
+
+	// INTERSECTION TESTS ------------
 	p2List<Sphere> list_Sphere;
 	p2List<Capsule> list_Capsule;
 	p2List<Plane> list_Plane;
 	p2List<Ray> list_Ray;
-
-	//test
 	Sphere Sphere_A;
 	Sphere Sphere_B;
 	Capsule Capsule_A;
@@ -34,6 +35,13 @@ public:
 	Line line;
 	Plane plane;
 	bool ShowTest = false;
+	// ---------------------------------
+
+	//RANDOM NUMBERS TEST ----------
+	
+	p2DynArray<float> floats_list;
+	p2DynArray<int> ints_list;
+	//------------------------------
 };
 
 #endif
