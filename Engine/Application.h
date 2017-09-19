@@ -11,6 +11,8 @@
 #include "ModulePhysics3D.h"
 #include "ModulePlayer.h"
 #include "Scene.h"
+#include "ModuleConsole.h"
+#include "ModuleGUI.h"
 
 class Application
 {
@@ -23,6 +25,9 @@ public:
 	ModulePhysics3D* physics;
 	ModulePlayer* player;
 	Scene* scene;
+	Console* console;
+	ModuleGUI* gui;
+
 
 private:
 

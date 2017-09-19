@@ -10,6 +10,8 @@ Application::Application()
 	physics = new ModulePhysics3D(this);
 	player = new ModulePlayer(this);
 	scene = new Scene(this);
+	console = new Console(this);
+	gui = new ModuleGUI(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -21,13 +23,11 @@ Application::Application()
 	AddModule(input);
 	AddModule(audio);
 	AddModule(physics);
-
-	// Players
+	AddModule(gui);
+	AddModule(console);
+	AddModule(scene);
 	AddModule(player);
 
-	AddModule(scene);
-
-	// Scenes
 	player->Disable_whitout();
 
 	// Renderer last!

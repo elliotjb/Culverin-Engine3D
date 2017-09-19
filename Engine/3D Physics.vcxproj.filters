@@ -300,6 +300,12 @@
     <ClInclude Include="Time\Clock.h">
       <Filter>Engine\MathGeoLib\Time</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleConsole.h">
+      <Filter>Engine\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleGUI.h">
+      <Filter>Engine\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -457,6 +463,12 @@
     </ClCompile>
     <ClCompile Include="Time\Clock.cpp">
       <Filter>Engine\MathGeoLib\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleConsole.cpp">
+      <Filter>Engine\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleGUI.cpp">
+      <Filter>Engine\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
