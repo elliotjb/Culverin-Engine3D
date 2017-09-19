@@ -43,33 +43,71 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::ShowTestWindow();
 	}
 
-	// Windows to Generate Random Numbers ----------------------
+	static LCG random_generator;
 	ImGui::Begin("Random Numbers Generator");
 	ImGui::Spacing();
-	ImGui::Text("Amount of Numbers:");
-	static int amount_numbers = 0.0;
+	ImGui::PushItemWidth(60);
+	static int numbers_f = 0;
+	static int numbers_i = 0;
+
+	if (ImGui::Button("FLOAT"))
+		numbers_f++;
+	if (ImGui::Button("INT"))
+		numbers_i++; ImGui::SameLine();
+
+	static int n1 = 0;
+	static int n2 = 0;
 	ImGui::PushItemWidth(100);
-	ImGui::InputInt("", &amount_numbers, 1, 0, 1);
-	static LCG random_generator;
-	static bool applicated = false;
-	static int numbers = 0;
-	if (ImGui::Button("GENERATE!"))
-		numbers++;
-	if (numbers & 1)
+	ImGui::InputInt("Min", &n1, 1, 0, 1); ImGui::SameLine();
+	ImGui::InputInt("Max", &n2, 1, 0, 1);
+
+	if (numbers_f & 1)
 	{
-		numbers++;
-		applicated = !applicated;
+		numbers_f++;
+		floats_list.PushBack(random_generator.Float());
+		//ImGui::Text("%.4f", random_generator.Float());
 	}
-	if (applicated)
+
+	if (numbers_i & 1)
 	{
-		for (int i = 0; i < amount_numbers; i++)
+		if (n1 <= n2)
 		{
-			ImGui::Text("%.4f", random_generator.Float());
+			numbers_i++;
+			ints_list.PushBack(random_generator.Int(n1, n2));
 		}
-		applicated = !applicated;
+	}
+
+	static int clear = 0;
+	if (ImGui::Button("CLEAR"))
+		clear++;
+	if (clear & 1)
+	{
+		clear++;
+		if (floats_list.Count() > 0)
+		{
+			floats_list.Clear();
+		}
+
+		if (ints_list.Count() > 0)
+		{
+			ints_list.Clear();
+		}
 	}
 
 	ImGui::PopItemWidth();
+	ImGui::Spacing();
+
+	ImGui::Text("FLOATS --------------------");
+	for (uint n = 0; n < floats_list.Count(); n++)
+	{
+		ImGui::Text("%i - %.4f", n, floats_list[n]);
+	}
+
+	ImGui::Text("INTS --------------------");
+	for (uint n = 0; n < ints_list.Count(); n++)
+	{
+		ImGui::Text("%i - %i", n, ints_list[n]);
+	}
 
 
 	ImGui::End();
@@ -444,11 +482,6 @@ update_status ModuleGUI::Update(float dt)
 	{
 		return UPDATE_STOP;
 	}
-
-	static int i1 = 0;
-	ImGui::SliderInt("slider int", &i1, 0, 5);
-	static float f1 = 0.123f, f2 = 0.0f;
-	ImGui::SliderFloat("slider float", &f1, 0.0f, 1.0f, "%.3f");
 
 	ImGui::End();
 	// --------------------------
