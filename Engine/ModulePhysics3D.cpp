@@ -184,7 +184,7 @@ bool ModulePhysics3D::CleanUp()
 }
 
 // ---------------------------------------------------------
-PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass)
+PhysBody3D* ModulePhysics3D::AddBody(const Sphere_p& sphere, float mass)
 {
 	btCollisionShape* colShape = new btSphereShape(sphere.radius);
 	shapes.add(colShape);
@@ -210,7 +210,7 @@ PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass)
 	return pbody;
 }
 
-PhysBody3D* ModulePhysics3D::AddBox(const Cube& cube, bool multi, float mass)
+PhysBody3D* ModulePhysics3D::AddBox(const Cube_p& cube, bool multi, float mass)
 {
 	btVector3 vec;
 	if (multi)
@@ -245,7 +245,7 @@ PhysBody3D* ModulePhysics3D::AddBox(const Cube& cube, bool multi, float mass)
 	return pbody;
 }
 
-PhysBody3D* ModulePhysics3D::AddCylinder(const Cylinder& cylinder, float mass)
+PhysBody3D* ModulePhysics3D::AddCylinder(const Cylinder_p& cylinder, float mass)
 {
 	btCollisionShape* colShape = new btCylinderShapeX(btVector3(cylinder.height*0.5f, cylinder.radius, 0.0f));
 	shapes.add(colShape);

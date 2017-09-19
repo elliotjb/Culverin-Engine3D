@@ -27,7 +27,7 @@ PhysVehicle3D::~PhysVehicle3D()
 // ----------------------------------------------------------------------------
 void PhysVehicle3D::Render()
 {
-	Cylinder wheel;
+	Cylinder_p wheel;
 
 	wheel.color = Brown;
 
@@ -55,7 +55,7 @@ void PhysVehicle3D::Render()
 
 	if (info.extra_parts > 0)
 	{
-		Cube extra_shapes;
+		Cube_p extra_shapes;
 		for (uint i = 0; i < info.extra_parts; i++)
 		{
 			extra_shapes.size.Set(info.extra_parts_size[i].x, info.extra_parts_size[i].y, info.extra_parts_size[i].z);

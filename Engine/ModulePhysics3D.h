@@ -37,19 +37,19 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	PhysBody3D* AddBody(const Sphere& sphere, float mass = 1.0f);
-	PhysBody3D* AddBox(const Cube& cube, bool multi, float mass = 1.0f);
-	PhysBody3D* AddCylinder(const Cylinder& cylinder, float mass = 1.0f);
+	PhysBody3D* AddBody(const Sphere_p& sphere, float mass = 1.0f);
+	PhysBody3D* AddBox(const Cube_p& cube, bool multi, float mass = 1.0f);
+	PhysBody3D* AddCylinder(const Cylinder_p& cylinder, float mass = 1.0f);
 	PhysVehicle3D* AddVehicle(const VehicleInfo& info);
 
 	void AddConstraintP2P(PhysBody3D* bodyA, PhysBody3D* bodyB, const vec3& anchorA, const vec3& anchorB);
 	void AddConstraintHinge(PhysBody3D* bodyA, PhysBody3D* bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisS, const vec3& axisB, bool disable_collision = false);
 
 	//Functionts for Create Map
-	PhysBody3D* CreateStraight(Cube& cube, float lenght,float width, float height, Direction type, bool iskinematic, ModuleScene* scene);
-	void CreateUPER(Cube& cube, Cube& cube_1, Cube& cube_2, float lenght, float width, float height, Direction type, ModuleScene* scene);
-	void CreateDOWNER(Cube& cube, Cube& cube_1, Cube& cube_2, float lenght, float width, float height, Direction type, ModuleScene* scene);
-	void CreateCurve(Cube& cube, Cube& cube_1, Cube& cube_2, float lenght, float width, float height, Direction type, Direction type_of_come, ModuleScene* scene);
+	//PhysBody3D* CreateStraight(Cube_p& cube, float lenght,float width, float height, Direction type, bool iskinematic, ModuleScene* scene);
+	//void CreateUPER(Cube_p& cube, Cube_p& cube_1, Cube_p& cube_2, float lenght, float width, float height, Direction type, ModuleScene* scene);
+	//void CreateDOWNER(Cube_p& cube, Cube_p& cube_1, Cube_p& cube_2, float lenght, float width, float height, Direction type, ModuleScene* scene);
+	//void CreateCurve(Cube_p& cube, Cube_p& cube_1, Cube_p& cube_2, float lenght, float width, float height, Direction type, Direction type_of_come, ModuleScene* scene);
 	
 
 	btDiscreteDynamicsWorld*			world;
@@ -87,6 +87,6 @@ public:
 	int	 getDebugMode() const;
 
 	DebugDrawModes mode;
-	Line line;
+	Line_p line;
 	Primitive point;
 };
