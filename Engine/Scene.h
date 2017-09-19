@@ -17,6 +17,11 @@ public:
 
 public:
 
+	p2List<Sphere> list_Sphere;
+	p2List<Capsule> list_Capsule;
+	p2List<Plane> list_Plane;
+	p2List<Ray> list_Ray;
+
 	//test
 	Sphere Sphere_A;
 	Sphere Sphere_B;
@@ -24,6 +29,6 @@ public:
 	Capsule Capsule_B;
 	Line line;
 	Plane plane;
-
+	bool ShowTest = false;
 
 };
