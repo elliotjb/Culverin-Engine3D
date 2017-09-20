@@ -2,6 +2,7 @@
 #include "ModuleGUI.h"
 #include "Application.h"
 #include "ModuleConsole.h"
+#include "ModuleHardware.h"
 #include "imgui.h"
 #include "Gl3W\include\glew.h"
 #include "imgui_impl_sdl_gl3.h"
@@ -60,7 +61,6 @@ update_status ModuleGUI::Update(float dt)
 	static bool window_show_objects = false;
 	static bool window_Random_generator = false;
 	static bool window_about_us = false;
-	static bool window_hardware = false;
 
 
 	// Main Menu --------------------------------
@@ -138,17 +138,14 @@ update_status ModuleGUI::Update(float dt)
 				window_Random_generator = !window_Random_generator;
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("More windows.."))
-			{
-
-			}
-			if (ImGui::MenuItem("More windows..."))
-			{
-
-			}
 			if (ImGui::MenuItem("Hardware"))
 			{
-				window_hardware = !window_hardware;
+				winManager.push_back(new Hardware(true));
+				//App->hardware->OpenClose();
+			}
+			if (ImGui::MenuItem("Console", "º"))
+			{
+				App->console->OpenClose();
 			}
 			ImGui::Separator();
 			if (ImGui::MenuItem("Configuration"))
@@ -164,6 +161,8 @@ update_status ModuleGUI::Update(float dt)
 			{
 				window_about_us = !window_about_us;
 			}
+
+			ImGui::Separator();
 			if (ImGui::MenuItem("Documentation 'GitHub'"))
 			{
 				ShellExecuteA(NULL, "open", "https://github.com/elliotjb/3D-Engine/", NULL, NULL, SW_SHOWNORMAL);
@@ -175,6 +174,11 @@ update_status ModuleGUI::Update(float dt)
 			if (ImGui::MenuItem("Report a bug"))
 			{
 				ShellExecuteA(NULL, "open", "https://github.com/elliotjb/3D-Engine/releases/download/0.1.1/Release.-.3D.Engine.v0.1.1.zip", NULL, NULL, SW_SHOWNORMAL);
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Readme"))
+			{
+				ShellExecuteA(NULL, "open", "https://github.com/elliotjb/3D-Engine/blob/master/README.md", NULL, NULL, SW_SHOWNORMAL);
 			}
 			ImGui::EndMenu();
 		}
@@ -302,19 +306,14 @@ update_status ModuleGUI::Update(float dt)
 		ShowObjectsinScene();
 	}
 
-	//Show Hardware ----------------------------------
-	if (window_hardware)
-	{
-		ShowHardware();
-	}
-	
-
-	// --------------------------
-
+	// Console --------------------------
 	if (App->console->IsOpen())
 	{
 		ShowExampleAppConsole();
 	}
+
+	//Update All Modules ----------------------------------
+	UpdateWindows(dt);
 
 	ImGui::Render();
 
@@ -324,6 +323,16 @@ update_status ModuleGUI::Update(float dt)
 bool ModuleGUI::CleanUp()
 {
 	return true;
+}
+
+void ModuleGUI::UpdateWindows(float dt)
+{
+	std::vector<WindowManager*>::iterator window = winManager.begin();
+	for (int i = 0; i < winManager.size(); i++)
+	{
+		window[i]->Update(dt);
+		window++;
+	}
 }
 
 void ModuleGUI::ShowExampleAppConsole()
@@ -824,16 +833,5 @@ void ModuleGUI::ShowObjectsinScene()
 
 void ModuleGUI::ShowHardware()
 {
-	ImGui::Begin("Hardware");
 
-	ImGui::Text("SDL Version: ");
-	SDL_version compiled;
-	SDL_VERSION(&compiled);
-	ImGui::SameLine(); 
-	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d.%d.%d", compiled.major, compiled.minor, compiled.patch);
-	//ImGui::SameLine(); ShowHelpMarker("The TextDisabled color is stored in ImGuiStyle.");
-
-
-
-	ImGui::End();
 }

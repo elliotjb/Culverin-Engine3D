@@ -142,6 +142,7 @@
     <ClInclude Include="Math\TransformOps.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModuleGUI.h" />
+    <ClInclude Include="ModuleHardware.h" />
     <ClInclude Include="ModulePhysics3D.h" />
     <ClInclude Include="ModulePlayer.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="stb_truetype.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Time\Clock.h" />
+    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Algorithm\Random\LCG.cpp" />
@@ -206,6 +208,7 @@
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
     <ClCompile Include="ModuleGUI.cpp" />
+    <ClCompile Include="ModuleHardware.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModulePhysics3D.cpp" />
     <ClCompile Include="ModulePlayer.cpp" />

@@ -7,6 +7,7 @@
 #include <list>
 #include <vector>
 #include "MathGeoLib.h"
+#include "WindowManager.h"
 
 class ModuleGUI : public Module
 {
@@ -18,8 +19,9 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void ShowExampleAppConsole();
+	void UpdateWindows(float dt);
 
+	void ShowExampleAppConsole();
 	void ShowCreateObjects();
 	void ShowObjectsinScene();
 	void ShowHardware();
@@ -38,6 +40,8 @@ public:
 	Line line;
 	Plane plane;*/
 	bool ShowTest = false;
+
+	std::vector<WindowManager*> winManager;
 	// ---------------------------------
 
 	//RANDOM NUMBERS TEST ----------
