@@ -49,7 +49,6 @@ update_status ModuleGUI::Update(float dt)
 	ImGui::PushItemWidth(60);
 	static int numbers_f = 0;
 	static int numbers_i = 0;
-
 	if (ImGui::Button("FLOAT"))
 		numbers_f++;
 	if (ImGui::Button("INT"))
@@ -182,7 +181,7 @@ update_status ModuleGUI::Update(float dt)
 		if (create_capsule & 1)
 		{
 			create_capsule++;
-			list_Capsule.add(Capsule(float3(Capsule_pos_A_x, Capsule_pos_A_y, Capsule_pos_A_z), float3(Capsule_pos_A_x, Capsule_pos_A_y, Capsule_pos_A_z), capsule_radius));
+			list_Capsule.add(Capsule(float3(Capsule_pos_A_x, Capsule_pos_A_y, Capsule_pos_A_z), float3(Capsule_pos_B_x, Capsule_pos_B_y, Capsule_pos_B_z), capsule_radius));
 		}
 	}
 	if (ImGui::CollapsingHeader("Plane"))
@@ -267,6 +266,8 @@ update_status ModuleGUI::Update(float dt)
 	ImGui::Begin("Objects in Scene");
 	// Spheres --------
 	static int objects_selected = 0;
+	static int object_delete = 0;
+	static bool delete_object = false;
 	LOG("%i", objects_selected);
 	if (ImGui::TreeNode("Spheres"))
 	{
@@ -310,10 +311,41 @@ update_status ModuleGUI::Update(float dt)
 			{
 				check->data = false;
 			}
+			ImGui::SameLine(); ImGui::Text("Delete:");
+			ImGui::SameLine(); 
+			if (ImGui::SmallButton(" "))
+			{
+				object_delete = i;
+				delete_object = true;
+			}
 			ImGui::PopID();
 			ImGui::BulletText("Position: (%.2f, %.2f, %.2f)  Radius: %.2f", item->data.pos.x, item->data.pos.y, item->data.pos.z, item->data.r);
 			item = item->next;
 			check = check->next;
+		}
+		if (delete_object)
+		{
+			delete_object = false;
+			p2List_item<Sphere>* item = list_Sphere.getFirst();
+			for (int i = 0; i < list_Sphere.count(); i++)
+			{
+				if (object_delete == i)
+				{
+					list_Sphere.del(item);
+					p2List_item<Sphere>* temp = list_Sphere.getFirst();
+					for (int j = 0; j < list_Sphere.count(); j++)
+					{
+						if (j == i)
+						{
+							item = temp;
+						}
+						temp = temp->next;
+					}
+				}
+				else
+					item = item->next;
+			}
+			object_delete = 0;
 		}
 		ImGui::TreePop();
 	}
@@ -351,12 +383,43 @@ update_status ModuleGUI::Update(float dt)
 			{
 				check->data = false;
 			}
+			ImGui::SameLine(); ImGui::Text("Delete:");
+			ImGui::SameLine();
+			if (ImGui::SmallButton(" "))
+			{
+				object_delete = i;
+				delete_object = true;
+			}
 			ImGui::PopID();
 			ImGui::BulletText("Position A (Down): (%.2f, %.2f, %.2f)", item->data.l.a.x, item->data.l.a.y, item->data.l.a.z);
-			ImGui::BulletText("Position A (UP): (%.2f, %.2f, %.2f)", item->data.l.b.x, item->data.l.b.y, item->data.l.b.z);
+			ImGui::BulletText("Position B (UP): (%.2f, %.2f, %.2f)", item->data.l.b.x, item->data.l.b.y, item->data.l.b.z);
 			ImGui::BulletText("Radius: %.2f", item->data.r);
 			item = item->next;
 			check = check->next;
+		}
+		if (delete_object)
+		{
+			delete_object = false;
+			p2List_item<Capsule>* item = list_Capsule.getFirst();
+			for (int i = 0; i < list_Capsule.count(); i++)
+			{
+				if (object_delete == i)
+				{
+					list_Capsule.del(item);
+					p2List_item<Capsule>* temp = list_Capsule.getFirst();
+					for (int j = 0; j < list_Capsule.count(); j++)
+					{
+						if (j == i)
+						{
+							item = temp;
+						}
+						temp = temp->next;
+					}
+				}
+				else
+					item = item->next;
+			}
+			object_delete = 0;
 		}
 		ImGui::TreePop();
 	}
@@ -394,10 +457,41 @@ update_status ModuleGUI::Update(float dt)
 			{
 				check->data = false;
 			}
+			ImGui::SameLine(); ImGui::Text("Delete:");
+			ImGui::SameLine();
+			if (ImGui::SmallButton(" "))
+			{
+				object_delete = i;
+				delete_object = true;
+			}
 			ImGui::PopID();
 			ImGui::BulletText("Position Normal: (%.2f, %.2f, %.2f)", item->data.normal.x, item->data.normal.y, item->data.normal.z);
 			item = item->next;
 			check = check->next;
+		}
+		if (delete_object)
+		{
+			delete_object = false;
+			p2List_item<Plane>* item = list_Plane.getFirst();
+			for (int i = 0; i < list_Plane.count(); i++)
+			{
+				if (object_delete == i)
+				{
+					list_Plane.del(item);
+					p2List_item<Plane>* temp = list_Plane.getFirst();
+					for (int j = 0; j < list_Plane.count(); j++)
+					{
+						if (j == i)
+						{
+							item = temp;
+						}
+						temp = temp->next;
+					}
+				}
+				else
+					item = item->next;
+			}
+			object_delete = 0;
 		}
 		ImGui::TreePop();
 	}
@@ -435,11 +529,42 @@ update_status ModuleGUI::Update(float dt)
 			{
 				check->data = false;
 			}
+			ImGui::SameLine(); ImGui::Text("Delete:");
+			ImGui::SameLine();
+			if (ImGui::SmallButton(" "))
+			{
+				object_delete = i;
+				delete_object = true;
+			}
 			ImGui::PopID();
 			ImGui::BulletText("Position: (%.2f, %.2f, %.2f)", item->data.pos.x, item->data.pos.y, item->data.pos.z);
 			ImGui::BulletText("Direction: (%.2f, %.2f, %.2f)", item->data.dir.x, item->data.dir.y, item->data.dir.z);
 			item = item->next;
 			check = check->next;
+		}
+		if (delete_object)
+		{
+			delete_object = false;
+			p2List_item<Ray>* item = list_Ray.getFirst();
+			for (int i = 0; i < list_Ray.count(); i++)
+			{
+				if (object_delete == i)
+				{
+					list_Ray.del(item);
+					p2List_item<Ray>* temp = list_Ray.getFirst();
+					for (int j = 0; j < list_Ray.count(); j++)
+					{
+						if (j == i)
+						{
+							item = temp;
+						}
+						temp = temp->next;
+					}
+				}
+				else
+					item = item->next;
+			}
+			object_delete = 0;
 		}
 		ImGui::TreePop();
 	}
