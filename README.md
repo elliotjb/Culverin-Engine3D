@@ -1,11 +1,25 @@
 # 3D Engine
 
-Created by ELliot Jimenez and Jordi Oña
+
+# Features
+
+- Object Creation, and you can "see" them (mathematically).
+- Random numbers generation.
+- Intersection with spheres .
+
+
+# Libraries Used: 
+(Not created by us!)
+- MathGeoLib -> http://clb.demon.fi/MathGeoLib/nightly/ 
+- ImGui -> https://github.com/ocornut/imgui 
+- Bullet -> http://bulletphysics.org 
+- Sdl -> http://www.libsdl.org/
+
 
 Authors: 
 
 - Elliot Jimenez: https://github.com/elliotjb
 - Jordi Oña: https://github.com/Jordior97
 
-Repository Link: https://github.com/elliotjb/Race-JE
+Repository Link: https://github.com/elliotjb/3D-Engine
 
