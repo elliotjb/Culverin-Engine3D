@@ -25,6 +25,7 @@ public:
 	void ShowCreateObjects();
 	void ShowObjectsinScene();
 	void ShowHardware();
+	void ShowConfig();
 
 public:
 

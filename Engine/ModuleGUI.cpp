@@ -61,6 +61,8 @@ update_status ModuleGUI::Update(float dt)
 	static bool window_show_objects = false;
 	static bool window_Random_generator = false;
 	static bool window_about_us = false;
+	static bool configuration = false;
+
 
 
 	// Main Menu --------------------------------
@@ -123,7 +125,7 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Window"))
+		if (ImGui::BeginMenu("Windows"))
 		{
 			if (ImGui::MenuItem("Create Objects"))
 			{
@@ -150,7 +152,7 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::Separator();
 			if (ImGui::MenuItem("Configuration"))
 			{
-				//jordi
+				configuration = !configuration;
 			}
 			ImGui::EndMenu();
 		}
@@ -310,6 +312,13 @@ update_status ModuleGUI::Update(float dt)
 	if (App->console->IsOpen())
 	{
 		ShowExampleAppConsole();
+	}
+
+
+	//Configuration Window ------------------------
+	if (configuration)
+	{
+		ShowConfig();
 	}
 
 	//Update All Modules ----------------------------------
@@ -834,4 +843,24 @@ void ModuleGUI::ShowObjectsinScene()
 void ModuleGUI::ShowHardware()
 {
 
+}
+
+void ModuleGUI::ShowConfig()
+{
+	ImGui::Begin("CONFIGURATION");
+	ImGui::Spacing();
+	ImGui::PushItemWidth(150);
+	if (ImGui::TreeNode("Application"))
+	{
+
+		ImGui::Text("App Name:");
+		ImGui::Text("Organization Name:");
+		static int fps = 0;
+		ImGui::SliderInt("Max FPS", &fps, 0, 60);
+		ImGui::SameLine(); ShowHelpMarker("0 = no frame cap");
+		ImGui::Text("Framerate:");
+
+		ImGui::TreePop();
+	}
+	ImGui::End();
 }
