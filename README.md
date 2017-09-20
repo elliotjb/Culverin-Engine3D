@@ -7,6 +7,9 @@
 - Random numbers generation.
 - Intersection with spheres .
 
+# Updates
+- 0.1.1:
+	* Implemented Delete Objects in Scene
 
 # Libraries Used: 
 (Not created by us!)
