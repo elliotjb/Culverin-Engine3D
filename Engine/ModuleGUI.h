@@ -4,10 +4,9 @@
 #include "Module.h"
 #include "Globals.h"
 #include "imgui.h"
-#include "p2Point.h"
-#include "p2List.h"
+#include <list>
+#include <vector>
 #include "MathGeoLib.h"
-#include "p2DynArray.h"
 
 class ModuleGUI : public Module
 {
@@ -21,13 +20,17 @@ public:
 
 	void ShowExampleAppConsole();
 
+	void ShowCreateObjects();
+	void ShowObjectsinScene();
+	void ShowHardware();
+
 public:
 
 	// INTERSECTION TESTS ------------
-	p2List<Sphere> list_Sphere;
-	p2List<Capsule> list_Capsule;
-	p2List<Plane> list_Plane;
-	p2List<Ray> list_Ray;
+	std::list<Sphere*> list_Sphere;
+	std::list<Capsule*> list_Capsule;
+	std::list<Plane*> list_Plane;
+	std::list<Ray*> list_Ray;
 	Sphere Sphere_A;
 	Sphere Sphere_B;
 	/*Capsule Capsule_A;
@@ -39,8 +42,8 @@ public:
 
 	//RANDOM NUMBERS TEST ----------
 	
-	p2DynArray<float> floats_list;
-	p2DynArray<int> ints_list;
+	std::vector<float> floats_list;
+	std::vector<int> ints_list;
 	//------------------------------
 };
 
