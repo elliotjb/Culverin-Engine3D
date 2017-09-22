@@ -18,7 +18,7 @@ enum WindowName
 class ModuleGUI : public Module
 {
 public:
-	ModuleGUI(Application* app, bool start_enabled = false);
+	ModuleGUI(bool start_enabled = false);
 	virtual ~ModuleGUI();
 
 	bool Start();

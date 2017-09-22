@@ -10,7 +10,7 @@ class Console : public Module
 {
 public:
 
-	Console(Application* app, bool start_enabled = false);
+	Console(bool start_enabled = false);
 	virtual ~Console();
 
 	bool Start();

@@ -9,7 +9,7 @@
 #include "imgui_impl_sdl_gl3.h"
 #include "Algorithm\Random\LCG.h"
 
-ModuleGUI::ModuleGUI(Application * app, bool start_enabled): Module(app, start_enabled)
+ModuleGUI::ModuleGUI(bool start_enabled): Module(start_enabled)
 {
 }
 

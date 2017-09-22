@@ -5,7 +5,7 @@
 #include "Gl3W\include\glew.h"
 #include "imgui_impl_sdl_gl3.h"
 
-Scene::Scene(Application * app, bool start_enabled) : Module(app, start_enabled)
+Scene::Scene(bool start_enabled) : Module(start_enabled)
 {
 }
 

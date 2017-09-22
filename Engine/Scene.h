@@ -8,7 +8,7 @@
 class Scene : public Module
 {
 public:
-	Scene(Application* app, bool start_enabled = false);
+	Scene(bool start_enabled = false);
 	virtual ~Scene();
 
 	bool Start();
