@@ -13,6 +13,7 @@
 #include "Scene.h"
 #include "ModuleConsole.h"
 #include "ModuleGUI.h"
+#include "parson.h"
 
 class Application
 {

@@ -494,7 +494,7 @@
     <ClCompile Include="ModuleObjects.cpp">
       <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
-    <ClCompile Include="parson.c">
+    <ClCompile Include="parson.cpp">
       <Filter>Engine\Parson</Filter>
     </ClCompile>
   </ItemGroup>

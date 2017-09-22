@@ -1,4 +1,9 @@
 #include "Application.h"
+#include "parson.h"
+
+static int malloc_count;
+static void *counted_malloc(size_t size);
+static void counted_free(void *ptr);
 
 Application::Application()
 {
@@ -48,6 +53,12 @@ Application::~Application()
 bool Application::Init()
 {
 	bool ret = true;
+
+	//Init parson
+	json_set_allocation_functions(counted_malloc, counted_free);
+	
+	Serialization();
+
 
 	// Call Init() in all modules
 	p2List_item<Module*>* item = list_modules.getFirst();
@@ -140,4 +151,19 @@ bool Application::CleanUp()
 void Application::AddModule(Module* mod)
 {
 	list_modules.add(mod);
+}
+
+static void *counted_malloc(size_t size) {
+	void *res = malloc(size);
+	if (res != NULL) {
+		malloc_count++;
+	}
+	return res;
+}
+
+static void counted_free(void *ptr) {
+	if (ptr != NULL) {
+		malloc_count--;
+	}
+	free(ptr);
 }
