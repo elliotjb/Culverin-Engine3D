@@ -19,13 +19,11 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void OpenClose();
-	bool IsOpen();
-	void Draw();
+	//void OpenClose();
+	//bool IsOpen();
 
 
 private:
-	bool hardware_activated = false;
 
 
 };

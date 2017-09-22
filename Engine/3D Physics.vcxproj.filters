@@ -315,6 +315,9 @@
     <ClInclude Include="WindowManager.h">
       <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleObjects.h">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -480,6 +483,9 @@
       <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
     <ClCompile Include="ModuleHardware.cpp">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleObjects.cpp">
       <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
   </ItemGroup>

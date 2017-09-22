@@ -9,6 +9,12 @@
 #include "MathGeoLib.h"
 #include "WindowManager.h"
 
+enum WindowName
+{
+	HARDWARE,
+	CREATEOBJETCS
+};
+
 class ModuleGUI : public Module
 {
 public:
@@ -22,20 +28,12 @@ public:
 	void UpdateWindows(float dt);
 
 	void ShowExampleAppConsole();
-	void ShowCreateObjects();
-	void ShowObjectsinScene();
 	void ShowHardware();
 	void ShowConfig();
 
 public:
 
-	// INTERSECTION TESTS ------------
-	std::list<Sphere*> list_Sphere;
-	std::list<Capsule*> list_Capsule;
-	std::list<Plane*> list_Plane;
-	std::list<Ray*> list_Ray;
-	Sphere Sphere_A;
-	Sphere Sphere_B;
+
 	/*Capsule Capsule_A;
 	Capsule Capsule_B;
 	Line line;

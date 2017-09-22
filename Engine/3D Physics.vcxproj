@@ -163,6 +163,7 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Time\Clock.h" />
     <ClInclude Include="WindowManager.h" />
+    <ClInclude Include="ModuleObjects.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Algorithm\Random\LCG.cpp" />
@@ -220,6 +221,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Time\Clock.cpp" />
+    <ClCompile Include="ModuleObjects.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Geometry\KDTree.inl" />
