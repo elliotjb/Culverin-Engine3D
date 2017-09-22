@@ -43,6 +43,9 @@
     <Filter Include="Engine\Modules\UI">
       <UniqueIdentifier>{57009f2d-5c28-4ee8-b19f-51edef2f7ca0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Parson">
+      <UniqueIdentifier>{b19f9a02-ebed-4122-83b4-caf0bb4431ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -318,6 +321,9 @@
     <ClInclude Include="ModuleObjects.h">
       <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
+    <ClInclude Include="parson.h">
+      <Filter>Engine\Parson</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -487,6 +493,9 @@
     </ClCompile>
     <ClCompile Include="ModuleObjects.cpp">
       <Filter>Engine\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="parson.c">
+      <Filter>Engine\Parson</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
