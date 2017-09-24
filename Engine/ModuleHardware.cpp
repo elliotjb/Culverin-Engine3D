@@ -1,5 +1,6 @@
 #include "ModuleHardware.h"
 #include "Application.h"
+#include "SDL/include/SDL.h"
 
 Hardware::Hardware(bool start_enabled) : WindowManager(start_enabled)
 {
@@ -27,8 +28,21 @@ update_status Hardware::Update(float dt)
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d.%d.%d", compiled.major, compiled.minor, compiled.patch);
 		//ImGui::SameLine(); ShowHelpMarker("The TextDisabled color is stored in ImGuiStyle.");
+		ImGui::Separator();
+		ImGui::Text("CPUs: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", SDL_GetCPUCount());
 
+		ImGui::Text("System RAM: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d Mb (Cache: %d Kb)", SDL_GetSystemRAM(), SDL_GetCPUCacheLineSize());
 
+		ImGui::Text("Cops: ");
+		ImGui::Separator();
+		ImGui::Text("GPU: ");
+		ImGui::Text("Brand: ");
+		ImGui::Text("VRAM Budget: ");
+		ImGui::Text("VRAM Usage: ");
+		ImGui::Text("VRAM Available: ");
+		ImGui::Text("VRAM Reserved: ");
 
 		ImGui::End();
 	}

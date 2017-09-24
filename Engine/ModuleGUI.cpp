@@ -387,14 +387,39 @@ void ModuleGUI::ShowConfig()
 	//ImGui::PushItemWidth(150);
 	if (ImGui::CollapsingHeader("Application"))
 	{
-		ImGui::Text("App Name:");
-		ImGui::Text("Organization Name:");
+		ImGui::Text("App Name:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "3D Engine");
+		ImGui::Text("Organization Name:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Elliot & Jordi S.A.");
 		static int fps = 0;
 		ImGui::SliderInt("Max FPS", &fps, 0, 60);
 		ImGui::SameLine(); ShowHelpMarker("0 = no frame cap");
-		ImGui::Text("Framerate:");
-	}
 
+		static bool animate = true;
+		ImGui::Checkbox("Animate", &animate);
+
+		static float arr[] = { 0.6f, 0.1f, 1.0f, 0.5f, 0.92f, 0.1f, 0.2f };
+		ImGui::PlotLines("Frame Times", arr, IM_ARRAYSIZE(arr));
+
+		// Create a dummy array of contiguous float values to plot
+		// Tip: If your float aren't contiguous but part of a structure, you can pass a pointer to your first float and the sizeof() of your structure in the Stride parameter.
+		static float values[90] = { 0 };
+		static int values_offset = 0;
+		static float refresh_time = 0.0f;
+		if (!animate || refresh_time == 0.0f)
+			refresh_time = ImGui::GetTime();
+		while (refresh_time < ImGui::GetTime()) // Create dummy data at fixed 60 hz rate for the demo
+		{
+			static float phase = 0.0f;
+			values[values_offset] = cosf(phase);
+			values_offset = (values_offset + 1) % IM_ARRAYSIZE(values);
+			phase += 0.10f*values_offset;
+			refresh_time += 1.0f / 60.0f;
+		}
+		ImGui::PlotLines("Lines", values, IM_ARRAYSIZE(values), values_offset, "avg 0.0", -1.0f, 1.0f, ImVec2(0, 80));
+		ImGui::PlotHistogram("Histogram", arr, IM_ARRAYSIZE(arr), 0, NULL, 0.0f, 1.0f, ImVec2(0, 80));
+
+	}
 	if (ImGui::CollapsingHeader("Window"))
 	{
 		static bool fullscreen = false;
@@ -407,9 +432,7 @@ void ModuleGUI::ShowConfig()
 		static int refresh = displaymode.refresh_rate;
 
 		ImGui::Text("Refresh rate:"); ImGui::SameLine();
-		ImGui::PushItemWidth(20);
-		ImGui::InputInt("", &displaymode.refresh_rate, false);
-		ImGui::PopItemWidth();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", displaymode.refresh_rate);
 		ImGui::SliderInt("Brightness", &brightness, 0, 100);
 		ImGui::SliderInt("Width", &width, 0, 4096);
 		ImGui::SliderInt("Height", &height, 0, 3072);
