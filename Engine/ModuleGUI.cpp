@@ -8,6 +8,7 @@
 #include "Gl3W\include\glew.h"
 #include "imgui_impl_sdl_gl3.h"
 #include "Algorithm\Random\LCG.h"
+#include "SDL/include/SDL.h"
 
 ModuleGUI::ModuleGUI(bool start_enabled): Module(start_enabled)
 {
@@ -35,7 +36,18 @@ bool ModuleGUI::Start()
 	glewInit();
 	ImGui_ImplSdlGL3_Init(App->window->window);
 
-	// 
+	displaymode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
+	int display_count = 0;
+	if ((display_count = SDL_GetNumVideoDisplays()) < 1) {
+		SDL_Log("SDL_GetNumVideoDisplays returned: %i", display_count);
+		return 1;
+	}
+
+	if (SDL_GetDisplayMode(displayIndex, modeIndex, &displaymode) != 0) {
+		SDL_Log("SDL_GetDisplayMode failed: %s", SDL_GetError());
+		return 1;
+	}
+
 
 	winManager.push_back(new Hardware(false));   //0---- HARDWARE
 	winManager.push_back(new ModuleObjects(false)); //1---- WINDOW_OBJECTS
@@ -372,18 +384,63 @@ void ModuleGUI::ShowConfig()
 {
 	ImGui::Begin("CONFIGURATION");
 	ImGui::Spacing();
-	ImGui::PushItemWidth(150);
-	if (ImGui::TreeNode("Application"))
+	//ImGui::PushItemWidth(150);
+	if (ImGui::CollapsingHeader("Application"))
 	{
-
 		ImGui::Text("App Name:");
 		ImGui::Text("Organization Name:");
 		static int fps = 0;
 		ImGui::SliderInt("Max FPS", &fps, 0, 60);
 		ImGui::SameLine(); ShowHelpMarker("0 = no frame cap");
 		ImGui::Text("Framerate:");
-
-		ImGui::TreePop();
 	}
+
+	if (ImGui::CollapsingHeader("Window"))
+	{
+		static bool fullscreen = false;
+		static bool resizable = false;
+		static bool borderless = false;
+		static bool full_desktop = false;
+		static int brightness = 0;
+		static int width = SCREEN_WIDTH * SCREEN_SIZE;
+		static int height = SCREEN_HEIGHT * SCREEN_SIZE;
+		static int refresh = displaymode.refresh_rate;
+
+		ImGui::Text("Refresh rate:"); ImGui::SameLine();
+		ImGui::PushItemWidth(20);
+		ImGui::InputInt("", &displaymode.refresh_rate, false);
+		ImGui::PopItemWidth();
+		ImGui::SliderInt("Brightness", &brightness, 0, 100);
+		ImGui::SliderInt("Width", &width, 0, 4096);
+		ImGui::SliderInt("Height", &height, 0, 3072);
+
+		if (ImGui::Checkbox("Fullscreen", &fullscreen))
+		{
+			//App->window->SetFullscreeen(fullscreen);
+		}
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Resizable", &resizable))
+		{
+			//App->window->SetResizable(resizable);
+		}
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::SetTooltip("Restart to apply");
+		}
+		if (ImGui::Checkbox("Borderless", &fullscreen))
+		{
+			//App->window->SetBorderless(fullscreen);
+		}
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Full Desktop", &resizable))
+		{
+			//App->window->SetFullDesktop(resizable);
+		}
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::SetTooltip("Restart to apply");
+		}
+	}
+
 	ImGui::End();
 }

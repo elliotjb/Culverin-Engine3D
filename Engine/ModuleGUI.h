@@ -8,6 +8,7 @@
 #include <vector>
 #include "MathGeoLib.h"
 #include "WindowManager.h"
+#include "SDL/include/SDL.h"
 
 enum WindowName
 {
@@ -41,13 +42,15 @@ public:
 	bool ShowTest = false;
 
 	std::vector<WindowManager*> winManager;
-	// ---------------------------------
 
 	//RANDOM NUMBERS TEST ----------
-	
 	std::vector<float> floats_list;
 	std::vector<int> ints_list;
 	//------------------------------
+
+	SDL_DisplayMode displaymode;
+	int displayIndex = 0;
+	int modeIndex = 0;
 };
 
 #endif
