@@ -58,28 +58,28 @@ bool Application::Init()
 {
 	bool ret = true;
 
-	/*JSON_Value* config_file;
+	JSON_Value* config_file;
 	JSON_Object* config;
 	JSON_Object* app_config;
 
-	config_file = json_parse_file("Game/config.json");*/
+	config_file = json_parse_file("config.json");
 	
 	//In case of error
-	/*if (config_file != NULL)
-	{*/
-		//ret = true;
+	if (config_file != nullptr)
+	{
+		ret = true;
 
-		/*config = json_value_get_object(config_file);
-		app_config = json_object_dotget_object(config,"App");
-		appName = json_object_dotget_string(app_config, "App Name");
-		orgName = json_object_dotget_string(app_config, "Org Name");*/
+		config = json_value_get_object(config_file);
+		app_config = json_object_dotget_object(config,"Application");
+		appName = json_object_get_string(app_config, "App Name");
+		orgName = json_object_get_string(app_config, "Org Name");
 
 		int cap = 60;
 		if (cap > 0)
 		{
 			capped_ms = 1000 / cap;
 		}
-		//}
+		
 		//------------------------------------
 
 
@@ -106,7 +106,7 @@ bool Application::Init()
 		startup_time.Start();
 		ms_timer.Start();
 
-	//}
+	}
 	return ret;
 }
 
