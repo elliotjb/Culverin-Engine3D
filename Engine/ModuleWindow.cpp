@@ -49,6 +49,11 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
+		if (WIN_OPENGL == true)
+		{
+			flags |= SDL_WINDOW_OPENGL|SDL_WINDOW_RESIZABLE;
+		}
+
 		if(WIN_BORDERLESS == true)
 		{
 			flags |= SDL_WINDOW_BORDERLESS;

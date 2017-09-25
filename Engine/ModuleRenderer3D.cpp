@@ -24,6 +24,7 @@ bool ModuleRenderer3D::Init()
 	
 	//Create context
 	context = SDL_GL_CreateContext(App->window->window);
+
 	if(context == NULL)
 	{
 		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -39,6 +40,9 @@ bool ModuleRenderer3D::Init()
 		//Initialize Projection Matrix
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
+
+
+		glViewport(0, 0, 800, 600);
 
 		//Check for error
 		GLenum error = glGetError();

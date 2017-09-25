@@ -34,6 +34,8 @@ update_status Hardware::Update(float dt)
 		ImGui::Text("System RAM: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d Mb (Cache: %d Kb)", SDL_GetSystemRAM(), SDL_GetCPUCacheLineSize());
 		ImGui::Separator();
+		ImGui::Text("Vendor: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_VENDOR));
 		ImGui::Text("GPU: "); ImGui::SameLine(); 
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_RENDERER));
 		ImGui::Text("Brand: "); ImGui::SameLine(); 

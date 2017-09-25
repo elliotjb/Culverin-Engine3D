@@ -4,8 +4,6 @@
 #include "glmath.h"
 #include "Bullet/include/btBulletDynamicsCommon.h"
 
-enum CameraPos { HISTORY, CUSTOM, INTRO};
-
 class ModuleCamera3D : public Module
 {
 public:
@@ -29,7 +27,6 @@ private:
 public:
 	
 	vec3 X, Y, Z, Position, Reference;
-	CameraPos state = INTRO;
 
 	mat4x4 vehicle_info;
 
