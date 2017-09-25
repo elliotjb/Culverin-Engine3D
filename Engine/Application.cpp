@@ -58,54 +58,55 @@ bool Application::Init()
 {
 	bool ret = true;
 
-	//Init parson
-	json_set_allocation_functions(counted_malloc, counted_free);
+	/*JSON_Value* config_file;
+	JSON_Object* config;
+	JSON_Object* app_config;
+
+	config_file = json_parse_file("Game/config.json");*/
 	
-	//Json Example
-	Serialization();
-
-	//Read config file-----------------------
-	/*if (config.empty() == false)
+	//In case of error
+	/*if (config_file != NULL)
 	{*/
-		// self-config
-		/*ret = true;
-		app_config = config.child("app");
-		title = app_config.child("title").child_value();
-		organization = app_config.child("organization").child_value();
-		int cap = app_config.attribute("framerate_cap").as_int(-1);*/
+		//ret = true;
 
-	int cap = 60;
-	if (cap > 0)
-	{
-		capped_ms = 1000 / cap;
-	}
+		/*config = json_value_get_object(config_file);
+		app_config = json_object_dotget_object(config,"App");
+		appName = json_object_dotget_string(app_config, "App Name");
+		orgName = json_object_dotget_string(app_config, "Org Name");*/
+
+		int cap = 60;
+		if (cap > 0)
+		{
+			capped_ms = 1000 / cap;
+		}
+		//}
+		//------------------------------------
+
+
+		// Call Init() in all modules
+		p2List_item<Module*>* item = list_modules.getFirst();
+
+		while (item != NULL && ret == true)
+		{
+			if (item->data->IsEnabled())
+				ret = item->data->Init();
+			item = item->next;
+		}
+
+		// After all Init calls we call Start() in all modules
+		LOG("Application Start --------------");
+		item = list_modules.getFirst();
+
+		while (item != NULL && ret == true)
+		{
+			if (item->data->IsEnabled())
+				ret = item->data->Start();
+			item = item->next;
+		}
+		startup_time.Start();
+		ms_timer.Start();
+
 	//}
-	//------------------------------------
-
-
-	// Call Init() in all modules
-	p2List_item<Module*>* item = list_modules.getFirst();
-
-	while(item != NULL && ret == true)
-	{
-		if(item->data->IsEnabled())
-			ret = item->data->Init();
-		item = item->next;
-	}
-
-	// After all Init calls we call Start() in all modules
-	LOG("Application Start --------------");
-	item = list_modules.getFirst();
-
-	while(item != NULL && ret == true)
-	{
-		if (item->data->IsEnabled())
-			ret = item->data->Start();
-		item = item->next;
-	}
-	startup_time.Start();
-	ms_timer.Start();
-
 	return ret;
 }
 

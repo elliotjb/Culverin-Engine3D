@@ -15,6 +15,7 @@
 #include "ModuleGUI.h"
 #include "parson.h"
 #include <vector>
+#include <string>
 #include "GL3W\include\glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include <gl\GL.h>
@@ -72,6 +73,10 @@ private:
 	void PrepareUpdate();
 	void FinishUpdate();
 
+	std::string appName;
+	std::string orgName;
+	uint maxFPS = 0;
+	bool vsync = false;
 
 
 public:

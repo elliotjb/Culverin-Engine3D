@@ -1,0 +1,25 @@
+{
+  "config": 
+  {
+    "Application": {
+      "App Name": "CULVERIN",
+      "Org Name": "Elliot & Jordi S.A.",
+      "Max FPS": 60,
+      "VSYNC": false
+    },
+    "Window": {
+      "Brightness": 100,
+      "Width": 1,
+      "Height": 1,
+      "Fullscreen": false,
+      "Resizable": true,
+      "Borderless": false,
+      "Full Desktop": false
+    },
+    "Audio": 
+    {
+      "Volume": 100,
+      "Mute": false
+    }
+  }
+}
