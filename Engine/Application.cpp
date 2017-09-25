@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "parson.h"
+#include "PerfTimer.h"
 
 static int malloc_count;
 static void *counted_malloc(size_t size);
@@ -57,7 +58,26 @@ bool Application::Init()
 	//Init parson
 	json_set_allocation_functions(counted_malloc, counted_free);
 	
+	//Json Example
 	Serialization();
+
+	//Read config file-----------------------
+	/*if (config.empty() == false)
+	{*/
+		// self-config
+		/*ret = true;
+		app_config = config.child("app");
+		title = app_config.child("title").child_value();
+		organization = app_config.child("organization").child_value();
+		int cap = app_config.attribute("framerate_cap").as_int(-1);*/
+
+	int cap = 60;
+	if (cap > 0)
+	{
+		capped_ms = 1000 / cap;
+	}
+	//}
+	//------------------------------------
 
 
 	// Call Init() in all modules
@@ -88,13 +108,35 @@ bool Application::Init()
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
+	frame_count++;
 	dt = (float)ms_timer.Read() / 1000.0f;
 	ms_timer.Start();
+	frame_time.Start();
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	// Framerate calculations ----------------------
+	if (last_sec_frame_time.Read() > 1000)
+	{
+		last_sec_frame_time.Start();
+		prev_last_sec_frame_count = last_sec_frame_count;
+		last_sec_frame_count = 0;
+	}
+
+	float avg_fps = float(frame_count) / startup_time.ReadSec();
+	float seconds_since_startup = startup_time.ReadSec();
+	uint32 last_frame_ms = frame_time.Read();
+	uint32 frames_on_last_update = prev_last_sec_frame_count;
+
+
+	if (capped_ms > 0 && last_frame_ms < capped_ms)
+	{
+		PerfTimer t;
+		SDL_Delay(capped_ms - last_frame_ms);
+		//LOG("We waited for %d milliseconds and got back in %f", capped_ms - last_frame_ms, t.ReadMs());
+	}
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules

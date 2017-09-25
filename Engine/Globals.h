@@ -18,6 +18,11 @@ void log(const char file[], int line, const char* format, ...);
 #define HAVE_M_PI
 #define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
+typedef unsigned int uint;
+typedef unsigned __int32 uint32;
+typedef unsigned __int64 uint64;
+typedef unsigned char uchar;
+
 
 typedef unsigned int uint;
 

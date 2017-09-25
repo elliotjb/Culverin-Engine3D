@@ -33,7 +33,15 @@ public:
 private:
 
 	Timer	ms_timer;
-	float	dt;
+	uint64	frame_count = 0;
+	Timer	startup_time;
+	Timer	frame_time;
+	Timer	last_sec_frame_time;
+	uint32	last_sec_frame_count = 0;
+	uint32	prev_last_sec_frame_count = 0;
+	float	dt = 0.0f;
+	int		capped_ms = -1;
+
 	p2List<Module*> list_modules;
 
 public:

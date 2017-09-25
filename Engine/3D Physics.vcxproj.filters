@@ -324,6 +324,9 @@
     <ClInclude Include="parson.h">
       <Filter>Engine\Parson</Filter>
     </ClInclude>
+    <ClInclude Include="PerfTimer.h">
+      <Filter>Engine\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -496,6 +499,9 @@
     </ClCompile>
     <ClCompile Include="parson.cpp">
       <Filter>Engine\Parson</Filter>
+    </ClCompile>
+    <ClCompile Include="PerfTimer.cpp">
+      <Filter>Engine\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

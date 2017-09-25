@@ -391,7 +391,7 @@ void ModuleGUI::ShowConfig()
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "3D Engine");
 		ImGui::Text("Organization Name:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Elliot & Jordi S.A.");
-		static int fps = 0;
+		static int fps = 60;
 		ImGui::SliderInt("Max FPS", &fps, 0, 60);
 		ImGui::SameLine(); ShowHelpMarker("0 = no frame cap");
 
@@ -420,6 +420,7 @@ void ModuleGUI::ShowConfig()
 		ImGui::PlotHistogram("Histogram", arr, IM_ARRAYSIZE(arr), 0, NULL, 0.0f, 1.0f, ImVec2(0, 80));
 
 	}
+
 	if (ImGui::CollapsingHeader("Window"))
 	{
 		static bool fullscreen = false;
@@ -463,6 +464,16 @@ void ModuleGUI::ShowConfig()
 		{
 			ImGui::SetTooltip("Restart to apply");
 		}
+	}
+
+	if (ImGui::CollapsingHeader("Audio"))
+	{
+		static int volume = 50;
+		ImGui::SliderInt("Volume", &volume, 0, 100);
+	}
+
+	if (ImGui::CollapsingHeader("Input"))
+	{
 	}
 
 	ImGui::End();
