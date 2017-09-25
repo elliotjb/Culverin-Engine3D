@@ -100,8 +100,9 @@ bool Application::Init()
 			ret = item->data->Start();
 		item = item->next;
 	}
-	
+	startup_time.Start();
 	ms_timer.Start();
+
 	return ret;
 }
 
@@ -109,7 +110,8 @@ bool Application::Init()
 void Application::PrepareUpdate()
 {
 	frame_count++;
-	dt = (float)ms_timer.Read() / 1000.0f;
+	last_sec_frame_count++;
+	dt = (float)ms_timer.ReadSec();
 	ms_timer.Start();
 	frame_time.Start();
 }
@@ -122,6 +124,11 @@ void Application::FinishUpdate()
 	{
 		last_sec_frame_time.Start();
 		prev_last_sec_frame_count = last_sec_frame_count;
+
+
+		fps_log[frame_index] = prev_last_sec_frame_count;
+		frame_index = (frame_index + 1) % IM_ARRAYSIZE(fps_log);
+
 		last_sec_frame_count = 0;
 	}
 
@@ -129,13 +136,14 @@ void Application::FinishUpdate()
 	float seconds_since_startup = startup_time.ReadSec();
 	uint32 last_frame_ms = frame_time.Read();
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
+	
+	ms_log[ms_index] = last_frame_ms;
+	ms_index = (ms_index + 1) % IM_ARRAYSIZE(ms_log);
 
 
 	if (capped_ms > 0 && last_frame_ms < capped_ms)
 	{
-		PerfTimer t;
 		SDL_Delay(capped_ms - last_frame_ms);
-		//LOG("We waited for %d milliseconds and got back in %f", capped_ms - last_frame_ms, t.ReadMs());
 	}
 }
 
