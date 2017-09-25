@@ -15,6 +15,11 @@
 #include "ModuleGUI.h"
 #include "parson.h"
 #include <vector>
+#include "GL3W\include\glew.h"
+#include "SDL\include\SDL_opengl.h"
+#include <gl\GL.h>
+#include <gl\GLU.h>
+
 
 class Application
 {
@@ -59,11 +64,18 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	static void ShowHelpMarker(const char* desc, const char* icon = "(?)");
+
 private:
 
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
+
+
+
+public:
+	bool showconfig = false;
 };
 
 extern Application* App;

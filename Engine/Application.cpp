@@ -1,6 +1,9 @@
 #include "Application.h"
 #include "parson.h"
 #include "PerfTimer.h"
+#include "imgui.h"
+#include "imgui_impl_sdl_gl3.h"
+#include "SDL\include\SDL.h"
 
 static int malloc_count;
 static void *counted_malloc(size_t size);
@@ -150,6 +153,8 @@ void Application::FinishUpdate()
 // Call PreUpdate, Update and PostUpdate on all modules
 update_status Application::Update()
 {
+	//IMGUI----------------------------------------------------
+
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 	
@@ -163,6 +168,7 @@ update_status Application::Update()
 	}
 
 	item = list_modules.getFirst();
+	ImGui_ImplSdlGL3_NewFrame(window->window);
 
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
@@ -170,6 +176,40 @@ update_status Application::Update()
 			ret = item->data->Update(dt);
 		item = item->next;
 	}
+
+	//CONFIG WINDOW -------------------------------------
+	if (showconfig)
+	{
+		item = list_modules.getFirst();
+		ImGui::Begin("CONFIGURATION");
+		ImGui::Spacing();
+		if (ImGui::CollapsingHeader("Application"))
+		{
+			ImGui::Text("App Name:"); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "3D Engine");
+			ImGui::Text("Organization Name:"); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Elliot & Jordi S.A.");
+			static int fps = 60;
+			ImGui::SliderInt("Max FPS", &fps, 0, 60);
+			ImGui::SameLine(); ShowHelpMarker("0 = no frame cap");
+			ImGui::Text("Framerate:"); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", fps_log[frame_index - 1]);
+			ImGui::PlotHistogram("", fps_log, IM_ARRAYSIZE(App->fps_log), 0, NULL, 0.0f, 120.0f, ImVec2(0, 80));
+			ImGui::Text("Milliseconds:"); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", ms_log[ms_index - 1]);
+			ImGui::PlotHistogram("", ms_log, IM_ARRAYSIZE(App->ms_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
+
+		}
+		while (item != NULL && ret == UPDATE_CONTINUE)
+		{
+			if (item->data->IsEnabled())
+				ret = item->data->UpdateConfig(dt);
+			item = item->next;
+		}
+		ImGui::End();
+		//----------------------------------------------
+	}
+	ImGui::Render();
 
 	item = list_modules.getFirst();
 
@@ -179,6 +219,9 @@ update_status Application::Update()
 			ret = item->data->PostUpdate(dt);
 		item = item->next;
 	}
+
+
+	//----------------------------------------------------
 
 	FinishUpdate();
 	return ret;
@@ -197,6 +240,21 @@ bool Application::CleanUp()
 	}
 	return ret;
 }
+
+void Application::ShowHelpMarker(const char * desc, const char * icon)
+{
+	ImGui::TextDisabled(icon);
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::PushTextWrapPos(450.0f);
+		ImGui::TextUnformatted(desc);
+		ImGui::PopTextWrapPos();
+		ImGui::EndTooltip();
+	}
+}
+
+
 
 void Application::AddModule(Module* mod)
 {

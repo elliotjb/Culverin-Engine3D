@@ -29,6 +29,8 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+	update_status UpdateConfig(float dt);
+
 private:
 
 	Mix_Music*			music;

@@ -48,9 +48,6 @@ public:
 	std::vector<int> ints_list;
 	//------------------------------
 
-	SDL_DisplayMode displaymode;
-	int displayIndex = 0;
-	int modeIndex = 0;
 };
 
 #endif

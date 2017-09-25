@@ -5,10 +5,10 @@
 #include "ModuleHardware.h"
 #include "ModuleObjects.h"
 #include "imgui.h"
-#include "Gl3W\include\glew.h"
 #include "imgui_impl_sdl_gl3.h"
+#include "Gl3W\include\glew.h"
 #include "Algorithm\Random\LCG.h"
-#include "SDL/include/SDL.h"
+#include "SDL\include\SDL.h"
 
 ModuleGUI::ModuleGUI(bool start_enabled): Module(start_enabled)
 {
@@ -18,35 +18,10 @@ ModuleGUI::~ModuleGUI()
 {
 }
 
-static void ShowHelpMarker(const char* desc, const char* icon = "(?)")
-{
-	ImGui::TextDisabled(icon);
-	if (ImGui::IsItemHovered())
-	{
-		ImGui::BeginTooltip();
-		ImGui::PushTextWrapPos(450.0f);
-		ImGui::TextUnformatted(desc);
-		ImGui::PopTextWrapPos();
-		ImGui::EndTooltip();
-	}
-}
-
 bool ModuleGUI::Start()
 {
 	glewInit();
 	ImGui_ImplSdlGL3_Init(App->window->window);
-
-	displaymode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
-	int display_count = 0;
-	if ((display_count = SDL_GetNumVideoDisplays()) < 1) {
-		SDL_Log("SDL_GetNumVideoDisplays returned: %i", display_count);
-		return 1;
-	}
-
-	if (SDL_GetDisplayMode(displayIndex, modeIndex, &displaymode) != 0) {
-		SDL_Log("SDL_GetDisplayMode failed: %s", SDL_GetError());
-		return 1;
-	}
 
 
 	winManager.push_back(new Hardware(false));   //0---- HARDWARE
@@ -65,8 +40,7 @@ bool ModuleGUI::Start()
 
 update_status ModuleGUI::Update(float dt)
 {
-	//IMGUI----------------------------------------------------
-	ImGui_ImplSdlGL3_NewFrame(App->window->window);
+
 	//ShowTest -----------------------
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
@@ -175,7 +149,7 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::Separator();
 			if (ImGui::MenuItem("Configuration"))
 			{
-				configuration = !configuration;
+				App->showconfig = !App->showconfig;
 			}
 			ImGui::EndMenu();
 		}
@@ -292,7 +266,8 @@ update_status ModuleGUI::Update(float dt)
 		//Name of your Engine
 		ImGui::Spacing();
 		ImGui::Spacing();
-		ImGui::Text("3D Engine");
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "CULVERIN Engine");
+
 
 		ImGui::Spacing();
 		ImGui::Separator();
@@ -306,18 +281,18 @@ update_status ModuleGUI::Update(float dt)
 		// Name of the Author
 		ImGui::Text("Authors:");
 		ImGui::Spacing();
-		ImGui::Text("Elliot Jimenez Bosch");
-		ImGui::Text("Jordi Ona Rufi");
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Elliot Jimenez Bosch");
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Jordi Ona Rufi");
 		ImGui::Spacing();
 		ImGui::Separator();
 		ImGui::Spacing();
 		// Libraries
 		ImGui::Text("Libraries:");
 		ImGui::Spacing();
-		ImGui::Text("SDL");
-		ImGui::Text("ImGui");
-		ImGui::Text("MathGeoLib");
-
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SDL");
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "ImGui");
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "MathGeoLib");
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Parson");
 		ImGui::End();
 	}
 
@@ -339,17 +314,8 @@ update_status ModuleGUI::Update(float dt)
 		ShowExampleAppConsole();
 	}
 
-
-	//Configuration Window ------------------------
-	if (configuration)
-	{
-		ShowConfig();
-	}
-
 	//Update All Modules ----------------------------------
 	UpdateWindows(dt);
-
-	ImGui::Render();
 
 	return UPDATE_CONTINUE;
 }
@@ -382,83 +348,83 @@ void ModuleGUI::ShowHardware()
 
 }
 
-void ModuleGUI::ShowConfig()
-{
-	ImGui::Begin("CONFIGURATION");
-	ImGui::Spacing();
-	//ImGui::PushItemWidth(150);
-	if (ImGui::CollapsingHeader("Application"))
-	{
-		ImGui::Text("App Name:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "3D Engine");
-		ImGui::Text("Organization Name:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Elliot & Jordi S.A.");
-		static int fps = 60;
-		ImGui::SliderInt("Max FPS", &fps, 0, 60);
-		ImGui::SameLine(); ShowHelpMarker("0 = no frame cap");
-		ImGui::Text("Framerate:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", App->fps_log[App->frame_index-1]);
-		ImGui::PlotHistogram("", App->fps_log, IM_ARRAYSIZE(App->fps_log), 0, NULL, 0.0f, 120.0f, ImVec2(0, 80));
-		ImGui::Text("Milliseconds:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", App->ms_log[App->ms_index-1]);
-		ImGui::PlotHistogram("", App->ms_log, IM_ARRAYSIZE(App->ms_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
-
-	}
-
-	if (ImGui::CollapsingHeader("Window"))
-	{
-		static bool fullscreen = false;
-		static bool resizable = true;
-		static bool borderless = false;
-		static bool full_desktop = false;
-		static int brightness = 0;
-		static int width = SCREEN_WIDTH * SCREEN_SIZE;
-		static int height = SCREEN_HEIGHT * SCREEN_SIZE;
-		static int refresh = displaymode.refresh_rate;
-
-		ImGui::Text("Refresh rate:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", displaymode.refresh_rate);
-		ImGui::SliderInt("Brightness", &brightness, 0, 100);
-		ImGui::SliderInt("Width", &width, 0, 4096);
-		ImGui::SliderInt("Height", &height, 0, 3072);
-
-		if (ImGui::Checkbox("Fullscreen", &fullscreen))
-		{
-			//App->window->SetFullscreeen(fullscreen);
-		}
-		ImGui::SameLine();
-		if (ImGui::Checkbox("Resizable", &resizable))
-		{
-			//App->window->SetResizable(resizable);
-		}
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::SetTooltip("Restart to apply");
-		}
-		if (ImGui::Checkbox("Borderless", &fullscreen))
-		{
-			//App->window->SetBorderless(fullscreen);
-		}
-		ImGui::SameLine();
-		if (ImGui::Checkbox("Full Desktop", &resizable))
-		{
-			//App->window->SetFullDesktop(resizable);
-		}
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::SetTooltip("Restart to apply");
-		}
-	}
-
-	if (ImGui::CollapsingHeader("Audio"))
-	{
-		static int volume = 50;
-		ImGui::SliderInt("Volume", &volume, 0, 100);
-	}
-
-	//if (ImGui::CollapsingHeader("Input"))
-	//{
-	//}
-
-	ImGui::End();
-}
+//void ModuleGUI::ShowConfig()
+//{
+//	ImGui::Begin("CONFIGURATION");
+//	ImGui::Spacing();
+//	//ImGui::PushItemWidth(150);
+//	if (ImGui::CollapsingHeader("Application"))
+//	{
+//		ImGui::Text("App Name:"); ImGui::SameLine();
+//		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "3D Engine");
+//		ImGui::Text("Organization Name:"); ImGui::SameLine();
+//		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Elliot & Jordi S.A.");
+//		static int fps = 60;
+//		ImGui::SliderInt("Max FPS", &fps, 0, 60);
+//		ImGui::SameLine(); App->ShowHelpMarker("0 = no frame cap");
+//		ImGui::Text("Framerate:"); ImGui::SameLine();
+//		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", App->fps_log[App->frame_index-1]);
+//		ImGui::PlotHistogram("", App->fps_log, IM_ARRAYSIZE(App->fps_log), 0, NULL, 0.0f, 120.0f, ImVec2(0, 80));
+//		ImGui::Text("Milliseconds:"); ImGui::SameLine();
+//		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", App->ms_log[App->ms_index-1]);
+//		ImGui::PlotHistogram("", App->ms_log, IM_ARRAYSIZE(App->ms_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
+//
+//	}
+//
+//	if (ImGui::CollapsingHeader("Window"))
+//	{
+//		static bool fullscreen = false;
+//		static bool resizable = true;
+//		static bool borderless = false;
+//		static bool full_desktop = false;
+//		static int brightness = 0;
+//		static int width = SCREEN_WIDTH * SCREEN_SIZE;
+//		static int height = SCREEN_HEIGHT * SCREEN_SIZE;
+//		static int refresh = displaymode.refresh_rate;
+//
+//		ImGui::Text("Refresh rate:"); ImGui::SameLine();
+//		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", displaymode.refresh_rate);
+//		ImGui::SliderInt("Brightness", &brightness, 0, 100);
+//		ImGui::SliderInt("Width", &width, 0, 4096);
+//		ImGui::SliderInt("Height", &height, 0, 3072);
+//
+//		if (ImGui::Checkbox("Fullscreen", &fullscreen))
+//		{
+//			//App->window->SetFullscreeen(fullscreen);
+//		}
+//		ImGui::SameLine();
+//		if (ImGui::Checkbox("Resizable", &resizable))
+//		{
+//			//App->window->SetResizable(resizable);
+//		}
+//		if (ImGui::IsItemHovered())
+//		{
+//			ImGui::SetTooltip("Restart to apply");
+//		}
+//		if (ImGui::Checkbox("Borderless", &borderless))
+//		{
+//			//App->window->SetBorderless(fullscreen);
+//		}
+//		ImGui::SameLine();
+//		if (ImGui::Checkbox("Full Desktop", &full_desktop))
+//		{
+//			//App->window->SetFullDesktop(resizable);
+//		}
+//		if (ImGui::IsItemHovered())
+//		{
+//			ImGui::SetTooltip("Restart to apply");
+//		}
+//	}
+//
+//	if (ImGui::CollapsingHeader("Audio"))
+//	{
+//		static int volume = 50;
+//		ImGui::SliderInt("Volume", &volume, 0, 100);
+//	}
+//
+//	//if (ImGui::CollapsingHeader("Input"))
+//	//{
+//	//}
+//
+//	ImGui::End();
+//}

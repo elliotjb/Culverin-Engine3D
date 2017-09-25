@@ -222,3 +222,18 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
+
+update_status ModuleAudio::UpdateConfig(float dt)
+{
+	if (ImGui::CollapsingHeader("Audio"))
+	{
+		static int volume = 50;
+		static bool mute = false;
+		ImGui::SliderInt("Volume", &volume, 0, 100);
+		if (ImGui::Checkbox("Mute", &mute))
+		{
+			//MuteVolume(mute);
+		}
+	}
+	return UPDATE_CONTINUE;
+}

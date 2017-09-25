@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "SDL\include\SDL.h"
+#include "imgui.h"
 #include "imgui_impl_sdl_gl3.h"
 
 ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)
@@ -70,6 +71,18 @@ bool ModuleWindow::Init()
 			//Get window surface
 			screen_surface = SDL_GetWindowSurface(window);
 		}
+
+		displaymode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
+		int display_count = 0;
+		if ((display_count = SDL_GetNumVideoDisplays()) < 1) {
+			SDL_Log("SDL_GetNumVideoDisplays returned: %i", display_count);
+			return 1;
+		}
+
+		if (SDL_GetDisplayMode(displayIndex, modeIndex, &displaymode) != 0) {
+			SDL_Log("SDL_GetDisplayMode failed: %s", SDL_GetError());
+			return 1;
+		}
 	}
 
 	return ret;
@@ -95,4 +108,54 @@ bool ModuleWindow::CleanUp()
 void ModuleWindow::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(window, title);
+}
+
+update_status ModuleWindow::UpdateConfig(float dt)
+{
+	if (ImGui::CollapsingHeader("Window"))
+	{
+		static bool fullscreen = false;
+		static bool resizable = true;
+		static bool borderless = false;
+		static bool full_desktop = false;
+		static int brightness = 0;
+		static int width = SCREEN_WIDTH * SCREEN_SIZE;
+		static int height = SCREEN_HEIGHT * SCREEN_SIZE;
+		static int refresh = displaymode.refresh_rate;
+
+		ImGui::Text("Refresh rate:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", displaymode.refresh_rate);
+		ImGui::SliderInt("Brightness", &brightness, 0, 100);
+		ImGui::SliderInt("Width", &width, 0, 4096);
+		ImGui::SliderInt("Height", &height, 0, 3072);
+
+		if (ImGui::Checkbox("Fullscreen", &fullscreen))
+		{
+			//SetFullscreen(fullscreen);
+		}
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Resizable", &resizable))
+		{
+			//SetResizable(resizable);
+		}
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::SetTooltip("Restart to apply");
+		}
+		if (ImGui::Checkbox("Borderless", &borderless))
+		{
+			//SetBorderless(fullscreen);
+		}
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Full Desktop", &full_desktop))
+		{
+			//SetFullDesktop(resizable);
+		}
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::SetTooltip("Restart to apply");
+		}
+	}
+
+	return UPDATE_CONTINUE;
 }
