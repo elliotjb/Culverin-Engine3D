@@ -1,8 +1,6 @@
 #include "ModuleHardware.h"
 #include "Application.h"
 #include "SDL\include\SDL.h"
-#include <gl\GL.h>
-#include <gl\GLU.h>
 
 Hardware::Hardware(bool start_enabled) : WindowManager(start_enabled)
 {
