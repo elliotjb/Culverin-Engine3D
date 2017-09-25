@@ -8,6 +8,16 @@
 - Intersection with spheres .
 
 # Updates
+- 0.2:
+	* Implemented "Configuration" Window:
+		> Frame rate options.
+		> Window options (resizable, fullscreen, etc).
+		> Volume adjoustment.
+	* Added "About us..." Window:
+		> Name, description, libraries used.
+	* "Hardware" Window:
+		> CPU's, GPU descriptions & info.
+
 - 0.1.1:
 	* Implemented Delete Objects in Scene
 
