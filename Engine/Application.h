@@ -43,15 +43,14 @@ private:
 	float	dt = 0.0f;
 	int		capped_ms = -1;
 
-	int		frame_index = 0;
-	int		ms_index = 0;
-
 	p2List<Module*> list_modules;
 
 public:
 
-	float  fps_log[70] = { 0 };
-	float  ms_log[70] = { 0 };
+	int		frame_index = 0;
+	int		ms_index = 0;
+	float	fps_log[70] = { 0 };
+	float	ms_log[70] = { 0 };
 
 	Application();
 	~Application();

@@ -1,6 +1,8 @@
 #include "ModuleHardware.h"
 #include "Application.h"
-#include "SDL/include/SDL.h"
+#include "SDL\include\SDL.h"
+#include <gl\GL.h>
+#include <gl\GLU.h>
 
 Hardware::Hardware(bool start_enabled) : WindowManager(start_enabled)
 {
@@ -31,18 +33,15 @@ update_status Hardware::Update(float dt)
 		ImGui::Separator();
 		ImGui::Text("CPUs: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", SDL_GetCPUCount());
-
 		ImGui::Text("System RAM: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d Mb (Cache: %d Kb)", SDL_GetSystemRAM(), SDL_GetCPUCacheLineSize());
-
-		ImGui::Text("Cops: ");
 		ImGui::Separator();
-		ImGui::Text("GPU: ");
-		ImGui::Text("Brand: ");
-		ImGui::Text("VRAM Budget: ");
-		ImGui::Text("VRAM Usage: ");
-		ImGui::Text("VRAM Available: ");
-		ImGui::Text("VRAM Reserved: ");
+		ImGui::Text("GPU: "); ImGui::SameLine(); 
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_RENDERER));
+		ImGui::Text("Brand: "); ImGui::SameLine(); 
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_VENDOR));
+		ImGui::Text("Version: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_VERSION));
 
 		ImGui::End();
 	}

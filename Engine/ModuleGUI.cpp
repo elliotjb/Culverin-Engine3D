@@ -297,8 +297,8 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::Spacing();
 		ImGui::Separator();
 		ImGui::Spacing();
-		// Desciption
-		ImGui::Text("3D Engine");
+		// Description
+		ImGui::Text("This is a project consistent of creating a Game Engine,\nthat allows you to use tools to create video games");
 
 		ImGui::Spacing();
 		ImGui::Separator();
@@ -315,6 +315,8 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::Text("Libraries:");
 		ImGui::Spacing();
 		ImGui::Text("SDL");
+		ImGui::Text("ImGui");
+		ImGui::Text("MathGeoLib");
 
 		ImGui::End();
 	}
@@ -394,16 +396,19 @@ void ModuleGUI::ShowConfig()
 		static int fps = 60;
 		ImGui::SliderInt("Max FPS", &fps, 0, 60);
 		ImGui::SameLine(); ShowHelpMarker("0 = no frame cap");
-
-		ImGui::PlotHistogram("Framerate", App->fps_log, IM_ARRAYSIZE(App->fps_log), 0, NULL, 0.0f, 120.0f, ImVec2(0, 80));
-		ImGui::PlotHistogram("Millisecons Histogram", App->ms_log, IM_ARRAYSIZE(App->ms_log), 0, NULL, 0.0f, 60.0f, ImVec2(0, 80));
+		ImGui::Text("Framerate:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", App->fps_log[App->frame_index-1]);
+		ImGui::PlotHistogram("", App->fps_log, IM_ARRAYSIZE(App->fps_log), 0, NULL, 0.0f, 120.0f, ImVec2(0, 80));
+		ImGui::Text("Milliseconds:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", App->ms_log[App->ms_index-1]);
+		ImGui::PlotHistogram("", App->ms_log, IM_ARRAYSIZE(App->ms_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
 
 	}
 
 	if (ImGui::CollapsingHeader("Window"))
 	{
 		static bool fullscreen = false;
-		static bool resizable = false;
+		static bool resizable = true;
 		static bool borderless = false;
 		static bool full_desktop = false;
 		static int brightness = 0;
@@ -451,9 +456,9 @@ void ModuleGUI::ShowConfig()
 		ImGui::SliderInt("Volume", &volume, 0, 100);
 	}
 
-	if (ImGui::CollapsingHeader("Input"))
-	{
-	}
+	//if (ImGui::CollapsingHeader("Input"))
+	//{
+	//}
 
 	ImGui::End();
 }

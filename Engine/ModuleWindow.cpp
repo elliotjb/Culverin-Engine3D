@@ -1,6 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "SDL\include\SDL.h"
+#include "imgui_impl_sdl_gl3.h"
 
 ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)
 {
@@ -82,6 +84,7 @@ bool ModuleWindow::CleanUp()
 	if(window != NULL)
 	{
 		SDL_DestroyWindow(window);
+		ImGui_ImplSdlGL3_Shutdown();
 	}
 
 	//Quit SDL subsystems
