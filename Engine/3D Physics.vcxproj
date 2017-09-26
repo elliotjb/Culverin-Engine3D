@@ -230,6 +230,7 @@
     <ClCompile Include="ModuleObjects.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Game\config.json" />
     <None Include="Geometry\KDTree.inl" />
     <None Include="Geometry\QuadTree.inl" />
     <None Include="Math\Matrix.inl" />

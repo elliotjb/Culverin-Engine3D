@@ -4,6 +4,7 @@
 #include "p2List.h"
 #include "Primitive.h"
 #include "p2DynArray.h"
+#include "parson.h"
 #include "Bullet/include/btBulletDynamicsCommon.h"
 
 // Recommended scale is 1.0f == 1 meter, no less than 0.2 objects
@@ -30,7 +31,7 @@ public:
 	ModulePhysics3D(bool start_enabled = true);
 	~ModulePhysics3D();
 
-	bool Init();
+	bool Init(JSON_Object* node);
 	bool Start();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);

@@ -1,5 +1,7 @@
 #pragma once
 #include "Globals.h"
+#include "parson.h"
+#include <string>
 
 class Application;
 struct PhysBody3D;
@@ -14,7 +16,7 @@ public:
 	virtual ~Module()
 	{}
 
-	virtual bool Init() 
+	virtual bool Init(JSON_Object* node) 
 	{
 		return true; 
 	}
@@ -79,10 +81,8 @@ public:
 		}
 	}
 
+public:
 
-
-private:
-
-
+	std::string	name;
 	bool enabled = true;
 };

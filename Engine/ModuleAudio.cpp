@@ -4,17 +4,20 @@
 #include "SDL\include\SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
 
+
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 ModuleAudio::ModuleAudio(bool start_enabled) : Module(start_enabled), music(NULL)
-{}
+{
+	name = "Audio";
+}
 
 // Destructor
 ModuleAudio::~ModuleAudio()
 {}
 
 // Called before render is available
-bool ModuleAudio::Init()
+bool ModuleAudio::Init(JSON_Object* node)
 {
 	LOG("Loading Audio Mixer");
 	bool ret = true;
@@ -43,6 +46,9 @@ bool ModuleAudio::Init()
 		LOG("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		ret = true;
 	}
+
+	volume = json_object_get_number(node, "Volume");
+	mute = json_object_get_boolean(node, "Mute");
 
 	return ret;
 }
@@ -227,8 +233,6 @@ update_status ModuleAudio::UpdateConfig(float dt)
 {
 	if (ImGui::CollapsingHeader("Audio"))
 	{
-		static int volume = 50;
-		static bool mute = false;
 		ImGui::SliderInt("Volume", &volume, 0, 100);
 		if (ImGui::Checkbox("Mute", &mute))
 		{

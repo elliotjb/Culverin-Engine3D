@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "SDL/include/SDL.h"
+#include "parson.h"
 
 class Application;
 
@@ -15,7 +16,7 @@ public:
 	// Destructor
 	virtual ~ModuleWindow();
 
-	bool Init();
+	bool Init(JSON_Object* node);
 	bool CleanUp();
 
 	void SetTitle(const char* title);
@@ -33,6 +34,18 @@ private:
 	SDL_DisplayMode displaymode;
 	int displayIndex = 0;
 	int modeIndex = 0;
+
+	//Window Parameters
+	int width = SCREEN_WIDTH * SCREEN_SIZE;
+	int height = SCREEN_HEIGHT * SCREEN_SIZE;
+	int scale = SCREEN_SIZE;
+	int brightness = 100;
+
+	bool fullscreen = false;
+	bool resizable = false;
+	bool fullscreen_d = false;
+	bool borderless = false;
+
 };
 
 #endif // __ModuleWindow_H__

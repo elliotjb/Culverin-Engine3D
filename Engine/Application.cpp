@@ -60,7 +60,7 @@ bool Application::Init()
 
 	JSON_Value* config_file;
 	JSON_Object* config;
-	JSON_Object* app_config;
+	JSON_Object* config_node;
 
 	config_file = json_parse_file("config.json");
 	
@@ -70,14 +70,15 @@ bool Application::Init()
 		ret = true;
 
 		config = json_value_get_object(config_file);
-		app_config = json_object_dotget_object(config,"Application");
-		appName = json_object_get_string(app_config, "App Name");
-		orgName = json_object_get_string(app_config, "Org Name");
+		config_node = json_object_get_object(config,"Application");
+		appName = json_object_get_string(config_node, "App Name");
+		orgName = json_object_get_string(config_node, "Org Name");
+		maxFPS = json_object_get_number(config_node, "Max FPS");
+		vsync = json_object_get_boolean(config_node, "VSYNC");
 
-		int cap = 60;
-		if (cap > 0)
+		if (maxFPS > 0)
 		{
-			capped_ms = 1000 / cap;
+			capped_ms = 1000 / maxFPS;
 		}
 		
 		//------------------------------------
@@ -89,7 +90,10 @@ bool Application::Init()
 		while (item != NULL && ret == true)
 		{
 			if (item->data->IsEnabled())
-				ret = item->data->Init();
+			{
+				config_node = json_object_get_object(config,item->data->name.c_str());
+				ret = item->data->Init(config_node);
+			}
 			item = item->next;
 		}
 
@@ -187,10 +191,10 @@ update_status Application::Update()
 		if (ImGui::CollapsingHeader("Application"))
 		{
 			ImGui::Text("App Name:"); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "3D Engine");
+			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), appName.c_str());
 			ImGui::Text("Organization Name:"); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Elliot & Jordi S.A.");
-			static int fps = 60;
+			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), orgName.c_str());
+			static int fps = maxFPS;
 			ImGui::SliderInt("Max FPS", &fps, 0, 60);
 			ImGui::SameLine(); ShowHelpMarker("0 = no frame cap");
 			ImGui::Text("Framerate:"); ImGui::SameLine();
@@ -199,7 +203,10 @@ update_status Application::Update()
 			ImGui::Text("Milliseconds:"); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", ms_log[ms_index - 1]);
 			ImGui::PlotHistogram("", ms_log, IM_ARRAYSIZE(App->ms_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
-
+			if (ImGui::Checkbox("VSYNC", &vsync))
+			{
+				//SetVSYNC(vsync);
+			}
 		}
 		while (item != NULL && ret == UPDATE_CONTINUE)
 		{
@@ -240,6 +247,11 @@ bool Application::CleanUp()
 		item = item->prev;
 	}
 	return ret;
+}
+
+bool Application::GetVSYNC()
+{
+	return vsync;
 }
 
 void Application::ShowHelpMarker(const char * desc, const char * icon)

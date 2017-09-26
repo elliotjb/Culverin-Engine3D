@@ -65,6 +65,8 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	bool GetVSYNC();
+
 	static void ShowHelpMarker(const char* desc, const char* icon = "(?)");
 
 private:
@@ -76,7 +78,7 @@ private:
 	std::string appName;
 	std::string orgName;
 	uint maxFPS = 0;
-	bool vsync = false;
+	bool vsync = true;
 
 
 public:

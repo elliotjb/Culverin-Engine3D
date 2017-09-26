@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "SDL_mixer\include\SDL_mixer.h"
+#include "parson.h"
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
@@ -13,7 +14,7 @@ public:
 	ModuleAudio(bool start_enabled = true);
 	~ModuleAudio();
 
-	bool Init();
+	bool Init(JSON_Object* node);
 	bool CleanUp();
 
 	// Play a music file
@@ -35,6 +36,9 @@ private:
 
 	Mix_Music*			music;
 	p2List<Mix_Chunk*>	fx;
+
+	int volume = 0;
+	bool mute = false;
 };
 
 #endif // __ModuleAudio_H__

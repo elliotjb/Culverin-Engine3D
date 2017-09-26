@@ -18,6 +18,9 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 
 	camera_pos = vec3(0.0f, 0.0f, 0.0f);
 	vec_view = vec3(0.0f, 0.0f, 0.0f);
+
+	name = "Camera";
+
 }
 
 ModuleCamera3D::~ModuleCamera3D()
