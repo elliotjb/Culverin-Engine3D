@@ -12,7 +12,7 @@ class Hardware : public WindowManager
 {
 public:
 
-	Hardware(bool enabled = false);
+	Hardware();
 	virtual ~Hardware();
 
 	bool Start();

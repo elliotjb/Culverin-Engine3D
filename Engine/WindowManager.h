@@ -8,14 +8,28 @@
 #include <vector>
 #include "MathGeoLib.h"
 
-class ModuleObjects;
+
+struct Active
+{
+	bool active = false;
+
+	void OpenClose()
+	{
+		active = !active;
+	}
+	bool IsActive()
+	{
+		return active;
+	}
+
+};
 
 class WindowManager
 {
 public:
-	WindowManager(bool start_enabled = false)
+	WindowManager()
 	{
-		active = start_enabled;
+		
 	}
 	virtual ~WindowManager()
 	{
@@ -36,21 +50,21 @@ public:
 		return true;
 	}
 
-	virtual void OpenClose()
+	/*virtual void OpenClose()
 	{
 		active = !active;
-	}
+	}*/
 
-	virtual bool IsActive()
+	/*virtual bool IsActive()
 	{
 		return active;
-	}
+	}*/
 
 public:
-	bool active = false;
+	std::vector<Active> active;
 
 	// or std::vector<bool> active; YES
-	ModuleObjects* obj = nullptr;
+	//ModuleObjects* obj = nullptr;
 
 };
 

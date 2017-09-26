@@ -32,9 +32,6 @@ bool ModuleCamera3D::Start()
 	LOG("Setting up the camera");
 	bool ret = true;
 	freecam = false;
-	camera_pos = vec3(0, 7.0f, 0);
-	vec_view = vec3(0, 5.0f, 0);
-
 	return ret;
 }
 

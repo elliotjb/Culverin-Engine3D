@@ -28,7 +28,7 @@ update_status Scene::Update(float dt)
 	p.Render();
 
 
-	GLuint VertexArrayID;
+	/*GLuint VertexArrayID;
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
 
@@ -62,7 +62,7 @@ update_status Scene::Update(float dt)
 	);
 	// Draw the triangle !
 	glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
-	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(0);*/
 
 
 

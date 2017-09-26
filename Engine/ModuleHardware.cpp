@@ -2,13 +2,14 @@
 #include "Application.h"
 #include "SDL\include\SDL.h"
 
-Hardware::Hardware(bool start_enabled) : WindowManager(start_enabled)
+Hardware::Hardware() : WindowManager()
 {
-
+	active.push_back(Active());
 }
 
 Hardware::~Hardware()
 {
+	active.clear();
 }
 
 bool Hardware::Start()
@@ -18,7 +19,7 @@ bool Hardware::Start()
 
 update_status Hardware::Update(float dt)
 {
-	if (active)
+	if (active[0].active)
 	{
 		ImGui::Begin("Hardware");
 

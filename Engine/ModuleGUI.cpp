@@ -9,6 +9,7 @@
 #include "Gl3W\include\glew.h"
 #include "Algorithm\Random\LCG.h"
 #include "SDL\include\SDL.h"
+#include "ModuleObjectsUI.h"
 
 ModuleGUI::ModuleGUI(bool start_enabled): Module(start_enabled)
 {
@@ -36,9 +37,8 @@ bool ModuleGUI::Start()
 	glEnable(GL_TEXTURE_2D);
 	// ----------------------------------------------
 
-	winManager.push_back(new Hardware(false));   //0---- HARDWARE
-	winManager.push_back(new ModuleObjects(false)); //1---- WINDOW_OBJECTS
-	winManager[1]->obj = (ModuleObjects*)winManager[1];
+	winManager.push_back(new Hardware());   //0---- HARDWARE
+	winManager.push_back(new ModuleObjectsUI()); //1---- WINDOW_OBJECTS
 
 
 
@@ -136,13 +136,11 @@ update_status ModuleGUI::Update(float dt)
 			if (ImGui::MenuItem("Create Objects"))
 			{
 				//window_create_objects = !window_create_objects;
-				winManager[CREATEOBJETCS]->obj->OpenClose_CreateObjects();
-				winManager[CREATEOBJETCS]->OpenClose();
+				winManager[CREATEOBJETCS]->active[CREATE].OpenClose();
 			}
 			if (ImGui::MenuItem("Objects in Scene"))
 			{
-				winManager[CREATEOBJETCS]->obj->OpenClose_ShowObjects();
-				winManager[CREATEOBJETCS]->OpenClose();
+				winManager[CREATEOBJETCS]->active[SHOW].OpenClose();
 			}
 			if (ImGui::MenuItem("Random Generator"))
 			{
@@ -151,7 +149,7 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::Separator();
 			if (ImGui::MenuItem("Hardware"))
 			{
-				winManager[HARDWARE]->OpenClose();
+				winManager[HARDWARE]->active[0].OpenClose();
 				//App->hardware->OpenClose();
 			}
 			if (ImGui::MenuItem("Console", "º"))
@@ -355,10 +353,11 @@ void ModuleGUI::UpdateWindows(float dt)
 	std::vector<WindowManager*>::iterator window = winManager.begin();
 	for (int i = 0; i < winManager.size(); i++)
 	{
-		if (window[i]->IsActive())
+		/*if (window[i]->IsActive())
 		{
 			window[i]->Update(dt);
-		}
+		}*/
+		window[i]->Update(dt);
 	}
 }
 
