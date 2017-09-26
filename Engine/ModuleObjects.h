@@ -31,8 +31,8 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void CreateSphere(Sphere_p* sphere, bool isKynematic = false);
-	void CreateCube(Cube_p * sphere, bool isKynematic);
+	void CreateSphere(Sphere_p* sphere, ImVec4 color, bool isKynematic = false);
+	void CreateCube(Cube_p * sphere, ImVec4 color, bool isKynematic = false);
 	void ShowAxis(bool axis);
 	void ShowWire(bool wire);
 

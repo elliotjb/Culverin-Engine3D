@@ -60,13 +60,17 @@ bool ModuleObjects::CleanUp()
 	return true;
 }
 
-void ModuleObjects::CreateSphere(Sphere_p* sphere, bool isKynematic)
+void ModuleObjects::CreateSphere(Sphere_p* sphere, ImVec4 color, bool isKynematic)
 {
 	if (sphere != NULL)
 	{
 		Sphere_object temp;
 		temp.sphere = *sphere;
 		temp.isKynematic = isKynematic;
+		temp.sphere.color.r = color.x;
+		temp.sphere.color.g = color.y;
+		temp.sphere.color.b = color.z;
+		temp.sphere.color.a = color.w;
 		spheres.push_back(temp);
 		if (isKynematic)
 		{
@@ -79,13 +83,17 @@ void ModuleObjects::CreateSphere(Sphere_p* sphere, bool isKynematic)
 	}
 }
 
-void ModuleObjects::CreateCube(Cube_p* cube, bool isKynematic)
+void ModuleObjects::CreateCube(Cube_p* cube, ImVec4 color, bool isKynematic)
 {
 	if (cube != NULL)
 	{
 		Cube_object temp;
 		temp.cube = *cube;
 		temp.isKynematic = isKynematic;
+		temp.cube.color.r = color.x;
+		temp.cube.color.g = color.y;
+		temp.cube.color.b = color.z;
+		temp.cube.color.a = color.w;
 		cubes.push_back(temp);
 		if (isKynematic)
 		{

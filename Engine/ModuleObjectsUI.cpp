@@ -50,14 +50,14 @@ void ModuleObjectsUI::ShowCreateObjects()
 		ImGui::Text("Position Sphere:");
 		static float sphere_pos_x = 0.0f;
 		ImGui::PushItemWidth(150);
-		ImGui::InputFloat("x", &sphere_pos_x, 0.01f, 0, 3);
+		ImGui::InputFloat("x", &sphere_pos_x, 0.1f, 0, 3);
 		ImGui::SameLine(220);
 		static bool kynematic = false;
 		ImGui::Checkbox("Kynematic", &kynematic);
 		static float sphere_pos_y = 0.0f;
-		ImGui::InputFloat("y", &sphere_pos_y, 0.01f, 0, 3);
+		ImGui::InputFloat("y", &sphere_pos_y, 0.1f, 0, 3);
 		static float sphere_pos_z = 0.0f;
-		ImGui::InputFloat("z", &sphere_pos_z, 0.01f, 0, 3);
+		ImGui::InputFloat("z", &sphere_pos_z, 0.1f, 0, 3);
 		ImGui::Spacing();
 		ImGui::PopItemWidth();
 		ImGui::PushItemWidth(100);
@@ -65,17 +65,27 @@ void ModuleObjectsUI::ShowCreateObjects()
 		static float sphere_radius = 1.0f;
 		ImGui::InputFloat("", &sphere_radius, 0.05f, 0, 3);
 		static int create_sphere = 0;
-		ImGui::SameLine(220); if (ImGui::Button("Create Sphere"))
+		ImGui::SameLine(260); if (ImGui::Button("Create Sphere"))
 			create_sphere++;
+		ImGui::PopItemWidth();
+
+		static ImVec4 color = ImColor(255, 255, 255, 255);
+		static bool hdr = false;
+		static bool alpha_preview = true;
+		static bool alpha_half_preview = false;
+		static bool options_menu = true;
+		int misc_flags = (hdr ? ImGuiColorEditFlags_HDR : 0) | (alpha_half_preview ? ImGuiColorEditFlags_AlphaPreviewHalf : (alpha_preview ? ImGuiColorEditFlags_AlphaPreview : 0)) | (options_menu ? 0 : ImGuiColorEditFlags_NoOptions);
+		ImGui::Text("Set Color of Sphere:");
+		ImGui::ColorEdit4("ColorObject##1", (float*)&color, ImGuiColorEditFlags_RGB | misc_flags);
 		if (create_sphere & 1)
 		{
 			create_sphere++;
 			App->objects->math_Sphere.push_back(new Sphere(float3(sphere_pos_x, sphere_pos_y, sphere_pos_z), sphere_radius));
 			Sphere_p* temp = new Sphere_p(sphere_radius);
 			temp->SetPos(sphere_pos_x, sphere_pos_y, sphere_pos_z);
-			App->objects->CreateSphere(temp, kynematic);
+			App->objects->CreateSphere(temp, color, kynematic);
 		}
-		ImGui::PopItemWidth();
+
 	}
 	if (ImGui::CollapsingHeader("Cube"))
 	{
@@ -105,10 +115,19 @@ void ModuleObjectsUI::ShowCreateObjects()
 
 		static bool kynematic = false;
 		ImGui::Checkbox("Kynematic", &kynematic);
+		static ImVec4 color = ImColor(255, 255, 255, 255);
+		static bool hdr = false;
+		static bool alpha_preview = true;
+		static bool alpha_half_preview = false;
+		static bool options_menu = true;
+		int misc_flags = (hdr ? ImGuiColorEditFlags_HDR : 0) | (alpha_half_preview ? ImGuiColorEditFlags_AlphaPreviewHalf : (alpha_preview ? ImGuiColorEditFlags_AlphaPreview : 0)) | (options_menu ? 0 : ImGuiColorEditFlags_NoOptions);
+		ImGui::Text("Set Color of Sphere:");
+		ImGui::ColorEdit4("ColorObject##2", (float*)&color, ImGuiColorEditFlags_RGB | misc_flags);
 		ImGui::Spacing();
 		static int create_capsule = 0;
-		ImGui::SameLine(220); if (ImGui::Button("Create Cube"))
+		ImGui::SameLine(260); if (ImGui::Button("Create Cube"))
 			create_capsule++;
+
 		if (create_capsule & 1)
 		{
 			create_capsule++;
@@ -116,7 +135,7 @@ void ModuleObjectsUI::ShowCreateObjects()
 			Cube_p* temp = new Cube_p();
 			temp->SetPos(pos_x, pos_y, pos_z);
 			temp->size = vec3(size_x, size_y, size_z);
-			App->objects->CreateCube(temp, kynematic);
+			App->objects->CreateCube(temp, color, kynematic);
 		}
 	}
 	if (ImGui::CollapsingHeader("Capsule"))
@@ -155,7 +174,7 @@ void ModuleObjectsUI::ShowCreateObjects()
 		ImGui::PopItemWidth();
 
 		static int create_capsule = 0;
-		ImGui::SameLine(220); if (ImGui::Button("Create Capsule"))
+		ImGui::SameLine(260); if (ImGui::Button("Create Capsule"))
 			create_capsule++;
 		if (create_capsule & 1)
 		{
@@ -193,7 +212,7 @@ void ModuleObjectsUI::ShowCreateObjects()
 		ImGui::Spacing();
 		ImGui::PopItemWidth();
 		static int create_plane = 0;
-		ImGui::SameLine(220); if (ImGui::Button("Create Plane"))
+		ImGui::SameLine(260); if (ImGui::Button("Create Plane"))
 			create_plane++;
 		if (create_plane & 1)
 		{
@@ -230,7 +249,7 @@ void ModuleObjectsUI::ShowCreateObjects()
 		ImGui::Spacing();
 		ImGui::Spacing();
 		static int create_ray = 0;
-		ImGui::SameLine(220); if (ImGui::Button("Create Ray"))
+		ImGui::SameLine(260); if (ImGui::Button("Create Ray"))
 			create_ray++;
 		if (create_ray & 1)
 		{
@@ -586,11 +605,15 @@ void ModuleObjectsUI::SpecialFunction(const std::string name)
 		App->objects->math_Sphere.push_back(new Sphere(float3(0, 1.0f, 0), 1.0f));
 		Sphere_p* temp = new Sphere_p(1.0f);
 		temp->SetPos(0, 1.0f, 0);
-		App->objects->CreateSphere(temp);
+		App->objects->CreateSphere(temp, ImVec4(1, 1, 1, 1));
 	}
 	else if (name == "cube")
 	{
-
+		//App->objects->math_Cube.push_back(new AABB());
+		Cube_p* temp = new Cube_p();
+		temp->SetPos(0, 1.0f, 0);
+		temp->size = vec3(2, 2, 2);
+		App->objects->CreateCube(temp, ImVec4(1, 1, 1, 1));
 	}
 	else if (name == "Capsule")
 	{

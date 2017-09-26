@@ -139,7 +139,7 @@ update_status ModuleGUI::Update(float dt)
 			{
 				if (ImGui::MenuItem("Cube"))
 				{
-
+					winManager[CREATEOBJETCS]->SpecialFunction("cube");
 				}
 
 				if (ImGui::MenuItem("Sphere"))

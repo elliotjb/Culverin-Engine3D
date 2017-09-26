@@ -39,6 +39,22 @@ void Inspector::ShowInspector()
 		return;
 	}
 	ImGui::Text("HELLO WORLD");
+
+	static bool ref_color = false;
+	static ImVec4 ref_color_v(1.0f, 0.0f, 1.0f, 0.5f);
+
+	ImGui::Text("Color widget HSV with Alpha:");
+	static ImVec4 color = ImColor(114, 144, 154, 200);
+	static bool hdr = false;
+	static bool alpha_preview = true;
+	static bool alpha_half_preview = false;
+	static bool options_menu = true;
+	int misc_flags = (hdr ? ImGuiColorEditFlags_HDR : 0) | (alpha_half_preview ? ImGuiColorEditFlags_AlphaPreviewHalf : (alpha_preview ? ImGuiColorEditFlags_AlphaPreview : 0)) | (options_menu ? 0 : ImGuiColorEditFlags_NoOptions);
+
+	ImGui::ColorEdit4("MyColor##2", (float*)&color, ImGuiColorEditFlags_HSV | misc_flags);
+
+
+
 	ImGui::End();
 }
 
