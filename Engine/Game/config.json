@@ -17,9 +17,12 @@
       "Borderless": false,
       "Full Desktop": false
     },
-    "Audio": 
-    {
-      "Volume": 85,
-      "Mute": true
-    }
+  "Audio": {
+    "Volume": 85,
+    "Mute": true
+  },
+    "Texture 2D": false,
+    "Wireframe": false,
+    "Axis": true
+  }
 }

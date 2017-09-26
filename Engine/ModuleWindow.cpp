@@ -145,13 +145,21 @@ update_status ModuleWindow::UpdateConfig(float dt)
 
 		ImGui::Text("Refresh rate:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", displaymode.refresh_rate);
-		ImGui::SliderInt("Brightness", &brightness, 0, 100);
+		ImGui::SliderInt("Brightness", &brightness, 0, 100); ImGui::SameLine();
+		if (ImGui::Button("APPLY##brightness"))
+		{
+			float value = (float)brightness * 0.01;
+			SDL_SetWindowBrightness(window, value);
+		}
 		ImGui::SliderInt("Width", &width, 0, 4096);
 		ImGui::SliderInt("Height", &height, 0, 3072);
-
+		if (ImGui::Button("APPLY##win_size"))
+		{
+			SDL_SetWindowSize(window, width, height);
+		}
 		const char* win_opt[] = { "Fullscreen", "Full Desktop", "Windowed" };
-		ImGui::Combo("WINDOW OPTIONS", &selected, win_opt, IM_ARRAYSIZE(win_opt));
-		if (ImGui::Button("APPLY"))
+		ImGui::Combo("WINDOW OPTIONS", &selected, win_opt, IM_ARRAYSIZE(win_opt)); ImGui::SameLine();
+		if (ImGui::Button("APPLY##win_options"))
 		{
 			SetWindowOption(selected);
 		}
@@ -164,10 +172,8 @@ update_status ModuleWindow::UpdateConfig(float dt)
 			else
 			{
 				SDL_SetWindowBordered(window, SDL_TRUE);
-
 			}
 		}
-
 	}
 
 	return UPDATE_CONTINUE;
@@ -179,7 +185,7 @@ void ModuleWindow::SetWindowOption(int i)
 	{
 	case 0:
 	{
-		//SetFullscreen;
+		//SetFullscreen -------------
 		fullscreen = true;
 		fullscreen_d = false;
 		resizable = false;
@@ -189,7 +195,7 @@ void ModuleWindow::SetWindowOption(int i)
 	}
 	case 1:
 	{
-		//SetFullDesktop;
+		//SetFullDesktop -------------
 		fullscreen_d = true;
 		fullscreen = false;
 		resizable = false;
@@ -200,7 +206,7 @@ void ModuleWindow::SetWindowOption(int i)
 	}
 	case 2:
 	{
-		//SetResizable;
+		//SetResizable ----------
 		resizable = true;
 		fullscreen_d = false;
 		fullscreen = false;

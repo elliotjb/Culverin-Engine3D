@@ -25,18 +25,6 @@ bool ModuleGUI::Start()
 	glewInit();
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 	ImGui_ImplSdlGL3_Init(App->window->window);
-	
-	//OpenGL contains multitude of options...---------
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	glClearDepth(1.0f);
-	glClearColor(0.f, 0.f, 0.f, 1.f);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_COLOR_MATERIAL);
-	glEnable(GL_TEXTURE_2D);
-	// ----------------------------------------------
 
 	winManager.push_back(new Hardware());   //0---- HARDWARE
 	winManager.push_back(new ModuleObjectsUI()); //1---- WINDOW_OBJECTS
@@ -353,17 +341,6 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Parson");
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "OpenGL");
 
-
-		//OpenGL
-		ImGui::Spacing();
-		ImGui::Separator();
-		ImGui::Spacing();
-		ImGui::Text("OpenGL:");
-		ImGui::Spacing();
-		ImGui::Text("OpenGL version supported:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_VERSION));
-		ImGui::Text("GLSL:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 		ImGui::End();
 	}
 

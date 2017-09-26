@@ -1,9 +1,10 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
-#include "SDL\include\SDL_opengl.h"
+#include "SDL/include/SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
+#include "parson.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -93,12 +94,23 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 
 		GLfloat MaterialDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
-		
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
+
+
+		//Load render config info -------
+		depth_test = json_object_get_boolean(node, "Depth Test");
+		cull_face = json_object_get_boolean(node, "Cull Face");
+		lightning = json_object_get_boolean(node, "Lightning");
+		color_material = json_object_get_boolean(node, "Color Material");
+		texture_2d = json_object_get_boolean(node, "Texture 2D");
+		wireframe = json_object_get_boolean(node, "Wireframe");
+		axis = json_object_get_boolean(node, "Axis");
+
+		(depth_test) ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+		(cull_face) ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
 		lights[0].Active(true);
-		glEnable(GL_LIGHTING);
-		glEnable(GL_COLOR_MATERIAL);
+		(lightning) ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
+		(color_material) ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
+		(texture_2d) ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
 	}
 
 	// Projection matrix for
@@ -140,6 +152,45 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	return UPDATE_CONTINUE;
 }
+
+update_status ModuleRenderer3D::UpdateConfig(float dt)
+{
+	if (ImGui::CollapsingHeader("Render"))
+	{
+		if (ImGui::Checkbox("Depth Test", &depth_test))
+		{
+			(depth_test) ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+		}
+		if (ImGui::Checkbox("Cull Face", &cull_face))
+		{
+			(cull_face) ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+		}
+		if (ImGui::Checkbox("Lightning", &lightning))
+		{
+			(lightning) ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
+		}
+		if (ImGui::Checkbox("Color Material", &color_material))
+		{
+			(color_material) ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
+		}
+		if (ImGui::Checkbox("Texture 2D", &texture_2d))
+		{
+			(texture_2d) ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
+		}
+		if (ImGui::Checkbox("Wireframe", &wireframe))
+		{
+			App->objects->ShowWire(wireframe);
+		}
+		if (ImGui::Checkbox("Objects Axis", &axis))
+		{
+			App->objects->ShowAxis(axis);
+		}
+	}
+	return UPDATE_CONTINUE;
+}
+
+
+
 
 // Called before quitting
 bool ModuleRenderer3D::CleanUp()

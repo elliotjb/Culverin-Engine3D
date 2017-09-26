@@ -16,6 +16,8 @@ public:
 	bool Init(JSON_Object* node);
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
+	update_status UpdateConfig(float dt);
+
 	bool CleanUp();
 
 	void OnResize(int width, int height);
@@ -26,4 +28,12 @@ public:
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+
+	bool depth_test = false;
+	bool cull_face = false;
+	bool lightning = false;
+	bool color_material = false;
+	bool texture_2d = false;
+	bool wireframe = false;
+	bool axis = true;
 };
