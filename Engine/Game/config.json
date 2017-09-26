@@ -21,6 +21,11 @@
     "Volume": 85,
     "Mute": true
   },
+  "Renderer": {
+    "Depth Test": true,
+    "Cull Face": true,
+    "Lightning": true,
+    "Color Material": true,
     "Texture 2D": false,
     "Wireframe": false,
     "Axis": true
