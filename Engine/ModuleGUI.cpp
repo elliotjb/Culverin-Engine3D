@@ -103,6 +103,8 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::Separator();
 			if (ImGui::MenuItem("Exit"))
 			{
+				ImGui::EndMenu();
+				ImGui::EndMainMenuBar();
 				return UPDATE_STOP;
 			}
 			ImGui::EndMenu();
@@ -131,7 +133,7 @@ update_status ModuleGUI::Update(float dt)
 
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Etc..."))
+			if (ImGui::MenuItem("Look View to Selected", "F"))
 			{
 
 			}
@@ -145,24 +147,31 @@ update_status ModuleGUI::Update(float dt)
 
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Cube"))
+			if (ImGui::BeginMenu("3D Object"))
+			{
+				if (ImGui::MenuItem("Cube"))
+				{
+
+				}
+
+				if (ImGui::MenuItem("Sphere"))
+				{
+					winManager[CREATEOBJETCS]->SpecialFunction("sphere");
+				}
+				if (ImGui::MenuItem("Capsule"))
+				{
+
+				}
+				if (ImGui::MenuItem("Cylinder"))
+				{
+
+				}
+				ImGui::EndMenu();
+			}
+			if (ImGui::MenuItem("Audio"))
 			{
 
 			}
-
-			if (ImGui::MenuItem("Sphere"))
-			{
-				winManager[CREATEOBJETCS]->SpecialFunction("sphere");
-			}
-			if (ImGui::MenuItem("Capsule"))
-			{
-
-			}
-			if (ImGui::MenuItem("Cylinder"))
-			{
-
-			}
-
 			ImGui::EndMenu();
 		}
 

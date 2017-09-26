@@ -28,8 +28,11 @@ update_status Inspector::Update(float dt)
 
 void Inspector::ShowInspector()
 {
-	ImGui::SetNextWindowPos(ImVec2(App->window->GetWidth() - 300, 20));
-	ImGui::SetNextWindowSize(ImVec2(300, App->window->GetHeight()));
+	static int width;
+	static int height;
+	SDL_GetWindowSize(App->window->window, &width, &height);
+	ImGui::SetNextWindowPos(ImVec2(width - 300, 20));
+	ImGui::SetNextWindowSize(ImVec2(300, height - 20));
 	if (!ImGui::Begin("Inspector", &App->gui->winManager[INSPECTOR]->active[0].active, ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoCollapse)) //TODO ELLIOT CLOSE Windows example
 	{
 		ImGui::End();
