@@ -78,11 +78,7 @@ bool Application::Init()
 		maxFPS = json_object_get_number(config_node, "Max FPS");
 		vsync = json_object_get_boolean(config_node, "VSYNC");
 
-		if (maxFPS > 0)
-		{
-			capped_ms = 1000 / maxFPS;
-		}
-		
+		SetFpsCap(maxFPS);
 		//------------------------------------
 
 
@@ -198,7 +194,11 @@ update_status Application::Update()
 			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), orgName.c_str());
 			static int fps = maxFPS;
 			ImGui::SliderInt("Max FPS", &fps, 0, 60);
-			ImGui::SameLine(); ShowHelpMarker("0 = no frame cap");
+			ImGui::SameLine(); ShowHelpMarker("0 = no framerate cap"); ImGui::SameLine();
+			if (ImGui::Button("APPLY"))
+			{
+				SetFpsCap(fps);
+			}
 			ImGui::Text("Framerate:"); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", fps_log[frame_index - 1]);
 			ImGui::PlotHistogram("", fps_log, IM_ARRAYSIZE(App->fps_log), 0, NULL, 0.0f, 120.0f, ImVec2(0, 80));
@@ -254,6 +254,15 @@ bool Application::CleanUp()
 bool Application::GetVSYNC()
 {
 	return vsync;
+}
+
+void Application::SetFpsCap(uint fps)
+{
+	if (fps > 0)
+	{
+		capped_ms = 1000 / fps;
+	}
+
 }
 
 void Application::ShowHelpMarker(const char * desc, const char * icon)

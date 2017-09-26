@@ -3,7 +3,7 @@
 	{
       "App Name": "CULVERIN",
       "Org Name": "Elliot & Jordi S.A.",
-      "Max FPS": 0,
+      "Max FPS": 60,
       "VSYNC": true
     },
     "Window": 

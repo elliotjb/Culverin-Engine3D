@@ -68,6 +68,7 @@ public:
 	bool CleanUp();
 
 	bool GetVSYNC();
+	void SetFpsCap(uint);
 
 	static void ShowHelpMarker(const char* desc, const char* icon = "(?)");
 
