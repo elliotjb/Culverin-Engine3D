@@ -205,10 +205,8 @@ update_status Application::Update()
 			ImGui::Text("Milliseconds:"); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", ms_log[ms_index - 1]);
 			ImGui::PlotHistogram("", ms_log, IM_ARRAYSIZE(App->ms_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
-			if (ImGui::Checkbox("VSYNC", &vsync))
-			{
-				//SetVSYNC(vsync);
-			}
+			ImGui::Checkbox("VSYNC", &vsync);
+
 		}
 		while (item != NULL && ret == UPDATE_CONTINUE)
 		{

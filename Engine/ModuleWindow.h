@@ -23,6 +23,19 @@ public:
 
 	update_status UpdateConfig(float dt);
 
+	void SetWindowOption(int i);
+	//void SetFullscreen();
+	//void SetFullDesktop();
+	//void SetBorderless();
+	//void SetResizable();
+
+
+	// Retrieve window scale
+	uint GetScale() const;
+	uint GetWidth() const;
+	uint GetHeight() const;
+
+
 public:
 	//The window we'll be rendering to
 	SDL_Window* window;
@@ -41,10 +54,15 @@ private:
 	int scale = SCREEN_SIZE;
 	int brightness = 100;
 
+	int selected = -1;
+
 	bool fullscreen = false;
-	bool resizable = false;
 	bool fullscreen_d = false;
+	bool resizable = false;
+	
 	bool borderless = false;
+
+	//Uint32 flags;
 
 };
 

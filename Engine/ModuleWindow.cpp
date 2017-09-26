@@ -36,67 +36,80 @@ bool ModuleWindow::Init(JSON_Object* node)
 		height = json_object_get_number(node, "Height");
 		brightness = json_object_get_number(node, "Brightness");
 		scale = json_object_get_number(node, "Scale");
-		fullscreen = json_object_get_boolean(node, "Fullscreen");
-		fullscreen_d = json_object_get_boolean(node, "Full Desktop");
-		resizable = json_object_get_boolean(node, "Resizable");
-		borderless = json_object_get_boolean(node, "Borderless");
+		
+		if (fullscreen = json_object_get_boolean(node, "Fullscreen"))
+		{
+			selected = 0;
+		}
+		if (fullscreen_d = json_object_get_boolean(node, "Full Desktop"))
+		{
+			selected = 1;
+		}
+		if (resizable = json_object_get_boolean(node, "Resizable"))
+		{
+			selected = 2;
+		}
+		if (borderless = json_object_get_boolean(node, "Borderless"))
+		{
+			selected = 3;
+		}
 
 
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
-		//Use OpenGL 2.1
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+//Use OpenGL 2.1
+SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-		if(fullscreen == true)
-		{
-			flags |= SDL_WINDOW_FULLSCREEN;
-		}
+if (fullscreen == true)
+{
+	flags |= SDL_WINDOW_FULLSCREEN;
+}
 
-		if(resizable == true)
-		{
-			flags |= SDL_WINDOW_RESIZABLE;
-		}
+if (resizable == true)
+{
+	flags |= SDL_WINDOW_RESIZABLE;
+}
 
-		if (WIN_OPENGL == true)
-		{
-			flags |= SDL_WINDOW_OPENGL|SDL_WINDOW_RESIZABLE;
-		}
+if (WIN_OPENGL == true)
+{
+	flags |= SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+}
 
-		if(borderless == true)
-		{
-			flags |= SDL_WINDOW_BORDERLESS;
-		}
+if (borderless == true)
+{
+	flags |= SDL_WINDOW_BORDERLESS;
+}
 
-		if(fullscreen_d == true)
-		{
-			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-		}
+if (fullscreen_d == true)
+{
+	flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+}
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
-		if(window == NULL)
-		{
-			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-			ret = false;
-		}
-		else
-		{
-			//Get window surface
-			screen_surface = SDL_GetWindowSurface(window);
-		}
+if (window == NULL)
+{
+	LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+	ret = false;
+}
+else
+{
+	//Get window surface
+	screen_surface = SDL_GetWindowSurface(window);
+}
 
-		displaymode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
-		int display_count = 0;
-		if ((display_count = SDL_GetNumVideoDisplays()) < 1) {
-			SDL_Log("SDL_GetNumVideoDisplays returned: %i", display_count);
-			return 1;
-		}
+displaymode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
+int display_count = 0;
+if ((display_count = SDL_GetNumVideoDisplays()) < 1) {
+	SDL_Log("SDL_GetNumVideoDisplays returned: %i", display_count);
+	return 1;
+}
 
-		if (SDL_GetDisplayMode(displayIndex, modeIndex, &displaymode) != 0) {
-			SDL_Log("SDL_GetDisplayMode failed: %s", SDL_GetError());
-			return 1;
-		}
+if (SDL_GetDisplayMode(displayIndex, modeIndex, &displaymode) != 0) {
+	SDL_Log("SDL_GetDisplayMode failed: %s", SDL_GetError());
+	return 1;
+}
 	}
 
 	return ret;
@@ -108,7 +121,7 @@ bool ModuleWindow::CleanUp()
 	LOG("Destroying SDL window and quitting all SDL systems");
 
 	//Destroy window
-	if(window != NULL)
+	if (window != NULL)
 	{
 		SDL_DestroyWindow(window);
 		ImGui_ImplSdlGL3_Shutdown();
@@ -136,33 +149,83 @@ update_status ModuleWindow::UpdateConfig(float dt)
 		ImGui::SliderInt("Width", &width, 0, 4096);
 		ImGui::SliderInt("Height", &height, 0, 3072);
 
-		if (ImGui::Checkbox("Fullscreen", &fullscreen))
+		const char* win_opt[] = { "Fullscreen", "Full Desktop", "Windowed" };
+		ImGui::Combo("WINDOW OPTIONS", &selected, win_opt, IM_ARRAYSIZE(win_opt));
+		if (ImGui::Button("APPLY"))
 		{
-			//SetFullscreen(fullscreen);
-		}
-		ImGui::SameLine();
-		if (ImGui::Checkbox("Resizable", &resizable))
-		{
-			//SetResizable(resizable);
-		}
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::SetTooltip("Restart to apply");
+			SetWindowOption(selected);
 		}
 		if (ImGui::Checkbox("Borderless", &borderless))
 		{
-			//SetBorderless(fullscreen);
+			if (borderless)
+			{
+				SDL_SetWindowBordered(window, SDL_FALSE);
+			}
+			else
+			{
+				SDL_SetWindowBordered(window, SDL_TRUE);
+
+			}
 		}
-		ImGui::SameLine();
-		if (ImGui::Checkbox("Full Desktop", &fullscreen_d))
-		{
-			//SetFullDesktop(resizable);
-		}
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::SetTooltip("Restart to apply");
-		}
+
 	}
 
 	return UPDATE_CONTINUE;
+}
+
+void ModuleWindow::SetWindowOption(int i)
+{
+	switch (i)
+	{
+	case 0:
+	{
+		//SetFullscreen;
+		fullscreen = true;
+		fullscreen_d = false;
+		resizable = false;
+		borderless = false;
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+		break;
+	}
+	case 1:
+	{
+		//SetFullDesktop;
+		fullscreen_d = true;
+		fullscreen = false;
+		resizable = false;
+		borderless = false;
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+
+		break;
+	}
+	case 2:
+	{
+		//SetResizable;
+		resizable = true;
+		fullscreen_d = false;
+		fullscreen = false;
+		borderless = false;
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_RESIZABLE);
+		break;
+	}
+	default:
+	{
+		break;
+	}
+	}
+}
+
+uint ModuleWindow::GetScale() const
+{
+	return scale;
+}
+
+uint ModuleWindow::GetWidth() const
+{
+	return width;
+}
+
+uint ModuleWindow::GetHeight() const
+{
+	return height;
 }
