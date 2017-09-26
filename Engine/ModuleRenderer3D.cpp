@@ -205,16 +205,26 @@ update_status ModuleRenderer3D::UpdateConfig(float dt)
 		{
 			(smooth) ? glShadeModel(GL_SMOOTH) : glShadeModel(GL_FLAT);
 		}
-		if (ImGui::Checkbox("Fog", &fog_active))
+		if (ImGui::CollapsingHeader("Fog"))
 		{
+			if (ImGui::Checkbox("Active", &fog_active))
+			{
+				if (fog_active)
+				{
+					glEnable(GL_FOG);
+					glFogfv(GL_FOG_DENSITY, &fog_density);
+				}
+				else
+				{
+					glDisable(GL_FOG);
+				}
+			}
 			if (fog_active)
 			{
-				glEnable(GL_FOG);
-				glFogfv(GL_FOG_DENSITY, &fog_density);
-			}
-			else
-			{
-				glDisable(GL_FOG);
+				if (ImGui::SliderFloat("Density", &fog_density, 0.0f, 1.0f, "%.3f"))
+				{
+					glFogfv(GL_FOG_DENSITY, &fog_density);
+				}
 			}
 		}
 	}

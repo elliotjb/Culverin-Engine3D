@@ -31,8 +31,8 @@
     "Axis": true,
     "Smooth": true,
     "Fog": {
-      "Active": true,
-      "Density": 0.1
+      "Active": false,
+      "Density": 0
     }
   }
 }

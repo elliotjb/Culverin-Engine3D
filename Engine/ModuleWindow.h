@@ -24,11 +24,7 @@ public:
 	update_status UpdateConfig(float dt);
 
 	void SetWindowOption(int i);
-	//void SetFullscreen();
-	//void SetFullDesktop();
-	//void SetBorderless();
-	//void SetResizable();
-
+	void SetWindowRes(int i);
 
 	// Retrieve window scale
 	uint GetScale() const;
@@ -54,7 +50,8 @@ private:
 	int scale = SCREEN_SIZE;
 	int brightness = 100;
 
-	int selected = -1;
+	int selected_op = -1;
+	int selected_res = -1;
 
 	bool fullscreen = false;
 	bool fullscreen_d = false;

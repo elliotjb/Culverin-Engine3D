@@ -39,19 +39,19 @@ bool ModuleWindow::Init(JSON_Object* node)
 		
 		if (fullscreen = json_object_get_boolean(node, "Fullscreen"))
 		{
-			selected = 0;
+			selected_op = 0;
 		}
 		if (fullscreen_d = json_object_get_boolean(node, "Full Desktop"))
 		{
-			selected = 1;
+			selected_op = 1;
 		}
 		if (resizable = json_object_get_boolean(node, "Resizable"))
 		{
-			selected = 2;
+			selected_op = 2;
 		}
 		if (borderless = json_object_get_boolean(node, "Borderless"))
 		{
-			selected = 3;
+			selected_op = 3;
 		}
 
 
@@ -151,17 +151,18 @@ update_status ModuleWindow::UpdateConfig(float dt)
 			float value = (float)brightness * 0.01;
 			SDL_SetWindowBrightness(window, value);
 		}
-		ImGui::SliderInt("Width", &width, 0, 4096);
-		ImGui::SliderInt("Height", &height, 0, 3072);
-		if (ImGui::Button("APPLY##win_size"))
+		const char* win_res[] = { "640x480", "800x600", "1024x768","1280x1024","1365x768","1920x1080" };
+		ImGui::Combo("WINDOW RESOLUTION", &selected_res, win_res, IM_ARRAYSIZE(win_res)); ImGui::SameLine();
+		if (ImGui::Button("APPLY##win_resolution"))
 		{
-			SDL_SetWindowSize(window, width, height);
+			SetWindowRes(selected_res);
+			
 		}
 		const char* win_opt[] = { "Fullscreen", "Full Desktop", "Windowed" };
-		ImGui::Combo("WINDOW OPTIONS", &selected, win_opt, IM_ARRAYSIZE(win_opt)); ImGui::SameLine();
+		ImGui::Combo("WINDOW OPTIONS", &selected_op, win_opt, IM_ARRAYSIZE(win_opt)); ImGui::SameLine();
 		if (ImGui::Button("APPLY##win_options"))
 		{
-			SetWindowOption(selected);
+			SetWindowOption(selected_op);
 		}
 		if (ImGui::Checkbox("Borderless", &borderless))
 		{
@@ -219,6 +220,64 @@ void ModuleWindow::SetWindowOption(int i)
 		break;
 	}
 	}
+}
+
+void ModuleWindow::SetWindowRes(int i)
+{
+	//"640x480", "800x600", "1024x768", "1280x1024", "1365x768", "1920x1080"
+	switch (i)
+	{
+	case 0:
+	{
+		width = 640;
+		height = 480;
+
+		break;
+	}
+	case 1:
+	{
+		width = 800;
+		height = 600;
+
+		break;
+	}
+	case 2:
+	{
+		width = 1024;
+		height = 768;
+
+		break;
+	}
+	case 3:
+	{
+		width = 1280;
+		height = 1024;
+
+		break;
+	}
+	case 4:
+	{
+		width = 1365;
+		height = 768;
+
+		break;
+	}
+	case 5:
+	{
+		width = 1920;
+		height = 1080;
+
+		break;
+	}
+	default:
+	{
+		width = 500;
+		height = 500;
+		break;
+	}
+	}
+
+	SDL_SetWindowSize(window, width, height);
 }
 
 uint ModuleWindow::GetScale() const

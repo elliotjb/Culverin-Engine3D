@@ -43,4 +43,4 @@ enum update_status
 #define WIN_OPENGL false
 #define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC true
-#define TITLE "Culverin"
+#define TITLE "CULVERIN Engine"
