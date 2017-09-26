@@ -131,6 +131,34 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu("GameObject"))
+		{
+			if (ImGui::MenuItem("Create Empty", "Ctrl + Shift + N"))
+			{
+
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Cube"))
+			{
+
+			}
+
+			if (ImGui::MenuItem("Sphere"))
+			{
+
+			}
+			if (ImGui::MenuItem("Capsule"))
+			{
+
+			}
+			if (ImGui::MenuItem("Cylinder"))
+			{
+
+			}
+
+			ImGui::EndMenu();
+		}
+
 		if (ImGui::BeginMenu("Windows"))
 		{
 			if (ImGui::MenuItem("Create Objects"))
