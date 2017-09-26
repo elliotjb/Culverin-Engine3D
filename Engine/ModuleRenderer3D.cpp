@@ -2,9 +2,11 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "SDL/include/SDL_opengl.h"
+#include "GL3W\include\glew.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "parson.h"
+
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -104,6 +106,12 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		texture_2d = json_object_get_boolean(node, "Texture 2D");
 		wireframe = json_object_get_boolean(node, "Wireframe");
 		axis = json_object_get_boolean(node, "Axis");
+		smooth = json_object_get_boolean(node, "Smooth");
+		
+		node = json_object_get_object(node, "Fog");
+		fog_active = json_object_get_boolean(node, "Active");
+		fog_density = json_object_get_number(node, "Density");
+
 
 		(depth_test) ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
 		(cull_face) ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
@@ -111,6 +119,14 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		(lightning) ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
 		(color_material) ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
 		(texture_2d) ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
+		(smooth) ? glShadeModel(GL_SMOOTH) : glShadeModel(GL_FLAT);
+
+		if (fog_active)
+		{
+			glEnable(GL_FOG);
+			glFogfv(GL_FOG_DENSITY, &fog_density);
+		}
+
 	}
 
 	// Projection matrix for
@@ -184,6 +200,22 @@ update_status ModuleRenderer3D::UpdateConfig(float dt)
 		if (ImGui::Checkbox("Objects Axis", &axis))
 		{
 			App->objects->ShowAxis(axis);
+		}
+		if (ImGui::Checkbox("Smooth", &smooth))
+		{
+			(smooth) ? glShadeModel(GL_SMOOTH) : glShadeModel(GL_FLAT);
+		}
+		if (ImGui::Checkbox("Fog", &fog_active))
+		{
+			if (fog_active)
+			{
+				glEnable(GL_FOG);
+				glFogfv(GL_FOG_DENSITY, &fog_density);
+			}
+			else
+			{
+				glDisable(GL_FOG);
+			}
 		}
 	}
 	return UPDATE_CONTINUE;

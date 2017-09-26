@@ -28,6 +28,11 @@
     "Color Material": true,
     "Texture 2D": false,
     "Wireframe": false,
-    "Axis": true
+    "Axis": true,
+    "Smooth": true,
+    "Fog": {
+      "Active": true,
+      "Density": 0.1
+    }
   }
 }

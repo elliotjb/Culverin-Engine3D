@@ -32,7 +32,7 @@ public:
 
 	void ShowExampleAppConsole();
 	void ShowHardware();
-	void ShowConfig();
+	//void ShowConfig();
 
 public:
 
@@ -49,6 +49,8 @@ public:
 	std::vector<float> floats_list;
 	std::vector<int> ints_list;
 	//------------------------------
+
+
 
 };
 

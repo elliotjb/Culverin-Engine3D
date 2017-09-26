@@ -89,7 +89,7 @@ bool Application::Init()
 		{
 			if (item->data->IsEnabled())
 			{
-				config_node = json_object_get_object(config,item->data->name.c_str());
+				config_node = json_object_get_object(config, item->data->name.c_str());
 				ret = item->data->Init(config_node);
 			}
 			item = item->next;

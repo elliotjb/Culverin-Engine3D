@@ -4,6 +4,11 @@
 #include "glmath.h"
 #include "Light.h"
 #include "parson.h"
+#include "GL3W\include\glew.h"
+
+#include <gl/GL.h>
+#include <gl/GLU.h>
+
 
 #define MAX_LIGHTS 8
 
@@ -36,4 +41,7 @@ public:
 	bool texture_2d = false;
 	bool wireframe = false;
 	bool axis = true;
+	bool smooth = true;
+	bool fog_active = false;
+	GLfloat fog_density = 0;
 };
