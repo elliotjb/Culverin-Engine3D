@@ -46,6 +46,9 @@
     <Filter Include="Engine\Parson">
       <UniqueIdentifier>{b19f9a02-ebed-4122-83b4-caf0bb4431ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Modules\Objects">
+      <UniqueIdentifier>{a188973f-53a0-4cc7-a9b9-c9a4ce412609}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -318,14 +321,17 @@
     <ClInclude Include="WindowManager.h">
       <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleObjects.h">
-      <Filter>Engine\Modules\UI</Filter>
-    </ClInclude>
     <ClInclude Include="parson.h">
       <Filter>Engine\Parson</Filter>
     </ClInclude>
     <ClInclude Include="PerfTimer.h">
       <Filter>Engine\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleObjectsUI.h">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleObjects.h">
+      <Filter>Engine\Modules\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -494,14 +500,17 @@
     <ClCompile Include="ModuleHardware.cpp">
       <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleObjects.cpp">
-      <Filter>Engine\Modules\UI</Filter>
-    </ClCompile>
     <ClCompile Include="parson.cpp">
       <Filter>Engine\Parson</Filter>
     </ClCompile>
     <ClCompile Include="PerfTimer.cpp">
       <Filter>Engine\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleObjectsUI.cpp">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleObjects.cpp">
+      <Filter>Engine\Modules\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

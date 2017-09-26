@@ -5,43 +5,33 @@
 #include "Module.h"
 #include "Globals.h"
 #include "imgui.h"
+#include "Primitive.h"
 #include "WindowManager.h"
 
+struct Sphere_object
+{
+	Sphere_p sphere;
+	bool isKynematic = false;
+};
 
-class ModuleObjects : public WindowManager
+class ModuleObjects : public Module
 {
 public:
 
-	ModuleObjects(bool enabled = false);
+	ModuleObjects(bool start_enabled = true);
 	virtual ~ModuleObjects();
 
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
 
-
-	void OpenClose_CreateObjects();
-	void OpenClose_ShowObjects();
-	void ShowCreateObjects();
-
-	void ShowObjectsinScene();
-
-	//void OpenClose();
-	//bool IsOpen();
+	void CreateSphere(Sphere_p* sphere, bool isKynematic);
 
 
 private:
 
-	// INTERSECTION TESTS ------------
-	std::list<Sphere*> list_Sphere;
-	std::list<Capsule*> list_Capsule;
-	std::list<Plane*> list_Plane;
-	std::list<Ray*> list_Ray;
-	Sphere Sphere_A;
-	Sphere Sphere_B;
-
-	bool CreateObjects = false;
-	bool ShowObjects = false;
+	std::vector<Sphere_object> spheres;
+	std::list<PhysBody3D*> Body_spheres;
 
 };
 

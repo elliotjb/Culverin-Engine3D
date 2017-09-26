@@ -18,6 +18,7 @@
 #include <string>
 #include "GL3W\include\glew.h"
 #include "SDL\include\SDL_opengl.h"
+#include "ModuleObjects.h"
 #include <gl\GL.h>
 #include <gl\GLU.h>
 
@@ -31,6 +32,7 @@ public:
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModulePhysics3D* physics;
+	ModuleObjects* objects;
 	ModulePlayer* player;
 	Scene* scene;
 	Console* console;

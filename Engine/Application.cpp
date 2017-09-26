@@ -17,6 +17,7 @@ Application::Application()
 	renderer3D = new ModuleRenderer3D();
 	camera = new ModuleCamera3D();
 	physics = new ModulePhysics3D();
+	objects = new ModuleObjects();
 	player = new ModulePlayer();
 	scene = new Scene();
 	console = new Console();
@@ -32,6 +33,7 @@ Application::Application()
 	AddModule(input);
 	AddModule(audio);
 	AddModule(physics);
+	AddModule(objects);
 	AddModule(gui);
 	AddModule(console);
 	AddModule(scene);
