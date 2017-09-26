@@ -50,6 +50,10 @@ public:
 		return true;
 	}
 
+	virtual void SpecialFunction(const std::string name)
+	{
+
+	}
 	/*virtual void OpenClose()
 	{
 		active = !active;

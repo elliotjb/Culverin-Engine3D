@@ -25,13 +25,19 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void CreateSphere(Sphere_p* sphere, bool isKynematic);
+	void CreateSphere(Sphere_p* sphere, bool isKynematic = false);
+	void ShowAxis(bool axis);
+	void ShowWire(bool wire);
 
-
-private:
+public:
 
 	std::vector<Sphere_object> spheres;
 	std::list<PhysBody3D*> Body_spheres;
+
+	std::list<Sphere*> math_Sphere;
+	std::list<Capsule*> math_Capsule;
+	std::list<Plane*> math_Plane;
+	std::list<Ray*> math_Ray;
 
 };
 

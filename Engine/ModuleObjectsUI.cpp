@@ -38,7 +38,12 @@ bool ModuleObjectsUI::CleanUp()
 // Windows to Create Objects ----------------------
 void ModuleObjectsUI::ShowCreateObjects()
 {
-	ImGui::Begin("Create Objects");
+	if (!ImGui::Begin("Create Objects", &App->gui->winManager[CREATEOBJETCS]->active[0].active, ImGuiWindowFlags_AlwaysAutoResize)) //TODO ELLIOT CLOSE Windows example
+	{
+		ImGui::End();
+		return;
+	}
+	ImGui::Text("                    ");
 	ImGui::Spacing();
 	if (ImGui::CollapsingHeader("Sphere"))
 	{
@@ -65,12 +70,47 @@ void ModuleObjectsUI::ShowCreateObjects()
 		if (create_sphere & 1)
 		{
 			create_sphere++;
-			list_Sphere.push_back(new Sphere(float3(sphere_pos_x, sphere_pos_y, sphere_pos_z), sphere_radius));
+			App->objects->math_Sphere.push_back(new Sphere(float3(sphere_pos_x, sphere_pos_y, sphere_pos_z), sphere_radius));
 			Sphere_p* temp = new Sphere_p(sphere_radius);
 			temp->SetPos(sphere_pos_x, sphere_pos_y, sphere_pos_z);
 			App->objects->CreateSphere(temp, kynematic);
 		}
 		ImGui::PopItemWidth();
+	}
+	if (ImGui::CollapsingHeader("Cube"))
+	{
+		ImGui::Text("Position Cube");
+		ImGui::PushItemWidth(150);
+		ImGui::BulletText("Position A:");
+		ImGui::SameLine(180); ImGui::BulletText("Position B:");
+		static float pos_A_x = 0.0f;
+		ImGui::InputFloat("A_x", &pos_A_x, 0.01f, 0, 3);
+		static float pos_B_x = 0.0f;
+		ImGui::SameLine(); ImGui::InputFloat("B_x", &pos_B_x, 0.01f, 0, 3);
+
+		static float pos_A_y = 0.0f;
+		ImGui::InputFloat("A_y", &pos_A_y, 0.01f, 0, 3);
+
+		static float pos_B_y = 0.0f;
+		ImGui::SameLine(); ImGui::InputFloat("B_y", &pos_B_y, 0.01f, 0, 3);
+
+		static float pos_A_z = 0.0f;
+		ImGui::InputFloat("A_z", &pos_A_z, 0.01f, 0, 3);
+
+		static float pos_B_z = 0.0f;
+		ImGui::SameLine(); ImGui::InputFloat("B_z", &pos_B_z, 0.01f, 0, 3);
+
+		ImGui::Spacing();
+		ImGui::PopItemWidth();
+
+		static int create_capsule = 0;
+		ImGui::SameLine(220); if (ImGui::Button("Create Cube"))
+			create_capsule++;
+		if (create_capsule & 1)
+		{
+			create_capsule++;
+			//list_Capsule.push_back(new Capsule(float3(Capsule_pos_A_x, Capsule_pos_A_y, Capsule_pos_A_z), float3(Capsule_pos_B_x, Capsule_pos_B_y, Capsule_pos_B_z), capsule_radius));
+		}
 	}
 	if (ImGui::CollapsingHeader("Capsule"))
 	{
@@ -113,7 +153,7 @@ void ModuleObjectsUI::ShowCreateObjects()
 		if (create_capsule & 1)
 		{
 			create_capsule++;
-			list_Capsule.push_back(new Capsule(float3(Capsule_pos_A_x, Capsule_pos_A_y, Capsule_pos_A_z), float3(Capsule_pos_B_x, Capsule_pos_B_y, Capsule_pos_B_z), capsule_radius));
+			App->objects->math_Capsule.push_back(new Capsule(float3(Capsule_pos_A_x, Capsule_pos_A_y, Capsule_pos_A_z), float3(Capsule_pos_B_x, Capsule_pos_B_y, Capsule_pos_B_z), capsule_radius));
 		}
 	}
 	if (ImGui::CollapsingHeader("Plane"))
@@ -151,7 +191,7 @@ void ModuleObjectsUI::ShowCreateObjects()
 		if (create_plane & 1)
 		{
 			create_plane++;
-			list_Plane.push_back(new Plane(float3(plane_point_pos_x, plane_point_pos_y, plane_point_pos_z), float3(plane_normal_pos_x, plane_normal_pos_y, plane_normal_pos_z)));
+			App->objects->math_Plane.push_back(new Plane(float3(plane_point_pos_x, plane_point_pos_y, plane_point_pos_z), float3(plane_normal_pos_x, plane_normal_pos_y, plane_normal_pos_z)));
 		}
 	}
 	if (ImGui::CollapsingHeader("Ray"))
@@ -187,7 +227,7 @@ void ModuleObjectsUI::ShowCreateObjects()
 			create_ray++;
 		if (create_ray & 1)
 		{
-			list_Ray.push_back(new Ray(Line(float3(ray_pos_x, ray_pos_y, ray_pos_z), float3(ray_dir_x, ray_dir_y, ray_dir_z))));
+			App->objects->math_Ray.push_back(new Ray(Line(float3(ray_pos_x, ray_pos_y, ray_pos_z), float3(ray_dir_x, ray_dir_y, ray_dir_z))));
 			create_ray++;
 		}
 	}
@@ -209,19 +249,19 @@ void ModuleObjectsUI::ShowObjectsinScene()
 		//static p2List<bool> checkers;
 		static std::list<bool> checkers;
 		static int num_spheres = 0;
-		if (num_spheres < list_Sphere.size())
+		if (num_spheres < App->objects->math_Sphere.size())
 		{
-			for (int i = num_spheres; i < list_Sphere.size(); i++)
+			for (int i = num_spheres; i < App->objects->math_Sphere.size(); i++)
 			{
 				checkers.push_back(bool(false));
 			}
-			num_spheres = list_Sphere.size();
+			num_spheres = App->objects->math_Sphere.size();
 			LOG("%i", num_spheres);
 		}
 
-		std::list<Sphere*>::iterator item = list_Sphere.begin();
+		std::list<Sphere*>::iterator item = App->objects->math_Sphere.begin();
 		std::list<bool>::iterator check = checkers.begin();
-		for (int i = 0; i < list_Sphere.size(); i++)
+		for (int i = 0; i < App->objects->math_Sphere.size(); i++)
 		{
 			ImGui::Text("Sphere %i", i + 1);
 			ImGui::PushID(i);
@@ -262,14 +302,14 @@ void ModuleObjectsUI::ShowObjectsinScene()
 		if (delete_object)
 		{
 			delete_object = false;
-			std::list<Sphere*>::iterator item = list_Sphere.begin();
-			for (int i = 0; i < list_Sphere.size(); i++)
+			std::list<Sphere*>::iterator item = App->objects->math_Sphere.begin();
+			for (int i = 0; i < App->objects->math_Sphere.size(); i++)
 			{
 				if (object_delete == i)
 				{
-					list_Sphere.erase(item);
-					std::list<Sphere*>::iterator temp = list_Sphere.begin();
-					for (int j = 0; j < list_Sphere.size(); j++)
+					App->objects->math_Sphere.erase(item);
+					std::list<Sphere*>::iterator temp = App->objects->math_Sphere.begin();
+					for (int j = 0; j < App->objects->math_Sphere.size(); j++)
 					{
 						if (j == i)
 						{
@@ -290,18 +330,18 @@ void ModuleObjectsUI::ShowObjectsinScene()
 	{
 		static std::list<bool> checkers;
 		static int num_capsules = 0;
-		if (num_capsules < list_Capsule.size())
+		if (num_capsules < App->objects->math_Capsule.size())
 		{
-			for (int i = num_capsules; i < list_Capsule.size(); i++)
+			for (int i = num_capsules; i < App->objects->math_Capsule.size(); i++)
 			{
 				checkers.push_back(bool(false));
 			}
-			num_capsules = list_Capsule.size();
+			num_capsules = App->objects->math_Capsule.size();
 		}
 
-		std::list<Capsule*>::iterator item = list_Capsule.begin();
+		std::list<Capsule*>::iterator item = App->objects->math_Capsule.begin();
 		std::list<bool>::iterator check = checkers.begin();
-		for (int i = 0; i < list_Capsule.size(); i++)
+		for (int i = 0; i < App->objects->math_Capsule.size(); i++)
 		{
 			ImGui::Text("Capsule %i", i + 1);
 			ImGui::PushID(i);
@@ -336,14 +376,14 @@ void ModuleObjectsUI::ShowObjectsinScene()
 		if (delete_object)
 		{
 			delete_object = false;
-			std::list<Capsule*>::iterator item = list_Capsule.begin();
-			for (int i = 0; i < list_Capsule.size(); i++)
+			std::list<Capsule*>::iterator item = App->objects->math_Capsule.begin();
+			for (int i = 0; i < App->objects->math_Capsule.size(); i++)
 			{
 				if (object_delete == i)
 				{
-					list_Capsule.erase(item);
-					std::list<Capsule*>::iterator temp = list_Capsule.begin();
-					for (int j = 0; j < list_Capsule.size(); j++)
+					App->objects->math_Capsule.erase(item);
+					std::list<Capsule*>::iterator temp = App->objects->math_Capsule.begin();
+					for (int j = 0; j < App->objects->math_Capsule.size(); j++)
 					{
 						if (j == i)
 						{
@@ -364,18 +404,18 @@ void ModuleObjectsUI::ShowObjectsinScene()
 	{
 		static std::list<bool> checkers;
 		static int num_planes = 0;
-		if (num_planes < list_Plane.size())
+		if (num_planes < App->objects->math_Plane.size())
 		{
-			for (int i = num_planes; i < list_Plane.size(); i++)
+			for (int i = num_planes; i < App->objects->math_Plane.size(); i++)
 			{
 				checkers.push_back(bool(false));
 			}
-			num_planes = list_Plane.size();
+			num_planes = App->objects->math_Plane.size();
 		}
 
-		std::list<Plane*>::iterator item = list_Plane.begin();
+		std::list<Plane*>::iterator item = App->objects->math_Plane.begin();
 		std::list<bool>::iterator check = checkers.begin();
-		for (int i = 0; i < list_Plane.size(); i++)
+		for (int i = 0; i < App->objects->math_Plane.size(); i++)
 		{
 			ImGui::Text("Plane %i", i + 1);
 			ImGui::PushID(i);
@@ -408,14 +448,14 @@ void ModuleObjectsUI::ShowObjectsinScene()
 		if (delete_object)
 		{
 			delete_object = false;
-			std::list<Plane*>::iterator item = list_Plane.begin();
-			for (int i = 0; i < list_Plane.size(); i++)
+			std::list<Plane*>::iterator item = App->objects->math_Plane.begin();
+			for (int i = 0; i < App->objects->math_Plane.size(); i++)
 			{
 				if (object_delete == i)
 				{
-					list_Plane.erase(item);
-					std::list<Plane*>::iterator temp = list_Plane.begin();
-					for (int j = 0; j < list_Plane.size(); j++)
+					App->objects->math_Plane.erase(item);
+					std::list<Plane*>::iterator temp = App->objects->math_Plane.begin();
+					for (int j = 0; j < App->objects->math_Plane.size(); j++)
 					{
 						if (j == i)
 						{
@@ -436,18 +476,18 @@ void ModuleObjectsUI::ShowObjectsinScene()
 	{
 		static std::list<bool> checkers;
 		static int num_rays = 0;
-		if (num_rays < list_Ray.size())
+		if (num_rays < App->objects->math_Ray.size())
 		{
-			for (int i = num_rays; i < list_Ray.size(); i++)
+			for (int i = num_rays; i < App->objects->math_Ray.size(); i++)
 			{
 				checkers.push_back(bool(false));
 			}
-			num_rays = list_Ray.size();
+			num_rays = App->objects->math_Ray.size();
 		}
 
-		std::list<Ray*>::iterator item = list_Ray.begin();
+		std::list<Ray*>::iterator item = App->objects->math_Ray.begin();
 		std::list<bool>::iterator check = checkers.begin();
-		for (int i = 0; i < list_Ray.size(); i++)
+		for (int i = 0; i < App->objects->math_Ray.size(); i++)
 		{
 			ImGui::Text("Ray %i", i + 1);
 			ImGui::PushID(i);
@@ -481,14 +521,14 @@ void ModuleObjectsUI::ShowObjectsinScene()
 		if (delete_object)
 		{
 			delete_object = false;
-			std::list<Ray*>::iterator item = list_Ray.begin();
-			for (int i = 0; i < list_Ray.size(); i++)
+			std::list<Ray*>::iterator item = App->objects->math_Ray.begin();
+			for (int i = 0; i < App->objects->math_Ray.size(); i++)
 			{
 				if (object_delete == i)
 				{
-					list_Ray.erase(item);
-					std::list<Ray*>::iterator temp = list_Ray.begin();
-					for (int j = 0; j < list_Ray.size(); j++)
+					App->objects->math_Ray.erase(item);
+					std::list<Ray*>::iterator temp = App->objects->math_Ray.begin();
+					for (int j = 0; j < App->objects->math_Ray.size(); j++)
 					{
 						if (j == i)
 						{
@@ -530,4 +570,23 @@ void ModuleObjectsUI::ShowObjectsinScene()
 	}
 
 	ImGui::End();
+}
+
+void ModuleObjectsUI::SpecialFunction(const std::string name)
+{
+	if (name == "sphere")
+	{
+		App->objects->math_Sphere.push_back(new Sphere(float3(0, 1.0f, 0), 1.0f));
+		Sphere_p* temp = new Sphere_p(1.0f);
+		temp->SetPos(0, 1.0f, 0);
+		App->objects->CreateSphere(temp);
+	}
+	else if (name == "cube")
+	{
+
+	}
+	else if (name == "Capsule")
+	{
+
+	}
 }

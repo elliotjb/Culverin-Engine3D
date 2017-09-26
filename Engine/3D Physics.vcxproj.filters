@@ -333,6 +333,9 @@
     <ClInclude Include="ModuleObjects.h">
       <Filter>Engine\Modules\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleInspector.h">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -511,6 +514,9 @@
     </ClCompile>
     <ClCompile Include="ModuleObjects.cpp">
       <Filter>Engine\Modules\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleInspector.cpp">
+      <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -22,7 +22,13 @@ bool ModuleObjects::Start()
 
 update_status ModuleObjects::Update(float dt)
 {
-
+	static bool wire = false;
+	static bool axis = false;
+	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
+	{
+		axis = !axis;
+		ShowAxis(axis);
+	}
 	std::list<PhysBody3D*>::iterator item = Body_spheres.begin();
 	for (int i = 0; i < Body_spheres.size(); i++)
 	{
@@ -57,6 +63,22 @@ void ModuleObjects::CreateSphere(Sphere_p* sphere, bool isKynematic)
 			Body_spheres.push_back(App->physics->AddBody(*sphere));
 		}
 
+	}
+}
+
+void ModuleObjects::ShowAxis(bool axis)
+{
+	for (int i = 0; i < Body_spheres.size(); i++)
+	{
+		spheres[i].sphere.axis = axis;
+	}
+}
+
+void ModuleObjects::ShowWire(bool wire)
+{
+	for (int i = 0; i < Body_spheres.size(); i++)
+	{
+		spheres[i].sphere.wire = wire;
 	}
 }
 

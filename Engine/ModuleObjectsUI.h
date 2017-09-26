@@ -28,6 +28,8 @@ public:
 
 	void ShowObjectsinScene();
 
+	void SpecialFunction(const std::string name);
+
 	//void OpenClose();
 	//bool IsOpen();
 
@@ -35,10 +37,7 @@ public:
 private:
 
 	// INTERSECTION TESTS ------------
-	std::list<Sphere*> list_Sphere;
-	std::list<Capsule*> list_Capsule;
-	std::list<Plane*> list_Plane;
-	std::list<Ray*> list_Ray;
+
 	Sphere Sphere_A;
 	Sphere Sphere_B;
 

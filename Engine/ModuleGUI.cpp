@@ -4,6 +4,7 @@
 #include "ModuleConsole.h"
 #include "ModuleHardware.h"
 #include "ModuleObjects.h"
+#include "ModuleInspector.h"
 #include "imgui.h"
 #include "imgui_impl_sdl_gl3.h"
 #include "Gl3W\include\glew.h"
@@ -39,8 +40,14 @@ bool ModuleGUI::Start()
 
 	winManager.push_back(new Hardware());   //0---- HARDWARE
 	winManager.push_back(new ModuleObjectsUI()); //1---- WINDOW_OBJECTS
+	winManager.push_back(new Inspector()); //2---- INSPECTOR
+	winManager[INSPECTOR]->active[0].active = true;
 
-
+	std::vector<WindowManager*>::iterator window = winManager.begin();
+	for (int i = 0; i < winManager.size(); i++)
+	{
+		window[i]->Start();
+	}
 
 
 	//Capsule_A = (Capsule(float3(200, 0, 0), float3(200, 0, 3), 1));
@@ -145,7 +152,7 @@ update_status ModuleGUI::Update(float dt)
 
 			if (ImGui::MenuItem("Sphere"))
 			{
-
+				winManager[CREATEOBJETCS]->SpecialFunction("sphere");
 			}
 			if (ImGui::MenuItem("Capsule"))
 			{
@@ -161,6 +168,10 @@ update_status ModuleGUI::Update(float dt)
 
 		if (ImGui::BeginMenu("Windows"))
 		{
+			if (ImGui::MenuItem("Inspector"))
+			{
+				winManager[INSPECTOR]->active[0].OpenClose();
+			}
 			if (ImGui::MenuItem("Create Objects"))
 			{
 				//window_create_objects = !window_create_objects;

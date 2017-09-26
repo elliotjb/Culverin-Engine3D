@@ -14,7 +14,8 @@ enum WindowName
 {
 	//Names of Windows (Modules)
 	HARDWARE,
-	CREATEOBJETCS
+	CREATEOBJETCS,
+	INSPECTOR
 };
 
 class ModuleGUI : public Module

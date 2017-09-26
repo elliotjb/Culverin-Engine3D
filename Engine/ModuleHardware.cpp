@@ -21,7 +21,11 @@ update_status Hardware::Update(float dt)
 {
 	if (active[0].active)
 	{
-		ImGui::Begin("Hardware");
+		if (!ImGui::Begin("Hardware", &App->gui->winManager[HARDWARE]->active[0].active, ImGuiWindowFlags_AlwaysAutoResize)) //TODO ELLIOT CLOSE Windows example
+		{
+			ImGui::End();
+			return UPDATE_CONTINUE;
+		}
 
 		ImGui::Text("SDL Version: ");
 		SDL_version compiled;
