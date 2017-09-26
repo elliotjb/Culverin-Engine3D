@@ -239,6 +239,10 @@ update_status Application::Update()
 bool Application::CleanUp()
 {
 	bool ret = true;
+
+	//Before Cleaning, save data to config file
+	SaveConfig();
+
 	p2List_item<Module*>* item = list_modules.getLast();
 
 	while(item != NULL && ret == true)
@@ -257,11 +261,49 @@ bool Application::GetVSYNC()
 
 void Application::SetFpsCap(uint fps)
 {
+	maxFPS = fps;
+
 	if (fps > 0)
 	{
 		capped_ms = 1000 / fps;
 	}
+	else
+	{
+		capped_ms = 0;
+	}
 
+}
+
+bool Application::SaveConfig()
+{
+	bool ret = false;
+
+	LOG("SAVING CONFIG TO FILE -----------------------")
+
+	JSON_Value* config_file;
+	JSON_Object* config;
+	JSON_Object* config_node;
+
+	config_file = json_parse_file("config.json");
+
+	if (config_file != nullptr)
+	{
+		ret = true;
+
+		config = json_value_get_object(config_file);
+		config_node = json_object_get_object(config, "Application");
+
+		json_object_set_string(config_node, "App Name", appName.c_str());
+		json_object_set_string(config_node, "Org Name", orgName.c_str());
+		json_object_set_number(config_node, "Max FPS", maxFPS);
+		json_object_set_boolean(config_node, "VSYNC", vsync);
+
+
+		json_serialize_to_file(config_file, "config.json");
+	}
+
+
+	return ret;
 }
 
 void Application::ShowHelpMarker(const char * desc, const char * icon)

@@ -70,6 +70,8 @@ public:
 	bool GetVSYNC();
 	void SetFpsCap(uint);
 
+	bool SaveConfig();
+
 	static void ShowHelpMarker(const char* desc, const char* icon = "(?)");
 
 private:
