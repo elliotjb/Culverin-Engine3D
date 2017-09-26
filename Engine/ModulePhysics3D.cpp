@@ -212,17 +212,11 @@ PhysBody3D* ModulePhysics3D::AddBody(const Sphere_p& sphere, float mass)
 	return pbody;
 }
 
-PhysBody3D* ModulePhysics3D::AddBox(const Cube_p& cube, bool multi, float mass)
+PhysBody3D* ModulePhysics3D::AddBox(const Cube_p& cube, float mass)
 {
 	btVector3 vec;
-	if (multi)
-	{
-		vec.setValue(cube.size.x*.5, cube.size.y*0.5 + 2, cube.size.z*0.5);
-	}
-	else
-	{
-		vec.setValue(cube.size.x*.5, cube.size.y*0.5, cube.size.z*0.5);
-	}
+	vec.setValue(cube.size.x*.5, cube.size.y*0.5, cube.size.z*0.5);
+
 	btCollisionShape* colShape = new btBoxShape(vec);
 	shapes.add(colShape);
 

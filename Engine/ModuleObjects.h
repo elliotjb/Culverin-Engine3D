@@ -14,6 +14,12 @@ struct Sphere_object
 	bool isKynematic = false;
 };
 
+struct Cube_object
+{
+	Cube_p cube;
+	bool isKynematic = false;
+};
+
 class ModuleObjects : public Module
 {
 public:
@@ -26,6 +32,7 @@ public:
 	bool CleanUp();
 
 	void CreateSphere(Sphere_p* sphere, bool isKynematic = false);
+	void CreateCube(Cube_p * sphere, bool isKynematic);
 	void ShowAxis(bool axis);
 	void ShowWire(bool wire);
 
@@ -33,6 +40,9 @@ public:
 
 	std::vector<Sphere_object> spheres;
 	std::list<PhysBody3D*> Body_spheres;
+
+	std::vector<Cube_object> cubes;
+	std::list<PhysBody3D*> Body_cubes;
 
 	std::list<Sphere*> math_Sphere;
 	std::list<Capsule*> math_Capsule;

@@ -26,7 +26,9 @@ update_status Hardware::Update(float dt)
 			ImGui::End();
 			return UPDATE_CONTINUE;
 		}
-
+		//ImGuiStyle& style = ImGui::GetStyle();
+		//style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
+		//ImGui::SliderFloat2("WindowTitleAlign", (float*)&style.WindowTitleAlign, 50.0f, 1.0f, "%.2f");
 		ImGui::Text("SDL Version: ");
 		SDL_version compiled;
 		SDL_VERSION(&compiled);
@@ -48,6 +50,14 @@ update_status Hardware::Update(float dt)
 		ImGui::Text("Version: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_VERSION));
 
+		//OpenGL
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+		ImGui::Text("OpenGL version supported:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_VERSION));
+		ImGui::Text("GLSL:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 		ImGui::End();
 	}
 

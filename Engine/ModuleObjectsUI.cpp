@@ -81,35 +81,42 @@ void ModuleObjectsUI::ShowCreateObjects()
 	{
 		ImGui::Text("Position Cube");
 		ImGui::PushItemWidth(150);
-		ImGui::BulletText("Position A:");
-		ImGui::SameLine(180); ImGui::BulletText("Position B:");
-		static float pos_A_x = 0.0f;
-		ImGui::InputFloat("A_x", &pos_A_x, 0.01f, 0, 3);
-		static float pos_B_x = 0.0f;
-		ImGui::SameLine(); ImGui::InputFloat("B_x", &pos_B_x, 0.01f, 0, 3);
+		ImGui::BulletText("Position:");
+		ImGui::SameLine(180); ImGui::BulletText("Size:");
+		static float pos_x = 0.0f;
+		ImGui::InputFloat("pos_x", &pos_x, 0.1f, 0, 3);
+		static float size_x = 0.0f;
+		ImGui::SameLine(); ImGui::InputFloat("size_x", &size_x, 0.1f, 0, 3);
 
-		static float pos_A_y = 0.0f;
-		ImGui::InputFloat("A_y", &pos_A_y, 0.01f, 0, 3);
+		static float pos_y = 0.0f;
+		ImGui::InputFloat("pos_y", &pos_y, 0.1f, 0, 3);
 
-		static float pos_B_y = 0.0f;
-		ImGui::SameLine(); ImGui::InputFloat("B_y", &pos_B_y, 0.01f, 0, 3);
+		static float size_y = 0.0f;
+		ImGui::SameLine(); ImGui::InputFloat("size_y", &size_y, 0.1f, 0, 3);
 
-		static float pos_A_z = 0.0f;
-		ImGui::InputFloat("A_z", &pos_A_z, 0.01f, 0, 3);
+		static float pos_z = 0.0f;
+		ImGui::InputFloat("pos_z", &pos_z, 0.1f, 0, 3);
 
-		static float pos_B_z = 0.0f;
-		ImGui::SameLine(); ImGui::InputFloat("B_z", &pos_B_z, 0.01f, 0, 3);
+		static float size_z = 0.0f;
+		ImGui::SameLine(); ImGui::InputFloat("size_z", &size_z, 0.1f, 0, 3);
 
 		ImGui::Spacing();
 		ImGui::PopItemWidth();
 
+		static bool kynematic = false;
+		ImGui::Checkbox("Kynematic", &kynematic);
+		ImGui::Spacing();
 		static int create_capsule = 0;
 		ImGui::SameLine(220); if (ImGui::Button("Create Cube"))
 			create_capsule++;
 		if (create_capsule & 1)
 		{
 			create_capsule++;
-			//list_Capsule.push_back(new Capsule(float3(Capsule_pos_A_x, Capsule_pos_A_y, Capsule_pos_A_z), float3(Capsule_pos_B_x, Capsule_pos_B_y, Capsule_pos_B_z), capsule_radius));
+			//TODO ELLIOT - No MathGeoLib (We need implemented, later)
+			Cube_p* temp = new Cube_p();
+			temp->SetPos(pos_x, pos_y, pos_z);
+			temp->size = vec3(size_x, size_y, size_z);
+			App->objects->CreateCube(temp, kynematic);
 		}
 	}
 	if (ImGui::CollapsingHeader("Capsule"))
