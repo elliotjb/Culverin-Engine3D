@@ -22,6 +22,7 @@ public:
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 	update_status UpdateConfig(float dt);
+	bool SaveConfig(JSON_Object* node);
 
 	bool CleanUp();
 

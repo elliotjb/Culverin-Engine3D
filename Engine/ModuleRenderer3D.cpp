@@ -231,6 +231,24 @@ update_status ModuleRenderer3D::UpdateConfig(float dt)
 	return UPDATE_CONTINUE;
 }
 
+bool ModuleRenderer3D::SaveConfig(JSON_Object * node)
+{
+	//Save render config info -------
+	json_object_set_boolean(node, "Depth Test", depth_test);
+	json_object_set_boolean(node, "Cull Face", cull_face);
+	json_object_set_boolean(node, "Lightning", lightning);
+	json_object_set_boolean(node, "Color Material", color_material);
+	json_object_set_boolean(node, "Texture 2D", texture_2d);
+	json_object_set_boolean(node, "Wireframe", wireframe);
+	json_object_set_boolean(node, "Axis", axis);
+	json_object_set_boolean(node, "Smooth", smooth);
+
+	node = json_object_get_object(node, "Fog");
+	json_object_set_boolean(node, "Active", fog_active);
+	json_object_set_number(node, "Density", fog_density);
+	return true;
+}
+
 
 
 

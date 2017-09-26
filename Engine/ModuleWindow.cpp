@@ -36,7 +36,7 @@ bool ModuleWindow::Init(JSON_Object* node)
 		height = json_object_get_number(node, "Height");
 		brightness = json_object_get_number(node, "Brightness");
 		scale = json_object_get_number(node, "Scale");
-		
+
 		if (fullscreen = json_object_get_boolean(node, "Fullscreen"))
 		{
 			selected_op = 0;
@@ -57,59 +57,68 @@ bool ModuleWindow::Init(JSON_Object* node)
 
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
-//Use OpenGL 2.1
-SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+		//Use OpenGL 2.1
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-if (fullscreen == true)
-{
-	flags |= SDL_WINDOW_FULLSCREEN;
-}
+		if (fullscreen == true)
+		{
+			flags |= SDL_WINDOW_FULLSCREEN;
+		}
 
-if (resizable == true)
-{
-	flags |= SDL_WINDOW_RESIZABLE;
-}
+		if (resizable == true)
+		{
+			flags |= SDL_WINDOW_RESIZABLE;
+		}
 
-if (WIN_OPENGL == true)
-{
-	flags |= SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-}
+		if (WIN_OPENGL == true)
+		{
+			flags |= SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+		}
 
-if (borderless == true)
-{
-	flags |= SDL_WINDOW_BORDERLESS;
-}
+		if (borderless == true)
+		{
+			flags |= SDL_WINDOW_BORDERLESS;
+		}
 
-if (fullscreen_d == true)
-{
-	flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-}
+		if (fullscreen_d == true)
+		{
+			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+		}
 
-window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
-if (window == NULL)
-{
-	LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-	ret = false;
-}
-else
-{
-	//Get window surface
-	screen_surface = SDL_GetWindowSurface(window);
-}
+		if (window == NULL)
+		{
+			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+			ret = false;
+		}
+		else
+		{
+			//Get window surface
+			screen_surface = SDL_GetWindowSurface(window);
+		}
 
-displaymode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
-int display_count = 0;
-if ((display_count = SDL_GetNumVideoDisplays()) < 1) {
-	SDL_Log("SDL_GetNumVideoDisplays returned: %i", display_count);
-	return 1;
-}
+		displaymode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
+		int display_count = 0;
+		if ((display_count = SDL_GetNumVideoDisplays()) < 1) {
+			SDL_Log("SDL_GetNumVideoDisplays returned: %i", display_count);
+			return 1;
+		}
 
-if (SDL_GetDisplayMode(displayIndex, modeIndex, &displaymode) != 0) {
-	SDL_Log("SDL_GetDisplayMode failed: %s", SDL_GetError());
-	return 1;
-}
+		if (SDL_GetDisplayMode(displayIndex, modeIndex, &displaymode) != 0) {
+			SDL_Log("SDL_GetDisplayMode failed: %s", SDL_GetError());
+			return 1;
+		}
+
+		if (borderless)
+		{
+			SDL_SetWindowBordered(window, SDL_FALSE);
+		}
+		else
+		{
+			SDL_SetWindowBordered(window, SDL_TRUE);
+		}
 	}
 
 	return ret;
@@ -178,6 +187,20 @@ update_status ModuleWindow::UpdateConfig(float dt)
 	}
 
 	return UPDATE_CONTINUE;
+}
+
+bool ModuleWindow::SaveConfig(JSON_Object* node)
+{
+	json_object_set_number(node, "Width", width);
+	json_object_set_number(node, "Height", height);
+	json_object_set_number(node, "Brightness", brightness);
+	json_object_set_number(node, "Scale", scale);
+	json_object_set_boolean(node, "Fullscreen", fullscreen);
+	json_object_set_boolean(node, "Full Desktop", fullscreen_d);
+	json_object_set_boolean(node, "Resizable", resizable);
+	json_object_set_boolean(node, "Borderless", borderless);
+
+	return true;
 }
 
 void ModuleWindow::SetWindowOption(int i)

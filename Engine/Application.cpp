@@ -299,6 +299,16 @@ bool Application::SaveConfig()
 		json_object_set_boolean(config_node, "VSYNC", vsync);
 
 
+		//Iterate all modules to save each respective info
+		p2List_item<Module*>* item = list_modules.getFirst();
+
+		while (item != NULL && ret == true)
+		{
+			config_node = json_object_get_object(config, item->data->name.c_str());
+			ret = item->data->SaveConfig(config_node);
+			item = item->next;
+		}
+
 		json_serialize_to_file(config_file, "config.json");
 	}
 

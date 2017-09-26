@@ -46,6 +46,12 @@ public:
 		return UPDATE_CONTINUE;
 	}
 
+	virtual bool SaveConfig(JSON_Object* node)
+	{
+		return true;
+	}
+
+
 	virtual bool CleanUp() 
 	{ 
 		return true; 

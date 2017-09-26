@@ -22,6 +22,7 @@ public:
 	void SetTitle(const char* title);
 
 	update_status UpdateConfig(float dt);
+	bool SaveConfig(JSON_Object* node);
 
 	void SetWindowOption(int i);
 	void SetWindowRes(int i);
