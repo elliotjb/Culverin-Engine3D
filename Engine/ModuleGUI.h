@@ -32,6 +32,8 @@ public:
 
 	void ShowExampleAppConsole();
 	void ShowHardware();
+	void ShowInfoMouse(bool* active);
+	void ShowWindowExit(bool* active);
 	//void ShowConfig();
 
 public:
@@ -42,7 +44,7 @@ public:
 	Line line;
 	Plane plane;*/
 	bool ShowTest = false;
-
+	bool isSaved = false;
 	std::vector<WindowManager*> winManager;
 
 	//RANDOM NUMBERS TEST ----------
@@ -50,7 +52,10 @@ public:
 	std::vector<int> ints_list;
 	//------------------------------
 
-
+private:
+	//WINDOW EXIT -------------
+	bool gameSave = false;
+	bool reposition_exit = true;
 
 };
 

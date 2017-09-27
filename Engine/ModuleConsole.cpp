@@ -79,7 +79,12 @@ void Console::AddLog(const char* fmt, ...) IM_PRINTFARGS(2)
 
 void Console::Draw(const char* title)
 {
-	ImGui::Begin(title);
+	//ImGui::Begin(title);
+	if (!ImGui::Begin(title, &console_activated))
+	{
+		ImGui::End();
+		return;
+	}
 
 	ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
 

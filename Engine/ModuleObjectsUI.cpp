@@ -38,7 +38,7 @@ bool ModuleObjectsUI::CleanUp()
 // Windows to Create Objects ----------------------
 void ModuleObjectsUI::ShowCreateObjects()
 {
-	if (!ImGui::Begin("Create Objects", &App->gui->winManager[CREATEOBJETCS]->active[0].active, ImGuiWindowFlags_AlwaysAutoResize)) //TODO ELLIOT CLOSE Windows example
+	if (!ImGui::Begin("Create Objects", &App->gui->winManager[CREATEOBJETCS]->active[CREATE].active, ImGuiWindowFlags_AlwaysAutoResize)) //TODO ELLIOT CLOSE Windows example
 	{
 		ImGui::End();
 		return;
@@ -264,7 +264,11 @@ void ModuleObjectsUI::ShowCreateObjects()
 // Windows See Objects in Scene ----------------------
 void ModuleObjectsUI::ShowObjectsinScene()
 {
-	ImGui::Begin("Objects in Scene");
+	if (!ImGui::Begin("Objects in Scene", &App->gui->winManager[CREATEOBJETCS]->active[SHOW].active, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::End();
+		return;
+	}
 	// Spheres --------
 	static int objects_selected = 0;
 	static int object_delete = 0;

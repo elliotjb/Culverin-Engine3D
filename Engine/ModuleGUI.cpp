@@ -63,7 +63,8 @@ update_status ModuleGUI::Update(float dt)
 	static bool window_Random_generator = false;
 	static bool window_about_us = false;
 	static bool configuration = false;
-
+	static bool window_infoMouse = false;
+	static bool window_exit = false;
 
 
 	// Main Menu --------------------------------
@@ -89,11 +90,18 @@ update_status ModuleGUI::Update(float dt)
 
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Exit"))
+			if (ImGui::MenuItem("Exit", NULL, &window_exit))
 			{
-				ImGui::EndMenu();
-				ImGui::EndMainMenuBar();
-				return UPDATE_STOP;
+				if (isSaved)
+				{
+					ImGui::EndMenu();
+					ImGui::EndMainMenuBar();
+					return UPDATE_STOP;
+				}
+				else
+				{
+					reposition_exit = true;
+				}
 			}
 			ImGui::EndMenu();
 		}
@@ -193,6 +201,10 @@ update_status ModuleGUI::Update(float dt)
 				App->console->OpenClose();
 			}
 			ImGui::Separator();
+			if (ImGui::MenuItem("Property editor", NULL, &window_infoMouse))
+			{
+
+			}
 			if (ImGui::MenuItem("Configuration"))
 			{
 				App->showconfig = !App->showconfig;
@@ -237,7 +249,11 @@ update_status ModuleGUI::Update(float dt)
 	if (window_Random_generator)
 	{
 		static LCG random_generator;
-		ImGui::Begin("Random Numbers Generator");
+		if (!ImGui::Begin("Random Numbers Generator", &window_Random_generator, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			ImGui::End();
+			return UPDATE_CONTINUE;
+		}
 		ImGui::Spacing();
 		ImGui::PushItemWidth(60);
 		static int numbers_f = 0;
@@ -308,7 +324,11 @@ update_status ModuleGUI::Update(float dt)
 	// Window About Us... ---------------------------------
 	if (window_about_us)
 	{
-		ImGui::Begin("About Us...");
+		if (!ImGui::Begin("About Us...", &window_about_us, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			ImGui::End();
+			return UPDATE_CONTINUE;
+		}
 		//Name of your Engine
 		ImGui::Spacing();
 		ImGui::Spacing();
@@ -350,11 +370,22 @@ update_status ModuleGUI::Update(float dt)
 	//	ShowCreateObjects();
 	//}
 
-	//// Windows See Objects in Scene ----------------------
-	//if (window_show_objects)
-	//{
-	//	ShowObjectsinScene();
-	//}
+	// Windows EXIT ---------------------------------
+	if (window_exit)
+	{
+		ShowWindowExit(&window_exit);
+		if (gameSave)
+		{
+			return UPDATE_STOP;
+		}
+	}
+
+	// ----------------------------------------------
+
+	if (window_infoMouse)
+	{
+		ShowInfoMouse(&window_infoMouse);
+	}
 
 	// Console --------------------------
 	if (App->console->IsOpen())
@@ -395,6 +426,66 @@ void ModuleGUI::ShowExampleAppConsole()
 void ModuleGUI::ShowHardware()
 {
 
+}
+
+void ModuleGUI::ShowInfoMouse(bool* active)
+{
+	ImGui::SetNextWindowPos(ImVec2(10, 18));
+	if (!ImGui::Begin("Info", active, ImVec2(0, 0), 0.3f, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings))
+	{
+		ImGui::End();
+		return;
+	}
+	ImGui::Text("Mouse Position: (%.1f,%.1f)", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
+	ImGui::Text("FPS: %.0f", App->fps_log[App->frame_index - 1]);
+	ImGui::End();
+}
+
+void ModuleGUI::ShowWindowExit(bool* active)
+{
+	static int width = 0;
+	static int height = 0;
+
+	if (reposition_exit)
+	{
+		SDL_GetWindowSize(App->window->window, &width, &height);
+		ImGui::SetNextWindowPos(ImVec2(width / 2 - 180, height / 2 - 80));
+		reposition_exit = false;
+	}
+	if (!ImGui::Begin("Scene(s) Have Been Modified", active, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings))
+	{
+		ImGui::End();
+		return;
+	}
+	ImGui::Text("Do you want to save the changes...");
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Text("Your changes wiil be lost if you don't save them.");
+	ImGui::Spacing();
+	if (ImGui::Button("Save"))
+	{
+		reposition_exit = true;
+		isSaved = true;
+		gameSave = true;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Don't Save"))
+	{
+		reposition_exit = true;
+		isSaved = true;
+		gameSave = true;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Cancel"))
+	{
+		reposition_exit = true;
+		*active = false;
+	}
+	if (*active == false)
+	{
+		reposition_exit = true;
+	}
+	ImGui::End();
 }
 
 //void ModuleGUI::ShowConfig()
