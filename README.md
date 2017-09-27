@@ -10,6 +10,7 @@
 
 # Updates
 - 0.3:
+	* Add window exit (Save, Don't Save and Cancel).
 	* Implemented "Render" options inside "Configuration" window
 		> Depth test, lightning, color material, wireframe,
 		  axis, smooth polygons and fog mode.
