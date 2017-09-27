@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "imgui_impl_sdl_gl3.h"
 
 #define MAX_KEYS 300
 
@@ -88,14 +89,17 @@ update_status ModuleInput::PreUpdate(float dt)
 
 	bool quit = false;
 	SDL_Event e;
+
 	while(SDL_PollEvent(&e))
 	{
+		ImGui_ImplSdlGL3_ProcessEvent(&e);
+
 		switch(e.type)
 		{
 			case SDL_MOUSEWHEEL:
 			mouse_z = e.wheel.y;
 			break;
-
+			
 			case SDL_MOUSEMOTION:
 			mouse_x = e.motion.x / SCREEN_SIZE;
 			mouse_y = e.motion.y / SCREEN_SIZE;
