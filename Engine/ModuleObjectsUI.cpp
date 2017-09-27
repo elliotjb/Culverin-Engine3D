@@ -80,12 +80,15 @@ void ModuleObjectsUI::ShowCreateObjects()
 		if (create_sphere & 1)
 		{
 			create_sphere++;
+			Sphere* temp = new Sphere(float3(sphere_pos_x, sphere_pos_y, sphere_pos_z), sphere_radius);
+			App->objects->CreateSphere(temp/*, color, kynematic*/);
+			/* SPHERE WITH PRIMITIVE -----------------------------------------
+			create_sphere++;
 			App->objects->math_Sphere.push_back(new Sphere(float3(sphere_pos_x, sphere_pos_y, sphere_pos_z), sphere_radius));
 			Sphere_p* temp = new Sphere_p(sphere_radius);
 			temp->SetPos(sphere_pos_x, sphere_pos_y, sphere_pos_z);
-			App->objects->CreateSphere(temp, color, kynematic);
+			App->objects->CreateSphere(temp, color, kynematic);*/
 		}
-
 	}
 	if (ImGui::CollapsingHeader("Cube"))
 	{
@@ -131,11 +134,20 @@ void ModuleObjectsUI::ShowCreateObjects()
 		if (create_capsule & 1)
 		{
 			create_capsule++;
-			//TODO ELLIOT - No MathGeoLib (We need implemented, later)
+			OBB* temp = new OBB();
+			temp->pos = float3(pos_x, pos_y, pos_z);
+			temp->r = float3(size_x, size_y, size_z);
+			temp->axis[0] = float3(1, 0, 0);
+			temp->axis[1] = float3(0, 1, 0);
+			temp->axis[2] = float3(0, 0, 1);
+			App->objects->CreateCube(temp/*, color, kynematic*/);
+
+
+			/* Cube WITH PRIMITIVE -----------------------------------------
 			Cube_p* temp = new Cube_p();
 			temp->SetPos(pos_x, pos_y, pos_z);
 			temp->size = vec3(size_x, size_y, size_z);
-			App->objects->CreateCube(temp, color, kynematic);
+			App->objects->CreateCube(temp, color, kynematic);*/
 		}
 	}
 	if (ImGui::CollapsingHeader("Capsule"))
@@ -604,7 +616,7 @@ void ModuleObjectsUI::ShowObjectsinScene()
 
 void ModuleObjectsUI::SpecialFunction(const std::string name)
 {
-	if (name == "sphere")
+	/*if (name == "sphere")
 	{
 		App->objects->math_Sphere.push_back(new Sphere(float3(0, 1.0f, 0), 1.0f));
 		Sphere_p* temp = new Sphere_p(1.0f);
@@ -622,5 +634,5 @@ void ModuleObjectsUI::SpecialFunction(const std::string name)
 	else if (name == "Capsule")
 	{
 
-	}
+	}*/
 }
