@@ -24,6 +24,7 @@ update_status ModuleObjects::Update(float dt)
 {
 	static bool wire = false;
 	static bool axis = false;
+
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		wire = !wire;
