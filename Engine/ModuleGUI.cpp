@@ -226,14 +226,14 @@ update_status ModuleGUI::Update(float dt)
 			}
 			if (ImGui::MenuItem("Download latest"))
 			{
-				ShellExecuteA(NULL, "open", "https://github.com/elliotjb/3D-Engine/releases/download/0.1.1/Release.-.3D.Engine.v0.1.1.zip", NULL, NULL, SW_SHOWNORMAL);
+				ShellExecuteA(NULL, "open", "https://github.com/elliotjb/3D-Engine/releases", NULL, NULL, SW_SHOWNORMAL);
 			}
 			if (ImGui::MenuItem("Report a bug"))
 			{
-				ShellExecuteA(NULL, "open", "https://github.com/elliotjb/3D-Engine/releases/download/0.1.1/Release.-.3D.Engine.v0.1.1.zip", NULL, NULL, SW_SHOWNORMAL);
+				ShellExecuteA(NULL, "open", "https://github.com/elliotjb/3D-Engine/issues/new", NULL, NULL, SW_SHOWNORMAL);
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Readme"))
+			if (ImGui::MenuItem("README"))
 			{
 				ShellExecuteA(NULL, "open", "https://github.com/elliotjb/3D-Engine/blob/master/README.md", NULL, NULL, SW_SHOWNORMAL);
 			}
@@ -273,7 +273,7 @@ update_status ModuleGUI::Update(float dt)
 		{
 			numbers_f++;
 			floats_list.push_back(random_generator.Float());
-			//ImGui::Text("%.4f", random_generator.Float());
+			//ImGui::Text("%.4f", random_generator.Float())
 		}
 
 		if (numbers_i & 1)
