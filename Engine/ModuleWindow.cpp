@@ -36,6 +36,7 @@ bool ModuleWindow::Init(JSON_Object* node)
 		height = json_object_get_number(node, "Height");
 		brightness = json_object_get_number(node, "Brightness");
 		scale = json_object_get_number(node, "Scale");
+		window_name = json_object_get_string(node, "Window Name");
 
 		if (fullscreen = json_object_get_boolean(node, "Fullscreen"))
 		{
@@ -86,7 +87,7 @@ bool ModuleWindow::Init(JSON_Object* node)
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(window_name.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
 		if (window == NULL)
 		{
@@ -151,7 +152,13 @@ update_status ModuleWindow::UpdateConfig(float dt)
 	if (ImGui::CollapsingHeader("Window"))
 	{
 		static int refresh = displaymode.refresh_rate;
-
+		ImGui::InputText("Window Name", textBuf, IM_ARRAYSIZE(textBuf));
+		ImGui::SameLine();
+		if (ImGui::Button("APPLY##window_name"))
+		{
+			window_name = textBuf;
+			SetTitle(window_name.c_str());
+		}
 		ImGui::Text("Refresh rate:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", displaymode.refresh_rate);
 		ImGui::SliderInt("Brightness", &brightness, 0, 100); ImGui::SameLine();
@@ -191,6 +198,7 @@ update_status ModuleWindow::UpdateConfig(float dt)
 
 bool ModuleWindow::SaveConfig(JSON_Object* node)
 {
+	json_object_set_string(node, "Window Name", window_name.c_str());
 	json_object_set_number(node, "Width", width);
 	json_object_set_number(node, "Height", height);
 	json_object_set_number(node, "Brightness", brightness);

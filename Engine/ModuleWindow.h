@@ -57,10 +57,13 @@ private:
 	bool fullscreen = false;
 	bool fullscreen_d = false;
 	bool resizable = false;
-	
 	bool borderless = false;
 
-	//Uint32 flags;
+	std::string window_name;
+	char textBuf[256] = "Change Name...";
+
+public:
+	bool writing = false;
 
 };
 
