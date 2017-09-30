@@ -79,6 +79,7 @@
     <ClInclude Include="Algorithm\Random\LCG.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Cylindre.h" />
     <ClInclude Include="ModuleConsole.h" />
     <ClInclude Include="Geometry\AABB.h" />
     <ClInclude Include="Geometry\AABB2D.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="Algorithm\Random\LCG.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Cylindre.cpp" />
     <ClCompile Include="ModuleConsole.cpp" />
     <ClCompile Include="Geometry\AABB.cpp" />
     <ClCompile Include="Geometry\Capsule.cpp" />

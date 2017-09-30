@@ -29,7 +29,9 @@ struct Object_id
 {
 	GLuint id;
 	GLuint index;
+	GLuint normal;
 	Type type;
+	Color color;
 };
 
 struct Cube_object
@@ -46,17 +48,22 @@ public:
 	virtual ~ModuleObjects();
 
 	bool Start();
+	void draw_cylinder(GLfloat radius, GLfloat height, GLubyte R, GLubyte G, GLubyte B);
 	update_status Update(float dt);
 	bool CleanUp();
 
 	//void CreateSphere(Sphere_p* sphere, ImVec4 color, bool isKynematic = false);
 	//void CreateCube(Cube_p * sphere, ImVec4 color, bool isKynematic = false);
 
+
+
+	void CreateSphere(Sphere* sphere,Color color = White/*, bool isKynematic = false*/);
+	void CreateCube(OBB* cube, Color color = White/*, bool isKynematic = false*/);
+	void CreateCylinder();
+
 	void Render(Object_id id /*,ImVec4 color*/);
-	void CreateSphere(Sphere* sphere/*,ImVec4 color, bool isKynematic = false*/);
-	void CreateCube(OBB* cube/*, ImVec4 color/*, bool isKynematic = false*/);
-	void RenderSphere(GLuint id/*, ImVec4 color bool/*, wireframe_mode = false*/);
-	void RenderCube(GLuint id, GLuint index/*, ImVec4 color*/);
+	void RenderSphere(Object_id id/*, ImVec4 color bool/*, wireframe_mode = false*/);
+	void RenderCube(Object_id id/*, ImVec4 color*/);
 
 	void ShowAxis(bool axis);
 	void ShowWire(bool wire);

@@ -81,7 +81,9 @@ void ModuleObjectsUI::ShowCreateObjects()
 		{
 			create_sphere++;
 			Sphere* temp = new Sphere(float3(sphere_pos_x, sphere_pos_y, sphere_pos_z), sphere_radius);
-			App->objects->CreateSphere(temp/*, color, kynematic*/);
+			Color color_n;
+			color_n.Set(color.x, color.y, color.z, color.w);
+			App->objects->CreateSphere(temp, color_n/*, kynematic*/);
 			/* SPHERE WITH PRIMITIVE -----------------------------------------
 			create_sphere++;
 			App->objects->math_Sphere.push_back(new Sphere(float3(sphere_pos_x, sphere_pos_y, sphere_pos_z), sphere_radius));
@@ -140,7 +142,9 @@ void ModuleObjectsUI::ShowCreateObjects()
 			temp->axis[0] = float3(1, 0, 0);
 			temp->axis[1] = float3(0, 1, 0);
 			temp->axis[2] = float3(0, 0, 1);
-			App->objects->CreateCube(temp/*, color, kynematic*/);
+			Color color_n;
+			color_n.Set(color.x, color.y, color.z, color.w);
+			App->objects->CreateCube(temp, color_n/*, kynematic*/);
 
 
 			/* Cube WITH PRIMITIVE -----------------------------------------
@@ -191,7 +195,7 @@ void ModuleObjectsUI::ShowCreateObjects()
 		if (create_capsule & 1)
 		{
 			create_capsule++;
-			App->objects->math_Capsule.push_back(new Capsule(float3(Capsule_pos_A_x, Capsule_pos_A_y, Capsule_pos_A_z), float3(Capsule_pos_B_x, Capsule_pos_B_y, Capsule_pos_B_z), capsule_radius));
+			//App->objects->math_Capsule.push_back(new Capsule(float3(Capsule_pos_A_x, Capsule_pos_A_y, Capsule_pos_A_z), float3(Capsule_pos_B_x, Capsule_pos_B_y, Capsule_pos_B_z), capsule_radius));
 		}
 	}
 	if (ImGui::CollapsingHeader("Cylinder"))
@@ -200,35 +204,32 @@ void ModuleObjectsUI::ShowCreateObjects()
 
 		ImGui::Text("Position");
 		ImGui::BulletText("Position Point");
-		ImGui::SameLine(220); ImGui::BulletText("Position Normal");
 
-		static float plane_point_pos_x = 0.0f;
-		ImGui::InputFloat("point_x", &plane_point_pos_x, 0.01f, 0, 3);
-		static float plane_normal_pos_x = 0.0f;
-		ImGui::SameLine(); ImGui::InputFloat("normal_x", &plane_normal_pos_x, 0.01f, 0, 3);
+		static float Cylinder_pos_x = 0.0f;
+		ImGui::InputFloat("pos_x", &Cylinder_pos_x, 0.01f, 0, 3);
 
+		static float Cylinder_pos_y = 0.0f;
+		ImGui::InputFloat("pos_y", &Cylinder_pos_y, 0.01f, 0, 3);
 
-		static float plane_point_pos_y = 0.0f;
-		ImGui::InputFloat("point_y", &plane_point_pos_y, 0.01f, 0, 3);
-		static float plane_normal_pos_y = 0.0f;
-		ImGui::SameLine(); ImGui::InputFloat("normal_y", &plane_normal_pos_y, 0.01f, 0, 3);
+		static float Cylinder_pos_z = 0.0f;
+		ImGui::InputFloat("pos_z", &Cylinder_pos_z, 0.01f, 0, 3);
 
-
-		static float plane_point_pos_z = 0.0f;
-		ImGui::InputFloat("point_z", &plane_point_pos_z, 0.01f, 0, 3);
-		static float plane_normal_pos_z = 0.0f;
-		ImGui::SameLine(); ImGui::InputFloat("normal_z", &plane_normal_pos_z, 0.01f, 0, 3);
+		static float Cylinder_lenght = 0.0f;
+		ImGui::InputFloat("lenght", &Cylinder_lenght, 0.01f, 0, 3);
+		static float Cylinder_radius = 0.0f;
+		ImGui::SameLine(); ImGui::InputFloat("radius", &Cylinder_radius, 0.01f, 0, 3);
 
 		ImGui::Spacing();
 		ImGui::Spacing();
 		ImGui::Spacing();
 		ImGui::PopItemWidth();
-		static int create_plane = 0;
+		static int create_cylinder = 0;
 		ImGui::SameLine(260); if (ImGui::Button("Create Cylinder"))
-			create_plane++;
-		if (create_plane & 1)
+			create_cylinder++;
+		if (create_cylinder & 1)
 		{
-			create_plane++;
+			create_cylinder++;
+			//App->
 			//App->objects->math_Plane.push_back(new Plane(float3(plane_point_pos_x, plane_point_pos_y, plane_point_pos_z), float3(plane_normal_pos_x, plane_normal_pos_y, plane_normal_pos_z)));
 		}
 	}

@@ -23,16 +23,7 @@ bool ModuleObjects::Start()
 update_status ModuleObjects::Update(float dt)
 {
 	//CreateSphere_p
-
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-	{
-		Object_id temp;
-		temp.id = 3;
-		temp.type = SPHERE;
-		sphere_ID.push_back(temp);
-	}
 	// --------------------------------------------
-
 
 	/*std::list<PhysBody3D*>::iterator item_sphere = Body_spheres.begin();
 	for (int i = 0; i < Body_spheres.size(); i++)
@@ -74,29 +65,20 @@ void ModuleObjects::Render(Object_id id)
 	switch (id.type)
 	{
 	case SPHERE:
-		RenderSphere(id.id);
+		RenderSphere(id);
 		break;
 	case CUBE:
-		RenderCube(id.id, id.index);
+		RenderCube(id);
 		break;
 	default:
 		break;
 	}
 }
 
-void ModuleObjects::CreateSphere(Sphere* sphere/*, ImVec4 color/*, bool isKynematic*/)
+void ModuleObjects::CreateSphere(Sphere* sphere, Color color/*, bool isKynematic*/)
 {
 	if (sphere != NULL)
 	{
-		/*Sphere_mathgeo_object temp;
-		temp.sphere = *sphere;
-		temp.isKynematic = isKynematic;
-		temp.color.r = color.x;
-		temp.color.g = color.y;
-		temp.color.b = color.z;
-		temp.color.a = color.w;
-		spheres_mathgeo.push_back(temp);*/
-
 		Sphere* sphe = sphere;
 
 		float3 array_v1[1536];
@@ -106,9 +88,15 @@ void ModuleObjects::CreateSphere(Sphere* sphere/*, ImVec4 color/*, bool isKynema
 		glGenBuffers(1, &ver);
 		glBindBuffer(GL_ARRAY_BUFFER, ver);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(array_v1), &array_v1, GL_STATIC_DRAW);
+		/*GLuint ver2;
+		glGenBuffers(1, &ver2);
+		glBindBuffer(GL_ARRAY_BUFFER, ver2);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(array_v2), &array_v2, GL_STATIC_DRAW);*/ // NORMAL NEED RIGHT?
 		Object_id temp;
 		temp.id = ver;
+		//temp.index = ver2;
 		temp.type = SPHERE;
+		temp.color = color;
 		sphere_ID.push_back(temp);
 
 		/*if (isKynematic)
@@ -122,7 +110,7 @@ void ModuleObjects::CreateSphere(Sphere* sphere/*, ImVec4 color/*, bool isKynema
 	}
 }
 
-void ModuleObjects::CreateCube(OBB* cube/*, ImVec4 color/*, bool isKynematic*/)
+void ModuleObjects::CreateCube(OBB* cube, Color color/*, bool isKynematic*/)
 {
 	// Generate Cube without index!
 	/*OBB* box = cube;
@@ -165,9 +153,25 @@ void ModuleObjects::CreateCube(OBB* cube/*, ImVec4 color/*, bool isKynematic*/)
 		1, 0, 5,
 		0, 4, 5,
 	};
+	std::vector<int> normal;
+	normal = {
+		// left
+		1, 0, 0,
+		// front
+		-1, 0, 0,
+		// right
+		1, 0, 0,
+		// back
+		-1, 0, 0,
+		// top
+		0, 1, 0,
+		// down
+		0, -1, 0,
+	};
 
 	GLuint my_indices;
 	GLuint my_vertex;
+	GLuint my_normal;
 
 	glGenBuffers(1, (GLuint*)&my_vertex);
 	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
@@ -178,26 +182,36 @@ void ModuleObjects::CreateCube(OBB* cube/*, ImVec4 color/*, bool isKynematic*/)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) *index.size(), &index[0], GL_STATIC_DRAW);
 
+	// Buffer for indices
+	glGenBuffers(1, (GLuint*)&my_normal);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_normal);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) *normal.size(), &normal[0], GL_STATIC_DRAW);
+
 	Object_id temp;
 	temp.id = my_vertex;
 	temp.index = my_indices;
+	temp.normal = my_normal;
 	temp.type = CUBE;
+	temp.color = color;
 	sphere_ID.push_back(temp);
 
 
 
 }
 
-void ModuleObjects::RenderSphere(GLuint id/*, bool wire*/)
+void ModuleObjects::RenderSphere(Object_id id/*, bool wire*/)
 {
 	if (wireframe_mode)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, id);
+	/*glBindBuffer(GL_ARRAY_BUFFER, id.index); NORMAL??
+	glNormalPointer(GL_FLOAT, 0, NULL);*/
+	glBindBuffer(GL_ARRAY_BUFFER, id.id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	//glColorPointer(3, GL_FLOAT, 1, &color);
 	// … draw other buffers
+	glColor4f(id.color.r, id.color.g, id.color.b, id.color.a);
 	glDrawArrays(GL_TRIANGLES, 0, 512 * 3);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	if (wireframe_mode)
@@ -205,7 +219,7 @@ void ModuleObjects::RenderSphere(GLuint id/*, bool wire*/)
 
 }
 
-void ModuleObjects::RenderCube(GLuint id, GLuint index/*, ImVec4 color*/)
+void ModuleObjects::RenderCube(Object_id id/*, ImVec4 color*/)
 {
 	if (wireframe_mode)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -219,11 +233,17 @@ void ModuleObjects::RenderCube(GLuint id, GLuint index/*, ImVec4 color*/)
 	glDisableClientState(GL_VERTEX_ARRAY);*/
 
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, id);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, id.id);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id.index);
+	glBindBuffer(GL_NORMAL_ARRAY, id.normal);
+
+	glColor4f(id.color.r, id.color.g, id.color.b, id.color.a);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	//glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glNormalPointer(GL_FLOAT, 0, NULL);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 	glDisableClientState(GL_VERTEX_ARRAY);
 

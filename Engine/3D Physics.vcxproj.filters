@@ -49,6 +49,9 @@
     <Filter Include="Engine\Modules\Objects">
       <UniqueIdentifier>{a188973f-53a0-4cc7-a9b9-c9a4ce412609}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Modules\Geometries">
+      <UniqueIdentifier>{15bcc5f3-901e-4481-a9ee-7f498dc4f2d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -336,6 +339,9 @@
     <ClInclude Include="ModuleInspector.h">
       <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Cylindre.h">
+      <Filter>Engine\Modules\Geometries</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -517,6 +523,9 @@
     </ClCompile>
     <ClCompile Include="ModuleInspector.cpp">
       <Filter>Engine\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Cylindre.cpp">
+      <Filter>Engine\Modules\Geometries</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
