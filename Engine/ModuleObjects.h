@@ -28,6 +28,7 @@ struct Sphere_object
 struct Object_id
 {
 	GLuint id;
+	GLuint index;
 	Type type;
 };
 
@@ -55,7 +56,7 @@ public:
 	void CreateSphere(Sphere* sphere/*,ImVec4 color, bool isKynematic = false*/);
 	void CreateCube(OBB* cube/*, ImVec4 color/*, bool isKynematic = false*/);
 	void RenderSphere(GLuint id/*, ImVec4 color bool/*, wireframe_mode = false*/);
-	void RenderCube(GLuint id/*, ImVec4 color*/);
+	void RenderCube(GLuint id, GLuint index/*, ImVec4 color*/);
 
 	void ShowAxis(bool axis);
 	void ShowWire(bool wire);

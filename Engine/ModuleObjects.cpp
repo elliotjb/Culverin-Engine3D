@@ -31,6 +31,9 @@ update_status ModuleObjects::Update(float dt)
 		temp.type = SPHERE;
 		sphere_ID.push_back(temp);
 	}
+	// --------------------------------------------
+
+
 	/*std::list<PhysBody3D*>::iterator item_sphere = Body_spheres.begin();
 	for (int i = 0; i < Body_spheres.size(); i++)
 	{
@@ -74,7 +77,7 @@ void ModuleObjects::Render(Object_id id)
 		RenderSphere(id.id);
 		break;
 	case CUBE:
-		RenderCube(id.id);
+		RenderCube(id.id, id.index);
 		break;
 	default:
 		break;
@@ -121,18 +124,67 @@ void ModuleObjects::CreateSphere(Sphere* sphere/*, ImVec4 color/*, bool isKynema
 
 void ModuleObjects::CreateCube(OBB* cube/*, ImVec4 color/*, bool isKynematic*/)
 {
-
-	/*float3 array_v1[36];
+	// Generate Cube without index!
+	/*OBB* box = cube;
+	float3 array_v1[36];
 	float3 array_v2[36];
-	cube->Triangulate(3,3,3,array_v1, array_v2, NULL, false);
-	/*GLuint ver;
+	box->Triangulate(1, 1, 1, array_v1, array_v2, NULL, false);
+	GLuint ver;
 	glGenBuffers(1, &ver);
 	glBindBuffer(GL_ARRAY_BUFFER, ver);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(array_v1), &array_v1, GL_STATIC_DRAW);*/
-	/*Object_id temp;
+	glBufferData(GL_ARRAY_BUFFER, sizeof(array_v1), &array_v1, GL_STATIC_DRAW);
+
+	Object_id temp;
 	temp.id = ver;
 	temp.type = CUBE;
-	sphere_ID.push_back(&temp);*/
+	sphere_ID.push_back(temp);
+	*/
+	//Generate Cube With Index
+	OBB* box = cube;
+	float3 array_v1[8];
+	box->GetCornerPoints(array_v1);
+
+	std::vector<unsigned int> index;
+	index = {
+		// left
+		0, 1, 2,
+		2, 1, 3,
+		// front
+		3, 1, 7,
+		7, 1, 5,
+		// right
+		7, 5, 6,
+		6, 5, 4,
+		// back
+		6, 4, 0,
+		0, 2, 6,
+		// top
+		2, 3, 7,
+		7, 6, 2,
+		// down
+		1, 0, 5,
+		0, 4, 5,
+	};
+
+	GLuint my_indices;
+	GLuint my_vertex;
+
+	glGenBuffers(1, (GLuint*)&my_vertex);
+	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(array_v1) * 3, &array_v1[0], GL_STATIC_DRAW);
+
+	// Buffer for indices
+	glGenBuffers(1, (GLuint*)&my_indices);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) *index.size(), &index[0], GL_STATIC_DRAW);
+
+	Object_id temp;
+	temp.id = my_vertex;
+	temp.index = my_indices;
+	temp.type = CUBE;
+	sphere_ID.push_back(temp);
+
+
 
 }
 
@@ -153,17 +205,26 @@ void ModuleObjects::RenderSphere(GLuint id/*, bool wire*/)
 
 }
 
-void ModuleObjects::RenderCube(GLuint id/*, ImVec4 color*/)
+void ModuleObjects::RenderCube(GLuint id, GLuint index/*, ImVec4 color*/)
 {
 	if (wireframe_mode)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	glEnableClientState(GL_VERTEX_ARRAY);
+	/*glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	//glColorPointer(3, GL_FLOAT, 1, &color);
 	// … draw other buffers
 	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glDisableClientState(GL_VERTEX_ARRAY);*/
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, id);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 	if (wireframe_mode)

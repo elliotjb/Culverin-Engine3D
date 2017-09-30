@@ -194,6 +194,44 @@ void ModuleObjectsUI::ShowCreateObjects()
 			App->objects->math_Capsule.push_back(new Capsule(float3(Capsule_pos_A_x, Capsule_pos_A_y, Capsule_pos_A_z), float3(Capsule_pos_B_x, Capsule_pos_B_y, Capsule_pos_B_z), capsule_radius));
 		}
 	}
+	if (ImGui::CollapsingHeader("Cylinder"))
+	{
+		ImGui::PushItemWidth(150);
+
+		ImGui::Text("Position");
+		ImGui::BulletText("Position Point");
+		ImGui::SameLine(220); ImGui::BulletText("Position Normal");
+
+		static float plane_point_pos_x = 0.0f;
+		ImGui::InputFloat("point_x", &plane_point_pos_x, 0.01f, 0, 3);
+		static float plane_normal_pos_x = 0.0f;
+		ImGui::SameLine(); ImGui::InputFloat("normal_x", &plane_normal_pos_x, 0.01f, 0, 3);
+
+
+		static float plane_point_pos_y = 0.0f;
+		ImGui::InputFloat("point_y", &plane_point_pos_y, 0.01f, 0, 3);
+		static float plane_normal_pos_y = 0.0f;
+		ImGui::SameLine(); ImGui::InputFloat("normal_y", &plane_normal_pos_y, 0.01f, 0, 3);
+
+
+		static float plane_point_pos_z = 0.0f;
+		ImGui::InputFloat("point_z", &plane_point_pos_z, 0.01f, 0, 3);
+		static float plane_normal_pos_z = 0.0f;
+		ImGui::SameLine(); ImGui::InputFloat("normal_z", &plane_normal_pos_z, 0.01f, 0, 3);
+
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::PopItemWidth();
+		static int create_plane = 0;
+		ImGui::SameLine(260); if (ImGui::Button("Create Cylinder"))
+			create_plane++;
+		if (create_plane & 1)
+		{
+			create_plane++;
+			//App->objects->math_Plane.push_back(new Plane(float3(plane_point_pos_x, plane_point_pos_y, plane_point_pos_z), float3(plane_normal_pos_x, plane_normal_pos_y, plane_normal_pos_z)));
+		}
+	}
 	if (ImGui::CollapsingHeader("Plane"))
 	{
 		ImGui::PushItemWidth(150);
@@ -267,6 +305,44 @@ void ModuleObjectsUI::ShowCreateObjects()
 		{
 			App->objects->math_Ray.push_back(new Ray(Line(float3(ray_pos_x, ray_pos_y, ray_pos_z), float3(ray_dir_x, ray_dir_y, ray_dir_z))));
 			create_ray++;
+		}
+	}
+	if (ImGui::CollapsingHeader("Frustum"))
+	{
+		ImGui::PushItemWidth(150);
+
+		ImGui::Text("Position Point in Plane");
+		ImGui::BulletText("Position Point");
+		ImGui::SameLine(220); ImGui::BulletText("Position Normal");
+
+		static float plane_point_pos_x = 0.0f;
+		ImGui::InputFloat("point_x", &plane_point_pos_x, 0.01f, 0, 3);
+		static float plane_normal_pos_x = 0.0f;
+		ImGui::SameLine(); ImGui::InputFloat("normal_x", &plane_normal_pos_x, 0.01f, 0, 3);
+
+
+		static float plane_point_pos_y = 0.0f;
+		ImGui::InputFloat("point_y", &plane_point_pos_y, 0.01f, 0, 3);
+		static float plane_normal_pos_y = 0.0f;
+		ImGui::SameLine(); ImGui::InputFloat("normal_y", &plane_normal_pos_y, 0.01f, 0, 3);
+
+
+		static float plane_point_pos_z = 0.0f;
+		ImGui::InputFloat("point_z", &plane_point_pos_z, 0.01f, 0, 3);
+		static float plane_normal_pos_z = 0.0f;
+		ImGui::SameLine(); ImGui::InputFloat("normal_z", &plane_normal_pos_z, 0.01f, 0, 3);
+
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::PopItemWidth();
+		static int create_plane = 0;
+		ImGui::SameLine(260); if (ImGui::Button("Create Frustum"))
+			create_plane++;
+		if (create_plane & 1)
+		{
+			create_plane++;
+			//App->objects->math_Plane.push_back(new Plane(float3(plane_point_pos_x, plane_point_pos_y, plane_point_pos_z), float3(plane_normal_pos_x, plane_normal_pos_y, plane_normal_pos_z)));
 		}
 	}
 
