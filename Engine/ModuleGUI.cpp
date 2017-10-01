@@ -47,6 +47,7 @@ bool ModuleGUI::Start()
 
 update_status ModuleGUI::Update(float dt)
 {
+	perf_timer.Start();
 
 	//ShowTest -----------------------
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
@@ -395,6 +396,8 @@ update_status ModuleGUI::Update(float dt)
 
 	//Update All Modules ----------------------------------
 	UpdateWindows(dt);
+
+	Update_t = perf_timer.ReadMs();
 
 	return UPDATE_CONTINUE;
 }

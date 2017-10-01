@@ -138,6 +138,8 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
+	perf_timer.Start();
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
@@ -150,12 +152,16 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
+	preUpdate_t = perf_timer.ReadMs();
+
 	return UPDATE_CONTINUE;
 }
 
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+	perf_timer.Start();
+
 	SDL_GL_SwapWindow(App->window->window);
 	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
 	{
@@ -165,6 +171,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	{
 		lights[0].Active(true);
 	}
+
+	postUpdate_t = perf_timer.ReadMs();
 
 	return UPDATE_CONTINUE;
 }

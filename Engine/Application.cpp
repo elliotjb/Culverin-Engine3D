@@ -144,7 +144,22 @@ void Application::FinishUpdate()
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 	
 	ms_log[ms_index] = last_frame_ms;
-	ms_index = (ms_index + 1) % IM_ARRAYSIZE(ms_log);
+
+	//Get all performance data-------------------
+	p2List_item<Module*>* item = list_modules.getFirst();
+
+	while (item != NULL)
+	{
+		if (item->data->IsEnabled())
+		{
+			item->data->pre_log[ms_index] = item->data->preUpdate_t;
+			item->data->up_log[ms_index] = item->data->Update_t;
+			item->data->post_log[ms_index] = item->data->postUpdate_t;
+		}
+		item = item->next;
+	}
+
+	ms_index = (ms_index + 1) % IM_ARRAYSIZE(ms_log); //ms_index works for all the logs (same size)
 
 
 	if (capped_ms > 0 && last_frame_ms < capped_ms)
@@ -209,13 +224,26 @@ update_status Application::Update()
 				}
 				ImGui::Text("Framerate:"); ImGui::SameLine();
 				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", fps_log[frame_index - 1]);
-				ImGui::PlotHistogram("", fps_log, IM_ARRAYSIZE(App->fps_log), 0, NULL, 0.0f, 120.0f, ImVec2(0, 80));
+				ImGui::PlotHistogram("", fps_log, IM_ARRAYSIZE(fps_log), 0, NULL, 0.0f, 120.0f, ImVec2(0, 80));
 				ImGui::Text("Milliseconds:"); ImGui::SameLine();
 				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", ms_log[ms_index - 1]);
-				ImGui::PlotHistogram("", ms_log, IM_ARRAYSIZE(App->ms_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
+				ImGui::PlotHistogram("", ms_log, IM_ARRAYSIZE(ms_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
 				ImGui::Checkbox("VSYNC", &vsync); ImGui::SameLine();
 				ShowHelpMarker("Restart to apply changes");
 
+				if (ImGui::CollapsingHeader("PERFORMANCE"))
+				{
+					p2List_item<Module*>* item = list_modules.getFirst();
+
+					while (item != NULL)
+					{
+						if (item->data->IsEnabled())
+						{
+							item->data->ShowPerformance(ms_index);
+						}
+						item = item->next;
+					}
+				}
 			}
 			while (item != NULL && ret == UPDATE_CONTINUE)
 			{
@@ -223,6 +251,7 @@ update_status Application::Update()
 					ret = item->data->UpdateConfig(dt);
 				item = item->next;
 			}
+
 			ImGui::End();
 		}
 		stop_conf = false;

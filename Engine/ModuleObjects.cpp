@@ -22,6 +22,8 @@ bool ModuleObjects::Start()
 
 update_status ModuleObjects::Update(float dt)
 {
+	perf_timer.Start();
+
 	//CreateSphere_p
 	// --------------------------------------------
 
@@ -50,6 +52,8 @@ update_status ModuleObjects::Update(float dt)
 	{
 		Render(sphere_ID[i]);
 	}
+	
+	Update_t = perf_timer.ReadMs();
 
 	return UPDATE_CONTINUE;
 }

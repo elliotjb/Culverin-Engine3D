@@ -48,6 +48,8 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
+	perf_timer.Start();
+
 	ImGuiIO& io = ImGui::GetIO();
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
@@ -110,6 +112,8 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
+
+	Update_t = perf_timer.ReadMs();
 
 	return UPDATE_CONTINUE;
 }

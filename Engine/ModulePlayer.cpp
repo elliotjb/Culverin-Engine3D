@@ -142,6 +142,8 @@ void ModulePlayer::StopVehicle()
 // Update: draw background
 update_status ModulePlayer::Update(float dt)
 {
+	perf_timer.Start();
+
 	turn = acceleration = brake = 0.0f;
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
@@ -176,6 +178,8 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Brake(brake);
 
 	vehicle->Render();
+
+	Update_t = perf_timer.ReadMs();
 
 	return UPDATE_CONTINUE;
 }

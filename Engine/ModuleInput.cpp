@@ -39,6 +39,8 @@ bool ModuleInput::Init(JSON_Object* node)
 // Called every draw update
 update_status ModuleInput::PreUpdate(float dt)
 {
+	perf_timer.Start();
+
 	SDL_PumpEvents();
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
@@ -123,6 +125,8 @@ update_status ModuleInput::PreUpdate(float dt)
 	if(quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
 		return UPDATE_STOP;
 
+	preUpdate_t = perf_timer.ReadMs();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -132,4 +136,20 @@ bool ModuleInput::CleanUp()
 	LOG("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
+}
+
+void ModuleInput::ShowPerformance(int ms_index)
+{
+	if (ImGui::CollapsingHeader("INPUT"))
+	{
+		ImGui::Text("Pre-Update:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.4f", pre_log[ms_index - 1]);
+		ImGui::PlotHistogram("", pre_log, IM_ARRAYSIZE(pre_log), 0, NULL, 0.0f, 5.0f, ImVec2(0, 80));
+		ImGui::Text("Update:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.4f", up_log[ms_index - 1]);
+		ImGui::PlotHistogram("", up_log, IM_ARRAYSIZE(up_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
+		ImGui::Text("Post-Update:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.4f", post_log[ms_index - 1]);
+		ImGui::PlotHistogram("", post_log, IM_ARRAYSIZE(post_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
+	}
 }

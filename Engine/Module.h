@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include "parson.h"
 #include <string>
+#include "PerfTimer.h"
 
 class Application;
 struct PhysBody3D;
@@ -51,6 +52,7 @@ public:
 		return true;
 	}
 
+	virtual void ShowPerformance(int ms_index) {}
 
 	virtual bool CleanUp() 
 	{ 
@@ -91,4 +93,15 @@ public:
 
 	std::string	name;
 	bool enabled = true;
+
+	PerfTimer perf_timer;
+
+	float ms_index = 0;
+	float pre_log[70] = { 0 };
+	float up_log[70] = { 0 };
+	float post_log[70] = { 0 };
+
+	float preUpdate_t = 0;
+	float Update_t = 0;
+	float postUpdate_t = 0;
 };

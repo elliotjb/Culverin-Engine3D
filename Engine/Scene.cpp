@@ -23,6 +23,8 @@ bool Scene::Start()
 
 update_status Scene::Update(float dt)
 {
+	perf_timer.Start();
+
 	Plane_p p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
@@ -240,7 +242,7 @@ update_status Scene::Update(float dt)
 	glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
 	glDisableVertexAttribArray(0);*/
 
-
+	Update_t = perf_timer.ReadMs();
 
 	return UPDATE_CONTINUE;
 }

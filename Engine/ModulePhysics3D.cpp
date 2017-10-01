@@ -74,6 +74,8 @@ bool ModulePhysics3D::Start()
 // ---------------------------------------------------------
 update_status ModulePhysics3D::PreUpdate(float dt)
 {
+	perf_timer.Start();
+
 	world->stepSimulation(dt, 15);
 
 	int numManifolds = world->getDispatcher()->getNumManifolds();
@@ -108,12 +110,16 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 		}
 	}
 
+	preUpdate_t = perf_timer.ReadMs();
+
 	return UPDATE_CONTINUE;
 }
 
 // ---------------------------------------------------------
 update_status ModulePhysics3D::Update(float dt)
 {
+	perf_timer.Start();
+
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
@@ -129,6 +135,8 @@ update_status ModulePhysics3D::Update(float dt)
 			item = item->next;
 		}*/
 	}
+
+	Update_t = perf_timer.ReadMs();
 
 	return UPDATE_CONTINUE;
 }
