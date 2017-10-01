@@ -24,6 +24,8 @@ public:
 	update_status UpdateConfig(float dt);
 	bool SaveConfig(JSON_Object* node);
 
+	void ShowPerformance(int ms_index);
+
 	bool CleanUp();
 
 	void OnResize(int width, int height);

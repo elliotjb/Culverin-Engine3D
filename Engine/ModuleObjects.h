@@ -52,6 +52,8 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
+	void ShowPerformance(int ms_index);
+
 	//void CreateSphere(Sphere_p* sphere, ImVec4 color, bool isKynematic = false);
 	//void CreateCube(Cube_p * sphere, ImVec4 color, bool isKynematic = false);
 

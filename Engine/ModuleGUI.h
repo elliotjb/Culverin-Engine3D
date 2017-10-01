@@ -28,6 +28,8 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
+	void ShowPerformance(int ms_index);
+
 	void UpdateWindows(float dt);
 
 	void ShowExampleAppConsole();
