@@ -15,7 +15,7 @@ enum WindowName
 	//Names of Windows (Modules)
 	HARDWARE,
 	CREATEOBJETCS,
-	INSPECTOR
+	INSPECTOR,
 };
 
 class ModuleGUI : public Module
@@ -28,14 +28,13 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void ShowPerformance(int ms_index);
-
 	void UpdateWindows(float dt);
 
 	void ShowExampleAppConsole();
 	void ShowHardware();
 	void ShowInfoMouse(bool* active);
 	void ShowWindowExit(bool* active);
+	void ShowPerformance(int ms_index);
 	//void ShowConfig();
 
 public:

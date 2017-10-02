@@ -163,15 +163,20 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	perf_timer.Start();
 
 	SDL_GL_SwapWindow(App->window->window);
-	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
-	{
-		lights[0].Active(false);
-	}
-	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_UP)
-	{
-		lights[0].Active(true);
-	}
 
+	ImGuiIO& io = ImGui::GetIO();
+
+	if (io.WantTextInput == false)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
+		{
+			lights[0].Active(false);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_H) == KEY_UP)
+		{
+			lights[0].Active(true);
+		}
+	}
 	postUpdate_t = perf_timer.ReadMs();
 
 	return UPDATE_CONTINUE;

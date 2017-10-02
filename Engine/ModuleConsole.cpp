@@ -16,7 +16,7 @@ Console::Console(bool start_enabled): Module(start_enabled)
 	Commands.push_back("CLEAR");
 	Commands.push_back("CLASSIFY");  // "classify" is here to provide an example of "C"+[tab] completing to "CL" and displaying matches.
 	AddLog("Welcome to ImGui!");
-
+	console_activated = true;
 	name = "Console";
 }
 
@@ -79,20 +79,18 @@ void Console::AddLog(const char* fmt, ...) IM_PRINTFARGS(2)
 
 void Console::Draw(const char* title)
 {
-	//ImGui::Begin(title);
-	if (!ImGui::Begin(title, &console_activated))
+	static int width;
+	static int height;
+	SDL_GetWindowSize(App->window->window, &width, &height);
+	ImGui::SetNextWindowPos(ImVec2(0, 700));
+	ImGui::SetNextWindowSize(ImVec2(width, height - 700));
+	if (!ImGui::Begin(title, &console_activated, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
 	{
 		ImGui::End();
 		return;
 	}
 
-	ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-
-	ImGui::TextWrapped("This example implements a console with basic coloring, completion and history. A more elaborate implementation may want to store entries along with extra data such as timestamp, emitter, etc.");
-	ImGui::TextWrapped("Enter 'HELP' for help, press TAB to use text completion.");
-
 	// TODO: display items starting from the bottom
-
 	if (ImGui::SmallButton("Add Dummy Text")) { AddLog("%d some text", Items.Size); AddLog("some more text"); AddLog("display very important message here!"); } ImGui::SameLine();
 	if (ImGui::SmallButton("Add Dummy Error")) AddLog("[error] something went wrong"); ImGui::SameLine();
 	if (ImGui::SmallButton("Clear")) ClearLog(); ImGui::SameLine();
