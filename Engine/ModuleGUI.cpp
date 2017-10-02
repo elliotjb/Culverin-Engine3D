@@ -7,6 +7,7 @@
 #include "ModuleInspector.h"
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_sdl_gl3.h"
+#include "ImGui\imgui_dock.h"
 #include "Gl3W\include\glew.h"
 #include "Algorithm\Random\LCG.h"
 #include "SDL\include\SDL.h"
@@ -58,6 +59,13 @@ update_status ModuleGUI::Update(float dt)
 	{
 		ImGui::ShowTestWindow();
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	{
+		dock_test = !dock_test;
+	}
+
+
 	// bools statics ----------------------
 	static bool window_create_objects = false;
 	static bool window_show_objects = false;
@@ -66,7 +74,6 @@ update_status ModuleGUI::Update(float dt)
 	static bool configuration = false;
 	static bool window_infoMouse = false;
 	static bool window_exit = false;
-
 
 	// Main Menu --------------------------------
 	if (ImGui::BeginMainMenuBar())
@@ -244,11 +251,15 @@ update_status ModuleGUI::Update(float dt)
 			}
 			ImGui::EndMenu();
 		}
-
+		menu_height = ImGui::GetWindowSize().y;
 
 		ImGui::EndMainMenuBar();
 	}
 
+	if (dock_test)
+	{
+		DockTest();
+	}
 
 	//Machine Generator -------------------
 	if (window_Random_generator)
@@ -425,6 +436,51 @@ void ModuleGUI::ShowPerformance(int ms_index)
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.4f", post_log[ms_index - 1]);
 		ImGui::PlotHistogram("", post_log, IM_ARRAYSIZE(post_log), 0, NULL, 0.0f, 5.0f, ImVec2(0, 80));
 	}
+}
+
+void ModuleGUI::DockTest()
+{
+
+	static bool show_scene1 = true;
+	static bool show_scene2 = true;
+	static bool show_scene3 = true;
+	static bool show_scene4 = true;
+	static bool show_scene5 = true;
+	static bool show_scene6 = true;
+
+	//DOCKING TEST -----------------------------------------------------------
+	if (ImGui::GetIO().DisplaySize.y > 0) {
+		////////////////////////////////////////////////////
+		// Setup root docking window                      //
+		// taking into account menu height and status bar //
+		////////////////////////////////////////////////////
+		auto pos = ImVec2(0, menu_height);
+		auto size = ImGui::GetIO().DisplaySize;
+		size.y -= pos.y;
+		ImGui::RootDock(pos, ImVec2(size.x, size.y - 25.0f));
+
+		// Draw status bar (no docking)
+		ImGui::SetNextWindowSize(ImVec2(size.x, 25.0f), ImGuiSetCond_Always);
+		ImGui::SetNextWindowPos(ImVec2(0, size.y - 6.0f), ImGuiSetCond_Always);
+		ImGui::Begin("statusbar", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize);
+		ImGui::Text("FPS: %f", ImGui::GetIO().Framerate);
+		ImGui::End();
+	}
+
+	// Draw docking windows
+	if (ImGui::BeginDock("Docks", &show_scene1)) {
+		ImGui::Print(); // print docking information
+	}
+	ImGui::EndDock();
+	if (ImGui::BeginDock("Dummy1", &show_scene2)) {
+		ImGui::Text("Placeholder!");
+	}
+	ImGui::EndDock();
+	if (ImGui::BeginDock("Dummy2", &show_scene3)) {
+		ImGui::Text("Placeholder!");
+	}
+	ImGui::EndDock();
+	//-------------------------------------------------------
 }
 
 void ModuleGUI::UpdateWindows(float dt)

@@ -37,6 +37,8 @@ public:
 	void ShowPerformance(int ms_index);
 	//void ShowConfig();
 
+	void DockTest();
+
 public:
 
 
@@ -58,6 +60,8 @@ private:
 	bool gameSave = false;
 	bool reposition_exit = true;
 
-};
+	int menu_height = 0;
+	bool dock_test = false;
 
+};
 #endif
