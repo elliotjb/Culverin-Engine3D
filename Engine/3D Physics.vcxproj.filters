@@ -117,27 +117,6 @@
     <ClInclude Include="Scene.h">
       <Filter>Engine\Modules\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="imconfig.h">
-      <Filter>Engine\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui.h">
-      <Filter>Engine\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_impl_sdl_gl3.h">
-      <Filter>Engine\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_internal.h">
-      <Filter>Engine\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="stb_rect_pack.h">
-      <Filter>Engine\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="stb_textedit.h">
-      <Filter>Engine\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="stb_truetype.h">
-      <Filter>Engine\ImGUI</Filter>
-    </ClInclude>
     <ClInclude Include="MathBuildConfig.h">
       <Filter>Engine\MathGeoLib</Filter>
     </ClInclude>
@@ -342,6 +321,27 @@
     <ClInclude Include="Cylindre.h">
       <Filter>Engine\Modules\Geometries</Filter>
     </ClInclude>
+    <ClInclude Include="ImGui\imconfig.h">
+      <Filter>Engine\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui.h">
+      <Filter>Engine\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_sdl_gl3.h">
+      <Filter>Engine\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_internal.h">
+      <Filter>Engine\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\stb_rect_pack.h">
+      <Filter>Engine\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\stb_textedit.h">
+      <Filter>Engine\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\stb_truetype.h">
+      <Filter>Engine\ImGUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -397,18 +397,6 @@
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Engine\Modules\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui.cpp">
-      <Filter>Engine\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_demo.cpp">
-      <Filter>Engine\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_draw.cpp">
-      <Filter>Engine\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_sdl_gl3.cpp">
-      <Filter>Engine\ImGUI</Filter>
     </ClCompile>
     <ClCompile Include="Algorithm\Random\LCG.cpp">
       <Filter>Engine\MathGeoLib\Algorithm</Filter>
@@ -526,6 +514,18 @@
     </ClCompile>
     <ClCompile Include="Cylindre.cpp">
       <Filter>Engine\Modules\Geometries</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui.cpp">
+      <Filter>Engine\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_demo.cpp">
+      <Filter>Engine\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_draw.cpp">
+      <Filter>Engine\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_sdl_gl3.cpp">
+      <Filter>Engine\ImGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

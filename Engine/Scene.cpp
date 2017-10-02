@@ -1,10 +1,10 @@
 #include "Globals.h"
 #include "Application.h"
 #include "Scene.h"
-#include "imgui.h"
 #include "Primitive.h"
 #include "Gl3W\include\glew.h"
-#include "imgui_impl_sdl_gl3.h"
+#include "ImGui\imgui.h"
+#include "ImGui\imgui_impl_sdl_gl3.h"
 
 Scene::Scene(bool start_enabled) : Module(start_enabled)
 {

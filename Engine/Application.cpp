@@ -1,8 +1,8 @@
 #include "Application.h"
 #include "parson.h"
 #include "PerfTimer.h"
-#include "imgui.h"
-#include "imgui_impl_sdl_gl3.h"
+#include "ImGui\imgui.h"
+#include "ImGui\imgui_impl_sdl_gl3.h"
 #include "SDL\include\SDL.h"
 
 static int malloc_count;

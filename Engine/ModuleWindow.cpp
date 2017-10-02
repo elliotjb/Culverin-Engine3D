@@ -2,8 +2,8 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "SDL\include\SDL.h"
-#include "imgui.h"
-#include "imgui_impl_sdl_gl3.h"
+#include "ImGui\imgui.h"
+#include "ImGui\imgui_impl_sdl_gl3.h"
 #include "parson.h"
 
 ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)

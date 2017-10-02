@@ -3,12 +3,12 @@
 
 #include "Module.h"
 #include "Globals.h"
-#include "imgui.h"
+#include "ImGui\imgui.h"
 #include <list>
 #include <vector>
 #include "MathGeoLib.h"
 #include "WindowManager.h"
-#include "SDL/include/SDL.h"
+#include "SDL\include\SDL.h"
 
 enum WindowName
 {

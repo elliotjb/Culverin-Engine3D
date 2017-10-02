@@ -3,7 +3,7 @@
 #define __WINDOWMANAGER_H__
 
 #include "Globals.h"
-#include "imgui.h"
+#include "ImGui\imgui.h"
 #include <list>
 #include <vector>
 #include "MathGeoLib.h"
