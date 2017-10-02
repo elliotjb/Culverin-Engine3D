@@ -200,7 +200,6 @@ update_status Application::Update()
 	{
 		static bool stop_conf = false;
 		item = list_modules.getFirst();
-		//ImGui::Begin("CONFIGURATION");
 		if (!ImGui::Begin("CONFIGURATION", &showconfig))
 		{
 			ImGui::End();
@@ -230,21 +229,8 @@ update_status Application::Update()
 				ImGui::PlotHistogram("", ms_log, IM_ARRAYSIZE(ms_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
 				ImGui::Checkbox("VSYNC", &vsync); ImGui::SameLine();
 				ShowHelpMarker("Restart to apply changes");
-
-				if (ImGui::CollapsingHeader("PERFORMANCE"))
-				{
-					p2List_item<Module*>* item = list_modules.getFirst();
-
-					while (item != NULL)
-					{
-						if (item->data->IsEnabled())
-						{
-							item->data->ShowPerformance(ms_index);
-						}
-						item = item->next;
-					}
-				}
 			}
+			
 			while (item != NULL && ret == UPDATE_CONTINUE)
 			{
 				if (item->data->IsEnabled())
@@ -257,6 +243,35 @@ update_status Application::Update()
 		stop_conf = false;
 		//----------------------------------------------
 	}
+
+	//PERFORMANCE WINDOW -----------------------------
+	if (showperformance)
+	{
+		static bool stop_perf = false;
+		item = list_modules.getFirst();
+
+		if (!ImGui::Begin("PERFORMANCE", &showperformance))
+		{
+			ImGui::End();
+			stop_perf = true;
+		}
+		else if (stop_perf == false)
+		{
+			ImGui::Spacing();
+			while (item != NULL)
+			{
+				if (item->data->IsEnabled())
+				{
+					item->data->ShowPerformance(ms_index);
+				}
+				item = item->next;
+			}
+			ImGui::End();
+		}
+		stop_perf = false;
+	}
+	//-----------------------------------------------
+
 	ImGui::Render();
 
 	item = list_modules.getFirst();
@@ -267,9 +282,6 @@ update_status Application::Update()
 			ret = item->data->PostUpdate(dt);
 		item = item->next;
 	}
-
-
-	//----------------------------------------------------
 
 	FinishUpdate();
 	return ret;

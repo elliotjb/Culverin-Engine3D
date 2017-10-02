@@ -180,7 +180,6 @@ update_status ModuleGUI::Update(float dt)
 			}
 			if (ImGui::MenuItem("Create Objects"))
 			{
-				//window_create_objects = !window_create_objects;
 				winManager[CREATEOBJETCS]->active[CREATE].OpenClose();
 			}
 			if (ImGui::MenuItem("Objects in Scene"))
@@ -195,7 +194,6 @@ update_status ModuleGUI::Update(float dt)
 			if (ImGui::MenuItem("Hardware"))
 			{
 				winManager[HARDWARE]->active[0].OpenClose();
-				//App->hardware->OpenClose();
 			}
 			if (ImGui::MenuItem("Console", "º"))
 			{
@@ -210,6 +208,12 @@ update_status ModuleGUI::Update(float dt)
 			{
 				App->showconfig = !App->showconfig;
 			}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Performance"))
+		{
+			App->showperformance = !App->showperformance;
 			ImGui::EndMenu();
 		}
 

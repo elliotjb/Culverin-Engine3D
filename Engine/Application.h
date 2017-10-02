@@ -88,6 +88,7 @@ private:
 
 public:
 	bool showconfig = false;
+	bool showperformance = false;
 };
 
 extern Application* App;
