@@ -342,6 +342,9 @@
     <ClInclude Include="ImGui\stb_truetype.h">
       <Filter>Engine\ImGUI</Filter>
     </ClInclude>
+    <ClInclude Include="ImGui\imgui_dock.h">
+      <Filter>Engine\ImGUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -525,6 +528,9 @@
       <Filter>Engine\ImGUI</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_impl_sdl_gl3.cpp">
+      <Filter>Engine\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_dock.cpp">
       <Filter>Engine\ImGUI</Filter>
     </ClCompile>
   </ItemGroup>
