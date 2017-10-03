@@ -24,11 +24,21 @@ struct Sphere_object
 	Sphere_p sphere;
 	bool isKynematic = false;
 };
-
+/*
+uint id_vertices = 0; // id in VRAM
+uint num_indices = 0;
+uint* indices = nullptr;
+uint id_indices = 0; // id in VRAM
+uint num_vertices = 0;
+float* vertices = nullptr;*/
 struct Object_id
 {
-	GLuint id;
-	GLuint index;
+	uint id = 0;
+	uint num_vertices = 0;
+
+	uint index = 0;
+	uint num_index = 0;
+
 	GLuint normal;
 	Type type;
 	Color color;
@@ -59,7 +69,8 @@ public:
 
 
 
-	void CreateSphere(Sphere* sphere,Color color = White/*, bool isKynematic = false*/);
+	void CreateSphere(Sphere* sphere,Color color = White, uint definition = 1/*, bool isKynematic = false*/);
+	bool Index_vert(float3* vertex_triangulate, uint num_vertex, std::vector<uint>* index, std::vector<float3>* vertex);
 	void CreateCube(OBB* cube, Color color = White/*, bool isKynematic = false*/);
 	void CreateCylinder();
 

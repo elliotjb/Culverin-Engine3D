@@ -771,6 +771,14 @@ float3 &float3::operator -=(const float3 &rhs)
 	return *this;
 }
 
+bool float3::operator ==(const float3 &rhs)
+{
+	if (x == rhs.x && y == rhs.y && z == rhs.z)
+		return true;
+
+	return false;
+}
+
 float3 &float3::operator *=(float scalar)
 {
 	x *= scalar;

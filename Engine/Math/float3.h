@@ -149,6 +149,8 @@ public:
 	/// Subtracts a vector from this vector, in-place. [similarOverload: operator+=] [hideIndex]
 	/** @return A reference to this. */
 	float3 &operator -=(const float3 &v);
+
+	bool operator==(const float3 & rhs);
 	/// Multiplies this vector by a scalar, in-place. [similarOverload: operator+=] [hideIndex]
 	/** @return A reference to this. */
 	float3 &operator *=(float scalar);

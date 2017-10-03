@@ -64,6 +64,10 @@ void ModuleObjectsUI::ShowCreateObjects()
 		ImGui::Text("Radius Sphere");
 		static float sphere_radius = 1.0f;
 		ImGui::InputFloat("", &sphere_radius, 0.05f, 0, 3);
+		ImGui::Text("Definition Sphere");
+		static int definition = 1;
+		ImGui::SliderInt("Grade", &definition, 1, 5);
+		ImGui::SameLine(); App->ShowHelpMarker("Grade of Definition:\n 1-> '24' triangles\n 2-> '96' truangles\n 3-> '384' truangles\n 4-> '1536' truangles\n 5-> '6144' truangles (Max consum...)");
 		static int create_sphere = 0;
 		ImGui::SameLine(260); if (ImGui::Button("Create Sphere"))
 			create_sphere++;
@@ -83,7 +87,7 @@ void ModuleObjectsUI::ShowCreateObjects()
 			Sphere* temp = new Sphere(float3(sphere_pos_x, sphere_pos_y, sphere_pos_z), sphere_radius);
 			Color color_n;
 			color_n.Set(color.x, color.y, color.z, color.w);
-			App->objects->CreateSphere(temp, color_n/*, kynematic*/);
+			App->objects->CreateSphere(temp, color_n, definition /*, kynematic*/);
 			/* SPHERE WITH PRIMITIVE -----------------------------------------
 			create_sphere++;
 			App->objects->math_Sphere.push_back(new Sphere(float3(sphere_pos_x, sphere_pos_y, sphere_pos_z), sphere_radius));
