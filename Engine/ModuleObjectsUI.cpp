@@ -65,7 +65,7 @@ void ModuleObjectsUI::ShowCreateObjects()
 		static float sphere_radius = 1.0f;
 		ImGui::InputFloat("", &sphere_radius, 0.05f, 0, 3);
 		ImGui::Text("Definition Sphere");
-		static int definition = 1;
+		static int definition = 3;
 		ImGui::SliderInt("Grade", &definition, 1, 5);
 		ImGui::SameLine(); App->ShowHelpMarker("Grade of Definition:\n 1-> '24' triangles\n 2-> '96' truangles\n 3-> '384' truangles\n 4-> '1536' truangles\n 5-> '6144' truangles (Max consum...)");
 		static int create_sphere = 0;
