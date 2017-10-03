@@ -43,7 +43,6 @@ update_status ModuleObjects::Update(float dt)
 		item_cube++;
 	}*/
 
-
 	/*for (int i = 0; i < spheres_mathgeo.size(); i++)
 	{
 		RenderSphere(&spheres_mathgeo[i].sphere, spheres_mathgeo[i].color, wireframe_mode);
@@ -57,6 +56,8 @@ update_status ModuleObjects::Update(float dt)
 
 	return UPDATE_CONTINUE;
 }
+
+
 
 bool ModuleObjects::CleanUp()
 {
@@ -307,7 +308,7 @@ void ModuleObjects::RenderSphere(Object_id id/*, bool wire*/)
 	// … draw other buffers
 	glColor4f(id.color.r, id.color.g, id.color.b, id.color.a);
 	//glDrawArrays(GL_TRIANGLES, 0, 512 * 3);
-	glDrawElements(GL_TRIANGLES, sizeof(GLuint) * id.num_vertices / 3, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLES, id.num_vertices, GL_UNSIGNED_INT, NULL);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	if (wireframe_mode)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -336,7 +337,7 @@ void ModuleObjects::RenderCube(Object_id id/*, ImVec4 color*/)
 	//glColor4f(id.color.r, id.color.g, id.color.b, id.color.a);
 	//glVertexPointer(3, GL_FLOAT, 0, NULL);
 	//glNormalPointer(GL_FLOAT, 0, NULL);
-	glDrawElements(GL_TRIANGLES, sizeof(GLuint) * id.num_vertices / 3, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLES, id.num_vertices, GL_UNSIGNED_INT, NULL);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 	if (wireframe_mode)
