@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClInclude Include="Algorithm\Random\LCG.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="BaseObject.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Cylindre.h" />
     <ClInclude Include="ImGui\imconfig.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Math\sse_mathfun.h" />
     <ClInclude Include="Math\TransformOps.h" />
     <ClInclude Include="ModuleCamera3D.h" />
+    <ClInclude Include="ModuleFBXLoader.h" />
     <ClInclude Include="ModuleGUI.h" />
     <ClInclude Include="ModuleHardware.h" />
     <ClInclude Include="ModuleInspector.h" />
@@ -177,6 +179,7 @@
   <ItemGroup>
     <ClCompile Include="Algorithm\Random\LCG.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Cylindre.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
@@ -219,6 +222,7 @@
     <ClCompile Include="Math\TransformOps.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
+    <ClCompile Include="ModuleFBXLoader.cpp" />
     <ClCompile Include="ModuleGUI.cpp" />
     <ClCompile Include="ModuleHardware.cpp" />
     <ClCompile Include="ModuleInput.cpp" />

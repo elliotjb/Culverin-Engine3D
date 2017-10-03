@@ -13,12 +13,13 @@
 #include "Scene.h"
 #include "ModuleConsole.h"
 #include "ModuleGUI.h"
+#include "ModuleObjects.h"
+#include "ModuleFBXLoader.h"
 #include "parson.h"
 #include <vector>
 #include <string>
 #include "GL3W\include\glew.h"
 #include "SDL\include\SDL_opengl.h"
-#include "ModuleObjects.h"
 #include <gl\GL.h>
 #include <gl\GLU.h>
 
@@ -37,7 +38,7 @@ public:
 	Scene* scene;
 	Console* console;
 	ModuleGUI* gui;
-
+	ModuleFBXLoader* fbx_loader;
 
 private:
 

@@ -345,6 +345,12 @@
     <ClInclude Include="ImGui\imgui_dock.h">
       <Filter>Engine\ImGUI</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleFBXLoader.h">
+      <Filter>Engine\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseObject.h">
+      <Filter>Engine\Modules\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -532,6 +538,12 @@
     </ClCompile>
     <ClCompile Include="ImGui\imgui_dock.cpp">
       <Filter>Engine\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFBXLoader.cpp">
+      <Filter>Engine\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseObject.cpp">
+      <Filter>Engine\Modules\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

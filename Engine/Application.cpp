@@ -22,6 +22,7 @@ Application::Application()
 	scene = new Scene();
 	console = new Console();
 	gui = new ModuleGUI();
+	fbx_loader = new ModuleFBXLoader();
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -37,6 +38,7 @@ Application::Application()
 	AddModule(gui);
 	AddModule(console);
 	AddModule(scene);
+	AddModule(fbx_loader);
 	AddModule(player);
 
 	player->Disable_whitout();
