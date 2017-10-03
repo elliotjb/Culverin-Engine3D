@@ -26,11 +26,6 @@ update_status Scene::Update(float dt)
 {
 	perf_timer.Start();
 
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_UP)
-	{
-		App->fbx_loader->LoadMesh("warrior.FBX");
-	}
-
 	Plane_p p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();

@@ -70,4 +70,8 @@ private:
 	int mouse_x_motion;
 	int mouse_y_motion;
 	//int mouse_z_motion;
+
+public:
+	char* dropped_filedir = nullptr;
+	bool dropped = false;
 };

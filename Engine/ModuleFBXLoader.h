@@ -13,6 +13,7 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
+	update_status postUpdate(float dt);
 	bool CleanUp();
 
 	bool LoadMesh(const char* filename);

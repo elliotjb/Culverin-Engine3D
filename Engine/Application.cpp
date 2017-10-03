@@ -187,8 +187,9 @@ update_status Application::Update()
 		item = item->next;
 	}
 
-	item = list_modules.getFirst();
 	ImGui_ImplSdlGL3_NewFrame(window->window);
+
+	item = list_modules.getFirst();
 
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{

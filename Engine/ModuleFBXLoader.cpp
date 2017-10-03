@@ -1,14 +1,17 @@
 #include "ModuleFBXLoader.h"
+#include "Globals.h"
+#include "Application.h"
+#include "ModuleInput.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/cfileio.h"
-#include "Globals.h"
 
 #pragma comment(lib, "Assimp/libx86/assimp.lib")
 
-ModuleFBXLoader::ModuleFBXLoader(bool start_enabled)
+ModuleFBXLoader::ModuleFBXLoader(bool start_enabled): Module(start_enabled)
 {
+	name = "FBX Loader";
 }
 
 ModuleFBXLoader::~ModuleFBXLoader()
@@ -26,6 +29,12 @@ bool ModuleFBXLoader::Start()
 
 update_status ModuleFBXLoader::Update(float dt)
 {
+	if (App->input->dropped)
+	{
+		LoadMesh(App->input->dropped_filedir);
+		App->input->dropped = false;
+	}
+
 	for (uint i = 0; i < meshes.size(); i++)
 	{
 		meshes[i]->Draw();
@@ -33,6 +42,20 @@ update_status ModuleFBXLoader::Update(float dt)
 
 	return UPDATE_CONTINUE;
 }
+
+update_status ModuleFBXLoader::postUpdate(float dt)
+{
+	if (App->input->dropped)
+	{
+		LoadMesh(App->input->dropped_filedir);
+		App->input->dropped = false;
+	}
+
+	return UPDATE_CONTINUE;
+}
+
+
+
 
 bool ModuleFBXLoader::CleanUp()
 {

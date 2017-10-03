@@ -33,6 +33,8 @@ bool ModuleInput::Init(JSON_Object* node)
 		ret = false;
 	}
 
+	SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
+
 	return ret;
 }
 
@@ -108,6 +110,13 @@ update_status ModuleInput::PreUpdate(float dt)
 
 			mouse_x_motion = e.motion.xrel / SCREEN_SIZE;
 			mouse_y_motion = e.motion.yrel / SCREEN_SIZE;
+			break;
+
+			case SDL_DROPFILE:
+			dropped_filedir = e.drop.file;
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir, App->window->window);
+			dropped = true;
+			//SDL_free(dropped_filedir);
 			break;
 
 			case SDL_QUIT:
