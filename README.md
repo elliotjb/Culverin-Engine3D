@@ -9,8 +9,10 @@
 - Configuration options (App, Window, Audio, Render).
 
 # Updates
-- 0.3:
-	* Add window exit (Save, Don't Save and Cancel).
+- 0.3:.
+        * Implemented Assimp (v0.3.2)
+        * Fixed structure Objects (v0.3.2)
+	* Add window exit (Save, Don't Save and Cancel) - "(v0.3.1)"
 	* Implemented "Render" options inside "Configuration" window
 		> Depth test, lightning, color material, wireframe,
 		  axis, smooth polygons and fog mode.
@@ -42,7 +44,7 @@
 Authors: 
 
 - Elliot Jimenez: https://github.com/elliotjb
-- Jordi Oña: https://github.com/Jordior97
+- Jordi OÃ±a: https://github.com/Jordior97
 
 Repository Link: https://github.com/elliotjb/3D-Engine
 
