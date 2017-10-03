@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Scene.h"
 #include "Primitive.h"
+#include "ModuleFBXLoader.h"
 #include "Gl3W\include\glew.h"
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_sdl_gl3.h"
@@ -24,6 +25,11 @@ bool Scene::Start()
 update_status Scene::Update(float dt)
 {
 	perf_timer.Start();
+
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_UP)
+	{
+		App->fbx_loader->LoadMesh("warrior.FBX");
+	}
 
 	Plane_p p(0, 1, 0, 0);
 	p.axis = true;

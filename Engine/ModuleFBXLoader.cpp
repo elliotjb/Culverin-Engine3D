@@ -21,13 +21,16 @@ bool ModuleFBXLoader::Start()
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 
-
-
 	return true;
 }
 
 update_status ModuleFBXLoader::Update(float dt)
 {
+	for (uint i = 0; i < meshes.size(); i++)
+	{
+		meshes[i]->Draw();
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -53,16 +56,16 @@ bool ModuleFBXLoader::LoadMesh(const char* filename)
 
 			m->mesh.num_vertices = new_mesh->mNumVertices;
 			m->mesh.vertices = new float[m->mesh.num_vertices * 3];
-			memcpy(m->mesh.vertices, new_mesh, sizeof(float) * m->mesh.num_vertices * 3);
+			memcpy(m->mesh.vertices, new_mesh->mVertices, sizeof(float) * m->mesh.num_vertices * 3);
 		
 			LOG("New mesh with %d vertices", m->mesh.num_vertices);
 		
 			if (new_mesh->HasFaces())
 			{
 				m->mesh.num_indices = new_mesh->mNumFaces * 3;
-				m->mesh.indices = new uint[m->mesh.num_indices * 3]; //Each face is a triangle
+				m->mesh.indices = new uint[m->mesh.num_indices]; //Each face is a triangle
 				
-				for (uint j = 0; j < new_mesh->mNumFaces; ++j)
+				for (uint j = 0; j < new_mesh->mNumFaces; j++)
 				{
 					if (new_mesh->mFaces[j].mNumIndices != 3)
 					{
@@ -74,12 +77,14 @@ bool ModuleFBXLoader::LoadMesh(const char* filename)
 					}
 				}
 
-				//Put the new mesh in the vector
-				meshes_vec.push_back(m);
+				//Save space in VRAM and add the new mesh in the vector
+				m->Init();
+				meshes.push_back(m);
 			}
 		}
 		aiReleaseImport(scene);
 	}
+
 	else
 	{
 		LOG("Error loading scene %s", filename);
