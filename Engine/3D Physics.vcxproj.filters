@@ -52,6 +52,9 @@
     <Filter Include="Engine\Modules\Geometries">
       <UniqueIdentifier>{15bcc5f3-901e-4481-a9ee-7f498dc4f2d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{4ae33826-973f-492a-b2c3-1b1685d9677e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -351,6 +354,9 @@
     <ClInclude Include="BaseObject.h">
       <Filter>Engine\Modules\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -557,5 +563,10 @@
       <Filter>Engine\MathGeoLib\Math</Filter>
     </None>
     <None Include="Game\config.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>Resource</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

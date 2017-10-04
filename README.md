@@ -10,8 +10,9 @@
 
 # Updates
 - 0.3:.
-        * Implemented Assimp (v0.3.2)
-        * Fixed structure Objects (v0.3.2)
+	* Add icon .exe (v0.3.2.1)
+	* Implemented Assimp (v0.3.2)  
+	* Fixed structure Objects (v0.3.2)
 	* Add window exit (Save, Don't Save and Cancel) - "(v0.3.1)"
 	* Implemented "Render" options inside "Configuration" window
 		> Depth test, lightning, color material, wireframe,
