@@ -215,14 +215,14 @@ update_status ModuleGUI::Update(float dt)
 			{
 				App->showconfig = !App->showconfig;
 			}
+			if (ImGui::MenuItem("Performance"))
+			{
+				App->showperformance = !App->showperformance;
+			}
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Performance"))
-		{
-			App->showperformance = !App->showperformance;
-			ImGui::EndMenu();
-		}
+		
 
 		if (ImGui::BeginMenu("Help"))
 		{

@@ -29,6 +29,7 @@ bool ModuleFBXLoader::Start()
 
 update_status ModuleFBXLoader::Update(float dt)
 {
+	//TODO -> place it in postUpdate method
 	if (App->input->dropped)
 	{
 		LoadMesh(App->input->dropped_filedir);
