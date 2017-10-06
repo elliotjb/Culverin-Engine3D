@@ -74,7 +74,7 @@ class Circle;
 #endif
 class Complex;
 class Cone;
-class Cylinder;
+//class Cylinder; TODO -> Enable cylinder
 class Ellipsoid;
 class Frustum;
 struct HitInfo;

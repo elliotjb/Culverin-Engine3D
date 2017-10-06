@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ModuleObjects.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
@@ -36,10 +37,10 @@ update_status ModuleFBXLoader::Update(float dt)
 		App->input->dropped = false;
 	}
 
-	for (uint i = 0; i < meshes.size(); i++)
-	{
-		meshes[i]->Draw();
-	}
+	//for (uint i = 0; i < meshes.size(); i++)
+	//{
+	//	meshes[i]->Draw();
+	//}
 
 	return UPDATE_CONTINUE;
 }
@@ -103,7 +104,8 @@ bool ModuleFBXLoader::LoadMesh(const char* filename)
 
 				//Save space in VRAM and add the new mesh in the vector
 				m->Init();
-				meshes.push_back(m);
+				m->id = App->objects->count++;
+				App->objects->objects.push_back(m);
 			}
 		}
 		aiReleaseImport(scene);

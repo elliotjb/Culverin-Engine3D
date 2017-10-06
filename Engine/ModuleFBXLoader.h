@@ -21,5 +21,4 @@ public:
 private:
 
 	BaseObject* m;
-	std::vector<BaseObject*> meshes;
 };

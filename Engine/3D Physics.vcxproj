@@ -89,7 +89,8 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="Color.h" />
-    <ClInclude Include="Cylindre.h" />
+    <ClInclude Include="_Cube.h" />
+    <ClInclude Include="_Cylinder.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
     <ClInclude Include="ImGui\imgui_dock.h" />
@@ -185,13 +186,15 @@
     <ClInclude Include="Time\Clock.h" />
     <ClInclude Include="WindowManager.h" />
     <ClInclude Include="ModuleObjects.h" />
+    <ClInclude Include="_Sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Algorithm\Random\LCG.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="Color.cpp" />
-    <ClCompile Include="Cylindre.cpp" />
+    <ClCompile Include="_Cube.cpp" />
+    <ClCompile Include="_Cylinder.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_dock.cpp" />
@@ -251,6 +254,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Time\Clock.cpp" />
     <ClCompile Include="ModuleObjects.cpp" />
+    <ClCompile Include="_Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\config.json" />

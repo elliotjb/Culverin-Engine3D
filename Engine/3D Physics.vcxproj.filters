@@ -46,14 +46,14 @@
     <Filter Include="Engine\Parson">
       <UniqueIdentifier>{b19f9a02-ebed-4122-83b4-caf0bb4431ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Modules\Objects">
-      <UniqueIdentifier>{a188973f-53a0-4cc7-a9b9-c9a4ce412609}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Modules\Geometries">
       <UniqueIdentifier>{15bcc5f3-901e-4481-a9ee-7f498dc4f2d5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{4ae33826-973f-492a-b2c3-1b1685d9677e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Modules\Base&amp;Manager_Objects">
+      <UniqueIdentifier>{a188973f-53a0-4cc7-a9b9-c9a4ce412609}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -316,13 +316,10 @@
       <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
     <ClInclude Include="ModuleObjects.h">
-      <Filter>Engine\Modules\Objects</Filter>
+      <Filter>Engine\Modules\Base&amp;Manager_Objects</Filter>
     </ClInclude>
     <ClInclude Include="ModuleInspector.h">
       <Filter>Engine\Modules\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Cylindre.h">
-      <Filter>Engine\Modules\Geometries</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
       <Filter>Engine\ImGUI</Filter>
@@ -352,10 +349,19 @@
       <Filter>Engine\Modules</Filter>
     </ClInclude>
     <ClInclude Include="BaseObject.h">
-      <Filter>Engine\Modules\Objects</Filter>
+      <Filter>Engine\Modules\Base&amp;Manager_Objects</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="_Cylinder.h">
+      <Filter>Engine\Modules\Geometries</Filter>
+    </ClInclude>
+    <ClInclude Include="_Cube.h">
+      <Filter>Engine\Modules\Geometries</Filter>
+    </ClInclude>
+    <ClInclude Include="_Sphere.h">
+      <Filter>Engine\Modules\Geometries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -522,13 +528,10 @@
       <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
     <ClCompile Include="ModuleObjects.cpp">
-      <Filter>Engine\Modules\Objects</Filter>
+      <Filter>Engine\Modules\Base&amp;Manager_Objects</Filter>
     </ClCompile>
     <ClCompile Include="ModuleInspector.cpp">
       <Filter>Engine\Modules\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Cylindre.cpp">
-      <Filter>Engine\Modules\Geometries</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
       <Filter>Engine\ImGUI</Filter>
@@ -549,7 +552,16 @@
       <Filter>Engine\Modules</Filter>
     </ClCompile>
     <ClCompile Include="BaseObject.cpp">
-      <Filter>Engine\Modules\Objects</Filter>
+      <Filter>Engine\Modules\Base&amp;Manager_Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="_Cylinder.cpp">
+      <Filter>Engine\Modules\Geometries</Filter>
+    </ClCompile>
+    <ClCompile Include="_Cube.cpp">
+      <Filter>Engine\Modules\Geometries</Filter>
+    </ClCompile>
+    <ClCompile Include="_Sphere.cpp">
+      <Filter>Engine\Modules\Geometries</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
