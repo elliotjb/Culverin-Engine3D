@@ -65,7 +65,7 @@ bool ModuleFBXLoader::CleanUp()
 	return true;
 }
 
-bool ModuleFBXLoader::LoadMesh(const char* filename)
+bool ModuleFBXLoader::LoadMesh(const char* filename, char* texpath)
 {
 	bool ret = false;
 	aiMesh* new_mesh = nullptr;
@@ -102,6 +102,22 @@ bool ModuleFBXLoader::LoadMesh(const char* filename)
 					}
 				}
 
+				if (new_mesh->HasTextureCoords(0))
+				{
+					m->mesh.tex_coords = new float[m->mesh.num_vertices * 2];
+					for (uint i = 0; i< new_mesh->mNumVertices; i++)
+					{
+						m->mesh.tex_coords[i * 2] = new_mesh->mTextureCoords[0][i].x;
+						m->mesh.tex_coords[i * 2+1] = new_mesh->mTextureCoords[0][i].y;
+					}
+
+					//Load the texture of the model
+					m->mesh.tex_path = texpath;
+					m->mesh.id_image = App->textures->LoadTexture(m->mesh.tex_path);
+				}
+
+			
+				
 				//Save space in VRAM and add the new mesh in the vector
 				m->Init();
 				m->id = App->objects->count++;

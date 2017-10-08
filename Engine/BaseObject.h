@@ -18,20 +18,30 @@ enum Prim_Type
 
 struct Geometry_Base
 {
+	// INDICES -----------------
 	uint id_indices = 0;
 	uint num_indices = 0;
 	uint* indices = nullptr;
 
+	// VERTICES ---------------------
 	uint id_vertices = 0;
 	uint num_vertices = 0;
 	//We can alternate between float or float3
 	float* vertices = nullptr;
 	float3* vertices3 = nullptr;
 
+	// TEXTUTE COORDS -----------------
+	uint id_image = 0;
+	uint id_texture = 0;
+	float* tex_coords = nullptr;
+	char* tex_path = nullptr;
+
 	~Geometry_Base()
 	{
 		delete[] indices;
 		delete[] vertices;
+		delete[] vertices3;
+		delete[] tex_coords;
 	}
 };
 
