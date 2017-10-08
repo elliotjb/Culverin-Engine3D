@@ -11,6 +11,7 @@
 
 Scene::Scene(bool start_enabled) : Module(start_enabled)
 {
+	name = "Scene";
 }
 
 Scene::~Scene()

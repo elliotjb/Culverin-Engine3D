@@ -5,9 +5,6 @@
 #include "ImGui\imgui.h"
 #include "MathGeoLib.h"
 
-#define CHECKERS_HEIGHT 64
-#define CHECKERS_WIDTH 64
-
 class _Cube;
 
 class Scene : public Module

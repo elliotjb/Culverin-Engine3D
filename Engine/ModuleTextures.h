@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "GL3W/include/glew.h"
 
 
 class ModuleTextures : public Module
@@ -13,7 +14,7 @@ public:
 	bool Start();
 	bool CleanUp();
 
-	bool LoadTexture(const char* filename);
+	GLuint LoadTexture(const char* filename);
 
 private:
 

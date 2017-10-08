@@ -9,7 +9,7 @@
 
 ModuleObjects::ModuleObjects(bool start_enabled) : Module(start_enabled)
 {
-
+	name = "Objects Manager"
 }
 
 ModuleObjects::~ModuleObjects()
