@@ -41,9 +41,6 @@ Application::Application()
 	AddModule(scene);
 	AddModule(fbx_loader);
 	AddModule(textures);
-	AddModule(player);
-
-	player->Disable_whitout();
 
 	// Renderer last!
 	AddModule(renderer3D);

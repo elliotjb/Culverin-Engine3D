@@ -37,8 +37,8 @@ bool Scene::Start()
 	}
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &ImageName);
-	glBindTexture(GL_TEXTURE_2D, ImageName);
+	glGenTextures(1, &tex);
+	glBindTexture(GL_TEXTURE_2D, tex);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -46,7 +46,7 @@ bool Scene::Start()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
 
-
+	Lenna = App->textures->LoadTexture("Lenna.png");
 	return true;
 }
 
@@ -60,23 +60,23 @@ update_status Scene::Update(float dt)
 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindTexture(GL_TEXTURE_2D, ImageName);
+	glBindTexture(GL_TEXTURE_2D, Lenna);
 
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindTexture(GL_TEXTURE_2D, ImageName);
 	
 	glBegin(GL_TRIANGLES);
 
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, 0);
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, 0);
+
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, 0);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, 0);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, 0);
+
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, 0);
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(1, 0, 0);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, -1);
+
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, 0);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, -1);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, -1);
@@ -84,22 +84,25 @@ update_status Scene::Update(float dt)
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, 0);
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(1, 1, 0);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 1, -1);
+
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, 0);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 1, -1);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(0, 1, -1);
 
-	//----
+
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, -1);
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, -1);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 0, 0);
+
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, -1);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 0, 0);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(0, 1, 0);
 
-	//----
+
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, -1);
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(1, 0, -1);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 0, -1);
+
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, -1);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 0, -1);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(0, 1, -1);
@@ -107,13 +110,13 @@ update_status Scene::Update(float dt)
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 0, -0);
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, -1);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, -1);
+
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 0, 0);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, -1);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 0, 0);
 	glEnd();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glLineWidth(1.0f); 
 
 	Update_t = perf_timer.ReadMs();
 

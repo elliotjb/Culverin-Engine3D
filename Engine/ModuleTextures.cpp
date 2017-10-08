@@ -17,7 +17,7 @@ ModuleTextures::~ModuleTextures()
 {
 }
 
-bool ModuleTextures::Start()
+bool ModuleTextures::Init(JSON_Object * node)
 {
 	bool ret = true;
 
@@ -38,6 +38,11 @@ bool ModuleTextures::Start()
 	return ret;
 }
 
+bool ModuleTextures::Start()
+{
+	return true;
+}
+
 bool ModuleTextures::CleanUp()
 {
 	return true;
@@ -48,11 +53,14 @@ GLuint ModuleTextures::LoadTexture(const char * filename)
 	ILuint imageID;
 	GLuint textureID;
 	ILenum error;
+	ILboolean success;
 
-	ilGenImages(1, &imageID); 	
-	ilBindImage(imageID); 
-
-	if (ilLoadImage(filename))
+	//Image Generation
+	ilGenImages(1, &imageID);
+	ilBindImage(imageID);
+	
+	success = ilLoadImage(filename);
+	if (success)
 	{
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
@@ -64,7 +72,7 @@ GLuint ModuleTextures::LoadTexture(const char * filename)
 		}
 
 		// Convert the image into a suitable format to work with
-		if (!ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE))
+		if (!ilConvertImage(ilGetInteger(IL_IMAGE_FORMAT), IL_UNSIGNED_BYTE))
 		{
 			error = ilGetError();
 			LOG("Image conversion failed - IL reportes error: %i, %s", error, iluErrorString(error));
@@ -75,15 +83,20 @@ GLuint ModuleTextures::LoadTexture(const char * filename)
 		glGenTextures(1, &textureID);
 		glBindTexture(GL_TEXTURE_2D, textureID);
 
-		// Set texture clamping method
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-		// Set texture interpolation method to use linear interpolation (no MIPMAPS)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, GL_RGBA, GL_UNSIGNED_BYTE, ilGetData());
+		glTexImage2D(GL_TEXTURE_2D, 
+			0, 
+			ilGetInteger(IL_IMAGE_FORMAT),
+			ilGetInteger(IL_IMAGE_WIDTH), 
+			ilGetInteger(IL_IMAGE_HEIGHT), 
+			0, 
+			ilGetInteger(IL_IMAGE_FORMAT),
+			GL_UNSIGNED_BYTE, 
+			ilGetData());
 	}
 
 	else
@@ -97,5 +110,5 @@ GLuint ModuleTextures::LoadTexture(const char * filename)
 
 	LOG("Texture CREATION SUCCESSFUL");
 
-	return true;
+	return textureID;
 }

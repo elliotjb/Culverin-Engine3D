@@ -11,6 +11,7 @@ public:
 	ModuleTextures(bool start_enabled = true);
 	virtual ~ModuleTextures();
 
+	bool Init(JSON_Object* node);
 	bool Start();
 	bool CleanUp();
 

@@ -20,8 +20,9 @@ public:
 	void ShowPerformance(int ms_index);
 
 public:
-	GLuint ImageName;
 	GLubyte checkImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
 	_Cube* test;
 
+	GLuint tex;
+	GLuint Lenna;
 };
