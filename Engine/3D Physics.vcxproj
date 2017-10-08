@@ -89,6 +89,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="ModuleTextures.h" />
     <ClInclude Include="_Cube.h" />
     <ClInclude Include="_Cylinder.h" />
     <ClInclude Include="ImGui\imconfig.h" />
@@ -193,6 +194,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="_Cube.cpp" />
     <ClCompile Include="_Cylinder.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />

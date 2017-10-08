@@ -363,6 +363,9 @@
     <ClInclude Include="_Sphere.h">
       <Filter>Engine\Modules\Geometries</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleTextures.h">
+      <Filter>Engine\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -562,6 +565,9 @@
     </ClCompile>
     <ClCompile Include="_Sphere.cpp">
       <Filter>Engine\Modules\Geometries</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleTextures.cpp">
+      <Filter>Engine\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

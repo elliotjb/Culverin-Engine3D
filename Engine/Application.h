@@ -15,6 +15,7 @@
 #include "ModuleGUI.h"
 #include "ModuleObjects.h"
 #include "ModuleFBXLoader.h"
+#include "ModuleTextures.h"
 #include "parson.h"
 #include <vector>
 #include <string>
@@ -39,6 +40,7 @@ public:
 	Console* console;
 	ModuleGUI* gui;
 	ModuleFBXLoader* fbx_loader;
+	ModuleTextures* textures;
 
 private:
 
