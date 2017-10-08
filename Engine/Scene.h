@@ -5,6 +5,10 @@
 #include "ImGui\imgui.h"
 #include "MathGeoLib.h"
 
+#define CHECKERS_HEIGHT 64
+#define CHECKERS_WIDTH 64
+
+class _Cube;
 
 class Scene : public Module
 {
@@ -19,7 +23,8 @@ public:
 	void ShowPerformance(int ms_index);
 
 public:
-
-
+	GLuint ImageName;
+	GLubyte checkImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
+	_Cube* test;
 
 };
