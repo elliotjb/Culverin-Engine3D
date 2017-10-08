@@ -25,7 +25,7 @@ public:
 	void ShowPerformance(int ms_index);
 
 	//OBJECT CREATION--------------------
-	bool Index_vert(float3* vertex_triangulate, BaseObject* obj);
+	bool Index_vert(float3* vertex_triangulate, uint num_vertex, BaseObject* obj);
 
 	void CreateCube(float3 pos, float3 size, bool isKynematic = false, Color color = White);
 	void CreateSphere(float3 pos, float radius, uint definition = 1, bool isKynematic = false, Color color = White);

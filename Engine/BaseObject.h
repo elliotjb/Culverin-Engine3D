@@ -43,6 +43,7 @@ public:
 	virtual ~BaseObject();
 
 	virtual void Init();
+	virtual void Init_float3();
 	void Draw();
 
 public:
