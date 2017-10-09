@@ -152,7 +152,7 @@ std::vector<Texture> _Model::loadMaterialTextures(aiMaterial * mat, aiTextureTyp
 		if (skip == false)
 		{
 			Texture tex;
-			tex.id = TextureFromFile(str.C_Str());
+			tex.id = TextureFromFile(str.C_Str(), this->path);
 			tex.type = typeName;
 			tex.path = str.C_Str();
 			textures.push_back(tex);
@@ -162,11 +162,9 @@ std::vector<Texture> _Model::loadMaterialTextures(aiMaterial * mat, aiTextureTyp
 	return textures;
 }
 
-uint _Model::TextureFromFile(const char * path)
+uint _Model::TextureFromFile(const char * path, const std::string&  dir)
 {
-	/*std::string filename = std::string(path);
-	filename = directory + '/' + filename;
-	return App->textures->LoadTexture(filename.c_str());*/
-
-	return App->textures->LoadTexture(path);
+	std::string filename = std::string(path);
+	filename = dir + "textures/" + filename;
+	return App->textures->LoadTexture(filename.c_str());
 }

@@ -151,19 +151,20 @@ void Mesh::Draw()
 		//	glColor4f(color.r, color.g, color.b, color.a);
 		//}
 
-		else if (App->renderer3D->texture_2d)
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+		if (App->renderer3D->texture_2d)
 		{
 			glEnable(GL_TEXTURE_2D);
-			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			for (uint i = 0; i < textures.size(); i++)
 			{
 				glBindTexture(GL_TEXTURE_2D, textures[i].id);
 			}
-			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		}
 
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
+
 
 		glBindBuffer(GL_ARRAY_BUFFER, vertices_id); //VERTEX ID
 		glVertexPointer(3, GL_FLOAT, sizeof(Vertex), NULL);
@@ -192,6 +193,7 @@ void Mesh::Draw()
 		}*/
 
 		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 		//Disable Wireframe -> only this object will be wireframed

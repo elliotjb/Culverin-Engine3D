@@ -51,16 +51,16 @@ bool ModuleTextures::CleanUp()
 
 GLuint ModuleTextures::LoadTexture(const char * filename)
 {
-	ILuint imageID;
-	GLuint textureID;
+	ILuint textureID;
 	ILenum error;
 	ILboolean success;
 
-	//Image Generation
-	ilGenImages(1, &imageID);
-	ilBindImage(imageID);
+	// Texture Generation
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
 	
 	success = ilLoadImage(filename);
+
 	if (success)
 	{
 		ILinfo ImageInfo;
@@ -80,14 +80,10 @@ GLuint ModuleTextures::LoadTexture(const char * filename)
 			exit(-1);
 		}
 
-		// Texture Generation
-		glGenTextures(1, &textureID);
-		glBindTexture(GL_TEXTURE_2D, textureID);
-
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 		glTexImage2D(GL_TEXTURE_2D, 
 			0, 
@@ -107,7 +103,7 @@ GLuint ModuleTextures::LoadTexture(const char * filename)
 	}
 
 	//RELEASE MEMORY used by the image
-	ilDeleteImages(1, &imageID); 
+	ilDeleteImages(1, &textureID); 
 
 	LOG("Texture CREATION SUCCESSFUL");
 

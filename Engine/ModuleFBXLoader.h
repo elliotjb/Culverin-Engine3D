@@ -18,7 +18,7 @@ public:
 	update_status postUpdate(float dt);
 	bool CleanUp();
 
-	BaseObject* LoadMesh(const char* filename, char* texpath = nullptr);
+	BaseObject* LoadMesh(const char* filename);
 	
 private:
 
