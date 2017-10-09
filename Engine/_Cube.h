@@ -6,7 +6,7 @@
 class _Cube :public BaseObject
 {
 public:
-	_Cube(Prim_Type t, const float3 p, const float3 size, bool k, Color c);
+	_Cube(Prim_Type t, const float3 p, const float3 size, bool k, Color c, bool w);
 	~_Cube();
 
 public:

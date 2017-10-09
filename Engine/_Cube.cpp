@@ -4,7 +4,7 @@
 #include "GL3W\include\glew.h""
 #include <vector>
 
-_Cube::_Cube(Prim_Type t, const float3 p, const float3 s, bool k, Color c) :BaseObject(t, p, k, c)
+_Cube::_Cube(Prim_Type t, const float3 p, const float3 s, bool k, Color c, bool w) :BaseObject(t, p, k, c, w)
 {
 	size = s;
 

@@ -6,7 +6,7 @@
 class _Sphere :public BaseObject
 {
 public:
-	_Sphere(Prim_Type t, const float3 p, const float r, bool k, Color c, uint def);
+	_Sphere(Prim_Type t, const float3 p, const float r, bool k, Color c, uint def, bool w);
 	~_Sphere();
 
 	void SetDefinition(uint def);

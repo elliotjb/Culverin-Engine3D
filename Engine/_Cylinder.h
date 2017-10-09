@@ -7,7 +7,7 @@ class _Cylinder :public BaseObject
 {
 public:
 
-	_Cylinder(Prim_Type t, const float3 p, bool k, Color c, float lenght, float radius);
+	_Cylinder(Prim_Type t, const float3 p, bool k, Color c, float lenght, float radius, bool w);
 	~_Cylinder();
 
 	void Create();

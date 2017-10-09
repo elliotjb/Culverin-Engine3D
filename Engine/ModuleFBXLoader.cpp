@@ -76,7 +76,7 @@ bool ModuleFBXLoader::LoadMesh(const char* filename, char* texpath)
 		//iterate all aiMesh structs
 		for (uint i = 0; i < scene->mNumMeshes; i++)
 		{
-			m = new BaseObject(P_MESH);
+			m = new BaseObject(P_MESH, App->objects->wireframe_mode);
 			new_mesh = scene->mMeshes[i];
 
 			m->mesh.num_vertices = new_mesh->mNumVertices;
@@ -112,8 +112,11 @@ bool ModuleFBXLoader::LoadMesh(const char* filename, char* texpath)
 					}
 
 					//Load the texture of the model
-					m->mesh.tex_path = texpath;
-					m->mesh.id_image = App->textures->LoadTexture(m->mesh.tex_path);
+					if (texpath != nullptr)
+					{
+						m->mesh.tex_path = texpath;
+						m->mesh.id_image = App->textures->LoadTexture(m->mesh.tex_path);
+					}
 				}
 
 			

@@ -111,20 +111,20 @@ bool ModuleObjects::Index_vert(float3* vertex_triangulate, uint num_vertex, Base
 
 void ModuleObjects::CreateCube(float3 pos, float3 size, bool k, Color color)
 {
-	_Cube* cube = new _Cube(P_CUBE, pos, size, k, color);
+	_Cube* cube = new _Cube(P_CUBE, pos, size, k, color, wireframe_mode);
 	Index_vert(cube->vertex_array.data(), 36, cube);
 	cube->id = count++;
-	cube->Init_float3();
+	cube->Init();
 	objects.push_back(cube);
 	//cubes.push_back(cube);
 }
 
 void ModuleObjects::CreateSphere(float3 pos, float radius, uint def, bool k, Color color)
 {
-	_Sphere* sphere = new _Sphere(P_SPHERE, pos, radius, k, color, def);
+	_Sphere* sphere = new _Sphere(P_SPHERE, pos, radius, k, color, def, wireframe_mode);
 	Index_vert(sphere->vertex_array.data(), sphere->definition, sphere);
 	sphere->id = count++;
-	sphere->Init_float3();
+	sphere->Init();
 	objects.push_back(sphere);
 	//spheres.push_back(sphere);
 
@@ -146,13 +146,10 @@ void ModuleObjects::ShowAxis(bool axis)
 void ModuleObjects::ShowWire(bool wire)
 {
 	wireframe_mode = wire;
-	/*for (int i = 0; i < Body_spheres.size(); i++)
+
+	for (int i = 0; i < objects.size(); i++)
 	{
-		spheres[i].sphere.wire = wire;
+		objects[i]->SetWireframe(wire);
 	}
-	for (int i = 0; i < Body_cubes.size(); i++)
-	{
-		cubes[i].cube.wire = wire;
-	}*/
 
 }

@@ -48,13 +48,14 @@ struct Geometry_Base
 class BaseObject
 {
 public:
-	BaseObject(Prim_Type t);
-	BaseObject(Prim_Type t, const float3 p, bool k, Color c);
+	BaseObject(Prim_Type t, bool w);
+	BaseObject(Prim_Type t, const float3 p, bool k, Color c, bool w);
 	virtual ~BaseObject();
 
-	virtual void Init();
-	virtual void Init_float3();
+	void Init();
 	void Draw();
+
+	bool SetWireframe(bool w);
 
 public:
 	Prim_Type type = P_UNKNOWN;
@@ -62,7 +63,7 @@ public:
 	Color color;
 	float3 pos;
 	bool isKynematic = false;
-	bool wireFrame = false;
+	bool wireframe = false;
 	bool Axis = false;
 	uint id = 0;
 };
