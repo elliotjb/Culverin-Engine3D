@@ -1,4 +1,4 @@
-# 3D Engine
+﻿# 3D Engine
 
 
 # Features
@@ -9,7 +9,13 @@
 - Configuration options (App, Window, Audio, Render).
 
 # Updates
-- 0.3:.
+- 0.4:
+	* Add ImGui::Dock
+	* Add window Hierarchy and Inspector
+	* Add icons (play, pause stop).
+	* Drag & Drop funcionality (to import FBX models).
+	* Texture 2D implemented.
+- 0.3:
 	* Add icon .exe (v0.3.2.1)
 	* Implemented Assimp (v0.3.2)  
 	* Fixed structure Objects (v0.3.2)
