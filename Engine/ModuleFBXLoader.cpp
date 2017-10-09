@@ -124,6 +124,13 @@ BaseObject* ModuleFBXLoader::LoadMesh(const char* filename, char* texpath)
 				m->id = App->objects->count++;
 				App->objects->objects.push_back(m);
 			}
+
+			//Set the normals of the model
+			if (new_mesh->HasNormals())
+			{
+				m->mesh.normals = new float[m->mesh.num_vertices * 3];
+				memcpy(m->mesh.normals, new_mesh->mNormals, sizeof(float)*m->mesh.num_vertices * 3);
+			}
 		}
 		aiReleaseImport(scene);
 	}

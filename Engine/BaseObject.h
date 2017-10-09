@@ -36,6 +36,10 @@ struct Geometry_Base
 	float* tex_coords = nullptr;
 	char* tex_path = nullptr;
 
+	//NORMALS COORDS --------------
+	uint id_normals = 0;
+	float* normals = nullptr;
+
 	~Geometry_Base()
 	{
 		delete[] indices;

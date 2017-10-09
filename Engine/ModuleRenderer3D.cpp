@@ -105,6 +105,7 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		color_material = json_object_get_boolean(node, "Color Material");
 		texture_2d = json_object_get_boolean(node, "Texture 2D");
 		wireframe = json_object_get_boolean(node, "Wireframe");
+		normals = json_object_get_boolean(node, "Normals");
 		axis = json_object_get_boolean(node, "Axis");
 		smooth = json_object_get_boolean(node, "Smooth");
 		
@@ -210,6 +211,10 @@ update_status ModuleRenderer3D::UpdateConfig(float dt)
 		{
 			App->objects->ShowWire(wireframe);
 		}
+		if (ImGui::Checkbox("Normals", &normals))
+		{
+
+		}
 		if (ImGui::Checkbox("Objects Axis", &axis))
 		{
 			App->objects->ShowAxis(axis);
@@ -253,6 +258,7 @@ bool ModuleRenderer3D::SaveConfig(JSON_Object * node)
 	json_object_set_boolean(node, "Color Material", color_material);
 	json_object_set_boolean(node, "Texture 2D", texture_2d);
 	json_object_set_boolean(node, "Wireframe", wireframe);
+	json_object_set_boolean(node, "Normals", normals);
 	json_object_set_boolean(node, "Axis", axis);
 	json_object_set_boolean(node, "Smooth", smooth);
 

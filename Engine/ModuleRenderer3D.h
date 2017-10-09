@@ -47,5 +47,6 @@ public:
 	bool axis = true;
 	bool smooth = true;
 	bool fog_active = false;
+	bool normals = false;
 	GLfloat fog_density = 0;
 };

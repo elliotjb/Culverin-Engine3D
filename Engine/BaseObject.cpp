@@ -80,6 +80,23 @@ void BaseObject::Draw()
 		glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, NULL);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
+		if (mesh.normals!= nullptr)
+		{
+			if (App->renderer3D->normals)
+			{
+				for (uint i = 0; i < mesh.num_vertices; i++)
+				{
+					glLineWidth(1.0f);
+					glColor3f(1.0f, 1.0f, 1.0f);
+
+					glBegin(GL_LINES);
+					glVertex3f(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]);
+					glVertex3f(mesh.vertices[i] + mesh.normals[i], mesh.vertices[i + 1] + mesh.normals[i + 1], mesh.vertices[i + 2] + mesh.normals[i + 2]);
+					glEnd();
+				}
+			}
+		}
+
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
