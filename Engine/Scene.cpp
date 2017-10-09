@@ -48,7 +48,8 @@ bool Scene::Start()
 
 	//Lenna = App->textures->LoadTexture("Lenna.png");
 
-	App->fbx_loader->LoadMesh("BakerHouse.fbx", "BakerHouse.png");
+	BaseObject* house = App->fbx_loader->LoadMesh("BakerHouse.fbx", "BakerHouse.png"); //LOAD MODEL
+	
 	return true;
 }
 

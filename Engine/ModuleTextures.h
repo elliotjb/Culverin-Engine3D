@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "GL3W/include/glew.h"
 
+class BaseObject;
 
 class ModuleTextures : public Module
 {
@@ -16,6 +17,7 @@ public:
 	bool CleanUp();
 
 	GLuint LoadTexture(const char* filename);
+	void SetTexPath(char* path, BaseObject* obj);
 
 private:
 

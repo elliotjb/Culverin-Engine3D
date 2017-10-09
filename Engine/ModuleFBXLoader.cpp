@@ -65,7 +65,7 @@ bool ModuleFBXLoader::CleanUp()
 	return true;
 }
 
-bool ModuleFBXLoader::LoadMesh(const char* filename, char* texpath)
+BaseObject* ModuleFBXLoader::LoadMesh(const char* filename, char* texpath)
 {
 	bool ret = false;
 	aiMesh* new_mesh = nullptr;
@@ -114,13 +114,11 @@ bool ModuleFBXLoader::LoadMesh(const char* filename, char* texpath)
 					//Load the texture of the model
 					if (texpath != nullptr)
 					{
-						m->mesh.tex_path = texpath;
+						App->textures->SetTexPath(texpath, m);
 						m->mesh.id_image = App->textures->LoadTexture(m->mesh.tex_path);
 					}
 				}
 
-			
-				
 				//Save space in VRAM and add the new mesh in the vector
 				m->Init();
 				m->id = App->objects->count++;
@@ -135,6 +133,6 @@ bool ModuleFBXLoader::LoadMesh(const char* filename, char* texpath)
 		LOG("Error loading scene %s", filename);
 	}
 
-	return ret;
+	return m;
 }
 

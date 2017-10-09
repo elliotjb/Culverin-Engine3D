@@ -4,6 +4,8 @@
 #include "BaseObject.h"
 #include <vector>
 
+class BaseObject;
+
 class ModuleFBXLoader : public Module
 {
 public:
@@ -16,7 +18,7 @@ public:
 	update_status postUpdate(float dt);
 	bool CleanUp();
 
-	bool LoadMesh(const char* filename, char* texpath = nullptr);
+	BaseObject* LoadMesh(const char* filename, char* texpath = nullptr);
 	
 private:
 

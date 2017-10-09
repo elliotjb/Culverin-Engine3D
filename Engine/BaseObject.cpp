@@ -62,7 +62,7 @@ void BaseObject::Draw()
 			glColor4f(color.r, color.g, color.b, color.a);
 		}
 
-		else
+		else if(App->renderer3D->texture_2d)
 		{
 			glEnable(GL_TEXTURE_2D);
 			glBindTexture(GL_TEXTURE_2D, 0);
