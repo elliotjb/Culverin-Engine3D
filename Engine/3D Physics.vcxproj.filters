@@ -372,6 +372,9 @@
     <ClInclude Include="ModuleSceneWorld.h">
       <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
+    <ClInclude Include="_Model.h">
+      <Filter>Engine\Modules\Geometries</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -580,6 +583,9 @@
     </ClCompile>
     <ClCompile Include="ModuleSceneWorld.cpp">
       <Filter>Engine\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="_Model.cpp">
+      <Filter>Engine\Modules\Geometries</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

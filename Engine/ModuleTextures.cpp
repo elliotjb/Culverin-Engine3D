@@ -114,10 +114,10 @@ GLuint ModuleTextures::LoadTexture(const char * filename)
 	return textureID;
 }
 
-void ModuleTextures::SetTexPath(char * path, BaseObject * obj)
-{
-	if (path != nullptr && obj != nullptr)
-	{
-		obj->mesh.tex_path = path;
-	}
-}
+//void ModuleTextures::SetTexPath(char * path, BaseObject * obj)
+//{
+//	if (path != nullptr && obj != nullptr)
+//	{
+//		obj->mesh.tex_path = path;
+//	}
+//}

@@ -13,6 +13,11 @@ _Sphere::~_Sphere()
 {
 }
 
+void _Sphere::Init()
+{
+	sphere_mesh.SetupMesh();
+}
+
 void _Sphere::SetDefinition(uint def)
 {
 	switch (def)
@@ -35,4 +40,9 @@ void _Sphere::SetDefinition(uint def)
 	default:
 		break;
 	}
+}
+
+void _Sphere::Draw()
+{
+	sphere_mesh.Draw();
 }

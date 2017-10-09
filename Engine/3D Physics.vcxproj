@@ -189,6 +189,7 @@
     <ClInclude Include="Time\Clock.h" />
     <ClInclude Include="WindowManager.h" />
     <ClInclude Include="ModuleObjects.h" />
+    <ClInclude Include="_Model.h" />
     <ClInclude Include="_Sphere.h" />
   </ItemGroup>
   <ItemGroup>
@@ -260,6 +261,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Time\Clock.cpp" />
     <ClCompile Include="ModuleObjects.cpp" />
+    <ClCompile Include="_Model.cpp" />
     <ClCompile Include="_Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>

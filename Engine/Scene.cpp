@@ -24,7 +24,7 @@ bool Scene::Start()
 	float3 size = { 1, 1, 1 };
 	//App->objects->CreateCube(pos, size);
 	
-	for (int i = 0; i < CHECKERS_HEIGHT; i++)
+	/*for (int i = 0; i < CHECKERS_HEIGHT; i++)
 	{
 		for (int j = 0; j < CHECKERS_WIDTH; j++)
 		{
@@ -48,8 +48,8 @@ bool Scene::Start()
 
 	//Lenna = App->textures->LoadTexture("Lenna.png");
 
-	BaseObject* house = App->fbx_loader->LoadMesh("BakerHouse.fbx", "BakerHouse.png"); //LOAD MODEL
-	
+	//BaseObject* house = App->fbx_loader->LoadMesh("BakerHouse.fbx", "BakerHouse.png"); //LOAD MODEL
+	*/
 	return true;
 }
 

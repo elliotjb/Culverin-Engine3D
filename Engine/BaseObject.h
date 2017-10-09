@@ -2,6 +2,8 @@
 #include "Globals.h"
 #include "MathGeoLib.h"
 #include "Color.h"
+#include <string>
+#include <vector>
 
 enum Prim_Type
 {
@@ -13,10 +15,46 @@ enum Prim_Type
 	P_AXIS,
 	P_RAY,
 	P_PLANE,
-	P_MESH,
+	P_MODEL,
 };
 
-struct Geometry_Base
+struct Vertex
+{
+	float3 pos;
+	float3 norm;
+	float2 texCoords;
+};
+
+struct Texture
+{
+	uint id;
+	std::string type;
+	std::string path;
+};
+
+class Mesh
+{
+public:
+	Mesh();
+	Mesh(std::vector<Vertex> vertices, std::vector<uint> indices, std::vector<Texture> textures);
+	~Mesh();
+
+	void Draw();
+	void SetupMesh();
+
+public:
+	std::vector<Vertex> vertices;
+	std::vector<uint> indices;
+	std::vector<Texture> textures;
+
+private:
+
+	uint VAO = 0; /*Vertex Array Object*/
+	uint vertices_id = 0; /*VERTICES ID*/
+	uint indices_id = 0; /*INDICES ID*/
+};
+
+/*struct Geometry_Base
 {
 	// INDICES -----------------
 	uint id_indices = 0;
@@ -47,7 +85,7 @@ struct Geometry_Base
 		delete[] vertices3;
 		delete[] tex_coords;
 	}
-};
+};*/
 
 class BaseObject
 {
@@ -56,14 +94,13 @@ public:
 	BaseObject(Prim_Type t, const float3 p, bool k, Color c, bool w);
 	virtual ~BaseObject();
 
-	void Init();
-	void Draw();
+	virtual void Draw();
+	virtual void Init();
 
 	bool SetWireframe(bool w);
 
 public:
 	Prim_Type type = P_UNKNOWN;
-	Geometry_Base mesh;
 	Color color;
 	float3 pos;
 	bool isKynematic = false;

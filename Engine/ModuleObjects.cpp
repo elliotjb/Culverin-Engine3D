@@ -61,12 +61,9 @@ void ModuleObjects::ShowPerformance(int ms_index)
 }
 
 
-bool ModuleObjects::Index_vert(float3* vertex_triangulate, uint num_vertex, BaseObject* obj)
+bool ModuleObjects::Index_vert(float3* vertex_triangulate, uint num_vertex, Mesh* mesh)
 {
 	std::vector<float3> all_index;
-	std::vector<uint> index_array;
-	std::vector<float3> vertex_array;
-	uint vertex_count = 0;
 	uint size = 0;
 	bool temp = false;
 
@@ -78,32 +75,18 @@ bool ModuleObjects::Index_vert(float3* vertex_triangulate, uint num_vertex, Base
 		{
 			if (all_index[j] == vertex_triangulate[i])
 			{
-				index_array.push_back(j);
+				mesh->indices.push_back(j);
 				temp = true;
 			}
 		}
 		if (temp == false)
 		{
+			Vertex vertex;
 			all_index.push_back(vertex_triangulate[i]);
-			index_array.push_back(all_index.size() - 1);
-			vertex_array.push_back(vertex_triangulate[i]);
+			mesh->indices.push_back(all_index.size() - 1);
+			vertex.pos = vertex_triangulate[i];
+			mesh->vertices.push_back(vertex);
 		}
-	}
-
-	//SET VERTICES --------------------------------
-	obj->mesh.num_vertices = vertex_array.size();
-	obj->mesh.vertices3 = new float3[obj->mesh.num_vertices];
-	for (int i = 0; i < vertex_array.size(); i++)
-	{
-		obj->mesh.vertices3[i] = vertex_array[i];
-	}
-
-	//SET INDICES ------------------------------------------
-	obj->mesh.num_indices = index_array.size();
-	obj->mesh.indices = new uint[obj->mesh.num_indices];
-	for (int i = 0; i < index_array.size(); i++)
-	{
-		obj->mesh.indices[i] = index_array[i];
 	}
 
 	return true;
@@ -112,7 +95,7 @@ bool ModuleObjects::Index_vert(float3* vertex_triangulate, uint num_vertex, Base
 void ModuleObjects::CreateCube(float3 pos, float3 size, bool k, Color color)
 {
 	_Cube* cube = new _Cube(P_CUBE, pos, size, k, color, wireframe_mode);
-	Index_vert(cube->vertex_array.data(), 36, cube);
+	Index_vert(cube->vertex_array.data(), 36, &cube->cube_mesh);
 	cube->id = count++;
 	cube->Init();
 	objects.push_back(cube);
@@ -122,7 +105,7 @@ void ModuleObjects::CreateCube(float3 pos, float3 size, bool k, Color color)
 void ModuleObjects::CreateSphere(float3 pos, float radius, uint def, bool k, Color color)
 {
 	_Sphere* sphere = new _Sphere(P_SPHERE, pos, radius, k, color, def, wireframe_mode);
-	Index_vert(sphere->vertex_array.data(), sphere->definition, sphere);
+	Index_vert(sphere->vertex_array.data(), sphere->definition, &sphere->sphere_mesh);
 	sphere->id = count++;
 	sphere->Init();
 	objects.push_back(sphere);

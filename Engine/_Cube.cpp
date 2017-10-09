@@ -26,3 +26,13 @@ _Cube::~_Cube()
 {
 }
 
+void _Cube::Init()
+{
+	cube_mesh.SetupMesh();
+}
+
+void _Cube::Draw()
+{
+	cube_mesh.Draw();
+}
+

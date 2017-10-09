@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "SDL/include/SDL_opengl.h"
-#include "GL3W\include\glew.h"
+#include "GL3W/include/glew.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "parson.h"
@@ -96,7 +96,6 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 
 		GLfloat MaterialDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
-
 
 		//Load render config info -------
 		depth_test = json_object_get_boolean(node, "Depth Test");
