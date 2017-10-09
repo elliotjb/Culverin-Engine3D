@@ -5,9 +5,11 @@
 #include "ModuleHardware.h"
 #include "ModuleObjects.h"
 #include "ModuleInspector.h"
+#include "ModuleHierarchy.h"
+#include "ModuleSceneWorld.h"
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_sdl_gl3.h"
-#include "ImGui\imgui_dock.h"
+#include "ImGui\imgui_dock_v2.h"
 #include "Gl3W\include\glew.h"
 #include "Algorithm\Random\LCG.h"
 #include "SDL\include\SDL.h"
@@ -30,7 +32,11 @@ bool ModuleGUI::Start()
 	winManager.push_back(new Hardware());   //0---- HARDWARE
 	winManager.push_back(new ModuleObjectsUI()); //1---- WINDOW_OBJECTS
 	winManager.push_back(new Inspector()); //2---- INSPECTOR
+	winManager.push_back(new Hierarchy()); //3---- Hierarchy
+	winManager.push_back(new SceneWorld()); //4---- SceneWorld
 	winManager[INSPECTOR]->active[0].active = true;
+	winManager[HIERARCHY]->active[0].active = true;
+	winManager[SCENEWORLD]->active[0].active = true;
 
 	std::vector<WindowManager*>::iterator window = winManager.begin();
 	for (int i = 0; i < winManager.size(); i++)
@@ -38,6 +44,7 @@ bool ModuleGUI::Start()
 		window[i]->Start();
 	}
 
+	//LoadDocks();
 
 	//Capsule_A = (Capsule(float3(200, 0, 0), float3(200, 0, 3), 1));
 	//Capsule_B = (Capsule(float3(0, -3, 0), float3(0, 3, 0), 1));
@@ -406,7 +413,7 @@ update_status ModuleGUI::Update(float dt)
 	// Console --------------------------
 	if (App->console->IsOpen())
 	{
-		ShowExampleAppConsole();
+		//ShowExampleAppConsole();
 	}
 
 	//Update All Modules ----------------------------------
@@ -417,8 +424,42 @@ update_status ModuleGUI::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
+void ModuleGUI::LoadDocks()
+{
+	JSON_Value* config_file;
+	JSON_Object* config;
+	JSON_Object* config_node;
+
+	config_file = json_parse_file("ImGuiDock.json");
+
+	config = json_value_get_object(config_file);
+	config_node = json_object_get_object(config, "Inspector");
+	getDockContext()->LoadDock(config_node, 0, true);
+	config_node = json_object_get_object(config, "Hierarchy");
+	getDockContext()->LoadDock(config_node, 1, false);
+	config_node = json_object_get_object(config, "Console");
+	getDockContext()->LoadDock(config_node, 2, false);
+}
+
 bool ModuleGUI::CleanUp()
 {
+	JSON_Value* config_file;
+	JSON_Object* config;
+	JSON_Object* config_node;
+
+	config_file = json_parse_file("ImGuiDock.json"); 
+
+	config = json_value_get_object(config_file);
+	config_node = json_object_get_object(config, "Inspector");
+	getDockContext()->SaveDock(config_node, 0);
+	config_node = json_object_get_object(config, "Hierarchy");
+	getDockContext()->SaveDock(config_node, 1);
+	config_node = json_object_get_object(config, "Console");
+	getDockContext()->SaveDock(config_node, 2);
+
+	json_serialize_to_file(config_file, "ImGuiDock.json");
+
+
 	return true;
 }
 
@@ -449,7 +490,8 @@ void ModuleGUI::DockTest()
 	static bool show_scene6 = true;
 
 	//DOCKING TEST -----------------------------------------------------------
-	if (ImGui::GetIO().DisplaySize.y > 0) {
+	/*if (ImGui::GetIO().DisplaySize.y > 0) 
+	{
 		////////////////////////////////////////////////////
 		// Setup root docking window                      //
 		// taking into account menu height and status bar //
@@ -457,7 +499,7 @@ void ModuleGUI::DockTest()
 		auto pos = ImVec2(0, menu_height);
 		auto size = ImGui::GetIO().DisplaySize;
 		size.y -= pos.y;
-		ImGui::RootDock(pos, ImVec2(size.x, size.y - 25.0f));
+		ImGui::DockContext::rootDock(pos, ImVec2(size.x, size.y - 25.0f));
 
 		// Draw status bar (no docking)
 		ImGui::SetNextWindowSize(ImVec2(size.x, 25.0f), ImGuiSetCond_Always);
@@ -466,7 +508,7 @@ void ModuleGUI::DockTest()
 		ImGui::Text("FPS: %f", ImGui::GetIO().Framerate);
 		ImGui::End();
 	}
-
+	ImGui::Separator();
 	// Draw docking windows
 	if (ImGui::BeginDock("Docks", &show_scene1)) {
 		ImGui::Print(); // print docking information
@@ -479,12 +521,55 @@ void ModuleGUI::DockTest()
 	if (ImGui::BeginDock("Dummy2", &show_scene3)) {
 		ImGui::Text("Placeholder!");
 	}
-	ImGui::EndDock();
+	ImGui::EndDock();*/
 	//-------------------------------------------------------
 }
 
 void ModuleGUI::UpdateWindows(float dt)
 {
+	static bool show_scene3 = true;
+	//DockContext::Dock::setPosSize(ImVec2(0, 0), ImVec2(100,100));
+	static int width;
+	static int height;
+	SDL_GetWindowSize(App->window->window, &width, &height);
+	ImGui::SetNextWindowPos(ImVec2(0, 20));
+	ImGui::SetNextWindowSize(ImVec2(width, height - 20));
+	
+
+	ImGui::Begin("MasterWindow", &show_scene3, ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar);
+
+	if (1)
+	{
+		if (1);
+	}
+
+	static GLuint icon_play = App->textures->LoadTexture("Imatges/UI/icon_play.png");
+	static GLuint icon_pause = App->textures->LoadTexture("Imatges/UI/icon_pause.png");
+	static GLuint icon_stop = App->textures->LoadTexture("Imatges/UI/icon_stop.png");
+	//ImTextureID temp = play;
+	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(150,150,150,0));
+	//ImGui::Image((ImTextureID*)play, ImVec2(300, 60));
+	static ImVec2 pos_icon(20, 20);
+	ImGui::SameLine(width / 2 - 40);
+	ImGui::ImageButton((ImTextureID*)icon_play, pos_icon);
+	ImGui::SameLine(width / 2 - 10);
+	ImGui::ImageButton((ImTextureID*)icon_pause, pos_icon);
+	ImGui::SameLine(width / 2 + 20);
+	ImGui::ImageButton((ImTextureID*)icon_stop, pos_icon);
+	ImGui::PopStyleColor(1);
+
+
+	BeginWorkspace();
+
+	//ImGui::SetNextWindowPos(ImVec2(App->window->GetWidth() - App->window->GetWidth() / 4, 23), 2);
+	//ImGui::SetNextWindowSize(ImVec2(App->window->GetWidth() / 4, App->window->GetHeight() - 23), 2);
+	/*BeginDock("TEST", &show_scene3, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	ImGui::Text("HELLO");
+	EndDock();*/
+
+
 	std::vector<WindowManager*>::iterator window = winManager.begin();
 	for (int i = 0; i < winManager.size(); i++)
 	{
@@ -494,6 +579,14 @@ void ModuleGUI::UpdateWindows(float dt)
 		}*/
 		window[i]->Update(dt);
 	}
+
+	if (App->console->IsOpen())
+	{
+		ShowExampleAppConsole();
+	}
+
+	EndWorkspace();
+	ImGui::End();
 }
 
 void ModuleGUI::ShowExampleAppConsole()

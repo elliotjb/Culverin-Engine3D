@@ -6,6 +6,7 @@
 Inspector::Inspector() : WindowManager()
 {
 	active.push_back(Active());
+	name = "Inspector";
 }
 
 Inspector::~Inspector()
@@ -33,9 +34,9 @@ void Inspector::ShowInspector()
 	SDL_GetWindowSize(App->window->window, &width, &height);
 	ImGui::SetNextWindowPos(ImVec2(width - 300, 20));
 	ImGui::SetNextWindowSize(ImVec2(300, height - 20 - (height - 700)));
-	if (!ImGui::Begin("Inspector", &App->gui->winManager[INSPECTOR]->active[0].active, ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoCollapse)) //TODO ELLIOT CLOSE Windows example
+	if (!BeginDock("Inspector", &App->gui->winManager[INSPECTOR]->active[0].active, ImGuiWindowFlags_HorizontalScrollbar)) //TODO ELLIOT CLOSE Windows example
 	{
-		ImGui::End();
+		EndDock();
 		return;
 	}
 	ImGui::Text("HELLO WORLD");
@@ -55,7 +56,7 @@ void Inspector::ShowInspector()
 
 
 
-	ImGui::End();
+	EndDock();
 }
 
 bool Inspector::CleanUp()

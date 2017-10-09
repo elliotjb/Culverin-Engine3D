@@ -5,6 +5,7 @@
 Hardware::Hardware() : WindowManager()
 {
 	active.push_back(Active());
+	name = "Hardware";
 }
 
 Hardware::~Hardware()
@@ -21,9 +22,9 @@ update_status Hardware::Update(float dt)
 {
 	if (active[0].active)
 	{
-		if (!ImGui::Begin("Hardware", &App->gui->winManager[HARDWARE]->active[0].active, ImGuiWindowFlags_AlwaysAutoResize)) //TODO ELLIOT CLOSE Windows example
+		if (!BeginDock("Hardware", &App->gui->winManager[HARDWARE]->active[0].active, ImGuiWindowFlags_AlwaysAutoResize)) //TODO ELLIOT CLOSE Windows example
 		{
-			ImGui::End();
+			EndDock();
 			return UPDATE_CONTINUE;
 		}
 		//ImGuiStyle& style = ImGui::GetStyle();
@@ -58,7 +59,7 @@ update_status Hardware::Update(float dt)
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_VERSION));
 		ImGui::Text("GLSL:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_SHADING_LANGUAGE_VERSION));
-		ImGui::End();
+		EndDock();
 	}
 
 

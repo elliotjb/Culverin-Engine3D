@@ -66,7 +66,7 @@ public:
 
 public:
 	std::vector<Active> active;
-
+	std::string name;
 	// or std::vector<bool> active; YES
 	//ModuleObjects* obj = nullptr;
 

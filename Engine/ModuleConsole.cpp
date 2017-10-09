@@ -84,9 +84,9 @@ void Console::Draw(const char* title)
 	SDL_GetWindowSize(App->window->window, &width, &height);
 	ImGui::SetNextWindowPos(ImVec2(0, 700));
 	ImGui::SetNextWindowSize(ImVec2(width, height - 700));
-	if (!ImGui::Begin(title, &console_activated, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
+	if (!BeginDock(title, &console_activated, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
 	{
-		ImGui::End();
+		EndDock();
 		return;
 	}
 
@@ -162,7 +162,7 @@ void Console::Draw(const char* title)
 	if (ImGui::IsItemHovered() || (ImGui::IsRootWindowOrAnyChildFocused() && !ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0)))
 		ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
 
-	ImGui::End();
+	EndDock();
 }
 
 void Console::ExecCommand(const char * command_line)

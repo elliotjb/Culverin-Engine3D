@@ -16,6 +16,8 @@ enum WindowName
 	HARDWARE,
 	CREATEOBJETCS,
 	INSPECTOR,
+	HIERARCHY,
+	SCENEWORLD
 };
 
 class ModuleGUI : public Module
@@ -36,7 +38,7 @@ public:
 	void ShowWindowExit(bool* active);
 	void ShowPerformance(int ms_index);
 	//void ShowConfig();
-
+	void LoadDocks();
 	void DockTest();
 
 public:

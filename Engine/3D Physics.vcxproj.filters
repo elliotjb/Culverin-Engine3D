@@ -342,9 +342,6 @@
     <ClInclude Include="ImGui\stb_truetype.h">
       <Filter>Engine\ImGUI</Filter>
     </ClInclude>
-    <ClInclude Include="ImGui\imgui_dock.h">
-      <Filter>Engine\ImGUI</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleFBXLoader.h">
       <Filter>Engine\Modules</Filter>
     </ClInclude>
@@ -365,6 +362,15 @@
     </ClInclude>
     <ClInclude Include="ModuleTextures.h">
       <Filter>Engine\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_dock_v2.h">
+      <Filter>Engine\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleHierarchy.h">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleSceneWorld.h">
+      <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -548,9 +554,6 @@
     <ClCompile Include="ImGui\imgui_impl_sdl_gl3.cpp">
       <Filter>Engine\ImGUI</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_dock.cpp">
-      <Filter>Engine\ImGUI</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleFBXLoader.cpp">
       <Filter>Engine\Modules</Filter>
     </ClCompile>
@@ -568,6 +571,15 @@
     </ClCompile>
     <ClCompile Include="ModuleTextures.cpp">
       <Filter>Engine\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_dock_v2.cpp">
+      <Filter>Engine\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleHierarchy.cpp">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleSceneWorld.cpp">
+      <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
