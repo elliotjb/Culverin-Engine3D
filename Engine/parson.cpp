@@ -36,6 +36,7 @@ THE SOFTWARE.
 #include <math.h>
 #include <errno.h>
 
+
 /* Apparently sscanf is not implemented in some "standard" libraries, so don't use it, if you
 * don't have to. */
 #define sscanf THINK_TWICE_ABOUT_USING_SSCANF
@@ -1148,6 +1149,21 @@ int json_object_dotget_boolean(const JSON_Object *object, const char *name) {
 	return json_value_get_boolean(json_object_dotget_value(object, name));
 }
 
+//New Functions
+const char * json_object_dotget_string_with_std(const JSON_Object *object, std::string name) {
+	return json_value_get_string(json_object_dotget_value(object, name.c_str()));
+}
+
+double json_object_dotget_number_with_std(const JSON_Object *object, std::string name) {
+	return json_value_get_number(json_object_dotget_value(object, name.c_str()));
+}
+
+int json_object_dotget_boolean_with_std(const JSON_Object *object, std::string name) {
+	return json_value_get_boolean(json_object_dotget_value(object, name.c_str()));
+}
+
+
+
 size_t json_object_get_count(const JSON_Object *object) {
 	return object ? object->count : 0;
 }
@@ -1786,6 +1802,43 @@ JSON_Status json_object_dotset_number(JSON_Object *object, const char *name, dou
 		return JSONFailure;
 	}
 	if (json_object_dotset_value(object, name, value) == JSONFailure) {
+		json_value_free(value);
+		return JSONFailure;
+	}
+	return JSONSuccess;
+}
+
+//New Functions
+JSON_Status json_object_dotset_number_with_std(JSON_Object *object, std::string name, double number) {
+	JSON_Value *value = json_value_init_number(number);
+	if (value == NULL) {
+		return JSONFailure;
+	}
+	if (json_object_dotset_value(object, name.c_str(), value) == JSONFailure) {
+		json_value_free(value);
+		return JSONFailure;
+	}
+	return JSONSuccess;
+}
+
+JSON_Status json_object_dotset_string_with_std(JSON_Object *object, std::string name, const char *string) {
+	JSON_Value *value = json_value_init_string(string);
+	if (value == NULL) {
+		return JSONFailure;
+	}
+	if (json_object_dotset_value(object, name.c_str(), value) == JSONFailure) {
+		json_value_free(value);
+		return JSONFailure;
+	}
+	return JSONSuccess;
+}
+
+JSON_Status json_object_dotset_boolean_with_std(JSON_Object *object, std::string name, int boolean) {
+	JSON_Value *value = json_value_init_boolean(boolean);
+	if (value == NULL) {
+		return JSONFailure;
+	}
+	if (json_object_dotset_value(object, name.c_str(), value) == JSONFailure) {
 		json_value_free(value);
 		return JSONFailure;
 	}

@@ -1029,38 +1029,82 @@ int DockContext::getDockIndex(Dock* dock)
 	return -1;
 }
 
-bool DockContext::SaveDock(JSON_Object* config_node, ImU32 position)
+bool DockContext::SaveDock(JSON_Object* config_node)
 {
 	bool ret = true;
 	if (config_node != nullptr) //Need create more nodes...
 	{
 		ret = true;
-		Dock& dock = *GetDock(position);
-		json_object_set_number(config_node, "ID", dock.id);
-		json_object_set_string(config_node, "Label", dock.label);
-		json_object_set_number(config_node, "Position x", dock.pos.x);
-		json_object_set_number(config_node, "Position y", dock.pos.y);
-		json_object_set_number(config_node, "Size x", dock.size.x);
-		json_object_set_number(config_node, "Size y", dock.size.y);
-		json_object_set_number(config_node, "Status", dock.status);
-		json_object_set_boolean(config_node, "Active", dock.active);
-		json_object_set_boolean(config_node, "Opened", dock.opened);
-		json_object_set_boolean(config_node, "First", dock.first);
-		fillLocation(dock);
-		json_object_set_string(config_node, "Location", strlen(dock.location) ? dock.location : "-1");
-		json_object_set_number(config_node, "Child 0", getDockIndex(dock.children[0]));
-		json_object_set_number(config_node, "Child 1", getDockIndex(dock.children[1]));
-		json_object_set_number(config_node, "Prev", getDockIndex(dock.prev_tab));
-		json_object_set_number(config_node, "Next", getDockIndex(dock.next_tab));
+		//Frist Remove all data from JSON
+		json_object_clear(config_node);
+		//Add Number of Docks
+		json_object_dotset_number_with_std(config_node, "Number of Docks", m_docks.size());
+		//Now Save Name of Docks ----------------------
+		for (int i = 0; i < m_docks.size(); i++)
+		{
+			Dock& dock = *GetDock(i);
 
-		//json_object_set_number(config_node, "Parent", getDockIndex(dock.parent));
-		if (dock.parent == nullptr && &dock != getRootDock())
-		{
-			json_object_set_number(config_node, "Parent", getDockIndex(getRootDock()));
+			std::string name_dock = dock.label;
+			std::string name;
+			if (name_dock == "")
+			{
+				name_dock = "Parent" + std::to_string(i);
+				name = name_dock;
+			}
+
+			json_object_dotset_string_with_std(config_node, "Name" + std::to_string(i), name_dock.c_str());
 		}
-		else
+		//Now Save All data in JSON ----------------------
+		for (int i = 0; i < m_docks.size(); i++)
 		{
-			json_object_set_number(config_node, "Parent", getDockIndex(dock.parent));
+			Dock& dock = *GetDock(i);
+
+			std::string name_dock = dock.label;
+			std::string name;
+			if (name_dock == "")
+			{
+				name_dock = "Parent";
+				name = name_dock + std::to_string(i) + ".";
+			}
+			else
+			{
+				name = name_dock + ".";
+			}
+
+			json_object_dotset_number_with_std(config_node, name + "ID", dock.id);
+			std::string name_temp = dock.label;
+			if (name_temp == "")
+			{
+				std::string temp = "Parent" + std::to_string(i);
+				json_object_dotset_string_with_std(config_node, name + "Label", temp.c_str());
+			}
+			else
+			{
+				json_object_dotset_string_with_std(config_node, name + "Label", dock.label);
+			}
+			json_object_dotset_number_with_std(config_node, name + "Position x", dock.pos.x);
+			json_object_dotset_number_with_std(config_node, name + "Position y", dock.pos.y);
+			json_object_dotset_number_with_std(config_node, name + "Size x", dock.size.x);
+			json_object_dotset_number_with_std(config_node, name + "Size y", dock.size.y);
+			json_object_dotset_number_with_std(config_node, name + "Status", dock.status);
+			json_object_dotset_boolean_with_std(config_node, name + "Active", dock.active);
+			json_object_dotset_boolean_with_std(config_node, name + "Opened", dock.opened);
+			json_object_dotset_boolean_with_std(config_node, name + "First", dock.first);
+			fillLocation(dock);
+			json_object_dotset_string_with_std(config_node, name + "Location", strlen(dock.location) ? dock.location : "-1");
+			json_object_dotset_number_with_std(config_node, name + "Child 0", getDockIndex(dock.children[0]));
+			json_object_dotset_number_with_std(config_node, name + "Child 1", getDockIndex(dock.children[1]));
+			json_object_dotset_number_with_std(config_node, name + "Prev", getDockIndex(dock.prev_tab));
+			json_object_dotset_number_with_std(config_node, name + "Next", getDockIndex(dock.next_tab));
+
+			if (dock.parent == nullptr && &dock != getRootDock())
+			{
+				json_object_dotset_number_with_std(config_node, name + "Parent", getDockIndex(getRootDock()));
+			}
+			else
+			{
+				json_object_dotset_number_with_std(config_node, name + "Parent", getDockIndex(dock.parent));
+			}
 		}
 	}
 	return ret;
@@ -1072,57 +1116,55 @@ DockContext::Dock* DockContext::GetDock(int idx)
 	return idx < 0 ? nullptr : m_docks[(int)idx];
 }
 
-bool DockContext::LoadDock(JSON_Object* config_node, ImU32 position, bool firstcall)
+bool DockContext::LoadDock(JSON_Object* config_node)
 {
 	bool ret = true;
-
-	if (firstcall)
+	//First If m_docks have memory destroy
+	for (int i = 0; i < m_docks.size(); ++i)
 	{
-		for (int i = 0; i < m_docks.size(); ++i)
-		{
-			m_docks[i]->~Dock();
-			MemFree(m_docks[i]);
-		}
-		m_docks.clear();
-
-		for (int i = 0; i < NUMWINDOCK; ++i)
-		{
-			Dock *new_dock = (Dock *)MemAlloc(sizeof(Dock));
-			m_docks.push_back(new_dock);
-		}
+		m_docks[i]->~Dock();
+		MemFree(m_docks[i]);
 	}
-
-
-	Dock& dock = *GetDock(position);
-	dock.label = _strdup(json_object_get_string(config_node, "Label"));
-	//dock.id = json_object_get_number(config_node, "ID");
-	dock.id = ImHash(m_docks[position]->label, 0);
-	dock.pos.x = json_object_get_number(config_node, "Position x");
-	dock.pos.y = json_object_get_number(config_node, "Position y");
-	dock.size.x = json_object_get_number(config_node, "Size x");
-	dock.size.y = json_object_get_number(config_node, "Size x");
-	dock.status = (Status_)(int)json_object_get_number(config_node, "Status");
-	dock.active = json_object_get_boolean(config_node, "Active");
-	dock.opened = json_object_get_boolean(config_node, "Opened");
-	//dock.first = json_object_get_boolean(config_node, "First");
-	//m_docks[position]->location[0] = *_strdup(json_object_get_string(config_node, "Location"));
-
-	std::string str = json_object_get_string(config_node, "Location");
-	int j = 0;
-	for (std::string::iterator it = str.begin(); it != str.end(); it++)
+	m_docks.clear();
+	//MemAlloc
+	int NumDocks = json_object_get_number(config_node, "Number of Docks");
+	for (int i = 0; i < NumDocks; ++i)
 	{
-		m_docks[position]->location[j] = *it;
-		j++;
+		Dock *new_dock = (Dock *)MemAlloc(sizeof(Dock));
+		m_docks.push_back(new_dock);
 	}
-	dock.parent = GetDock(json_object_get_number(config_node, "Parent"));
-	dock.children[0] = GetDock(json_object_get_number(config_node, "Child 0"));
-	dock.children[1] = GetDock(json_object_get_number(config_node, "Child 1"));
-	dock.prev_tab = GetDock(json_object_get_number(config_node, "Prev"));
-	dock.next_tab = GetDock(json_object_get_number(config_node, "Next"));
+	//iterate all docks
+	for (int i = 0; i < m_docks.size(); i++)
+	{
+		Dock& dock = *GetDock(i);
+		std::string name_dock = "Name" + std::to_string(i);
+		std::string name = json_object_get_string(config_node, name_dock.c_str());
+		name = name + ".";
 
+		dock.id = json_object_dotget_number_with_std(config_node, name + "ID");
+		dock.label = _strdup(json_object_dotget_string_with_std(config_node, name + "Label"));
+		dock.pos.x = json_object_dotget_number_with_std(config_node, name + "Position x");
+		dock.pos.y = json_object_dotget_number_with_std(config_node, name + "Position y");
+		dock.size.x = json_object_dotget_number_with_std(config_node, name + "Size x");
+		dock.size.y = json_object_dotget_number_with_std(config_node, name + "Size x");
+		dock.status = (Status_)(int)json_object_dotget_number_with_std(config_node, name + "Status");
+		dock.active = json_object_dotget_boolean_with_std(config_node, name + "Active");
+		dock.opened = json_object_dotget_boolean_with_std(config_node, name + "Opened");
+		std::string loc = _strdup(json_object_dotget_string_with_std(config_node, name + "Location"));
+		int j = 0;
+		for (std::string::iterator it = loc.begin(); it != loc.end(); it++)
+		{
+			dock.location[j] = *it;
+			j++;
+		}
+		dock.location[j] = '\0';
 
-
-
+		dock.parent = GetDock(json_object_dotget_number_with_std(config_node, name + "Parent"));
+		dock.children[0] = GetDock(json_object_dotget_number_with_std(config_node, name + "Child 0"));
+		dock.children[1] = GetDock(json_object_dotget_number_with_std(config_node, name + "Child 1"));
+		dock.prev_tab = GetDock(json_object_dotget_number_with_std(config_node, name + "Prev"));
+		dock.next_tab = GetDock(json_object_dotget_number_with_std(config_node, name + "Next"));
+	}
 	return ret;
 }
 
