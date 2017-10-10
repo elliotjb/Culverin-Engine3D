@@ -33,6 +33,7 @@ void _Cube::Init()
 
 void _Cube::Draw()
 {
+	glColor4f(color.r, color.g, color.b, color.a);
 	cube_mesh.Draw();
 }
 

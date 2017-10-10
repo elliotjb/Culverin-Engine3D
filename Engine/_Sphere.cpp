@@ -1,4 +1,6 @@
 #include "_Sphere.h"
+#include "BaseGeometry.h"
+#include "GL3W\include\glew.h"
 
 _Sphere::_Sphere(Prim_Type t, const float3 p, const float r, bool k, Color c, uint def, bool w) :BaseGeometry(t, p, k, c, w)
 {
@@ -44,5 +46,6 @@ void _Sphere::SetDefinition(uint def)
 
 void _Sphere::Draw()
 {
+	glColor4f(color.r, color.g, color.b, color.a);
 	sphere_mesh.Draw();
 }

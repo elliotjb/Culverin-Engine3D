@@ -66,7 +66,7 @@ bool ModuleFBXLoader::CleanUp()
 	return true;
 }
 
-BaseObject* ModuleFBXLoader::LoadMesh(const char* filename)
+BaseGeometry* ModuleFBXLoader::LoadMesh(const char* filename)
 {
 	_Model* new_model = new _Model(filename, P_MODEL, App->renderer3D->wireframe);
 	new_model->id = App->geometry_manager->count++;

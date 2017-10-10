@@ -8,6 +8,7 @@
 #include "ImGui\imgui_impl_sdl_gl3.h"
 #include "ModuleGeometries.h"
 #include "_Cube.h"
+#include "GameObject.h"
 
 Scene::Scene(bool start_enabled) : Module(start_enabled)
 {
@@ -145,4 +146,11 @@ void Scene::ShowPerformance(int ms_index)
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.4f", post_log[ms_index - 1]);
 		ImGui::PlotHistogram("", post_log, IM_ARRAYSIZE(post_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
 	}
+}
+
+GameObject* Scene::CreateGameObject()
+{
+	GameObject* obj = new GameObject();
+	rootObject = obj;
+	return obj;
 }

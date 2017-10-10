@@ -4,7 +4,7 @@
 #include "BaseGeometry.h"
 #include <vector>
 
-class BaseObject;
+class BaseGeometry;
 
 class ModuleFBXLoader : public Module
 {
@@ -18,9 +18,9 @@ public:
 	update_status postUpdate(float dt);
 	bool CleanUp();
 
-	BaseObject* LoadMesh(const char* filename);
+	BaseGeometry* LoadMesh(const char* filename);
 	
 private:
 
-	BaseObject* m;
+	BaseGeometry* m;
 };
