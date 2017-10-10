@@ -19,6 +19,7 @@ _Cube::_Cube(Prim_Type t, const float3 p, const float3 s, bool k, Color c, bool 
 	box = &boxer;
 
 	vertex_array.reserve(36);
+	//face_centers.reserve(6);
 	box->Triangulate(1, 1, 1, vertex_array.data(), NULL, NULL, false);
 }
 
@@ -35,5 +36,20 @@ void _Cube::Draw()
 {
 	glColor4f(color.r, color.g, color.b, color.a);
 	cube_mesh.Draw();
+}
+
+void _Cube::GenFaceNormals(float3* centers)
+{
+	if (box != nullptr)
+	{
+		for (int i = 0; i < box->NumFaces(); i++)
+		{
+			FaceCenter center;
+			center.pos = centers[i];
+			center.norm = box->FaceNormal(i);
+
+			cube_mesh.face_centers.push_back(center);
+		}
+	}
 }
 

@@ -45,6 +45,10 @@ void BaseGeometry::Init()
 //}
 }
 
+void BaseGeometry::GenFaceNormals(float3* centers)
+{
+}
+
 void BaseGeometry::Draw()
 {
 	//if (mesh.num_vertices > 0 && mesh.num_indices > 0)
@@ -145,11 +149,6 @@ void Mesh::Draw()
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
 
-		//if (textures.size() < 0)
-		//{
-		//	glColor4f(color.r, color.g, color.b, color.a);
-		//}
-
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -163,33 +162,39 @@ void Mesh::Draw()
 			}
 		}
 
-
-
 		glBindBuffer(GL_ARRAY_BUFFER, vertices_id); //VERTEX ID
 		glVertexPointer(3, GL_FLOAT, sizeof(Vertex), NULL);
 		glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 		
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id); // INDICES ID
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL);
 		
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		/*if (mesh.normals != nullptr)
-		{
-			if (App->renderer3D->normals)
-			{
-				for (uint i = 0; i < mesh.num_vertices; i++)
-				{
-					glLineWidth(1.0f);
-					glColor3f(1.0f, 1.0f, 1.0f);
+	
+		//if (App->renderer3D->normals)
+		//{
+		//	for (uint i = 0; i < vertices.size(); i++)
+		//	{
+		//		glBegin(GL_LINES);
+		//		glLineWidth(1.0f);
+		//		glVertex3f(vertices[i].pos.x, vertices[i].pos.y, vertices[i].pos.z);
+		//		glVertex3f(vertices[i].pos.x + vertices[i].norm.x, vertices[i].pos.y + vertices[i].norm.y, vertices[i].pos.z + vertices[i].norm.z);
+		//		glEnd();
+		//	}
 
-					glBegin(GL_LINES);
-					glVertex3f(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]);
-					glVertex3f(mesh.vertices[i] + mesh.normals[i], mesh.vertices[i + 1] + mesh.normals[i + 1], mesh.vertices[i + 2] + mesh.normals[i + 2]);
-					glEnd();
-				}
-			}
-		}*/
+		//	for (uint i = 0; i < face_centers.size(); i++)
+		//	{
+		//		glBegin(GL_LINES);
+		//		glLineWidth(1.0f);
+		//		glColor3f(1.0f, 1.0f, 0.0f);
+		//		glVertex3f(face_centers[i].pos.x, face_centers[i].pos.y, face_centers[i].pos.z);
+		//		glVertex3f(face_centers[i].pos.x + face_centers[i].norm.x, face_centers[i].pos.y + face_centers[i].norm.y, face_centers[i].pos.z + face_centers[i].norm.z);
+		//		glEnd();
+		//	}
+		//}
+		
 
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);

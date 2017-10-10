@@ -18,6 +18,12 @@ enum Prim_Type
 	P_MODEL,
 };
 
+struct FaceCenter
+{
+	float3 pos;
+	float3 norm;
+};
+
 struct Vertex
 {
 	float3 pos;
@@ -46,6 +52,7 @@ public:
 	std::vector<Vertex> vertices;
 	std::vector<uint> indices;
 	std::vector<Texture> textures;
+	std::vector<FaceCenter> face_centers;
 
 private:
 
@@ -63,6 +70,7 @@ public:
 
 	virtual void Draw();
 	virtual void Init();
+	virtual void GenFaceNormals(float3* centers);
 
 	bool SetWireframe(bool w);
 

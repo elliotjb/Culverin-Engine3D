@@ -12,10 +12,13 @@ public:
 	void Init();
 	void Draw();
 
+	void GenFaceNormals(float3* centers);
+
 public:
 	Mesh cube_mesh;
 	float3 size = { 0, 0, 0 };
 	OBB* boxed = nullptr;
 	AABB* box = nullptr;
 	std::vector<float3> vertex_array;
+	std::vector<float3> face_centers;
 };

@@ -13,6 +13,8 @@ public:
 	void SetDefinition(uint def);
 	void Draw();
 
+	void GenFaceNormals(float3* centers);
+
 public:
 	Mesh sphere_mesh;
 	float radius = 0;

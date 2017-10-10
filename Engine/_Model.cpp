@@ -32,7 +32,6 @@ void _Model::LoadModel(const char * path)
 	bool ret = false;
 	aiMesh* new_mesh = nullptr;
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
-
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		ProcessNode(scene->mRootNode, scene);

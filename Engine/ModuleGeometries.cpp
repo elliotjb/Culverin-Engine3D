@@ -95,6 +95,7 @@ void ModuleGeometries::CreateCube(float3 pos, float3 size, bool k, Color color)
 {
 	_Cube* cube = new _Cube(P_CUBE, pos, size, k, color, wireframe_mode);
 	Index_vert(cube->vertex_array.data(), 36, &cube->cube_mesh);
+	//cube->GenFaceNormals(cube->face_centers.data());
 	cube->id = count++;
 	cube->Init();
 	objects.push_back(cube);

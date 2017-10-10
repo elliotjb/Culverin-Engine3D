@@ -49,3 +49,14 @@ void _Sphere::Draw()
 	glColor4f(color.r, color.g, color.b, color.a);
 	sphere_mesh.Draw();
 }
+
+void _Sphere::GenFaceNormals(float3* centers)
+{
+	//if (sphere != nullptr)
+	//{
+	//	for (uint i = 0; i < sphere->NumFaces; i++)
+	//	{
+	//		sphere_mesh.vertices[i].norm = sphere_mesh->FaceNormal(i);
+	//	}
+	//}
+}
