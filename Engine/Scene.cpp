@@ -6,7 +6,7 @@
 #include "Gl3W\include\glew.h"
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_sdl_gl3.h"
-#include "ModuleObjects.h"
+#include "ModuleGeometries.h"
 #include "_Cube.h"
 
 Scene::Scene(bool start_enabled) : Module(start_enabled)

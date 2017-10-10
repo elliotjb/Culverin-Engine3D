@@ -2,7 +2,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
-#include "ModuleObjects.h"
+#include "ModuleGeometries.h"
 #include "_Model.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -69,8 +69,8 @@ bool ModuleFBXLoader::CleanUp()
 BaseObject* ModuleFBXLoader::LoadMesh(const char* filename)
 {
 	_Model* new_model = new _Model(filename, P_MODEL, App->renderer3D->wireframe);
-	new_model->id = App->objects->count++;
-	App->objects->objects.push_back(new_model);
+	new_model->id = App->geometry_manager->count++;
+	App->geometry_manager->objects.push_back(new_model);
 
 	return m;
 }

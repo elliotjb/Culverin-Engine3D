@@ -88,7 +88,7 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		lights[0].ref = GL_LIGHT0;
 		lights[0].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
 		lights[0].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
-		lights[0].SetPos(0.0f, 0.0f, 2.5f);
+		lights[0].SetPos(0.0f, 0.0f, 0.0f);
 		lights[0].Init();
 		
 		GLfloat MaterialAmbient[] = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -208,7 +208,7 @@ update_status ModuleRenderer3D::UpdateConfig(float dt)
 		}
 		if (ImGui::Checkbox("Wireframe", &wireframe))
 		{
-			App->objects->ShowWire(wireframe);
+			App->geometry_manager->ShowWire(wireframe);
 		}
 		if (ImGui::Checkbox("Normals", &normals))
 		{
@@ -216,7 +216,7 @@ update_status ModuleRenderer3D::UpdateConfig(float dt)
 		}
 		if (ImGui::Checkbox("Objects Axis", &axis))
 		{
-			App->objects->ShowAxis(axis);
+			App->geometry_manager->ShowAxis(axis);
 		}
 		if (ImGui::Checkbox("Smooth", &smooth))
 		{

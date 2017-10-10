@@ -315,9 +315,6 @@
     <ClInclude Include="ModuleObjectsUI.h">
       <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleObjects.h">
-      <Filter>Engine\Modules\Base&amp;Manager_Objects</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleInspector.h">
       <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
@@ -373,6 +370,9 @@
       <Filter>Engine\Modules\Geometries</Filter>
     </ClInclude>
     <ClInclude Include="BaseGeometry.h">
+      <Filter>Engine\Modules\Base&amp;Manager_Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleGeometries.h">
       <Filter>Engine\Modules\Base&amp;Manager_Objects</Filter>
     </ClInclude>
   </ItemGroup>
@@ -539,9 +539,6 @@
     <ClCompile Include="ModuleObjectsUI.cpp">
       <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleObjects.cpp">
-      <Filter>Engine\Modules\Base&amp;Manager_Objects</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleInspector.cpp">
       <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
@@ -585,6 +582,9 @@
       <Filter>Engine\Modules\Geometries</Filter>
     </ClCompile>
     <ClCompile Include="BaseGeometry.cpp">
+      <Filter>Engine\Modules\Base&amp;Manager_Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleGeometries.cpp">
       <Filter>Engine\Modules\Base&amp;Manager_Objects</Filter>
     </ClCompile>
   </ItemGroup>

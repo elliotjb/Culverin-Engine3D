@@ -188,7 +188,7 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Time\Clock.h" />
     <ClInclude Include="WindowManager.h" />
-    <ClInclude Include="ModuleObjects.h" />
+    <ClInclude Include="ModuleGeometries.h" />
     <ClInclude Include="_Model.h" />
     <ClInclude Include="_Sphere.h" />
   </ItemGroup>
@@ -260,7 +260,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Time\Clock.cpp" />
-    <ClCompile Include="ModuleObjects.cpp" />
+    <ClCompile Include="ModuleGeometries.cpp" />
     <ClCompile Include="_Model.cpp" />
     <ClCompile Include="_Sphere.cpp" />
   </ItemGroup>

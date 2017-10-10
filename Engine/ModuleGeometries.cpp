@@ -1,4 +1,4 @@
-#include "ModuleObjects.h"
+#include "ModuleGeometries.h"
 #include "Primitive.h"
 #include "Globals.h"
 #include "ModulePhysics3D.h"
@@ -7,22 +7,22 @@
 #include "_Cube.h"
 #include "_Sphere.h"
 
-ModuleObjects::ModuleObjects(bool start_enabled) : Module(start_enabled)
+ModuleGeometries::ModuleGeometries(bool start_enabled) : Module(start_enabled)
 {
-	name = "Objects Manager";
+	name = "Geometries Manager";
 }
 
-ModuleObjects::~ModuleObjects()
+ModuleGeometries::~ModuleGeometries()
 {
 
 }
 
-bool ModuleObjects::Start()
+bool ModuleGeometries::Start()
 {
 	return true;
 }
 
-update_status ModuleObjects::Update(float dt)
+update_status ModuleGeometries::Update(float dt)
 {
 	perf_timer.Start();
 
@@ -37,16 +37,15 @@ update_status ModuleObjects::Update(float dt)
 }
 
 
-
-bool ModuleObjects::CleanUp()
+bool ModuleGeometries::CleanUp()
 {
 	//TODO -> fill THIS
 	return true;
 }
 
-void ModuleObjects::ShowPerformance(int ms_index)
+void ModuleGeometries::ShowPerformance(int ms_index)
 {
-	if (ImGui::CollapsingHeader("OBJECTS"))
+	if (ImGui::CollapsingHeader("GEOMETRIES"))
 	{
 		ImGui::Text("Pre-Update:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.4f", pre_log[ms_index - 1]);
@@ -61,7 +60,7 @@ void ModuleObjects::ShowPerformance(int ms_index)
 }
 
 
-bool ModuleObjects::Index_vert(float3* vertex_triangulate, uint num_vertex, Mesh* mesh)
+bool ModuleGeometries::Index_vert(float3* vertex_triangulate, uint num_vertex, Mesh* mesh)
 {
 	std::vector<float3> all_index;
 	uint size = 0;
@@ -92,7 +91,7 @@ bool ModuleObjects::Index_vert(float3* vertex_triangulate, uint num_vertex, Mesh
 	return true;
 }
 
-void ModuleObjects::CreateCube(float3 pos, float3 size, bool k, Color color)
+void ModuleGeometries::CreateCube(float3 pos, float3 size, bool k, Color color)
 {
 	_Cube* cube = new _Cube(P_CUBE, pos, size, k, color, wireframe_mode);
 	Index_vert(cube->vertex_array.data(), 36, &cube->cube_mesh);
@@ -102,7 +101,7 @@ void ModuleObjects::CreateCube(float3 pos, float3 size, bool k, Color color)
 	//cubes.push_back(cube);
 }
 
-void ModuleObjects::CreateSphere(float3 pos, float radius, uint def, bool k, Color color)
+void ModuleGeometries::CreateSphere(float3 pos, float radius, uint def, bool k, Color color)
 {
 	_Sphere* sphere = new _Sphere(P_SPHERE, pos, radius, k, color, def, wireframe_mode);
 	Index_vert(sphere->vertex_array.data(), sphere->definition, &sphere->sphere_mesh);
@@ -114,7 +113,7 @@ void ModuleObjects::CreateSphere(float3 pos, float radius, uint def, bool k, Col
 }
 
 
-void ModuleObjects::ShowAxis(bool axis)
+void ModuleGeometries::ShowAxis(bool axis)
 {
 	/*for (int i = 0; i < Body_spheres.size(); i++)
 	{
@@ -126,7 +125,7 @@ void ModuleObjects::ShowAxis(bool axis)
 	}*/
 }
 
-void ModuleObjects::ShowWire(bool wire)
+void ModuleGeometries::ShowWire(bool wire)
 {
 	wireframe_mode = wire;
 

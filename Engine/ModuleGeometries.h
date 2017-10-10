@@ -1,7 +1,4 @@
 #pragma once
-#ifndef __MODULEOBJECTS_H__
-#define __MODULEOBJECTS_H__
-
 #include "Module.h"
 #include "Globals.h"
 #include "ImGui\imgui.h"
@@ -12,12 +9,12 @@
 class BaseGeometry;
 class Mesh;
 
-class ModuleObjects : public Module
+class ModuleGeometries : public Module
 {
 public:
 
-	ModuleObjects(bool start_enabled = true);
-	virtual ~ModuleObjects();
+	ModuleGeometries(bool start_enabled = true);
+	virtual ~ModuleGeometries();
 
 	bool Start();
 	update_status Update(float dt);
@@ -51,6 +48,3 @@ public:
 	bool wireframe_mode = false;
 	uint count = 0;
 };
-
-
-#endif

@@ -13,7 +13,7 @@
 #include "Scene.h"
 #include "ModuleConsole.h"
 #include "ModuleGUI.h"
-#include "ModuleObjects.h"
+#include "ModuleGeometries.h"
 #include "ModuleFBXLoader.h"
 #include "ModuleTextures.h"
 #include "parson.h"
@@ -35,7 +35,7 @@ public:
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModulePhysics3D* physics;
-	ModuleObjects* objects;
+	ModuleGeometries* geometry_manager;
 	ModulePlayer* player;
 	Scene* scene;
 	Console* console;

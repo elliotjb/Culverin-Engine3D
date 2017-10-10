@@ -3,7 +3,7 @@
 #include "Application.h"
 #include "ModuleConsole.h"
 #include "ModuleHardware.h"
-#include "ModuleObjects.h"
+#include "ModuleGeometries.h"
 #include "ModuleInspector.h"
 #include "ModuleHierarchy.h"
 #include "ModuleSceneWorld.h"
