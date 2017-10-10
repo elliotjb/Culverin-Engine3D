@@ -8,7 +8,6 @@
 
 
 using namespace ImGui;
-#define NUMWINDOCK 3
 
 struct  DockContext;
 
@@ -152,63 +151,11 @@ struct DockContext
 	int getDockIndex(Dock* dock);
 
 	//Save and Load Dock
-	bool SaveDock(JSON_Object* config_node, ImU32 position);
-	bool LoadDock(JSON_Object* config_node, ImU32 position, bool firstcall);
+	bool SaveDock(JSON_Object* config_node);
+	bool LoadDock(JSON_Object* config_node);
 
 	Dock* GetDock(int idx);
 
 };
 
-/*
-
-Dock& dock = *m_docks[i];
-file << "dock" << (Lumix::u64)&dock << " = {\n";
-file << "index = " << i << ",\n";
-file << "label = \"" << dock.label << "\",\n";
-file << "x = " << (int)dock.pos.x << ",\n";
-file << "y = " << (int)dock.pos.y << ",\n";
-file << "location = \"" << dock.location << "\",\n";
-file << "size_x = " << (int)dock.size.x << ",\n";
-file << "size_y = " << (int)dock.size.y << ",\n";
-file << "status = " << (int)dock.status << ",\n";
-file << "active = " << (int)dock.active << ",\n";
-file << "opened = " << (int)dock.opened << ",\n";
-file << "prev = " << (int)getDockIndex(dock.prev_tab) << ",\n";
-file << "next = " << (int)getDockIndex(dock.next_tab) << ",\n";
-file << "child0 = " << (int)getDockIndex(dock.children[0]) << ",\n";
-file << "child1 = " << (int)getDockIndex(dock.children[1]) << ",\n";
-file << "parent = " << (int)getDockIndex(dock.parent) << "\n";
-if (i < m_docks.size() - 1)
-file << "},\n";
-else
-file << "}\n";
-
-std::string di = "Dock" + std::to_string(i) + ".";
-
-json->SetString(di + "ID", std::to_string(i).c_str());
-json->SetString(di + "Label", dock.parent ? (dock.label[0] == '\0' ? "DOCK" : dock.label) : dock.status == Status_Float ? dock.label : "ROOT");
-json->SetNumber(di + "pos_X", (int)dock.pos.x);
-json->SetNumber(di + "pos_Y", (int)dock.pos.y);
-json->SetNumber(di + "size_X", (int)dock.size.x);
-json->SetNumber(di + "size_Y", (int)dock.size.y);
-json->SetNumber(di + "status", (int)dock.status);
-json->SetBool(di + "active", dock.active ? true : false);
-json->SetBool(di + "opened", dock.opened ? true : false);
-fillLocation(dock);
-json->SetString(di + "location", strlen(dock.location) ? dock.location : "-1");
-json->SetNumber(di + "child0", getDockIndex(dock.children[0]));
-json->SetNumber(di + "child1", getDockIndex(dock.children[1]));
-json->SetNumber(di + "prev_tab", getDockIndex(dock.prev_tab));
-json->SetNumber(di + "next_tab", getDockIndex(dock.next_tab));
-
-if (dock.parent == nullptr && &dock != getRootDock())
-{
-json->SetNumber(di + "parent", getDockIndex(getRootDock()));
-}
-else
-{
-json->SetNumber(di + "parent", getDockIndex(dock.parent));
-}
-
-*/
 #endif

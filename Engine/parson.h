@@ -24,12 +24,15 @@ THE SOFTWARE.
 #ifndef parson_parson_h
 #define parson_parson_h
 
+#include <string> //ELLIOT
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
 #include <stddef.h>   /* size_t */
+
 
 	/* Types and enums */
 	typedef struct json_object_t JSON_Object;
@@ -116,6 +119,7 @@ extern "C"
 	double        json_object_get_number(const JSON_Object *object, const char *name); /* returns 0 on fail */
 	int           json_object_get_boolean(const JSON_Object *object, const char *name); /* returns -1 on fail */
 
+
 																						/* dotget functions enable addressing values with dot notation in nested objects,
 																						just like in structs or c++/java/c# objects (e.g. objectA.objectB.value).
 																						Because valid names in JSON can contain dots, some values may be inaccessible
@@ -126,6 +130,12 @@ extern "C"
 	JSON_Array  * json_object_dotget_array(const JSON_Object *object, const char *name);
 	double        json_object_dotget_number(const JSON_Object *object, const char *name); /* returns 0 on fail */
 	int           json_object_dotget_boolean(const JSON_Object *object, const char *name); /* returns -1 on fail */
+
+	//New Functions
+	const char  * json_object_dotget_string_with_std(const JSON_Object *object, std::string name);
+	double        json_object_dotget_number_with_std(const JSON_Object *object, std::string name); /* returns 0 on fail */
+	int           json_object_dotget_boolean_with_std(const JSON_Object *object, std::string name); /* returns -1 on fail */
+
 
 																						   /* Functions to get available names */
 	size_t        json_object_get_count(const JSON_Object *object);
@@ -156,6 +166,11 @@ extern "C"
 	JSON_Status json_object_dotset_number(JSON_Object *object, const char *name, double number);
 	JSON_Status json_object_dotset_boolean(JSON_Object *object, const char *name, int boolean);
 	JSON_Status json_object_dotset_null(JSON_Object *object, const char *name);
+
+	/*New functions, diferences between last with this, is that this use std::string*/
+	JSON_Status json_object_dotset_number_with_std(JSON_Object *object, std::string name, double number);
+	JSON_Status json_object_dotset_string_with_std(JSON_Object *object, std::string name, const char *string);
+	JSON_Status json_object_dotset_boolean_with_std(JSON_Object *object, std::string name, int boolean);
 
 	/* Frees and removes name-value pair */
 	JSON_Status json_object_remove(JSON_Object *object, const char *name);
