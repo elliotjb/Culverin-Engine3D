@@ -12,6 +12,8 @@
 - 0.4.1:
 	* Added Basic GameObject - Component Structure (Like Unity Engine)
 	* Reestructured Model Importer (Now loads the texture it contains in his data automatically).
+	* Implemented Save and Load Doking windows.
+	* Render Scene in a window "ImGui".
 
 - 0.4:
 	* Add ImGui::Dock
