@@ -1,7 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-#include "BaseObject.h"
+#include "BaseGeometry.h"
 #include <vector>
 
 class BaseObject;

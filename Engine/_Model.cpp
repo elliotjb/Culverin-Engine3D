@@ -1,7 +1,7 @@
 #include "_Model.h"
 #include "Globals.h"
 #include "Application.h"
-#include "BaseObject.h"
+#include "BaseGeometry.h"
 #include "ModuleTextures.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -10,7 +10,7 @@
 
 #pragma comment(lib, "Assimp/libx86/assimp.lib")
 
-_Model::_Model(const char * path, Prim_Type type, bool wire) :BaseObject(type, wire)
+_Model::_Model(const char * path, Prim_Type type, bool wire) :BaseGeometry(type, wire)
 {
 	LoadModel(path);
 }

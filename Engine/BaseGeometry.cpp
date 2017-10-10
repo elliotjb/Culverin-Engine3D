@@ -1,23 +1,22 @@
-#include "BaseObject.h"
+#include "BaseGeometry.h"
 #include "Application.h"
 #include "ModuleTextures.h"
 #include "GL3W\include\glew.h"
 
 
-
-BaseObject::BaseObject(Prim_Type t, bool w):type(t), wireframe(w)
+BaseGeometry::BaseGeometry(Prim_Type t, bool w):type(t), wireframe(w)
 {
 }
 
-BaseObject::BaseObject(Prim_Type t, const float3 p, bool k, Color c, bool w) :type(t), pos(p), isKynematic(k), color(c), wireframe(w)
+BaseGeometry::BaseGeometry(Prim_Type t, const float3 p, bool k, Color c, bool w) :type(t), pos(p), isKynematic(k), color(c), wireframe(w)
 {
 }
 
-BaseObject::~BaseObject()
+BaseGeometry::~BaseGeometry()
 {
 }
 
-void BaseObject::Init()
+void BaseGeometry::Init()
 {
 //	//Vertices Buffer
 //	glGenBuffers(1, (GLuint*) &(mesh.id_vertices));
@@ -46,7 +45,7 @@ void BaseObject::Init()
 //}
 }
 
-void BaseObject::Draw()
+void BaseGeometry::Draw()
 {
 	//if (mesh.num_vertices > 0 && mesh.num_indices > 0)
 	//{
@@ -113,7 +112,7 @@ void BaseObject::Draw()
 }
 
 
-bool BaseObject::SetWireframe(bool w)
+bool BaseGeometry::SetWireframe(bool w)
 {
 	wireframe = w;
 	return wireframe;

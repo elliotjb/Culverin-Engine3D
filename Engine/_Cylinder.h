@@ -1,9 +1,9 @@
 #pragma once
-#include "BaseObject.h"
+#include "BaseGeometry.h"
 #include "MathGeoLib.h"
 #include <vector>
 
-class _Cylinder :public BaseObject
+class _Cylinder :public BaseGeometry
 {
 public:
 

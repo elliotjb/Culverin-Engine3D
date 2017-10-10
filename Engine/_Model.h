@@ -1,5 +1,5 @@
 #pragma once
-#include "BaseObject.h"
+#include "BaseGeometry.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
@@ -7,7 +7,7 @@
 #include <vector>
 #include <string>
 
-class _Model :public BaseObject
+class _Model :public BaseGeometry
 {
 public:
 	_Model(const char* path, Prim_Type type, bool wire);

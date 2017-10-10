@@ -9,7 +9,7 @@
 #include "GL3W\include\glew.h"
 #include "WindowManager.h"
 
-class BaseObject;
+class BaseGeometry;
 class Mesh;
 
 class ModuleObjects : public Module
@@ -37,7 +37,7 @@ public:
 
 public:
 
-	std::vector<BaseObject*> objects;
+	std::vector<BaseGeometry*> objects;
 	//std::vector<_Cube*> cubes;
 	//std::vector<_Sphere*> spheres;
 

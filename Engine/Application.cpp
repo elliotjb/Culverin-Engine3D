@@ -78,10 +78,8 @@ bool Application::Init()
 		orgName = json_object_get_string(config_node, "Org Name");
 		maxFPS = json_object_get_number(config_node, "Max FPS");
 		vsync = json_object_get_boolean(config_node, "VSYNC");
-
 		SetFpsCap(maxFPS);
 		//------------------------------------
-
 
 		// Call Init() in all modules
 		p2List_item<Module*>* item = list_modules.getFirst();

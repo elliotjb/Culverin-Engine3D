@@ -1,6 +1,6 @@
 #include "_Sphere.h"
 
-_Sphere::_Sphere(Prim_Type t, const float3 p, const float r, bool k, Color c, uint def, bool w) :BaseObject(t, p, k, c, w)
+_Sphere::_Sphere(Prim_Type t, const float3 p, const float r, bool k, Color c, uint def, bool w) :BaseGeometry(t, p, k, c, w)
 {
 	sphere = new Sphere(p, r);
 	radius = r;

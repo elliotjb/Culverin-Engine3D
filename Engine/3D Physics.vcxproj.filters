@@ -345,9 +345,6 @@
     <ClInclude Include="ModuleFBXLoader.h">
       <Filter>Engine\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="BaseObject.h">
-      <Filter>Engine\Modules\Base&amp;Manager_Objects</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Resource</Filter>
     </ClInclude>
@@ -374,6 +371,9 @@
     </ClInclude>
     <ClInclude Include="_Model.h">
       <Filter>Engine\Modules\Geometries</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseGeometry.h">
+      <Filter>Engine\Modules\Base&amp;Manager_Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -560,9 +560,6 @@
     <ClCompile Include="ModuleFBXLoader.cpp">
       <Filter>Engine\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="BaseObject.cpp">
-      <Filter>Engine\Modules\Base&amp;Manager_Objects</Filter>
-    </ClCompile>
     <ClCompile Include="_Cylinder.cpp">
       <Filter>Engine\Modules\Geometries</Filter>
     </ClCompile>
@@ -586,6 +583,9 @@
     </ClCompile>
     <ClCompile Include="_Model.cpp">
       <Filter>Engine\Modules\Geometries</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseGeometry.cpp">
+      <Filter>Engine\Modules\Base&amp;Manager_Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

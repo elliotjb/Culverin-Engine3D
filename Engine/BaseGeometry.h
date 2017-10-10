@@ -54,45 +54,12 @@ private:
 	uint indices_id = 0; /*INDICES ID*/
 };
 
-/*struct Geometry_Base
-{
-	// INDICES -----------------
-	uint id_indices = 0;
-	uint num_indices = 0;
-	uint* indices = nullptr;
-
-	// VERTICES ---------------------
-	uint id_vertices = 0;
-	uint num_vertices = 0;
-	//We can alternate between float or float3
-	float* vertices = nullptr;
-	float3* vertices3 = nullptr;
-
-	// TEXTUTE COORDS -----------------
-	uint id_image = 0;
-	uint id_texture = 0;
-	float* tex_coords = nullptr;
-	char* tex_path = nullptr;
-
-	//NORMALS COORDS --------------
-	uint id_normals = 0;
-	float* normals = nullptr;
-
-	~Geometry_Base()
-	{
-		delete[] indices;
-		delete[] vertices;
-		delete[] vertices3;
-		delete[] tex_coords;
-	}
-};*/
-
-class BaseObject
+class BaseGeometry
 {
 public:
-	BaseObject(Prim_Type t, bool w);
-	BaseObject(Prim_Type t, const float3 p, bool k, Color c, bool w);
-	virtual ~BaseObject();
+	BaseGeometry(Prim_Type t, bool w);
+	BaseGeometry(Prim_Type t, const float3 p, bool k, Color c, bool w);
+	virtual ~BaseGeometry();
 
 	virtual void Draw();
 	virtual void Init();

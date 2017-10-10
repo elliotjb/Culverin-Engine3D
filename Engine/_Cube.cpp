@@ -1,10 +1,10 @@
 #include "_Cube.h"
-#include "BaseObject.h"
+#include "BaseGeometry.h"
 #include "MathGeoLib.h"
 #include "GL3W\include\glew.h""
 #include <vector>
 
-_Cube::_Cube(Prim_Type t, const float3 p, const float3 s, bool k, Color c, bool w) :BaseObject(t, p, k, c, w)
+_Cube::_Cube(Prim_Type t, const float3 p, const float3 s, bool k, Color c, bool w) :BaseGeometry(t, p, k, c, w)
 {
 	size = s;
 

@@ -1,9 +1,9 @@
 #pragma once
-#include "BaseObject.h"
+#include "BaseGeometry.h"
 #include "MathGeoLib.h"
 #include <vector>
 
-class _Cube :public BaseObject
+class _Cube :public BaseGeometry
 {
 public:
 	_Cube(Prim_Type t, const float3 p, const float3 size, bool k, Color c, bool w);
