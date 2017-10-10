@@ -30,6 +30,8 @@ extern void EndWorkspace();
 extern void SetDockActive();
 extern bool BeginDock(const char* label, bool* opened, ImGuiWindowFlags extra_flags);
 extern void EndDock();
+extern ImVec2 GetPositionDock(char* nameWindow);
+extern ImVec2 GetSizeDock(char* nameWindow);
 extern DockContext* getDockContext();
 
 

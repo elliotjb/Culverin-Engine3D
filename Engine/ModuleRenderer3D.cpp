@@ -113,26 +113,32 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		fog_density = json_object_get_number(node, "Density");
 
 
-		(depth_test) ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
-		(cull_face) ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
-		lights[0].Active(true);
-		(lightning) ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
-		(color_material) ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
-		(texture_2d) ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
-		(smooth) ? glShadeModel(GL_SMOOTH) : glShadeModel(GL_FLAT);
-
-		if (fog_active)
-		{
-			glEnable(GL_FOG);
-			glFogfv(GL_FOG_DENSITY, &fog_density);
-		}
-
 	}
+
+	glewInit();
 
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	return ret;
+}
+
+bool ModuleRenderer3D::Start()
+{
+	(depth_test) ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+	(cull_face) ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+	lights[0].Active(true);
+	(lightning) ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
+	(color_material) ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
+	(texture_2d) ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
+	(smooth) ? glShadeModel(GL_SMOOTH) : glShadeModel(GL_FLAT);
+
+	if (fog_active)
+	{
+		glEnable(GL_FOG);
+		glFogfv(GL_FOG_DENSITY, &fog_density);
+	}
+	return true;
 }
 
 // PreUpdate: clear buffer

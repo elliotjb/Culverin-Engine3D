@@ -54,6 +54,11 @@ public:
 	{
 
 	}
+
+	ImVec2 getPos()
+	{
+		
+	}
 	/*virtual void OpenClose()
 	{
 		active = !active;
@@ -67,6 +72,7 @@ public:
 public:
 	std::vector<Active> active;
 	std::string name;
+	ImVec2 position;
 	// or std::vector<bool> active; YES
 	//ModuleObjects* obj = nullptr;
 

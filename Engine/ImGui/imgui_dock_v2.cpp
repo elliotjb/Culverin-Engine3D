@@ -1214,6 +1214,32 @@ void EndDock()
 	g_dock.end();
 }
 
+ImVec2 GetPositionDock(char* nameWindow)
+{
+	for (int i = 0; i < g_dock.m_docks.size(); i++)
+	{
+		char* temp = g_dock.m_docks[i]->label;
+		if (strcmp(temp, nameWindow) == 0)
+		{
+			return g_dock.m_docks[i]->pos;
+		}
+	}
+	return ImVec2(0,0);
+}
+
+ImVec2 GetSizeDock(char* nameWindow)
+{
+	for (int i = 0; i < g_dock.m_docks.size(); i++)
+	{
+		char* temp = g_dock.m_docks[i]->label;
+		if (strcmp(temp, nameWindow) == 0)
+		{
+			return g_dock.m_docks[i]->size;
+		}
+	}
+	return ImVec2(0, 0);
+}
+
 DockContext* getDockContext()
 {
 	return &g_dock;

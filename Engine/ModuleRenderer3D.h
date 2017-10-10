@@ -19,6 +19,7 @@ public:
 	~ModuleRenderer3D();
 
 	bool Init(JSON_Object* node);
+	bool Start();
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 	update_status UpdateConfig(float dt);

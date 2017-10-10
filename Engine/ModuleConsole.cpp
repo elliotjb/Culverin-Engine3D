@@ -159,8 +159,8 @@ void Console::Draw(const char* title)
 	}
 
 	// Demonstrate keeping auto focus on the input box
-	if (ImGui::IsItemHovered() || (ImGui::IsRootWindowOrAnyChildFocused() && !ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0)))
-		ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
+	//if (ImGui::IsItemHovered() || (ImGui::IsRootWindowOrAnyChildFocused() && !ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0)))
+		//ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
 
 	EndDock();
 }

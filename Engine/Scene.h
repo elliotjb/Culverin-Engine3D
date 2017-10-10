@@ -4,6 +4,7 @@
 #include "p2Point.h"
 #include "ImGui/imgui.h"
 #include "MathGeoLib.h"
+#include "ModuleFramebuffers.h"
 
 class _Cube;
 class GameObject;
@@ -15,6 +16,7 @@ public:
 	virtual ~Scene();
 
 	bool Start();
+	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	bool CleanUp();
 
@@ -28,6 +30,9 @@ public:
 
 	GLuint tex;
 	GLuint Lenna;
+
+	//
+	FrameBuffer* frBuff;
 
 	GameObject* rootObject = nullptr;
 };

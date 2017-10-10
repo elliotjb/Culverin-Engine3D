@@ -23,11 +23,20 @@ ModuleGUI::~ModuleGUI()
 {
 }
 
+bool ModuleGUI::Init(JSON_Object * node)
+{
+
+
+	return true;
+}
+
 bool ModuleGUI::Start()
 {
-	glewInit();
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 	ImGui_ImplSdlGL3_Init(App->window->window);
+
+	App->scene->frBuff = new FrameBuffer();
+	App->scene->frBuff->Create(App->window->GetWidth(), App->window->GetHeight());
 
 	winManager.push_back(new Hardware());   //0---- HARDWARE
 	winManager.push_back(new ModuleObjectsUI()); //1---- WINDOW_OBJECTS
@@ -419,6 +428,7 @@ update_status ModuleGUI::Update(float dt)
 	//Update All Modules ----------------------------------
 	UpdateWindows(dt);
 
+	App->scene->frBuff->UnBind();
 	Update_t = perf_timer.ReadMs();
 
 	return UPDATE_CONTINUE;

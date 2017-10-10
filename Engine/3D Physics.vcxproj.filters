@@ -390,6 +390,9 @@
     <ClInclude Include="Mesh.h">
       <Filter>Engine\Modules\Scene\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleFramebuffers.h">
+      <Filter>Engine\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -616,6 +619,9 @@
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Engine\Modules\Scene\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFramebuffers.cpp">
+      <Filter>Engine\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -31,8 +31,8 @@ void SceneWorld::ShowSceneWorld()
 		EndDock();
 		return;
 	}
-
-
+	
+	ImGui::Image((void*)App->scene->frBuff->GetTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 
 	EndDock();
 }

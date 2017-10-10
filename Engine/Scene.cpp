@@ -23,6 +23,8 @@ bool Scene::Start()
 {
 	float3 pos = { 1, 1, 1 };
 	float3 size = { 1, 1, 1 };
+
+
 	//App->objects->CreateCube(pos, size);
 	
 	/*for (int i = 0; i < CHECKERS_HEIGHT; i++)
@@ -54,6 +56,12 @@ bool Scene::Start()
 	return true;
 }
 
+update_status Scene::PreUpdate(float dt)
+{
+	frBuff->Bind();
+	return UPDATE_CONTINUE;
+}
+
 update_status Scene::Update(float dt)
 {
 	perf_timer.Start();
@@ -61,6 +69,15 @@ update_status Scene::Update(float dt)
 	Plane_p p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
+
+
+
+	/*ImGui::Begin("Test");
+
+	ImGui::Image((ImTextureID)frBuff->frame_id, ImVec2(frBuff->width, frBuff->height));
+	ImGui::End();
+
+	frBuff->UnBind();*/
 
 	/*glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, 0);

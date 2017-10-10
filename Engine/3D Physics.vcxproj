@@ -94,6 +94,7 @@
     <ClInclude Include="ImGui\imgui_dock_v2.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="ModuleFramebuffers.h" />
     <ClInclude Include="ModuleHierarchy.h" />
     <ClInclude Include="ModuleSceneWorld.h" />
     <ClInclude Include="ModuleTextures.h" />
@@ -207,6 +208,7 @@
     <ClCompile Include="ImGui\imgui_dock_v2.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="ModuleFramebuffers.cpp" />
     <ClCompile Include="ModuleHierarchy.cpp" />
     <ClCompile Include="ModuleSceneWorld.cpp" />
     <ClCompile Include="ModuleTextures.cpp" />

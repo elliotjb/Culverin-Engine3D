@@ -36,9 +36,9 @@ Application::Application()
 	AddModule(audio);
 	AddModule(physics);
 	AddModule(geometry_manager);
-	AddModule(gui);
 	AddModule(console);
 	AddModule(scene);
+	AddModule(gui);
 	AddModule(fbx_loader);
 	AddModule(textures);
 
