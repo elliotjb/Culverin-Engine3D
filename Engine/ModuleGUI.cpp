@@ -44,7 +44,7 @@ bool ModuleGUI::Start()
 		window[i]->Start();
 	}
 
-	//LoadDocks();
+	LoadDocks();
 
 	//Capsule_A = (Capsule(float3(200, 0, 0), float3(200, 0, 3), 1));
 	//Capsule_B = (Capsule(float3(0, -3, 0), float3(0, 3, 0), 1));
@@ -433,12 +433,8 @@ void ModuleGUI::LoadDocks()
 	config_file = json_parse_file("ImGuiDock.json");
 
 	config = json_value_get_object(config_file);
-	config_node = json_object_get_object(config, "Inspector");
-	getDockContext()->LoadDock(config_node, 0, true);
-	config_node = json_object_get_object(config, "Hierarchy");
-	getDockContext()->LoadDock(config_node, 1, false);
-	config_node = json_object_get_object(config, "Console");
-	getDockContext()->LoadDock(config_node, 2, false);
+	config_node = json_object_get_object(config, "Docking");
+	getDockContext()->LoadDock(config_node);
 }
 
 bool ModuleGUI::CleanUp()
@@ -450,12 +446,8 @@ bool ModuleGUI::CleanUp()
 	config_file = json_parse_file("ImGuiDock.json"); 
 
 	config = json_value_get_object(config_file);
-	config_node = json_object_get_object(config, "Inspector");
-	getDockContext()->SaveDock(config_node, 0);
-	config_node = json_object_get_object(config, "Hierarchy");
-	getDockContext()->SaveDock(config_node, 1);
-	config_node = json_object_get_object(config, "Console");
-	getDockContext()->SaveDock(config_node, 2);
+	config_node = json_object_get_object(config, "Docking");
+	getDockContext()->SaveDock(config_node);
 
 	json_serialize_to_file(config_file, "ImGuiDock.json");
 
