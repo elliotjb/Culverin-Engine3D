@@ -9,6 +9,10 @@
 - Configuration options (App, Window, Audio, Render).
 
 # Updates
+- 0.4.1:
+	* Added Basic GameObject - Component Structure (Like Unity Engine)
+	* Reestructured Model Importer (Now loads the texture it contains in his data automatically).
+
 - 0.4:
 	* Add ImGui::Dock
 	* Add window Hierarchy and Inspector
