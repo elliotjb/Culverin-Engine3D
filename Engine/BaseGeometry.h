@@ -42,7 +42,7 @@ class Mesh
 {
 public:
 	Mesh();
-	Mesh(std::vector<Vertex> vertices, std::vector<uint> indices, std::vector<Texture> textures, bool normals);
+	Mesh(std::vector<Vertex> vertices, std::vector<uint> indices, std::vector<Texture> textures, bool normals, uint faces);
 	~Mesh();
 
 	void Draw();
@@ -54,13 +54,14 @@ public:
 	std::vector<Texture> textures;
 	std::vector<FaceCenter> face_centers;
 
+	bool hasNormals = false;
+	uint numFaces = 0;
+
 private:
 
 	uint VAO = 0; /*Vertex Array Object*/
 	uint vertices_id = 0; /*VERTICES ID*/
 	uint indices_id = 0; /*INDICES ID*/
-
-	bool hasNormals = false;
 };
 
 class BaseGeometry

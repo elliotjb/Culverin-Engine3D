@@ -786,11 +786,6 @@ void ModuleGUI::UpdateWindows(float dt)
 		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar);
 
-	if (1)
-	{
-		if (1);
-	}
-
 	static GLuint icon_play = App->textures->LoadTexture("Imatges/UI/icon_play.png");
 	static GLuint icon_pause = App->textures->LoadTexture("Imatges/UI/icon_pause.png");
 	static GLuint icon_stop = App->textures->LoadTexture("Imatges/UI/icon_stop.png");
@@ -804,8 +799,9 @@ void ModuleGUI::UpdateWindows(float dt)
 	ImGui::ImageButton((ImTextureID*)icon_pause, pos_icon);
 	ImGui::SameLine(width / 2 + 20);
 	ImGui::ImageButton((ImTextureID*)icon_stop, pos_icon);
+	//ImGui::Image((ImTextureID*)icon_stop,pos_icon);
 	ImGui::PopStyleColor(1);
-
+	
 
 	BeginWorkspace();
 

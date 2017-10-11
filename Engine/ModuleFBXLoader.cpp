@@ -3,6 +3,8 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleGeometries.h"
+#include "WindowManager.h"
+#include "ModuleInspector.h"
 #include "_Model.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -73,7 +75,11 @@ BaseGeometry* ModuleFBXLoader::LoadMesh(const char* filename)
 		RELEASE(App->geometry_manager->geometry);
 	}
 
+	((Inspector*)App->gui->winManager[INSPECTOR])->model_loaded = true;
+	((Inspector*)App->gui->winManager[INSPECTOR])->SetInfo(new_model->GetTotalMeshes(), new_model->GetTotalVertex(), new_model->GetTotalFaces(), new_model->GetTexID());
+	
 	App->geometry_manager->geometry = new_model;
+
 
 	return m;
 }

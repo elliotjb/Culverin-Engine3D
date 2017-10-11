@@ -130,13 +130,15 @@ Mesh::Mesh()
 {
 }
 
-Mesh::Mesh(std::vector<Vertex> vert, std::vector<uint> ids, std::vector<Texture> tex, bool normals)
+Mesh::Mesh(std::vector<Vertex> vert, std::vector<uint> ids, std::vector<Texture> tex, bool normals, uint faces)
 {
 	hasNormals = normals;
+	numFaces = faces;
 
 	vertices = vert;
 	indices = ids;
 	textures = tex;
+
 	SetupMesh();
 }
 

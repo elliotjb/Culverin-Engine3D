@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "BaseGeometry.h"
 #include "ModuleTextures.h"
+#include "ModuleInspector.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
@@ -50,6 +51,16 @@ void _Model::LoadModel(const char * path)
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		ProcessNode(scene->mRootNode, scene);
+
+		//Set Base Info --------------------
+		total_meshes = meshes.size();
+		for (uint i = 0; i < total_meshes; i++)
+		{
+			total_vertex += meshes[i].vertices.size();
+			total_faces += meshes[i].numFaces;
+		}
+		//-----------------------------------
+
 		aiReleaseImport(scene);
 	}
 
@@ -140,8 +151,8 @@ Mesh _Model::ProcessMesh(aiMesh * mesh, const aiScene * scene)
 		std::vector<Texture> specularMaps = loadMaterialTextures(mat, aiTextureType_SPECULAR, "texture_specular");
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	}
-	
-	return Mesh(vertices, indices, textures, mesh->HasNormals());
+
+	return Mesh(vertices, indices, textures, mesh->HasNormals(), mesh->mNumFaces);
 }
 
 std::vector<Texture> _Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type, const char * typeName)
@@ -181,4 +192,25 @@ uint _Model::TextureFromFile(const char * path, const std::string&  dir)
 	std::string filename = std::string(path);
 	filename = dir + "textures/" + filename;
 	return App->textures->LoadTexture(filename.c_str());
+}
+
+uint _Model::GetTotalMeshes() const
+{
+	return total_meshes;
+}
+
+uint _Model::GetTotalVertex() const
+{
+	return total_vertex;
+}
+
+uint _Model::GetTotalFaces() const
+{
+	return total_faces;
+}
+
+uint _Model::GetTexID() const
+{
+	/* Only one texture loaded by now*/ // TODO -< MODIFY THIS!!! URGENT!!!!
+	return meshes[0].textures[0].id;
 }
