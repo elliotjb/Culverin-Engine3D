@@ -1,6 +1,4 @@
 #pragma once
-
-
 #include "Module.h"
 #include "Globals.h"
 #include "ImGui\imgui.h"
@@ -21,11 +19,12 @@ public:
 
 public:
 
-	unsigned int			frame_id = 0;
-	unsigned int			rbo;
-	unsigned int			texture;
-	unsigned int			depth_id = 0;
+	uint			frame_id = 0;
+	uint			rbo;
+	uint			texture;
+	uint			depth_id = 0;
 
 	int		width;
 	int		height;
+	ImVec2	size;
 };

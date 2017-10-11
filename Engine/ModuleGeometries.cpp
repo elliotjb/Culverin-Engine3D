@@ -10,6 +10,7 @@
 ModuleGeometries::ModuleGeometries(bool start_enabled) : Module(start_enabled)
 {
 	name = "Geometries Manager";
+	geometry = nullptr;
 }
 
 ModuleGeometries::~ModuleGeometries()
@@ -26,9 +27,15 @@ update_status ModuleGeometries::Update(float dt)
 {
 	perf_timer.Start();
 
-	for (int i = 0; i < objects.size(); i++)
+	//for (int i = 0; i < objects.size(); i++)
+	//{
+	//	objects[i]->Draw();
+	//}
+
+	/*ONLY ONE GEOMETRY CAN BE LOADED FOR PRACTICE 1*/
+	if (geometry != nullptr) 
 	{
-		objects[i]->Draw();
+		geometry->Draw();
 	}
 	
 	Update_t = perf_timer.ReadMs();
@@ -93,23 +100,23 @@ bool ModuleGeometries::Index_vert(float3* vertex_triangulate, uint num_vertex, M
 
 void ModuleGeometries::CreateCube(float3 pos, float3 size, bool k, Color color)
 {
-	_Cube* cube = new _Cube(P_CUBE, pos, size, k, color, wireframe_mode);
-	Index_vert(cube->vertex_array.data(), 36, &cube->cube_mesh);
-	//cube->GenFaceNormals(cube->face_centers.data());
-	cube->id = count++;
-	cube->Init();
-	objects.push_back(cube);
-	//cubes.push_back(cube);
+	//_Cube* cube = new _Cube(P_CUBE, pos, size, k, color, wireframe_mode);
+	//Index_vert(cube->vertex_array.data(), 36, &cube->cube_mesh);
+	////cube->GenFaceNormals(cube->face_centers.data());
+	//cube->id = count++;
+	//cube->Init();
+	//objects.push_back(cube);
+	////cubes.push_back(cube);
 }
 
 void ModuleGeometries::CreateSphere(float3 pos, float radius, uint def, bool k, Color color)
 {
-	_Sphere* sphere = new _Sphere(P_SPHERE, pos, radius, k, color, def, wireframe_mode);
-	Index_vert(sphere->vertex_array.data(), sphere->definition, &sphere->sphere_mesh);
-	sphere->id = count++;
-	sphere->Init();
-	objects.push_back(sphere);
-	//spheres.push_back(sphere);
+	//_Sphere* sphere = new _Sphere(P_SPHERE, pos, radius, k, color, def, wireframe_mode);
+	//Index_vert(sphere->vertex_array.data(), sphere->definition, &sphere->sphere_mesh);
+	//sphere->id = count++;
+	//sphere->Init();
+	//objects.push_back(sphere);
+	////spheres.push_back(sphere);
 
 }
 
@@ -130,9 +137,15 @@ void ModuleGeometries::ShowWire(bool wire)
 {
 	wireframe_mode = wire;
 
-	for (int i = 0; i < objects.size(); i++)
+	//for (int i = 0; i < objects.size(); i++)
+	//{
+	//	objects[i]->SetWireframe(wire);
+	//}
+
+	/*ONLY ONE GEOMETRY CAN BE LOADED FOR PRACTICE 1*/
+	if (geometry != nullptr)
 	{
-		objects[i]->SetWireframe(wire);
+		geometry->SetWireframe(wireframe_mode);
 	}
 
 }

@@ -14,6 +14,7 @@ public:
 	~_Model();
 
 	void Draw();
+	void Clear();
 
 	void LoadModel(const char* path);
 	void ProcessNode(aiNode* node, const aiScene* scene);

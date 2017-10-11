@@ -70,6 +70,7 @@ public:
 
 	virtual void Draw();
 	virtual void Init();
+	virtual void Clear();
 	virtual void GenFaceNormals(float3* centers);
 
 	bool SetWireframe(bool w);

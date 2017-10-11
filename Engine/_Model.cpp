@@ -27,6 +27,21 @@ void _Model::Draw()
 	}
 }
 
+void _Model::Clear()
+{
+	
+	//CLEAR MESHES OF THE MODEL
+	for (uint i = 0; i < meshes.size(); i++)
+	{
+		meshes[i].vertices.clear();
+		meshes[i].indices.clear();
+		meshes[i].textures.clear();
+		meshes[i].face_centers.clear();
+	}
+
+	loaded_tex.clear();
+}
+
 void _Model::LoadModel(const char * path)
 {
 	bool ret = false;

@@ -67,12 +67,20 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
+
+		error = glewInit();
+		if (error != GL_NO_ERROR)
+		{
+			LOG("Error initializing GL3W! %s\n", gluErrorString(error));
+			ret = false;
+		}
 		
 		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 		glClearDepth(1.0f);
 		
 		//Initialize clear color
 		glClearColor(0.f, 0.f, 0.f, 1.f);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		//Check for error
 		error = glGetError();
@@ -88,7 +96,7 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		lights[0].ref = GL_LIGHT0;
 		lights[0].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
 		lights[0].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
-		lights[0].SetPos(0.0f, 0.0f, 0.0f);
+		lights[0].SetPos(0.0f, 5.0f, 5.0f);
 		lights[0].Init();
 		
 		GLfloat MaterialAmbient[] = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -114,8 +122,6 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 
 
 	}
-
-	glewInit();
 
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);

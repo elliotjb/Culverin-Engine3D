@@ -63,13 +63,15 @@ bool FrameBuffer::Create(int width, int height)
 
 void FrameBuffer::Bind()
 {
-	glViewport(0, 0, width, height);
+	size = GetSizeDock("SceneWorld");
+	Resize(size.x, size.y);
 	glBindFramebuffer(GL_FRAMEBUFFER, frame_id);
 }
 
 void FrameBuffer::UnBind()
 {
-	glViewport(0, 0, App->window->GetWidth(), App->window->GetHeight());
+	size = GetSizeDock("SceneWorld");
+	glViewport(0, 0, size.x, size.y);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -82,7 +84,7 @@ void FrameBuffer::Destroy()
 
 void FrameBuffer::Resize(int width, int height)
 {
-	if (width != App->window->GetWidth() && height != App->window->GetHeight())
+	if (this->width != width || this->height != height)
 	{
 		Destroy();
 		Create(width, height);

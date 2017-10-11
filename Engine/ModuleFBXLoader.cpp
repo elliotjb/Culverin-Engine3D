@@ -38,11 +38,6 @@ update_status ModuleFBXLoader::Update(float dt)
 		App->input->dropped = false;
 	}
 
-	//for (uint i = 0; i < meshes.size(); i++)
-	//{
-	//	meshes[i]->Draw();
-	//}
-
 	return UPDATE_CONTINUE;
 }
 
@@ -70,7 +65,15 @@ BaseGeometry* ModuleFBXLoader::LoadMesh(const char* filename)
 {
 	_Model* new_model = new _Model(filename, P_MODEL, App->renderer3D->wireframe);
 	new_model->id = App->geometry_manager->count++;
-	App->geometry_manager->objects.push_back(new_model);
+	//App->geometry_manager->objects.push_back(new_model);
+
+	if (App->geometry_manager->geometry != nullptr)
+	{
+		App->geometry_manager->geometry->Clear();
+		RELEASE(App->geometry_manager->geometry);
+	}
+
+	App->geometry_manager->geometry = new_model;
 
 	return m;
 }

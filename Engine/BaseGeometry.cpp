@@ -45,6 +45,10 @@ void BaseGeometry::Init()
 //}
 }
 
+void BaseGeometry::Clear()
+{
+}
+
 void BaseGeometry::GenFaceNormals(float3* centers)
 {
 }

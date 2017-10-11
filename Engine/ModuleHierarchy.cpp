@@ -39,7 +39,7 @@ void Hierarchy::ShowHierarchy()
 		EndDock();
 		return;
 	}
-	for (int i = 0; i < App->geometry_manager->objects.size(); i++)
+	/*for (int i = 0; i < App->geometry_manager->objects.size(); i++)
 	{
 		if (App->geometry_manager->objects[i]->type == P_SPHERE)
 		{
@@ -61,7 +61,7 @@ void Hierarchy::ShowHierarchy()
 			}
 			ImGui::PopID();
 		}
-	}
+	}*/
 
 
 	EndDock();

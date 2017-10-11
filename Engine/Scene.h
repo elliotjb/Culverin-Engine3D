@@ -26,13 +26,12 @@ public:
 
 public:
 	GLubyte checkImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
-	_Cube* test;
+	_Cube* test = nullptr;
 
 	GLuint tex;
 	GLuint Lenna;
 
 	//
-	FrameBuffer* frBuff;
-
+	FrameBuffer* frBuff = nullptr;
 	GameObject* rootObject = nullptr;
 };

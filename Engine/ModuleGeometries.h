@@ -34,7 +34,7 @@ public:
 
 public:
 
-	std::vector<BaseGeometry*> objects;
+	BaseGeometry* geometry = nullptr;
 	//std::vector<_Cube*> cubes;
 	//std::vector<_Sphere*> spheres;
 

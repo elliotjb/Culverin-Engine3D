@@ -18,6 +18,16 @@ void log(const char file[], int line, const char* format, ...);
 #define HAVE_M_PI
 #define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
+// Deletes a buffer
+#define RELEASE( x )\
+    {\
+       if( x != nullptr )\
+       {\
+         delete x;\
+	     x = nullptr;\
+       }\
+    }
+
 #define CHECKERS_HEIGHT 64
 #define CHECKERS_WIDTH 64
 
