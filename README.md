@@ -10,6 +10,7 @@
 
 # Updates
 - 0.4.1:
+	* Add buttom to Revert Style Docking. (v0.4.1.1)
 	* Added Basic GameObject - Component Structure (Like Unity Engine)
 	* Reestructured Model Importer (Now loads the texture it contains in his data automatically).
 	* Implemented Save and Load Doking windows.
