@@ -31,6 +31,7 @@ public:
 
 	void ShowAxis(bool axis);
 	void ShowWire(bool wire);
+	void ShowNormals(bool norm);
 
 public:
 
@@ -46,5 +47,6 @@ public:
 	// --------------------------------
 
 	bool wireframe_mode = false;
+	bool normals = false;
 	uint count = 0;
 };

@@ -142,10 +142,25 @@ void ModuleGeometries::ShowWire(bool wire)
 	//	objects[i]->SetWireframe(wire);
 	//}
 
-	/*ONLY ONE GEOMETRY CAN BE LOADED FOR PRACTICE 1*/
-	if (geometry != nullptr)
-	{
-		geometry->SetWireframe(wireframe_mode);
-	}
+	///*ONLY ONE GEOMETRY CAN BE LOADED FOR PRACTICE 1*/
+	//if (geometry != nullptr)
+	//{
+	//	geometry->SetWireframe(wireframe_mode);
+	//}
+}
 
+void ModuleGeometries::ShowNormals(bool norm)
+{
+	normals = norm;
+
+	//for (int i = 0; i < objects.size(); i++)
+	//{
+	//	objects[i]->SetNormals(norm);
+	//}
+
+	/*ONLY ONE GEOMETRY CAN BE LOADED FOR PRACTICE 1*/
+	//if (geometry != nullptr)
+	//{
+	//	geometry->SetNormals(norm);
+	//}
 }

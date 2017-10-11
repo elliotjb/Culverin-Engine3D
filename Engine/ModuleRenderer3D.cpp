@@ -224,7 +224,7 @@ update_status ModuleRenderer3D::UpdateConfig(float dt)
 		}
 		if (ImGui::Checkbox("Normals", &normals))
 		{
-
+			App->geometry_manager->ShowNormals(normals);
 		}
 		if (ImGui::Checkbox("Objects Axis", &axis))
 		{

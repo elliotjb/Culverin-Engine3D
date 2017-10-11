@@ -130,12 +130,13 @@ Mesh::Mesh()
 {
 }
 
-Mesh::Mesh(std::vector<Vertex> vert, std::vector<uint> ids, std::vector<Texture> tex)
+Mesh::Mesh(std::vector<Vertex> vert, std::vector<uint> ids, std::vector<Texture> tex, bool normals)
 {
+	hasNormals = normals;
+
 	vertices = vert;
 	indices = ids;
 	textures = tex;
-
 	SetupMesh();
 }
 
@@ -177,27 +178,29 @@ void Mesh::Draw()
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 	
-		//if (App->renderer3D->normals)
-		//{
-		//	for (uint i = 0; i < vertices.size(); i++)
-		//	{
-		//		glBegin(GL_LINES);
-		//		glLineWidth(1.0f);
-		//		glVertex3f(vertices[i].pos.x, vertices[i].pos.y, vertices[i].pos.z);
-		//		glVertex3f(vertices[i].pos.x + vertices[i].norm.x, vertices[i].pos.y + vertices[i].norm.y, vertices[i].pos.z + vertices[i].norm.z);
-		//		glEnd();
-		//	}
+		if (App->renderer3D->normals && hasNormals)
+		{
+			// VERTEX NORMALS ------------------------------------------
+			for (uint i = 0; i < vertices.size(); i++)
+			{
+				glBegin(GL_LINES);
+				glLineWidth(1.0f);
+				glVertex3f(vertices[i].pos.x, vertices[i].pos.y, vertices[i].pos.z);
+				glVertex3f(vertices[i].pos.x + vertices[i].norm.x, vertices[i].pos.y + vertices[i].norm.y, vertices[i].pos.z + vertices[i].norm.z);
+				glEnd();
+			}
 
-		//	for (uint i = 0; i < face_centers.size(); i++)
-		//	{
-		//		glBegin(GL_LINES);
-		//		glLineWidth(1.0f);
-		//		glColor3f(1.0f, 1.0f, 0.0f);
-		//		glVertex3f(face_centers[i].pos.x, face_centers[i].pos.y, face_centers[i].pos.z);
-		//		glVertex3f(face_centers[i].pos.x + face_centers[i].norm.x, face_centers[i].pos.y + face_centers[i].norm.y, face_centers[i].pos.z + face_centers[i].norm.z);
-		//		glEnd();
-		//	}
-		//}
+			// FACE NORMALS ------------------------------------------
+			/*for (uint i = 0; i < face_centers.size(); i++)
+			{
+				glBegin(GL_LINES);
+				glLineWidth(1.0f);
+				glColor3f(1.0f, 1.0f, 0.0f);
+				glVertex3f(face_centers[i].pos.x, face_centers[i].pos.y, face_centers[i].pos.z);
+				glVertex3f(face_centers[i].pos.x + face_centers[i].norm.x, face_centers[i].pos.y + face_centers[i].norm.y, face_centers[i].pos.z + face_centers[i].norm.z);
+				glEnd();
+			}*/
+		}
 		
 
 		glDisableClientState(GL_VERTEX_ARRAY);

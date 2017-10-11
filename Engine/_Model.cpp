@@ -141,7 +141,7 @@ Mesh _Model::ProcessMesh(aiMesh * mesh, const aiScene * scene)
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	}
 	
-	return Mesh(vertices, indices, textures);
+	return Mesh(vertices, indices, textures, mesh->HasNormals());
 }
 
 std::vector<Texture> _Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type, const char * typeName)
