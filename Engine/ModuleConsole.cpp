@@ -79,11 +79,11 @@ void Console::AddLog(const char* fmt, ...) IM_PRINTFARGS(2)
 
 void Console::Draw(const char* title)
 {
-	static int width;
-	static int height;
-	SDL_GetWindowSize(App->window->window, &width, &height);
-	ImGui::SetNextWindowPos(ImVec2(0, 700));
-	ImGui::SetNextWindowSize(ImVec2(width, height - 700));
+	//static int width;
+	//static int height;
+	//SDL_GetWindowSize(App->window->window, &width, &height);
+	//ImGui::SetNextWindowPos(ImVec2(0, 700));
+	//ImGui::SetNextWindowSize(ImVec2(width, height - 700));
 	if (!BeginDock(title, &console_activated, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
 	{
 		EndDock();

@@ -1,5 +1,6 @@
 #include "ModuleHierarchy.h"
 #include "Application.h"
+#include "_Sphere.h"
 
 
 Hierarchy::Hierarchy() : WindowManager()
@@ -38,8 +39,30 @@ void Hierarchy::ShowHierarchy()
 		EndDock();
 		return;
 	}
-	ImGui::Columns(2);
-	ImGui::Text("HELLO WORLD");
+	for (int i = 0; i < App->geometry_manager->objects.size(); i++)
+	{
+		if (App->geometry_manager->objects[i]->type == P_SPHERE)
+		{
+			ImGui::PushID(i);
+			if (ImGui::TreeNode("Sphere:"))
+			{
+				_Sphere* temp = (_Sphere*)App->geometry_manager->objects[i];
+				ImGui::Spacing();
+				ImGui::Text("Position:");
+				ImGui::Text("x: %.3f", temp->pos.x);
+				ImGui::SameLine();
+				ImGui::Text("y: %.3f", temp->pos.y);
+				ImGui::SameLine();
+				ImGui::Text("z: %.3f", temp->pos.z);
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Text("Radius: %.3f", temp->radius);
+				ImGui::TreePop();
+			}
+			ImGui::PopID();
+		}
+	}
+
 
 	EndDock();
 }

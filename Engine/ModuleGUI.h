@@ -10,6 +10,8 @@
 #include "WindowManager.h"
 #include "SDL\include\SDL.h"
 
+#define IM_NEWLINE "\r\n"
+
 enum WindowName
 {
 	//Names of Windows (Modules)
@@ -38,12 +40,13 @@ public:
 	void ShowInfoMouse(bool* active);
 	void ShowWindowExit(bool* active);
 	void ShowPerformance(int ms_index);
+	void ShowStyleEditor(ImGuiStyle* ref = NULL);
 	//void ShowConfig();
 	void LoadDocks();
+	void RevertStyleDocks();
 	void DockTest();
 
 public:
-
 
 	/*Capsule Capsule_A;
 	Capsule Capsule_B;
