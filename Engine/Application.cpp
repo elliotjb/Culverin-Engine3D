@@ -66,6 +66,8 @@ bool Application::Init()
 	JSON_Object* config_node;
 
 	config_file = json_parse_file("config.json");
+
+	configuration = new DockContext();
 	
 	//In case of error
 	if (config_file != nullptr)
@@ -200,15 +202,22 @@ update_status Application::Update()
 	{
 		static bool stop_conf = false;
 		item = list_modules.getFirst();
+
 		if (!ImGui::Begin("CONFIGURATION", &showconfig))
 		{
 			ImGui::End();
 			stop_conf = true;
 		}
+		configuration->_BeginWorkspace("ConfigurationWindow");
 		if (stop_conf == false)
 		{
 			ImGui::Spacing();
-			if (ImGui::CollapsingHeader("Application"))
+			static bool temp = true;
+			if (!configuration->_BeginDock("Application", &temp, 0))
+			{
+				configuration->_EndDock();
+			}
+			else
 			{
 				ImGui::Text("App Name:"); ImGui::SameLine();
 				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), appName.c_str());
@@ -229,15 +238,31 @@ update_status Application::Update()
 				ImGui::PlotHistogram("", ms_log, IM_ARRAYSIZE(ms_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
 				ImGui::Checkbox("VSYNC", &vsync); ImGui::SameLine();
 				ShowHelpMarker("Restart to apply changes");
-			}
-			
-			while (item != NULL && ret == UPDATE_CONTINUE)
-			{
-				if (item->data->IsEnabled())
-					ret = item->data->UpdateConfig(dt);
-				item = item->next;
+
+				configuration->_EndDock();
 			}
 
+
+
+
+			while (item != NULL && ret == UPDATE_CONTINUE)
+			{
+				if (item->data->IsEnabled() && item->data->haveConfig)
+				{
+					if (!configuration->_BeginDock(item->data->name.c_str(), &item->data->enabled, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove))
+					{
+						configuration->_EndDock();
+					}
+					else
+					{
+						ret = item->data->UpdateConfig(dt);
+						configuration->_EndDock();
+					}
+				}
+
+				item = item->next;
+			}
+			configuration->_EndWorkspace();
 			ImGui::End();
 		}
 		stop_conf = false;

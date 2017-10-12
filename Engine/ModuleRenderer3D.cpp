@@ -14,6 +14,7 @@
 ModuleRenderer3D::ModuleRenderer3D(bool start_enabled) : Module(start_enabled)
 {
 	name = "Renderer";
+	haveConfig = true;
 }
 
 // Destructor
@@ -196,64 +197,61 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 update_status ModuleRenderer3D::UpdateConfig(float dt)
 {
-	if (ImGui::CollapsingHeader("Render"))
+	if (ImGui::Checkbox("Depth Test", &depth_test))
 	{
-		if (ImGui::Checkbox("Depth Test", &depth_test))
+		(depth_test) ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+	}
+	if (ImGui::Checkbox("Cull Face", &cull_face))
+	{
+		(cull_face) ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+	}
+	if (ImGui::Checkbox("Lightning", &lightning))
+	{
+		(lightning) ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
+	}
+	if (ImGui::Checkbox("Color Material", &color_material))
+	{
+		(color_material) ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
+	}
+	if (ImGui::Checkbox("Texture 2D", &texture_2d))
+	{
+		(texture_2d) ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
+	}
+	if (ImGui::Checkbox("Wireframe", &wireframe))
+	{
+		App->geometry_manager->ShowWire(wireframe);
+	}
+	if (ImGui::Checkbox("Normals", &normals))
+	{
+		App->geometry_manager->ShowNormals(normals);
+	}
+	if (ImGui::Checkbox("Objects Axis", &axis))
+	{
+		App->geometry_manager->ShowAxis(axis);
+	}
+	if (ImGui::Checkbox("Smooth", &smooth))
+	{
+		(smooth) ? glShadeModel(GL_SMOOTH) : glShadeModel(GL_FLAT);
+	}
+	if (ImGui::CollapsingHeader("Fog"))
+	{
+		if (ImGui::Checkbox("Active", &fog_active))
 		{
-			(depth_test) ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
-		}
-		if (ImGui::Checkbox("Cull Face", &cull_face))
-		{
-			(cull_face) ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
-		}
-		if (ImGui::Checkbox("Lightning", &lightning))
-		{
-			(lightning) ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
-		}
-		if (ImGui::Checkbox("Color Material", &color_material))
-		{
-			(color_material) ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
-		}
-		if (ImGui::Checkbox("Texture 2D", &texture_2d))
-		{
-			(texture_2d) ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
-		}
-		if (ImGui::Checkbox("Wireframe", &wireframe))
-		{
-			App->geometry_manager->ShowWire(wireframe);
-		}
-		if (ImGui::Checkbox("Normals", &normals))
-		{
-			App->geometry_manager->ShowNormals(normals);
-		}
-		if (ImGui::Checkbox("Objects Axis", &axis))
-		{
-			App->geometry_manager->ShowAxis(axis);
-		}
-		if (ImGui::Checkbox("Smooth", &smooth))
-		{
-			(smooth) ? glShadeModel(GL_SMOOTH) : glShadeModel(GL_FLAT);
-		}
-		if (ImGui::CollapsingHeader("Fog"))
-		{
-			if (ImGui::Checkbox("Active", &fog_active))
-			{
-				if (fog_active)
-				{
-					glEnable(GL_FOG);
-					glFogfv(GL_FOG_DENSITY, &fog_density);
-				}
-				else
-				{
-					glDisable(GL_FOG);
-				}
-			}
 			if (fog_active)
 			{
-				if (ImGui::SliderFloat("Density", &fog_density, 0.0f, 1.0f, "%.3f"))
-				{
-					glFogfv(GL_FOG_DENSITY, &fog_density);
-				}
+				glEnable(GL_FOG);
+				glFogfv(GL_FOG_DENSITY, &fog_density);
+			}
+			else
+			{
+				glDisable(GL_FOG);
+			}
+		}
+		if (fog_active)
+		{
+			if (ImGui::SliderFloat("Density", &fog_density, 0.0f, 1.0f, "%.3f"))
+			{
+				glFogfv(GL_FOG_DENSITY, &fog_density);
 			}
 		}
 	}

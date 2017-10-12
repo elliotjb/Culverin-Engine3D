@@ -89,6 +89,8 @@ private:
 	uint maxFPS = 0;
 	bool vsync = true;
 
+	DockContext* configuration = nullptr;
+
 
 public:
 	bool showconfig = false;

@@ -11,6 +11,7 @@ ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)
 	window = NULL;
 	screen_surface = NULL;
 	name = "Window";
+	haveConfig = true;
 }
 
 // Destructor
@@ -149,47 +150,44 @@ void ModuleWindow::SetTitle(const char* title)
 
 update_status ModuleWindow::UpdateConfig(float dt)
 {
-	if (ImGui::CollapsingHeader("Window"))
+	static int refresh = displaymode.refresh_rate;
+	ImGui::InputText("Window Name", textBuf, IM_ARRAYSIZE(textBuf));
+	ImGui::SameLine();
+	if (ImGui::Button("APPLY##window_name"))
 	{
-		static int refresh = displaymode.refresh_rate;
-		ImGui::InputText("Window Name", textBuf, IM_ARRAYSIZE(textBuf));
-		ImGui::SameLine();
-		if (ImGui::Button("APPLY##window_name"))
+		window_name = textBuf;
+		SetTitle(window_name.c_str());
+	}
+	ImGui::Text("Refresh rate:"); ImGui::SameLine();
+	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", displaymode.refresh_rate);
+	ImGui::SliderInt("Brightness", &brightness, 0, 100); ImGui::SameLine();
+	if (ImGui::Button("APPLY##brightness"))
+	{
+		float value = (float)brightness * 0.01;
+		SDL_SetWindowBrightness(window, value);
+	}
+	const char* win_res[] = { "640x480", "800x600", "1024x768","1280x1024","1365x768","1920x1080" };
+	ImGui::Combo("WINDOW RESOLUTION", &selected_res, win_res, IM_ARRAYSIZE(win_res)); ImGui::SameLine();
+	if (ImGui::Button("APPLY##win_resolution"))
+	{
+		SetWindowRes(selected_res);
+
+	}
+	const char* win_opt[] = { "Fullscreen", "Full Desktop", "Windowed" };
+	ImGui::Combo("WINDOW OPTIONS", &selected_op, win_opt, IM_ARRAYSIZE(win_opt)); ImGui::SameLine();
+	if (ImGui::Button("APPLY##win_options"))
+	{
+		SetWindowOption(selected_op);
+	}
+	if (ImGui::Checkbox("Borderless", &borderless))
+	{
+		if (borderless)
 		{
-			window_name = textBuf;
-			SetTitle(window_name.c_str());
+			SDL_SetWindowBordered(window, SDL_FALSE);
 		}
-		ImGui::Text("Refresh rate:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", displaymode.refresh_rate);
-		ImGui::SliderInt("Brightness", &brightness, 0, 100); ImGui::SameLine();
-		if (ImGui::Button("APPLY##brightness"))
+		else
 		{
-			float value = (float)brightness * 0.01;
-			SDL_SetWindowBrightness(window, value);
-		}
-		const char* win_res[] = { "640x480", "800x600", "1024x768","1280x1024","1365x768","1920x1080" };
-		ImGui::Combo("WINDOW RESOLUTION", &selected_res, win_res, IM_ARRAYSIZE(win_res)); ImGui::SameLine();
-		if (ImGui::Button("APPLY##win_resolution"))
-		{
-			SetWindowRes(selected_res);
-			
-		}
-		const char* win_opt[] = { "Fullscreen", "Full Desktop", "Windowed" };
-		ImGui::Combo("WINDOW OPTIONS", &selected_op, win_opt, IM_ARRAYSIZE(win_opt)); ImGui::SameLine();
-		if (ImGui::Button("APPLY##win_options"))
-		{
-			SetWindowOption(selected_op);
-		}
-		if (ImGui::Checkbox("Borderless", &borderless))
-		{
-			if (borderless)
-			{
-				SDL_SetWindowBordered(window, SDL_FALSE);
-			}
-			else
-			{
-				SDL_SetWindowBordered(window, SDL_TRUE);
-			}
+			SDL_SetWindowBordered(window, SDL_TRUE);
 		}
 	}
 

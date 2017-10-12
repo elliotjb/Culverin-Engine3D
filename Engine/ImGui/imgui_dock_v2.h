@@ -159,6 +159,11 @@ struct DockContext
 
 	Dock* GetDock(int idx);
 
+	void _BeginWorkspace(const char* workSpace);
+	void _EndWorkspace();
+	bool _BeginDock(const char* label, bool* opened, ImGuiWindowFlags extra_flags);
+	void _EndDock();
+
 };
 
 #endif
