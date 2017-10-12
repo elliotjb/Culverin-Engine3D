@@ -671,10 +671,29 @@ ImGuiContext*           GImGui = &GImDefaultContext;
 
 ImGuiStyle::ImGuiStyle()
 {
+	Alpha = 1.0f;							// Global alpha applies to everything in ImGui
+	WindowPadding = ImVec2(15, 15);			// Padding within a window
+	WindowMinSize = ImVec2(32, 32);			// Minimum window size
+	WindowRounding = 5.0f;					// Radius of window corners rounding. Set to 0.0f to have rectangular windows
+	WindowTitleAlign = ImVec2(0.0f, 0.5f);	// Alignment for title bar text
 	ChildWindowRounding = 0.0f;             // Radius of child window corners rounding. Set to 0.0f to have rectangular child windows
+	FramePadding = ImVec2(5, 5);			// Padding within a framed rectangle (used by most widgets)
+	FrameRounding = 4.0f;					// Radius of frame corners rounding. Set to 0.0f to have rectangular frames (used by most widgets).
+	ItemSpacing = ImVec2(12, 8);			// Horizontal and vertical spacing between widgets/lines
 	ItemInnerSpacing = ImVec2(8, 6);		// Horizontal and vertical spacing between within elements of a composed widget (e.g. a slider and its label)
+	TouchExtraPadding = ImVec2(0, 0);		// Expand reactive bounding box for touch-based system where touch position is not accurate enough. Unfortunately we don't sort widgets so priority on overlap will always be given to the first widget. So don't grow this too much!
+	IndentSpacing = 25.0f;					// Horizontal spacing when e.g. entering a tree node. Generally == (FontSize + FramePadding.x*2).
+	ColumnsMinSpacing = 6.0f;				// Minimum horizontal spacing between two columns
+	ScrollbarSize = 15.0f;					// Width of the vertical scrollbar, Height of the horizontal scrollbar
 	ScrollbarRounding = 9.0f;				// Radius of grab corners rounding for scrollbar
 	GrabMinSize = 5.0f;
+	GrabRounding = 3.0f;					// Radius of grabs corners rounding. Set to 0.0f to have rectangular slider grabs.
+	ButtonTextAlign = ImVec2(0.5f, 0.5f);	// Alignment of button text when button is larger than text.
+	DisplayWindowPadding = ImVec2(22, 22);  // Window positions are clamped to be visible within the display area by at least this amount. Only covers regular windows.
+	DisplaySafeAreaPadding = ImVec2(4, 4);  // If you cannot see the edge of your screen (e.g. on a TV) increase the safe area padding. Covers popups/tooltips as well regular windows.
+	AntiAliasedLines = true;				// Enable anti-aliasing on lines/borders. Disable if you are really short on CPU/GPU.
+	AntiAliasedShapes = true;				// Enable anti-aliasing on filled shapes (rounded rectangles, circles, etc.)
+	CurveTessellationTol = 1.25f;           // Tessellation tolerance. Decrease for highly tessellated curves (higher quality, more polygons), increase to reduce quality.
 
 	Colors[ImGuiCol_Text] = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
 	Colors[ImGuiCol_TextDisabled] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
