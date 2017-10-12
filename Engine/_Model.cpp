@@ -59,8 +59,20 @@ void _Model::LoadModel(const char * path)
 			total_vertex += meshes[i].vertices.size();
 			total_faces += meshes[i].numFaces;
 		}
+
+		aiQuaternion rot_quat;
+		aiVector3D pos;
+		aiVector3D rot;
+		aiVector3D scal;
+
+		scene->mRootNode->mTransformation.Decompose(scal, rot_quat, pos);
+		rot = rot_quat.GetEuler();
+
+		position.Set(pos.x, pos.y, pos.z);
+		rotation.Set(rot.x, rot.y, rot.z);
+		scale.Set(scal.x, scal.y, scal.z);
+
 		//-----------------------------------
-		
 		aiReleaseImport(scene);
 	}
 
@@ -227,5 +239,5 @@ float3 _Model::GetRotation() const
 
 float3 _Model::GetSize() const
 {
-	return size;
+	return scale;
 }

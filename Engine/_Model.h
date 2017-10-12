@@ -39,7 +39,7 @@ private:
 	//TRANSFORM INFO
 	float3 position;
 	float3 rotation;
-	float3 size;
+	float3 scale;
 
 	//GEOMETRY INFO
 	uint total_meshes = 0;

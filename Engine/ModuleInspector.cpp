@@ -63,12 +63,16 @@ void Inspector::ShowInspector()
 	EndDock();
 }
 
-void Inspector::SetInfo(uint m_num, uint v_num, uint f_num, uint t_id)
+void Inspector::SetInfo(uint m_num, uint v_num, uint f_num, uint t_id, float3 pos, float3 rot, float3 scale)
 {
 	mesh_num = m_num;
 	vertex_num = v_num;
 	faces_num = f_num;
 	tex_id = t_id;
+
+	object_pos = pos;
+	object_rot = rot;
+	object_scale = scale;
 }
 
 void Inspector::ShowModelInfo() const
@@ -76,12 +80,12 @@ void Inspector::ShowModelInfo() const
 	ImGui::Text("MODEL INFO");
 	if (ImGui::CollapsingHeader("Transformation"))
 	{
-		ImGui::Text("Position:"); ImGui::SameLine();
+		ImGui::Text("Position:"); 
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "X = %.4f Y = %.4f Z = %.4f", object_pos.x, object_pos.y, object_pos.z);
-		ImGui::Text("Rotation:"); ImGui::SameLine();
+		ImGui::Text("Rotation:"); 
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "X = %.4f Y = %.4f Z = %.4f", object_rot.x, object_rot.y, object_rot.z);
-		ImGui::Text("Size"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "X = %.4f Y = %.4f Z = %.4f", object_size.x, object_size.y, object_size.z);
+		ImGui::Text("Size"); 
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "X = %.4f Y = %.4f Z = %.4f", object_scale.x, object_scale.y, object_scale.z);
 	}
 	if (ImGui::CollapsingHeader("Geometry"))
 	{
