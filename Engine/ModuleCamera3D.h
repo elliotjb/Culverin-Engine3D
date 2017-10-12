@@ -18,6 +18,9 @@ public:
 
 	void Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const vec3 &Spot);
+	void LookObject(const vec3 &Spot);
+	void LookAndMoveToObject();
+	bool isMouseOnWindow();
 	void Move(const vec3 &Movement);
 	void MoveAt(const vec3 &Movement);
 	float* GetViewMatrix();
@@ -38,8 +41,10 @@ public:
 	vec3 vec_view;
 	bool changecam = false;
 
+	bool CanMoveCamera = false;
+
 private:
 	bool freecam = false;
-
+	float moveWithScroll = 0;
 	mat4x4 ViewMatrix, ViewMatrixInverse;
 };

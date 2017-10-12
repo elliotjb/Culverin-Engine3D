@@ -26,5 +26,5 @@ public:
 
 	int		width;
 	int		height;
-	ImVec2	size;
+	float2	size;
 };

@@ -27,6 +27,10 @@ public:
 	uint GetTotalFaces() const;
 	uint GetTexID() const;
 
+	float3 GetPosition() const;
+	float3 GetRotation() const;
+	float3 GetSize() const;
+
 private:
 	std::string path;
 	std::vector<Texture> loaded_tex;

@@ -34,6 +34,7 @@ bool ModuleCamera3D::Start()
 	LOG("Setting up the camera");
 	bool ret = true;
 	freecam = false;
+	moveWithScroll = 5.0f;
 	return ret;
 }
 
@@ -53,7 +54,7 @@ update_status ModuleCamera3D::Update(float dt)
 	ImGuiIO& io = ImGui::GetIO();
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
-	if (io.WantTextInput == false)
+	if (io.WantTextInput == false && isMouseOnWindow())
 	{
 		vec3 newPos(0, 0, 0);
 		float speed = 3.0f * dt;
@@ -69,12 +70,31 @@ update_status ModuleCamera3D::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
 
+		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+		{
+			LookAndMoveToObject();
+		}
+		if (App->input->GetMouseZ() == 1)
+		{
+			newPos -= Z * moveWithScroll;
+		}
+		if (App->input->GetMouseZ() == -1)
+		{
+			newPos += Z * moveWithScroll;
+		}
 		Position += newPos;
 		Reference += newPos;
 
+		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT &&
+			App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+		{
+			LookObject(vec3(0, 0, 0));//Need pass the positon of object
+		}
+
 		// Mouse motion ----------------
 
-		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && 
+			App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE)
 		{
 			int dx = -App->input->GetMouseXMotion();
 			int dy = -App->input->GetMouseYMotion();
@@ -106,7 +126,7 @@ update_status ModuleCamera3D::Update(float dt)
 				}
 			}
 
-			Position = Reference + Z * length(Position);
+			//Position = Reference + Z * length(Position);
 		}
 
 	}
@@ -147,6 +167,57 @@ void ModuleCamera3D::LookAt(const vec3 &Spot)
 	Y = cross(Z, X);
 
 	CalculateViewMatrix();
+}
+
+void ModuleCamera3D::LookObject(const vec3 &Spot)
+{
+	Reference = Spot;
+
+	Z = normalize(Position - Reference);
+	X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));
+	Y = cross(Z, X);
+
+	int dx = -App->input->GetMouseXMotion();
+	int dy = -App->input->GetMouseYMotion();
+
+	float Sensitivity = 0.25f;
+
+	Position -= Reference;
+
+	if (dx != 0)
+	{
+		float DeltaX = (float)dx * Sensitivity;
+
+		X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+		Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+		Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+	}
+
+	if (dy != 0)
+	{
+		float DeltaY = (float)dy * Sensitivity;
+
+		Y = rotate(Y, DeltaY, X);
+		Z = rotate(Z, DeltaY, X);
+
+		if (Y.y < 0.0f)
+		{
+			Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+			Y = cross(Z, X);
+		}
+	}
+
+	if(Y.y > 0.0f)Position = Reference + Z * length(Position);
+}
+
+void ModuleCamera3D::LookAndMoveToObject()
+{
+	Position = vec3(1, 1, 1);
+}
+
+bool ModuleCamera3D::isMouseOnWindow()
+{
+	return CanMoveCamera;
 }
 
 

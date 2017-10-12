@@ -60,7 +60,7 @@ void _Model::LoadModel(const char * path)
 			total_faces += meshes[i].numFaces;
 		}
 		//-----------------------------------
-
+		
 		aiReleaseImport(scene);
 	}
 
@@ -213,4 +213,19 @@ uint _Model::GetTexID() const
 {
 	/* Only one texture loaded by now*/ // TODO -< MODIFY THIS!!! URGENT!!!!
 	return meshes[0].textures[0].id;
+}
+
+float3 _Model::GetPosition() const
+{
+	return position;
+}
+
+float3 _Model::GetRotation() const
+{
+	return rotation;
+}
+
+float3 _Model::GetSize() const
+{
+	return size;
 }

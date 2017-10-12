@@ -26,11 +26,12 @@ update_status SceneWorld::Update(float dt)
 
 void SceneWorld::ShowSceneWorld()
 {
-	if (!BeginDock("SceneWorld", &App->gui->winManager[HIERARCHY]->active[0].active, ImGuiWindowFlags_HorizontalScrollbar)) //TODO ELLIOT CLOSE Windows example
+	if (!BeginDock("SceneWorld", &App->gui->winManager[HIERARCHY]->active[0].active, ImGuiWindowFlags_NoScrollbar)) //TODO ELLIOT CLOSE Windows example
 	{
 		EndDock();
 		return;
 	}
+	App->camera->CanMoveCamera = ImGui::IsMouseHoveringWindow();
 	
 	ImGui::Image((void*)App->scene->frBuff->GetTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 

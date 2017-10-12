@@ -55,7 +55,7 @@ public:
 
 	}
 
-	ImVec2 getPos()
+	float2 GetPos()
 	{
 		
 	}
