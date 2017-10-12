@@ -10,6 +10,7 @@
 ModuleAudio::ModuleAudio(bool start_enabled) : Module(start_enabled), music(NULL)
 {
 	name = "Audio";
+	haveConfig = true;
 }
 
 // Destructor
@@ -231,13 +232,10 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 
 update_status ModuleAudio::UpdateConfig(float dt)
 {
-	if (ImGui::CollapsingHeader("Audio"))
+	ImGui::SliderInt("Volume", &volume, 0, 100);
+	if (ImGui::Checkbox("Mute", &mute))
 	{
-		ImGui::SliderInt("Volume", &volume, 0, 100);
-		if (ImGui::Checkbox("Mute", &mute))
-		{
-			//MuteVolume(mute);
-		}
+		//MuteVolume(mute);
 	}
 	return UPDATE_CONTINUE;
 }

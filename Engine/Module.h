@@ -93,6 +93,7 @@ public:
 
 	std::string	name;
 	bool enabled = true;
+	bool haveConfig = false;
 
 	PerfTimer perf_timer;
 
@@ -104,4 +105,6 @@ public:
 	float preUpdate_t = 0;
 	float Update_t = 0;
 	float postUpdate_t = 0;
+
+
 };

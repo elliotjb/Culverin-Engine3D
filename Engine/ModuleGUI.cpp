@@ -175,12 +175,12 @@ update_status ModuleGUI::Update(float dt)
 			{
 				if (ImGui::MenuItem("Cube"))
 				{
-					winManager[CREATEOBJETCS]->SpecialFunction("cube");
+					//winManager[CREATEOBJETCS]->SpecialFunction("cube");
 				}
 
 				if (ImGui::MenuItem("Sphere"))
 				{
-					winManager[CREATEOBJETCS]->SpecialFunction("sphere");
+					//winManager[CREATEOBJETCS]->SpecialFunction("sphere");
 				}
 				if (ImGui::MenuItem("Capsule"))
 				{
@@ -205,19 +205,14 @@ update_status ModuleGUI::Update(float dt)
 			{
 				winManager[INSPECTOR]->active[0].OpenClose();
 			}
-			if (ImGui::MenuItem("Create Objects"))
-			{
-				winManager[CREATEOBJETCS]->active[CREATE].OpenClose();
-			}
-			if (ImGui::MenuItem("Objects in Scene"))
-			{
-				winManager[CREATEOBJETCS]->active[SHOW].OpenClose();
-			}
-			if (ImGui::MenuItem("Random Generator"))
-			{
-				window_Random_generator = !window_Random_generator;
-			}
-			ImGui::Separator();
+			//if (ImGui::MenuItem("Create Objects"))
+			//{
+			//	winManager[CREATEOBJETCS]->active[CREATE].OpenClose();
+			//}
+			//if (ImGui::MenuItem("Objects in Scene"))
+			//{
+			//	winManager[CREATEOBJETCS]->active[SHOW].OpenClose();
+			//}
 			if (ImGui::MenuItem("Hardware"))
 			{
 				winManager[HARDWARE]->active[0].OpenClose();
@@ -226,22 +221,36 @@ update_status ModuleGUI::Update(float dt)
 			{
 				App->console->OpenClose();
 			}
+			if (ImGui::MenuItem("Scene"))
+			{
+				winManager[SCENEWORLD]->active[0].OpenClose();
+			}
+			if (ImGui::MenuItem("Hierarchy"))
+			{
+				winManager[HIERARCHY]->active[0].OpenClose();
+			}
 			ImGui::Separator();
+
 			if (ImGui::MenuItem("Property editor", NULL, &window_infoMouse))
 			{
 
 			}
-			if (ImGui::MenuItem("Configuration"))
+			if (ImGui::MenuItem("Style Editor"))
 			{
-				App->showconfig = !App->showconfig;
+				window_style = !window_style;
 			}
+			if (ImGui::MenuItem("Random Generator"))
+			{
+				window_Random_generator = !window_Random_generator;
+			}
+			ImGui::Separator();
 			if (ImGui::MenuItem("Performance"))
 			{
 				App->showperformance = !App->showperformance;
 			}
-			if (ImGui::MenuItem("Style Editor"))
+			if (ImGui::MenuItem("Configuration"))
 			{
-				window_style = !window_style;
+				App->showconfig = !App->showconfig;
 			}
 			ImGui::EndMenu();
 		}
@@ -250,7 +259,7 @@ update_status ModuleGUI::Update(float dt)
 
 		if (ImGui::BeginMenu("Help"))
 		{
-			if (ImGui::MenuItem("About us..."))
+			if (ImGui::MenuItem("About Culverin..."))
 			{
 				window_about_us = !window_about_us;
 			}
@@ -310,11 +319,7 @@ update_status ModuleGUI::Update(float dt)
 	if (window_Random_generator)
 	{
 		static LCG random_generator;
-		if (!ImGui::Begin("Random Numbers Generator", &window_Random_generator, ImGuiWindowFlags_AlwaysAutoResize))
-		{
-			ImGui::End();
-			return UPDATE_CONTINUE;
-		}
+		ImGui::Begin("Random Numbers Generator", &window_Random_generator, ImGuiWindowFlags_AlwaysAutoResize);
 		ImGui::Spacing();
 		ImGui::PushItemWidth(60);
 		static int numbers_f = 0;
@@ -385,7 +390,7 @@ update_status ModuleGUI::Update(float dt)
 	// Window About Us... ---------------------------------
 	if (window_about_us)
 	{
-		if (!ImGui::Begin("About Us...", &window_about_us, ImGuiWindowFlags_AlwaysAutoResize))
+		if (!ImGui::Begin("About Culverin", &window_about_us, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize))
 		{
 			ImGui::End();
 			return UPDATE_CONTINUE;

@@ -1116,6 +1116,29 @@ DockContext::Dock* DockContext::GetDock(int idx)
 	return idx < 0 ? nullptr : m_docks[(int)idx];
 }
 
+void DockContext::_BeginWorkspace(const char* workSpace)
+{
+	ImGuiWindowFlags flags = ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
+	BeginChild(workSpace, ImVec2(0, 0), false, flags);
+	m_workspace_pos = GetWindowPos();
+	m_workspace_size = GetWindowSize();
+}
+
+void DockContext::_EndWorkspace()
+{
+	EndChild();
+}
+
+bool DockContext::_BeginDock(const char* label, bool* opened, ImGuiWindowFlags extra_flags)
+{
+	return begin(label, opened, extra_flags);
+}
+
+void DockContext::_EndDock()
+{
+	end();
+}
+
 bool DockContext::LoadDock(JSON_Object* config_node)
 {
 	bool ret = true;
