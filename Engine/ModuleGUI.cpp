@@ -791,21 +791,21 @@ void ModuleGUI::UpdateWindows(float dt)
 		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar);
 
-	static GLuint icon_play = App->textures->LoadTexture("Imatges/UI/icon_play.png");
-	static GLuint icon_pause = App->textures->LoadTexture("Imatges/UI/icon_pause.png");
-	static GLuint icon_stop = App->textures->LoadTexture("Imatges/UI/icon_stop.png");
-	//ImTextureID temp = play;
-	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(150,150,150,0));
-	//ImGui::Image((ImTextureID*)play, ImVec2(300, 60));
-	static ImVec2 pos_icon(20, 20);
-	ImGui::SameLine(width / 2 - 40);
-	ImGui::ImageButton((ImTextureID*)icon_play, pos_icon);
-	ImGui::SameLine(width / 2 - 10);
-	ImGui::ImageButton((ImTextureID*)icon_pause, pos_icon);
-	ImGui::SameLine(width / 2 + 20);
-	ImGui::ImageButton((ImTextureID*)icon_stop, pos_icon);
-	//ImGui::Image((ImTextureID*)icon_stop,pos_icon);
-	ImGui::PopStyleColor(1);
+	//static GLuint icon_play = App->textures->LoadTexture("Imatges/UI/icon_play.png");
+	//static GLuint icon_pause = App->textures->LoadTexture("Imatges/UI/icon_pause.png");
+	//static GLuint icon_stop = App->textures->LoadTexture("Imatges/UI/icon_stop.png");
+	////ImTextureID temp = play;
+	//ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(150,150,150,0));
+	////ImGui::Image((ImTextureID*)play, ImVec2(300, 60));
+	//static ImVec2 pos_icon(20, 20);
+	//ImGui::SameLine(width / 2 - 40);
+	//ImGui::ImageButton((ImTextureID*)icon_play, pos_icon);
+	//ImGui::SameLine(width / 2 - 10);
+	//ImGui::ImageButton((ImTextureID*)icon_pause, pos_icon);
+	//ImGui::SameLine(width / 2 + 20);
+	//ImGui::ImageButton((ImTextureID*)icon_stop, pos_icon);
+	////ImGui::Image((ImTextureID*)icon_stop,pos_icon);
+	//ImGui::PopStyleColor(1);
 	
 
 	BeginWorkspace();
