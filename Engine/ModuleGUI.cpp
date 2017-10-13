@@ -846,7 +846,7 @@ void ModuleGUI::UpdateWindows(float dt)
 
 void ModuleGUI::ShowExampleAppConsole()
 {
-	App->console->Draw("CONSOLE");
+	App->console->Draw("Console");
 }
 
 
@@ -858,7 +858,7 @@ void ModuleGUI::ShowHardware()
 void ModuleGUI::ShowInfoMouse(bool* active)
 {
 	
-	ImGui::SetNextWindowPos(ImVec2(GetPositionDock("SceneWorld").x + 20, GetPositionDock("SceneWorld").y + 50));
+	ImGui::SetNextWindowPos(ImVec2(GetPositionDock("Scene").x + 20, GetPositionDock("Scene").y + 50));
 	if (!ImGui::Begin("Info", active, ImVec2(0, 0), 0.3f, ImGuiWindowFlags_NoTitleBar | 
 		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings |
 		ImGuiWindowFlags_NoInputs))
