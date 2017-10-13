@@ -84,7 +84,7 @@ void Console::Draw(const char* title)
 	//SDL_GetWindowSize(App->window->window, &width, &height);
 	//ImGui::SetNextWindowPos(ImVec2(0, 700));
 	//ImGui::SetNextWindowSize(ImVec2(width, height - 700));
-	if (!BeginDock(title, &console_activated, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
+	if (!BeginDock(title, /*&console_activated*/NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
 	{
 		EndDock();
 		return;

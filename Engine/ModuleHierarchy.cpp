@@ -34,7 +34,7 @@ void Hierarchy::ShowHierarchy()
 	SDL_GetWindowSize(App->window->window, &width, &height);
 	//ImGui::SetNextWindowPos(ImVec2(width - 300, 20));
 	//ImGui::SetNextWindowSize(ImVec2(300, height - 20 - (height - 700)));
-	if (!BeginDock("Hierarchy", &App->gui->winManager[HIERARCHY]->active[0].active, ImGuiWindowFlags_HorizontalScrollbar)) //TODO ELLIOT CLOSE Windows example
+	if (!BeginDock("Hierarchy", /*&App->gui->winManager[HIERARCHY]->active[0].active*/ NULL, ImGuiWindowFlags_HorizontalScrollbar)) //TODO ELLIOT CLOSE Windows example
 	{
 		EndDock();
 		return;

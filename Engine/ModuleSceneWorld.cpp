@@ -26,7 +26,7 @@ update_status SceneWorld::Update(float dt)
 
 void SceneWorld::ShowSceneWorld()
 {
-	if (!BeginDock("SceneWorld", &App->gui->winManager[HIERARCHY]->active[0].active, ImGuiWindowFlags_NoScrollbar)) //TODO ELLIOT CLOSE Windows example
+	if (!BeginDock("SceneWorld", NULL, ImGuiWindowFlags_NoScrollbar)) //TODO ELLIOT CLOSE Windows example
 	{
 		EndDock();
 		return;

@@ -253,7 +253,10 @@ void DockContext::splits()
 		if (!dock.isContainer()) continue;
 
 		PushID(i);
-		if (!IsMouseDown(0)) dock.status = Status_Docked;
+		if (!IsMouseDown(0))
+		{
+			dock.status = Status_Docked;
+		}
 
 		ImVec2 pos0 = dock.children[0]->pos;
 		ImVec2 pos1 = dock.children[1]->pos;
@@ -270,7 +273,10 @@ void DockContext::splits()
 			cursor = ImGuiMouseCursor_ResizeEW;
 			SetCursorScreenPos(ImVec2(dock.pos.x + size0.x, dock.pos.y));
 			InvisibleButton("split", ImVec2(3, dock.size.y));
-			if (dock.status == Status_Dragged) dsize.x = io.MouseDelta.x;
+			if (dock.status == Status_Dragged)
+			{
+				dsize.x = io.MouseDelta.x;
+			}
 			dsize.x = -ImMin(-dsize.x, dock.children[0]->size.x - min_size0.x);
 			dsize.x = ImMin(dsize.x, dock.children[1]->size.x - min_size1.x);
 			size0 += dsize;
