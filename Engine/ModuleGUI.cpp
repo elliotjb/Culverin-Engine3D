@@ -820,6 +820,7 @@ void ModuleGUI::UpdateWindows(float dt)
 	ImGui::Text("HELLO");
 	EndDock();*/
 
+	App->Config();
 
 	std::vector<WindowManager*>::iterator window = winManager.begin();
 	for (int i = 0; i < winManager.size(); i++)

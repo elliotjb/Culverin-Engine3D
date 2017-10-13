@@ -69,6 +69,7 @@ public:
 
 	bool Init();
 	update_status Update();
+	void Config();
 	bool CleanUp();
 
 	bool GetVSYNC();

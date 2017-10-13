@@ -198,80 +198,7 @@ update_status Application::Update()
 	}
 
 	//CONFIG WINDOW -------------------------------------
-	if (showconfig)
-	{
-		static bool stop_conf = false;
-		item = list_modules.getFirst();
-
-		if (!ImGui::Begin("CONFIGURATION", &showconfig, ImGuiWindowFlags_NoCollapse))
-		{
-			ImGui::End();
-			stop_conf = true;
-		}
-		configuration->_BeginWorkspace("ConfigurationWindow");
-		if (stop_conf == false)
-		{
-			//ImGui::Spacing();
-			//ImGui::Begin
-			static bool* temp = NULL;
-			
-			if (!configuration->_BeginDock("Application", temp, 0))
-			{
-				configuration->_EndDock();
-			}
-			else
-			{
-				ImGui::Text("App Name:"); ImGui::SameLine();
-				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), appName.c_str());
-				ImGui::Text("Organization Name:"); ImGui::SameLine();
-				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), orgName.c_str());
-				static int fps = maxFPS;
-				ImGui::SliderInt("Max FPS", &fps, 0, 60);
-				ImGui::SameLine(); ShowHelpMarker("0 = no framerate cap"); ImGui::SameLine();
-				if (ImGui::Button("APPLY"))
-				{
-					SetFpsCap(fps);
-				}
-				ImGui::Text("Framerate:"); ImGui::SameLine();
-				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", fps_log[frame_index - 1]);
-				ImGui::PlotHistogram("", fps_log, IM_ARRAYSIZE(fps_log), 0, NULL, 0.0f, 120.0f, ImVec2(0, 80));
-				ImGui::Text("Milliseconds:"); ImGui::SameLine();
-				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", ms_log[ms_index - 1]);
-				ImGui::PlotHistogram("", ms_log, IM_ARRAYSIZE(ms_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
-				ImGui::Checkbox("VSYNC", &vsync); ImGui::SameLine();
-				ShowHelpMarker("Restart to apply changes");
-
-				configuration->_EndDock();
-			}
-
-
-
-
-			while (item != NULL && ret == UPDATE_CONTINUE)
-			{
-				if (item->data->IsEnabled() && item->data->haveConfig)
-				{
-					static bool* closeButton = NULL;
-					if (!configuration->_BeginDock(item->data->name.c_str(), closeButton, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove))
-					{
-						configuration->_EndDock();
-					}
-					else
-					{
-						ret = item->data->UpdateConfig(dt);
-						configuration->_EndDock();
-					}
-				}
-
-				item = item->next;
-			}
-			configuration->_EndWorkspace();
-			ImGui::End();
-		}
-		stop_conf = false;
-		//----------------------------------------------
-	}
-
+	//Config();
 	//PERFORMANCE WINDOW -----------------------------
 	if (showperformance)
 	{
@@ -313,6 +240,86 @@ update_status Application::Update()
 
 	FinishUpdate();
 	return ret;
+}
+
+void Application::Config()
+{
+	if (showconfig)
+	{
+		p2List_item<Module*>* item = list_modules.getFirst();
+		static bool stop_conf = false;
+		bool ret = true;
+		item = list_modules.getFirst();
+
+		if (!BeginDock("CONFIGURATION", &showconfig, 0))
+		{
+			EndDock();
+			stop_conf = true;
+		}
+		configuration->_BeginWorkspace("ConfigurationWindow");
+		if (stop_conf == false)
+		{
+			//ImGui::Spacing();
+			//ImGui::Begin
+			static bool* temp = NULL;
+
+			if (!configuration->_BeginDock("Application", temp, 0))
+			{
+				configuration->_EndDock();
+			}
+			else
+			{
+				ImGui::Text("App Name:"); ImGui::SameLine();
+				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), appName.c_str());
+				ImGui::Text("Organization Name:"); ImGui::SameLine();
+				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), orgName.c_str());
+				static int fps = maxFPS;
+				ImGui::SliderInt("Max FPS", &fps, 0, 60);
+				ImGui::SameLine(); ShowHelpMarker("0 = no framerate cap"); ImGui::SameLine();
+				if (ImGui::Button("APPLY"))
+				{
+					SetFpsCap(fps);
+				}
+				ImGui::Text("Framerate:"); ImGui::SameLine();
+				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", fps_log[frame_index - 1]);
+				ImGui::PlotHistogram("", fps_log, IM_ARRAYSIZE(fps_log), 0, NULL, 0.0f, 120.0f, ImVec2(0, 80));
+				ImGui::Text("Milliseconds:"); ImGui::SameLine();
+				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", ms_log[ms_index - 1]);
+				ImGui::PlotHistogram("", ms_log, IM_ARRAYSIZE(ms_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
+				ImGui::Checkbox("VSYNC", &vsync); ImGui::SameLine();
+				ShowHelpMarker("Restart to apply changes");
+
+				configuration->_EndDock();
+			}
+
+			while (item != NULL && ret == UPDATE_CONTINUE)
+			{
+				if (item->data->IsEnabled() && item->data->haveConfig)
+				{
+					static bool* closeButton = NULL;
+					if (!configuration->_BeginDock(item->data->name.c_str(), closeButton, ImGuiWindowFlags_NoCollapse))
+					{
+						configuration->_EndDock();
+					}
+					else
+					{
+						ret = item->data->UpdateConfig(dt);
+						configuration->_EndDock();
+					}
+				}
+
+				item = item->next;
+			}
+			configuration->_EndWorkspace();
+			EndDock();
+		}
+		else
+		{
+			configuration->_EndWorkspace();
+		}
+		stop_conf = false;
+		//----------------------------------------------
+	}
 }
 
 bool Application::CleanUp()

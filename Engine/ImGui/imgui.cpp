@@ -672,7 +672,7 @@ ImGuiContext*           GImGui = &GImDefaultContext;
 ImGuiStyle::ImGuiStyle()
 {
 	Alpha = 1.0f;							// Global alpha applies to everything in ImGui
-	WindowPadding = ImVec2(15, 15);			// Padding within a window
+	WindowPadding = ImVec2(5, 4);			// Padding within a window
 	WindowMinSize = ImVec2(32, 32);			// Minimum window size
 	WindowRounding = 5.0f;					// Radius of window corners rounding. Set to 0.0f to have rectangular windows
 	WindowTitleAlign = ImVec2(0.0f, 0.5f);	// Alignment for title bar text
@@ -703,7 +703,7 @@ ImGuiStyle::ImGuiStyle()
 
 	Colors[ImGuiCol_PopupBg] = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
 
-	Colors[ImGuiCol_Border] = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
+	Colors[ImGuiCol_Border] = ImVec4(0.08f, 0.06f, 0.12f, 1.00f);
 	Colors[ImGuiCol_BorderShadow] = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
 
 	Colors[ImGuiCol_FrameBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
@@ -741,7 +741,7 @@ ImGuiStyle::ImGuiStyle()
 	Colors[ImGuiCol_SeparatorHovered] = ImVec4(0.60f, 0.60f, 0.70f, 1.00f);
 	Colors[ImGuiCol_SeparatorActive] = ImVec4(0.70f, 0.70f, 0.90f, 1.00f);
 
-	Colors[ImGuiCol_ResizeGrip] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+	Colors[ImGuiCol_ResizeGrip] = ImVec4(0.09f, 0.08f, 0.09f, 1.00f);
 	Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
 	Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
 
