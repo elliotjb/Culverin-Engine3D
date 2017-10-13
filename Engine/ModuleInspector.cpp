@@ -1,4 +1,5 @@
 #include "ModuleInspector.h"
+#include "_Model.h"
 #include "Application.h"
 
 
@@ -48,16 +49,21 @@ void Inspector::ShowInspector()
 	EndDock();
 }
 
-void Inspector::SetInfo(uint m_num, uint v_num, uint f_num, uint t_id, float3 pos, float3 rot, float3 scale)
+void Inspector::SetInfo(const _Model& model)
 {
-	mesh_num = m_num;
-	vertex_num = v_num;
-	faces_num = f_num;
-	tex_id = t_id;
+	mesh_num = model.GetTotalMeshes();
+	vertex_num = model.GetTotalVertex();
+	faces_num = model.GetTotalFaces();
+	tex_id = model.GetTexID();
 
-	object_pos = pos;
-	object_rot = rot;
-	object_scale = scale;
+	object_pos = model.GetPosition();
+	object_rot = model.GetRotation();
+	object_scale = model.GetScale();
+}
+
+void Inspector::SetTexInfo(uint texID)
+{
+	tex_id = texID;
 }
 
 void Inspector::ShowModelInfo() const

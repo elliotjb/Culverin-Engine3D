@@ -143,8 +143,7 @@ BaseGeometry* ModuleFBXLoader::LoadMesh(const char* filename)
 	}
 
 	((Inspector*)App->gui->winManager[INSPECTOR])->model_loaded = true;
-	((Inspector*)App->gui->winManager[INSPECTOR])->SetInfo(new_model->GetTotalMeshes(), new_model->GetTotalVertex(),
-		new_model->GetTotalFaces(), new_model->GetTexID(), new_model->GetPosition(), new_model->GetRotation(), new_model->GetSize());
+	((Inspector*)App->gui->winManager[INSPECTOR])->SetInfo(*new_model);
 	
 	App->geometry_manager->geometry = new_model;
 

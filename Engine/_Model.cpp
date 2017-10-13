@@ -53,11 +53,11 @@ void _Model::LoadModel(const char * path)
 		ProcessNode(scene->mRootNode, scene);
 
 		//Set Base Info --------------------
-		total_meshes = meshes.size();
-		for (uint i = 0; i < total_meshes; i++)
+		info.total_meshes = meshes.size();
+		for (uint i = 0; i < info.total_meshes; i++)
 		{
-			total_vertex += meshes[i].vertices.size();
-			total_faces += meshes[i].numFaces;
+			info.total_vertex += meshes[i].vertices.size();
+			info.total_faces += meshes[i].numFaces;
 		}
 
 		aiQuaternion rot_quat;
@@ -68,9 +68,9 @@ void _Model::LoadModel(const char * path)
 		scene->mRootNode->mTransformation.Decompose(scal, rot_quat, pos);
 		rot = rot_quat.GetEuler();
 
-		position.Set(pos.x, pos.y, pos.z);
-		rotation.Set(rot.x, rot.y, rot.z);
-		scale.Set(scal.x, scal.y, scal.z);
+		info.position.Set(pos.x, pos.y, pos.z);
+		info.rotation.Set(rot.x, rot.y, rot.z);
+		info.scale.Set(scal.x, scal.y, scal.z);
 
 		//-----------------------------------
 
@@ -216,22 +216,23 @@ void _Model::SetTexture(const char * path)
 		{
 			meshes[i].textures[0].id = App->textures->LoadTexture(path);
 		}
+		((Inspector*)App->gui->winManager[INSPECTOR])->SetTexInfo(meshes[0].textures[0].id);
 	}
 }
 
 uint _Model::GetTotalMeshes() const
 {
-	return total_meshes;
+	return info.total_meshes;
 }
 
 uint _Model::GetTotalVertex() const
 {
-	return total_vertex;
+	return info.total_vertex;
 }
 
 uint _Model::GetTotalFaces() const
 {
-	return total_faces;
+	return info.total_faces;
 }
 
 uint _Model::GetTexID() const
@@ -242,15 +243,15 @@ uint _Model::GetTexID() const
 
 float3 _Model::GetPosition() const
 {
-	return position;
+	return info.position;
 }
 
 float3 _Model::GetRotation() const
 {
-	return rotation;
+	return info.rotation;
 }
 
-float3 _Model::GetSize() const
+float3 _Model::GetScale() const
 {
-	return scale;
+	return info.scale;
 }

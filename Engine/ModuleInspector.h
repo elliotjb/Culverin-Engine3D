@@ -5,6 +5,8 @@
 #include "WindowManager.h"
 #include <string>
 
+class _Model;
+
 class Inspector : public WindowManager
 {
 public:
@@ -17,7 +19,8 @@ public:
 	bool CleanUp();
 
 	void ShowInspector();
-	void SetInfo(uint m_num, uint v_num, uint f_num, uint t_id, float3 pos, float3 rot, float3 scale);
+	void SetInfo(const _Model& model);
+	void SetTexInfo(uint texID);
 	void ShowModelInfo() const;
 	
 	//void OpenClose();

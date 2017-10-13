@@ -7,6 +7,19 @@
 #include <vector>
 #include <string>
 
+struct ModelInfo
+{
+	//TRANSFORM INFO
+	float3 position;
+	float3 rotation;
+	float3 scale;
+
+	//GEOMETRY INFO
+	uint total_meshes = 0;
+	uint total_vertex = 0;
+	uint total_faces = 0;
+};
+
 class _Model :public BaseGeometry
 {
 public:
@@ -31,21 +44,15 @@ public:
 
 	float3 GetPosition() const;
 	float3 GetRotation() const;
-	float3 GetSize() const;
+	float3 GetScale() const;
 
 private:
 	std::string path;
 	std::vector<Texture> loaded_tex;
 	std::vector<Mesh> meshes;
 
-	//TRANSFORM INFO
-	float3 position;
-	float3 rotation;
-	float3 scale;
+	ModelInfo info;
 
-	//GEOMETRY INFO
-	uint total_meshes = 0;
-	uint total_vertex = 0;
-	uint total_faces = 0;
+	AABB bounding_box;
 
 };
