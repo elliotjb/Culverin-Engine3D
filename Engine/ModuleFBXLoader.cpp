@@ -10,6 +10,7 @@
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/cfileio.h"
+#include <string>
 
 #pragma comment(lib, "Assimp/libx86/assimp.lib")
 
@@ -36,7 +37,47 @@ update_status ModuleFBXLoader::Update(float dt)
 	//TODO -> place it in postUpdate method
 	if (App->input->dropped)
 	{
+		dropped_Filetype = CheckFileType(App->input->dropped_filedir);
+
+		switch (dropped_Filetype)
+		{
+		case F_MODEL:
+		{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "MODEL dropped on window", 
+			App->input->dropped_filedir, App->window->window);
+		LOG("IMPORTING MODEL, File Path: %s", App->input->dropped_filedir);
+
 		LoadMesh(App->input->dropped_filedir);
+
+		break;
+		}
+		case F_TEXTURE:
+		{
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "TEXTURE dropped on window", 
+				App->input->dropped_filedir, App->window->window);
+			LOG("IMPORTING TEXTURE, File Path: %s", App->input->dropped_filedir);
+
+			//Check if there's a Geometry to apply the dropped texture
+			if (App->geometry_manager->geometry != nullptr)
+			{
+				((_Model*)(App->geometry_manager->geometry))->SetTexture(App->input->dropped_filedir);
+			}
+
+			break;
+		}
+		case F_UNKNOWN:
+		{
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "UNKNOWN file type dropped on window", 
+				App->input->dropped_filedir, App->window->window);
+			LOG("UNKNOWN FILE TYPE, File Path: %s", App->input->dropped_filedir);
+			break;
+		}
+
+		default:
+			break;
+
+		}
+
 		App->input->dropped = false;
 	}
 
@@ -63,10 +104,36 @@ bool ModuleFBXLoader::CleanUp()
 	return true;
 }
 
+FileType ModuleFBXLoader::CheckFileType(char * filedir)
+{
+	if (filedir != nullptr)
+	{
+		std::string file_type;
+		std::string path(filedir);
+
+		size_t extension_pos = path.find_last_of(".");
+
+		file_type = path.substr(extension_pos + 1);
+
+		if (file_type == "png" || file_type == "jpg" || file_type == "dds")
+		{
+			return F_TEXTURE;
+		}
+		else if (file_type == "fbx" || file_type == "obj")
+		{
+			return F_MODEL;
+		}
+		else
+		{
+			return F_UNKNOWN;
+		}
+	}
+}
+
 BaseGeometry* ModuleFBXLoader::LoadMesh(const char* filename)
 {
 	_Model* new_model = new _Model(filename, P_MODEL, App->renderer3D->wireframe);
-	new_model->id = App->geometry_manager->count++;
+	//new_model->id = App->geometry_manager->count++;
 	//App->geometry_manager->objects.push_back(new_model);
 
 	if (App->geometry_manager->geometry != nullptr)

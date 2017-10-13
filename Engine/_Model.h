@@ -22,6 +22,8 @@ public:
 	std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, const char *typeName);
 	uint TextureFromFile(const char *path, const std::string& dir);
 
+	void SetTexture(const char *path);
+
 	uint GetTotalMeshes() const;
 	uint GetTotalVertex() const;
 	uint GetTotalFaces() const;

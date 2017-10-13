@@ -114,7 +114,6 @@ update_status ModuleInput::PreUpdate(float dt)
 
 			case SDL_DROPFILE:
 			dropped_filedir = e.drop.file;
-			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir, App->window->window);
 			dropped = true;
 			//SDL_free(dropped_filedir);
 			break;

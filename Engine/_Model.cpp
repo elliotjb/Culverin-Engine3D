@@ -73,6 +73,7 @@ void _Model::LoadModel(const char * path)
 		scale.Set(scal.x, scal.y, scal.z);
 
 		//-----------------------------------
+
 		aiReleaseImport(scene);
 	}
 
@@ -204,6 +205,18 @@ uint _Model::TextureFromFile(const char * path, const std::string&  dir)
 	std::string filename = std::string(path);
 	filename = dir + "textures/" + filename;
 	return App->textures->LoadTexture(filename.c_str());
+}
+
+void _Model::SetTexture(const char * path)
+{
+	if (path != nullptr)
+	{
+		//At the moment we can only load a single texture
+		for (uint i = 0; i < meshes.size(); i++)
+		{
+			meshes[i].textures[0].id = App->textures->LoadTexture(path);
+		}
+	}
 }
 
 uint _Model::GetTotalMeshes() const

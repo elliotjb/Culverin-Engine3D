@@ -69,7 +69,7 @@ void Inspector::ShowModelInfo() const
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "X = %.4f Y = %.4f Z = %.4f", object_pos.x, object_pos.y, object_pos.z);
 		ImGui::Text("Rotation:"); 
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "X = %.4f Y = %.4f Z = %.4f", object_rot.x, object_rot.y, object_rot.z);
-		ImGui::Text("Size"); 
+		ImGui::Text("Scale"); 
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "X = %.4f Y = %.4f Z = %.4f", object_scale.x, object_scale.y, object_scale.z);
 	}
 	if (ImGui::CollapsingHeader("Geometry"))
