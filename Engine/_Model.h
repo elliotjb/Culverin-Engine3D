@@ -32,12 +32,14 @@ public:
 	void LoadModel(const char* path);
 	void ProcessNode(aiNode* node, const aiScene* scene, float3* min, float3* max);
 	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene, float3* min, float3* max);
+	
 	std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, const char *typeName);
 	uint TextureFromFile(const char *path, const std::string& dir);
-
 	void SetTexture(const char *path);
+
+	void SetName(const char *path);
+
 	AABB GetBoundingBox() const;
-	//void SetBoundingBox();
 
 	uint GetTotalMeshes() const;
 	uint GetTotalVertex() const;
@@ -50,6 +52,8 @@ public:
 
 private:
 	std::string path;
+	std::string name;
+
 	std::vector<Texture> loaded_tex;
 	std::vector<Mesh> meshes;
 

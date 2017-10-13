@@ -102,14 +102,11 @@ void _Model::LoadModel(const char * path)
 		/*Set Bounding Box Min & Max Vertex*/
 		bounding_box.minPoint = min;
 		bounding_box.maxPoint = max;
-		//-----------------------------------
 
-		//Fix Camera to model ---------------- --------
-		float3 center = bounding_box.Centroid();
-		float3 size = bounding_box.Size();
-		App->camera->Position.Set(center.x + size.x, center.y + size.y, center.z + size.z);
-		App->camera->LookAt(vec3(center.x, center.y, center.z));
-		// ---------------------------------
+		/*Set path and name of the model*/
+		SetName(path);
+
+		//-----------------------------------
 
 		aiReleaseImport(scene);
 	}
@@ -260,6 +257,15 @@ void _Model::SetTexture(const char * path)
 		}
 		((Inspector*)App->gui->winManager[INSPECTOR])->SetTexInfo(meshes[0].textures[0].id);
 	}
+}
+
+void _Model::SetName(const char * filepath)
+{
+	path = filepath;
+	size_t BeginName = path.find_last_of("\\/");
+	size_t EndName = path.find_last_of(".");
+	
+	name = path.substr(BeginName + 1);
 }
 
 AABB _Model::GetBoundingBox() const

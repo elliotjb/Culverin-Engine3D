@@ -5,6 +5,7 @@
 #include "ModuleGeometries.h"
 #include "WindowManager.h"
 #include "ModuleInspector.h"
+#include "ModuleCamera3D.h"
 #include "_Model.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -43,13 +44,17 @@ update_status ModuleFBXLoader::Update(float dt)
 		{
 		case F_MODEL:
 		{
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "MODEL dropped on window", 
-			App->input->dropped_filedir, App->window->window);
-		LOG("IMPORTING MODEL, File Path: %s", App->input->dropped_filedir);
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "MODEL dropped on window",
+				App->input->dropped_filedir, App->window->window);
+			LOG("IMPORTING MODEL, File Path: %s", App->input->dropped_filedir);
 
-		LoadMesh(App->input->dropped_filedir);
+			LoadMesh(App->input->dropped_filedir);
 
-		break;
+			//Fix Camera to model ------------------------
+			App->camera->LookAndMoveToObject();
+			// ---------------------------------
+			
+			break;
 		}
 		case F_TEXTURE:
 		{
@@ -63,6 +68,10 @@ update_status ModuleFBXLoader::Update(float dt)
 				((_Model*)(App->geometry_manager->geometry))->SetTexture(App->input->dropped_filedir);
 			}
 
+			//Fix Camera to model ------------------------
+			App->camera->LookAndMoveToObject();
+			// ---------------------------------
+
 			break;
 		}
 		case F_UNKNOWN:
@@ -70,6 +79,7 @@ update_status ModuleFBXLoader::Update(float dt)
 			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "UNKNOWN file type dropped on window", 
 				App->input->dropped_filedir, App->window->window);
 			LOG("UNKNOWN FILE TYPE, File Path: %s", App->input->dropped_filedir);
+			
 			break;
 		}
 
@@ -95,9 +105,6 @@ update_status ModuleFBXLoader::postUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-
-
-
 bool ModuleFBXLoader::CleanUp()
 {
 	aiDetachAllLogStreams();
@@ -108,7 +115,6 @@ FileType ModuleFBXLoader::CheckFileType(char * filedir)
 {
 	if (filedir != nullptr)
 	{
-
 		std::string file_type;
 		std::string path(filedir);
 
