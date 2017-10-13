@@ -104,6 +104,13 @@ void _Model::LoadModel(const char * path)
 		bounding_box.maxPoint = max;
 		//-----------------------------------
 
+		//Fix Camera to model ---------------- --------
+		float3 center = bounding_box.Centroid();
+		float3 size = bounding_box.Size();
+		App->camera->Position.Set(center.x + size.x, center.y + size.y, center.z + size.z);
+		App->camera->LookAt(vec3(center.x, center.y, center.z));
+		// ---------------------------------
+
 		aiReleaseImport(scene);
 	}
 
@@ -255,9 +262,9 @@ void _Model::SetTexture(const char * path)
 	}
 }
 
-void _Model::SetBoundingBox()
+AABB _Model::GetBoundingBox() const
 {
-	bounding_box;
+	return bounding_box;
 }
 
 uint _Model::GetTotalMeshes() const

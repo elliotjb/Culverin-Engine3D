@@ -36,7 +36,8 @@ public:
 	uint TextureFromFile(const char *path, const std::string& dir);
 
 	void SetTexture(const char *path);
-	void SetBoundingBox();
+	AABB GetBoundingBox() const;
+	//void SetBoundingBox();
 
 	uint GetTotalMeshes() const;
 	uint GetTotalVertex() const;

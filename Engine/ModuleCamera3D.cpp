@@ -252,13 +252,11 @@ void ModuleCamera3D::LookAndMoveToObject()
 	BaseGeometry* geo = App->geometry_manager->geometry;
 	if (geo != NULL)
 	{
-		float3 geoPosition = ((_Model*)(geo))->GetPosition();
-		//float3 geoScale = ((_Model*)(geo))->GetSize();
-		float3 temp;
-		temp.Set(10, 10, 10);
-		float3 total = geoPosition + temp;
-		Position.Set(total.x, total.y, total.z);
-		LookObject(vec3(geoPosition.x, geoPosition.y, geoPosition.z));
+		AABB* box = &((_Model*)(App->geometry_manager->geometry))->GetBoundingBox();
+		float3 center = box->Centroid();
+		float3 size = box->Size();
+		Position.Set(center.x + size.x, center.y + size.y, center.z + size.z);
+		LookObject(vec3(center.x, center.y, center.z));
 	}
 }
 

@@ -143,9 +143,9 @@ update_status ModuleInput::UpdateConfig(float dt)
 {
 	ImGui::Text("Mouse Data");
 	ImGui::Text("Mouse Position:"); ImGui::SameLine();
-	ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%i - %i)", mouse_x, mouse_y);
+	ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%i, %i)", mouse_x, mouse_y);
 	ImGui::Text("Mouse Motion:"); ImGui::SameLine();
-	ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%i - %i)", mouse_x_motion, mouse_y_motion);
+	ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%i, %i)", mouse_x_motion, mouse_y_motion);
 	ImGui::Text("Mouse Click Left:"); ImGui::SameLine();
 	//ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%i - %i)", mouse_x, mouse_y);
 	return UPDATE_CONTINUE;
