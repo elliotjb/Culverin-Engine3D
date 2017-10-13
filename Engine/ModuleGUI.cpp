@@ -58,7 +58,7 @@ bool ModuleGUI::Start()
 		window[i]->Start();
 	}
 
-	//LoadDocks();
+	LoadDocks();
 
 	//Capsule_A = (Capsule(float3(200, 0, 0), float3(200, 0, 3), 1));
 	//Capsule_B = (Capsule(float3(0, -3, 0), float3(0, 3, 0), 1));
@@ -512,17 +512,18 @@ void ModuleGUI::RevertStyleDocks()
 
 bool ModuleGUI::CleanUp()
 {
-	JSON_Value* config_file;
-	JSON_Object* config;
-	JSON_Object* config_node;
+	//Save config ImGui Docks ------------------
+	//JSON_Value* config_file;
+	//JSON_Object* config;
+	//JSON_Object* config_node;
 
-	config_file = json_parse_file("ImGuiDock.json"); 
+	//config_file = json_parse_file("ImGuiDock.json"); 
 
-	config = json_value_get_object(config_file);
-	config_node = json_object_get_object(config, "Docking");
-	getDockContext()->SaveDock(config_node);
+	//config = json_value_get_object(config_file);
+	//config_node = json_object_get_object(config, "Docking");
+	//getDockContext()->SaveDock(config_node);
 
-	json_serialize_to_file(config_file, "ImGuiDock.json");
+	//json_serialize_to_file(config_file, "ImGuiDock.json");
 
 
 	return true;
