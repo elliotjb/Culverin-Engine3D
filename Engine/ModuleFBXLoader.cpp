@@ -108,12 +108,19 @@ FileType ModuleFBXLoader::CheckFileType(char * filedir)
 {
 	if (filedir != nullptr)
 	{
+
 		std::string file_type;
 		std::string path(filedir);
 
 		size_t extension_pos = path.find_last_of(".");
 
 		file_type = path.substr(extension_pos + 1);
+
+		//Set lowercase the extension to normalize it
+		for (std::string::iterator it = file_type.begin(); it != file_type.end(); it++)
+		{
+			*it = tolower(*it);
+		}
 
 		if (file_type == "png" || file_type == "jpg" || file_type == "dds")
 		{

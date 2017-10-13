@@ -90,9 +90,8 @@ void Console::Draw(const char* title)
 		return;
 	}
 
-	// TODO: display items starting from the bottom
-	if (ImGui::SmallButton("Add Dummy Text")) { AddLog("%d some text", Items.Size); AddLog("some more text"); AddLog("display very important message here!"); } ImGui::SameLine();
-	if (ImGui::SmallButton("Add Dummy Error")) AddLog("[error] something went wrong"); ImGui::SameLine();
+	ImGui::TextWrapped("Enter 'HELP' for help, press TAB to use text completion.");
+
 	if (ImGui::SmallButton("Clear")) ClearLog(); ImGui::SameLine();
 	bool copy_to_clipboard = ImGui::SmallButton("Copy"); ImGui::SameLine();
 	if (ImGui::SmallButton("Scroll to bottom")) ScrollToBottom = true;
