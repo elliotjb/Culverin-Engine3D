@@ -90,7 +90,7 @@ void Inspector::ShowModelInfo() const
 	if (ImGui::CollapsingHeader("Texture"))
 	{
 		ImGui::Text("Texture:");
-		ImGui::Image((ImTextureID*)tex_id, ImVec2(150, 150));
+		ImGui::Image((ImTextureID*)tex_id, ImVec2(150, 150), ImVec2(-1, 1), ImVec2(0, 0));
 	}
 }
 
