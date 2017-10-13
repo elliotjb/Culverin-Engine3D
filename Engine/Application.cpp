@@ -203,7 +203,7 @@ update_status Application::Update()
 		static bool stop_conf = false;
 		item = list_modules.getFirst();
 
-		if (!ImGui::Begin("CONFIGURATION", &showconfig))
+		if (!ImGui::Begin("CONFIGURATION", &showconfig, ImGuiWindowFlags_NoCollapse))
 		{
 			ImGui::End();
 			stop_conf = true;
@@ -211,9 +211,11 @@ update_status Application::Update()
 		configuration->_BeginWorkspace("ConfigurationWindow");
 		if (stop_conf == false)
 		{
-			ImGui::Spacing();
-			static bool temp = true;
-			if (!configuration->_BeginDock("Application", &temp, 0))
+			//ImGui::Spacing();
+			//ImGui::Begin
+			static bool* temp = NULL;
+			
+			if (!configuration->_BeginDock("Application", temp, 0))
 			{
 				configuration->_EndDock();
 			}
@@ -249,7 +251,8 @@ update_status Application::Update()
 			{
 				if (item->data->IsEnabled() && item->data->haveConfig)
 				{
-					if (!configuration->_BeginDock(item->data->name.c_str(), &item->data->enabled, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove))
+					static bool* closeButton = NULL;
+					if (!configuration->_BeginDock(item->data->name.c_str(), closeButton, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove))
 					{
 						configuration->_EndDock();
 					}

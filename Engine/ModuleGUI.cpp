@@ -58,7 +58,7 @@ bool ModuleGUI::Start()
 		window[i]->Start();
 	}
 
-	LoadDocks();
+	//LoadDocks();
 
 	//Capsule_A = (Capsule(float3(200, 0, 0), float3(200, 0, 3), 1));
 	//Capsule_B = (Capsule(float3(0, -3, 0), float3(0, 3, 0), 1));
@@ -480,6 +480,7 @@ update_status ModuleGUI::Update(float dt)
 
 update_status ModuleGUI::UpdateConfig(float dt)
 {
+
 	return UPDATE_CONTINUE;
 }
 
@@ -720,7 +721,6 @@ void ModuleGUI::ShowStyleEditor(ImGuiStyle* ref)
 	ImGui::PopItemWidth();
 }
 
-
 void ModuleGUI::ShowPerformance(int ms_index)
 {
 	if (ImGui::CollapsingHeader("GUI"))
@@ -856,8 +856,11 @@ void ModuleGUI::ShowHardware()
 
 void ModuleGUI::ShowInfoMouse(bool* active)
 {
-	ImGui::SetNextWindowPos(ImVec2(10, 18));
-	if (!ImGui::Begin("Info", active, ImVec2(0, 0), 0.3f, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings))
+	
+	ImGui::SetNextWindowPos(ImVec2(GetPositionDock("SceneWorld").x + 20, GetPositionDock("SceneWorld").y + 50));
+	if (!ImGui::Begin("Info", active, ImVec2(0, 0), 0.3f, ImGuiWindowFlags_NoTitleBar | 
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings |
+		ImGuiWindowFlags_NoInputs))
 	{
 		ImGui::End();
 		return;

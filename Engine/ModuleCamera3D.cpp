@@ -4,6 +4,7 @@
 #include "ModulePlayer.h"
 #include "PhysVehicle3D.h"
 #include "PhysBody3D.h"
+#include "_Model.h"
 #include "ImGui\imgui.h"
 
 
@@ -60,20 +61,59 @@ update_status ModuleCamera3D::Update(float dt)
 		float speed = 3.0f * dt;
 		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 			speed = 28.0f * dt;
+		// Mouse motion ----------------
+		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT &&
+			App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE)
+		{
+			if (1)
+			{
+				int dx = -App->input->GetMouseXMotion();
+				int dy = -App->input->GetMouseYMotion();
 
-		if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
-		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
+				float Sensitivity = 0.25f;
 
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
-		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
+				//Position -= Reference;
 
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+				if (dx != 0)
+				{
+					float DeltaX = (float)dx * Sensitivity;
+
+					X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+					Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+					Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+				}
+
+				if (dy != 0)
+				{
+					float DeltaY = (float)dy * Sensitivity;
+
+					Y = rotate(Y, DeltaY, X);
+					Z = rotate(Z, DeltaY, X);
+
+					if (Y.y < 0.0f)
+					{
+						Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+						Y = cross(Z, X);
+					}
+				}
+				//Position = Reference + Z * length(Position);
+			}
+			if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
+			if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
+
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
+			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
+
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+		}
 
 		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 		{
 			LookAndMoveToObject();
 		}
+
+		//Camera Zoom ---------------------------
 		if (App->input->GetMouseZ() == 1)
 		{
 			newPos -= Z * moveWithScroll;
@@ -81,54 +121,23 @@ update_status ModuleCamera3D::Update(float dt)
 		if (App->input->GetMouseZ() == -1)
 		{
 			newPos += Z * moveWithScroll;
-		}
+		} 
+		// -------------------------------------
 		Position += newPos;
 		Reference += newPos;
 
-		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT &&
+		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT &&
 			App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 		{
-			LookObject(vec3(0, 0, 0));//Need pass the positon of object
-		}
-
-		// Mouse motion ----------------
-
-		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && 
-			App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE)
-		{
-			int dx = -App->input->GetMouseXMotion();
-			int dy = -App->input->GetMouseYMotion();
-
-			float Sensitivity = 0.25f;
-
-			//Position -= Reference;
-
-			if (dx != 0)
+			BaseGeometry* geo = App->geometry_manager->geometry;
+			if (geo != NULL)
 			{
-				float DeltaX = (float)dx * Sensitivity;
-
-				X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-				Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-				Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+				float3 geoPosition = ((_Model*)(geo))->GetPosition();
+				LookObject(vec3(geoPosition.x, geoPosition.y, geoPosition.z));//Need pass the positon of object
 			}
-
-			if (dy != 0)
-			{
-				float DeltaY = (float)dy * Sensitivity;
-
-				Y = rotate(Y, DeltaY, X);
-				Z = rotate(Z, DeltaY, X);
-
-				if (Y.y < 0.0f)
-				{
-					Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
-					Y = cross(Z, X);
-				}
-			}
-
-			//Position = Reference + Z * length(Position);
+			else
+				LookObject(vec3(0, 0, 0));
 		}
-
 	}
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
@@ -217,7 +226,17 @@ void ModuleCamera3D::LookObject(const vec3 &Spot)
 
 void ModuleCamera3D::LookAndMoveToObject()
 {
-	Position = vec3(1, 1, 1);
+	BaseGeometry* geo = App->geometry_manager->geometry;
+	if (geo != NULL)
+	{
+		float3 geoPosition = ((_Model*)(geo))->GetPosition();
+		//float3 geoScale = ((_Model*)(geo))->GetSize();
+		float3 temp;
+		temp.Set(10, 10, 10);
+		float3 total = geoPosition + temp;
+		Position.Set(total.x, total.y, total.z);
+		LookObject(vec3(geoPosition.x, geoPosition.y, geoPosition.z));
+	}
 }
 
 bool ModuleCamera3D::isMouseOnWindow()
