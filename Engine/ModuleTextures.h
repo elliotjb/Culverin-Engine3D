@@ -14,6 +14,7 @@ public:
 
 	bool Init(JSON_Object* node);
 	bool Start();
+	update_status UpdateConfig(float dt);
 	bool CleanUp();
 
 	GLuint LoadTexture(const char* filename);

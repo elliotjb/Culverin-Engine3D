@@ -44,6 +44,11 @@ bool ModuleTextures::Start()
 	return true;
 }
 
+update_status ModuleTextures::UpdateConfig(float dt)
+{
+	return UPDATE_CONTINUE;
+}
+
 bool ModuleTextures::CleanUp()
 {
 	return true;
