@@ -35,7 +35,7 @@ bool ModuleCamera3D::Start()
 	LOG("Setting up the camera");
 	bool ret = true;
 	freecam = false;
-	moveWithScroll = 5.0f;
+	moveWithScroll = 30.0f;
 	return ret;
 }
 
@@ -116,13 +116,36 @@ update_status ModuleCamera3D::Update(float dt)
 		//Camera Zoom ---------------------------
 		if (App->input->GetMouseZ() == 1)
 		{
-			newPos -= Z * moveWithScroll;
+			newPos -= Z * (moveWithScroll * dt);
 		}
 		if (App->input->GetMouseZ() == -1)
 		{
-			newPos += Z * moveWithScroll;
+			newPos += Z * (moveWithScroll * dt);
 		} 
 		// -------------------------------------
+		//Mouse Middle ------------------------
+		if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
+		{
+			if (App->input->GetMouseXMotion() > 0)
+			{
+				newPos -= X * (App->input->GetMouseXMotion()* dt);
+			}
+			if (App->input->GetMouseXMotion() < 0)
+			{
+				newPos -= X * (App->input->GetMouseXMotion() * dt);
+			}
+			if (App->input->GetMouseYMotion() > 0)
+			{
+				newPos += Y * (App->input->GetMouseYMotion() * dt);
+			}
+			if (App->input->GetMouseYMotion() < 0)
+			{
+				newPos += Y * (App->input->GetMouseYMotion() * dt);
+			}			
+		}
+		// -------------------------------
+
+
 		Position += newPos;
 		Reference += newPos;
 
