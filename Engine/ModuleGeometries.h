@@ -25,14 +25,11 @@ public:
 
 	//OBJECT CREATION--------------------
 	bool Index_vert(float3* vertex_triangulate, uint num_vertex, Mesh* obj);
-
+	
 	void CreateCube(float3 pos, float3 size, bool isKynematic = false, Color color = White);
 	void CreateSphere(float3 pos, float radius, uint definition = 1, bool isKynematic = false, Color color = White);
 	//-----------------------------------
 
-	void ShowAxis(bool axis);
-	void ShowWire(bool wire);
-	void ShowNormals(bool norm);
 
 public:
 

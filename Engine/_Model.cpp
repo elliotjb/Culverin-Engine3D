@@ -26,6 +26,18 @@ void _Model::Draw()
 	{
 		meshes[i].Draw();
 	}
+
+	if (App->renderer3D->bounding_box)
+	{
+		for (uint i = 0; i < 12; i++)
+		{
+			glBegin(GL_LINES);
+			glLineWidth(1.0f);
+			glVertex3f(bounding_box.Edge(i).a.x, bounding_box.Edge(i).a.y, bounding_box.Edge(i).a.z);
+			glVertex3f(bounding_box.Edge(i).b.x, bounding_box.Edge(i).b.y, bounding_box.Edge(i).b.z);
+			glEnd();
+		}	
+	}
 }
 
 void _Model::Clear()
@@ -46,11 +58,26 @@ void _Model::Clear()
 void _Model::LoadModel(const char * path)
 {
 	bool ret = false;
-	aiMesh* new_mesh = nullptr;
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
-		ProcessNode(scene->mRootNode, scene);
+		float3 min;
+		float3 max;
+		
+		// INIT THE BOUNDING BOX COORDS ---------
+		if (scene->mMeshes[0]->mNumVertices > 0)
+		{
+			min.x = scene->mMeshes[0]->mVertices[0].x;
+			min.y = scene->mMeshes[0]->mVertices[0].y;
+			min.z = scene->mMeshes[0]->mVertices[0].z;
+
+			max.x = scene->mMeshes[0]->mVertices[0].x;
+			max.y = scene->mMeshes[0]->mVertices[0].y;
+			max.z = scene->mMeshes[0]->mVertices[0].z;
+		}
+
+		// --------------------------------------
+		ProcessNode(scene->mRootNode, scene, &min, &max);
 
 		//Set Base Info --------------------
 		info.total_meshes = meshes.size();
@@ -72,6 +99,9 @@ void _Model::LoadModel(const char * path)
 		info.rotation.Set(rot.x, rot.y, rot.z);
 		info.scale.Set(scal.x, scal.y, scal.z);
 
+		/*Set Bounding Box Min & Max Vertex*/
+		bounding_box.minPoint = min;
+		bounding_box.maxPoint = max;
 		//-----------------------------------
 
 		aiReleaseImport(scene);
@@ -83,23 +113,23 @@ void _Model::LoadModel(const char * path)
 	}
 }
 
-void _Model::ProcessNode(aiNode * node, const aiScene * scene)
+void _Model::ProcessNode(aiNode * node, const aiScene * scene, float3 * min, float3 * max)
 {
 	// Process all the Node's MESHES
 	for (uint i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.push_back(ProcessMesh(mesh, scene));
+		meshes.push_back(ProcessMesh(mesh, scene, min, max));
 	}
 
 	// Process children
 	for (uint i = 0; i < node->mNumChildren; i++)
 	{
-		ProcessNode(node->mChildren[i], scene);
+		ProcessNode(node->mChildren[i], scene, min, max);
 	}
 }
 
-Mesh _Model::ProcessMesh(aiMesh * mesh, const aiScene * scene)
+Mesh _Model::ProcessMesh(aiMesh * mesh, const aiScene * scene, float3 * min, float3 * max)
 {
 	std::vector<Vertex> vertices;
 	std::vector<uint> indices;
@@ -117,6 +147,10 @@ Mesh _Model::ProcessMesh(aiMesh * mesh, const aiScene * scene)
 		vec.y = mesh->mVertices[i].y;
 		vec.z = mesh->mVertices[i].z;
 		vertex.pos = vec;
+
+		/*Update Bounding Box coords*/
+		*min = min->Min(vec);
+		*max = max->Max(vec);
 
 		// Vertex Normals ------------------
 		if (mesh->HasNormals())
@@ -138,8 +172,9 @@ Mesh _Model::ProcessMesh(aiMesh * mesh, const aiScene * scene)
 		{
 			vertex.texCoords = float2(0, 0);
 		}
-
-		vertices.push_back(vertex); /*Push Vertex into the Array*/
+		
+		/*Push Vertex into the Array*/
+		vertices.push_back(vertex); 
 	}
 
 	// SET INDEX DATA -----------------------------------------
@@ -218,6 +253,11 @@ void _Model::SetTexture(const char * path)
 		}
 		((Inspector*)App->gui->winManager[INSPECTOR])->SetTexInfo(meshes[0].textures[0].id);
 	}
+}
+
+void _Model::SetBoundingBox()
+{
+	bounding_box;
 }
 
 uint _Model::GetTotalMeshes() const

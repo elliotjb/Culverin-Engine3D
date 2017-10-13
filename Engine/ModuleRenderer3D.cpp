@@ -113,8 +113,8 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		color_material = json_object_get_boolean(node, "Color Material");
 		texture_2d = json_object_get_boolean(node, "Texture 2D");
 		wireframe = json_object_get_boolean(node, "Wireframe");
+		bounding_box = json_object_get_boolean(node, "Bounding Box");
 		normals = json_object_get_boolean(node, "Normals");
-		axis = json_object_get_boolean(node, "Axis");
 		smooth = json_object_get_boolean(node, "Smooth");
 		
 		node = json_object_get_object(node, "Fog");
@@ -217,18 +217,13 @@ update_status ModuleRenderer3D::UpdateConfig(float dt)
 	{
 		(texture_2d) ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
 	}
-	if (ImGui::Checkbox("Wireframe", &wireframe))
-	{
-		App->geometry_manager->ShowWire(wireframe);
-	}
-	if (ImGui::Checkbox("Normals", &normals))
-	{
-		App->geometry_manager->ShowNormals(normals);
-	}
-	if (ImGui::Checkbox("Objects Axis", &axis))
-	{
-		App->geometry_manager->ShowAxis(axis);
-	}
+
+	ImGui::Checkbox("Wireframe", &wireframe);
+
+	ImGui::Checkbox("Normals", &normals);
+
+	ImGui::Checkbox("Bounding Box", &bounding_box);
+
 	if (ImGui::Checkbox("Smooth", &smooth))
 	{
 		(smooth) ? glShadeModel(GL_SMOOTH) : glShadeModel(GL_FLAT);
@@ -268,7 +263,7 @@ bool ModuleRenderer3D::SaveConfig(JSON_Object * node)
 	json_object_set_boolean(node, "Texture 2D", texture_2d);
 	json_object_set_boolean(node, "Wireframe", wireframe);
 	json_object_set_boolean(node, "Normals", normals);
-	json_object_set_boolean(node, "Axis", axis);
+	json_object_set_boolean(node, "Bounding Box", bounding_box);
 	json_object_set_boolean(node, "Smooth", smooth);
 
 	node = json_object_get_object(node, "Fog");

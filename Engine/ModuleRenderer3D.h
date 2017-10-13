@@ -45,9 +45,10 @@ public:
 	bool color_material = false;
 	bool texture_2d = false;
 	bool wireframe = false;
-	bool axis = true;
 	bool smooth = true;
 	bool fog_active = false;
 	bool normals = false;
+	bool bounding_box = false;
+
 	GLfloat fog_density = 0;
 };
