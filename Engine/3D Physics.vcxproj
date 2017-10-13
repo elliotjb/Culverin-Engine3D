@@ -208,6 +208,7 @@
     <ClCompile Include="ImGui\imgui_dock_v2.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Module.cpp" />
     <ClCompile Include="ModuleFramebuffers.cpp" />
     <ClCompile Include="ModuleHierarchy.cpp" />
     <ClCompile Include="ModuleSceneWorld.cpp" />

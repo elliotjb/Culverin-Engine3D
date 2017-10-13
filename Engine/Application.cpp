@@ -278,7 +278,7 @@ update_status Application::Update()
 		static bool stop_perf = false;
 		item = list_modules.getFirst();
 
-		if (!ImGui::Begin("PERFORMANCE", &showperformance))
+		if (!ImGui::Begin("PERFORMANCE", &showperformance, ImGuiWindowFlags_NoCollapse))
 		{
 			ImGui::End();
 			stop_perf = true;

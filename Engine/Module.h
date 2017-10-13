@@ -1,8 +1,10 @@
 #pragma once
 #include "Globals.h"
 #include "parson.h"
-#include <string>
 #include "PerfTimer.h"
+#include "ImGui\imgui.h"
+#include "ImGui\imgui_impl_sdl_gl3.h"
+#include <string>
 
 class Application;
 struct PhysBody3D;
@@ -106,5 +108,5 @@ public:
 	float Update_t = 0;
 	float postUpdate_t = 0;
 
-
+	ImVec4 color;
 };
