@@ -12,6 +12,7 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
+	update_status UpdateConfig(float dt);
 	bool CleanUp();
 
 	void ShowPerformance(int ms_index);

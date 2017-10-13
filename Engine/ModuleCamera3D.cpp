@@ -22,7 +22,7 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 	vec_view = vec3(0.0f, 0.0f, 0.0f);
 
 	name = "Camera";
-
+	haveConfig = true;
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -101,7 +101,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 			float Sensitivity = 0.25f;
 
-			Position -= Reference;
+			//Position -= Reference;
 
 			if (dx != 0)
 			{
@@ -135,6 +135,11 @@ update_status ModuleCamera3D::Update(float dt)
 
 	Update_t = perf_timer.ReadMs();
 
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleCamera3D::UpdateConfig(float dt)
+{
 	return UPDATE_CONTINUE;
 }
 

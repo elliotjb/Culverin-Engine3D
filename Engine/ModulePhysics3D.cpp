@@ -147,6 +147,12 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
+update_status ModulePhysics3D::UpdateConfig(float dt)
+{
+
+	return UPDATE_CONTINUE;
+}
+
 // Called before quitting
 bool ModulePhysics3D::CleanUp()
 {

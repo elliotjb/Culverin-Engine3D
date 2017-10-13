@@ -22,6 +22,7 @@ public:
 
 	bool Init(JSON_Object* node);
 	update_status PreUpdate(float dt);
+	update_status UpdateConfig(float dt);
 	bool CleanUp();
 
 	KEY_STATE GetKey(int id) const

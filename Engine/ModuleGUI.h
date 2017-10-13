@@ -31,6 +31,7 @@ public:
 	bool Init(JSON_Object* node);
 	bool Start();
 	update_status Update(float dt);
+	update_status UpdateConfig(float dt);
 	bool CleanUp();
 
 	void UpdateWindows(float dt);

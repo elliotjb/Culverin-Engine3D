@@ -12,6 +12,7 @@ ModuleInput::ModuleInput(bool start_enabled) : Module(start_enabled)
 	memset(mouse_buttons, KEY_IDLE, sizeof(KEY_STATE) * MAX_MOUSE_BUTTONS);
 
 	name = "Input";
+	haveConfig = true;
 }
 
 // Destructor
@@ -135,6 +136,11 @@ update_status ModuleInput::PreUpdate(float dt)
 
 	preUpdate_t = perf_timer.ReadMs();
 
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleInput::UpdateConfig(float dt)
+{
 	return UPDATE_CONTINUE;
 }
 

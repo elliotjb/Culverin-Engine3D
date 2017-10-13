@@ -17,6 +17,8 @@
 
 ModuleGUI::ModuleGUI(bool start_enabled): Module(start_enabled)
 {
+	haveConfig = true;
+	name = "Gui";
 }
 
 ModuleGUI::~ModuleGUI()
@@ -473,6 +475,11 @@ update_status ModuleGUI::Update(float dt)
 	App->scene->frBuff->UnBind();
 	Update_t = perf_timer.ReadMs();
 
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleGUI::UpdateConfig(float dt)
+{
 	return UPDATE_CONTINUE;
 }
 

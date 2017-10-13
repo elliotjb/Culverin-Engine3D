@@ -11,6 +11,7 @@ ModuleGeometries::ModuleGeometries(bool start_enabled) : Module(start_enabled)
 {
 	name = "Geometries Manager";
 	geometry = nullptr;
+	haveConfig = true;
 }
 
 ModuleGeometries::~ModuleGeometries()
@@ -40,6 +41,11 @@ update_status ModuleGeometries::Update(float dt)
 	
 	Update_t = perf_timer.ReadMs();
 
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleGeometries::UpdateConfig(float dt)
+{
 	return UPDATE_CONTINUE;
 }
 
