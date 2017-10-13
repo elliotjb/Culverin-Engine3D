@@ -259,13 +259,20 @@ void _Model::SetTexture(const char * path)
 	}
 }
 
-void _Model::SetName(const char * filepath)
+void _Model::SetName(const char* filepath)
 {
 	path = filepath;
 	size_t BeginName = path.find_last_of("\\/");
 	size_t EndName = path.find_last_of(".");
-	
+
 	name = path.substr(BeginName + 1);
+	size_t namesize = name.find_last_of(".");
+	name = name.substr(0, namesize);
+}
+
+std::string _Model::GetName() const
+{
+	return name;
 }
 
 AABB _Model::GetBoundingBox() const

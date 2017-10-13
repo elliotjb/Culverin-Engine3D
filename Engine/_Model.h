@@ -38,6 +38,7 @@ public:
 	void SetTexture(const char *path);
 
 	void SetName(const char *path);
+	std::string GetName() const;
 
 	AABB GetBoundingBox() const;
 

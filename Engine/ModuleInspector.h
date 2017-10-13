@@ -42,4 +42,7 @@ private:
 
 	//TEXTURE INFO
 	uint tex_id = 0;
+
+	//OBJECT NAME
+	char* name = nullptr;
 };
