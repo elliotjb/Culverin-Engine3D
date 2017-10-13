@@ -745,9 +745,9 @@ ImGuiStyle::ImGuiStyle()
 	Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
 	Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
 
-	Colors[ImGuiCol_CloseButton] = ImVec4(0.40f, 0.85f, 0.12f, 1.0f);
-	Colors[ImGuiCol_CloseButtonHovered] = ImVec4(0.40f, 0.0f, 0.38f, 1.0f);
-	Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.40f, 0.39f, 0.38f, 1.00f);
+	Colors[ImGuiCol_CloseButton] = ImVec4(0.55f, 0.55f, 0.55f, 1.0f);
+	Colors[ImGuiCol_CloseButtonHovered] = ImVec4(0.153f, 0.153f, 0.153f, 1.0f);
+	Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
 
 	Colors[ImGuiCol_PlotLines] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
 	Colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
