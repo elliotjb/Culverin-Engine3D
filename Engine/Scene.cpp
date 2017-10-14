@@ -66,11 +66,11 @@ update_status Scene::Update(float dt)
 {
 	perf_timer.Start();
 
-	Plane_p p(0, 1, 0, 0);
-	p.axis = true;
-	p.Render();
+	//Plane_p p(0, 1, 0, 0);
+	//p.axis = true;
+	//p.Render();
 
-
+	DrawPlane(7);
 
 	/*ImGui::Begin("Test");
 
@@ -147,6 +147,24 @@ update_status Scene::Update(float dt)
 bool Scene::CleanUp()
 {
 	return true;
+}
+
+
+void Scene::DrawPlane(int size)
+{
+	glBegin(GL_LINES);
+	for (int i = -size; i <= size; i++)
+	{
+		glVertex3f(-size, 0, i);
+		glVertex3f(size, 0, i);
+	}
+	for (int i = -size; i <= size; i++)
+	{
+		glVertex3f(i, 0, size);
+		glVertex3f(i, 0, -size);
+	}
+
+	glEnd();
 }
 
 void Scene::ShowPerformance(int ms_index)

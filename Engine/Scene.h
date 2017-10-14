@@ -20,8 +20,9 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
+	void DrawPlane(int size);
+
 	void ShowPerformance(int ms_index);
-	void DrawPlane();
 
 	GameObject* CreateGameObject();
 
