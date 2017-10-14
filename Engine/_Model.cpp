@@ -27,7 +27,7 @@ void _Model::Draw()
 		meshes[i].Draw();
 	}
 
-	if (App->renderer3D->bounding_box)
+	if (bb_active)
 	{
 		for (uint i = 0; i < 12; i++)
 		{
@@ -306,6 +306,11 @@ void _Model::SetName(const char* filepath)
 	size_t namesize = base_info.name.find_last_of(".");
 	
 	base_info.name = base_info.name.substr(0, namesize);
+}
+
+void _Model::EnableBoundingBox(bool active)
+{
+	bb_active = active;
 }
 
 AABB _Model::GetBoundingBox() const

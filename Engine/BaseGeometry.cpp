@@ -124,10 +124,20 @@ void BaseGeometry::Draw()
 }
 
 
+void BaseGeometry::Enable(bool active)
+{
+	this->active = active;
+}
+
 bool BaseGeometry::SetWireframe(bool w)
 {
 	wireframe = w;
 	return wireframe;
+}
+
+bool BaseGeometry::isActive() const
+{
+	return active;
 }
 
 Mesh::Mesh()

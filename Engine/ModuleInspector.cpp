@@ -82,17 +82,38 @@ void Inspector::ShowModelInfo()
 		//ImGui
 		ImGui::Text(""); ImGui::SameLine(5);
 		ImGui::Image((ImTextureID*)icon_GameObject, ImVec2(23, 23), ImVec2(-1, 1), ImVec2(0, 0)); ImGui::SameLine();
-		static bool isEnable = true;
+		static bool active = true;
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 8));
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
-		ImGui::Checkbox("##1", &isEnable);	ImGui::SameLine();
+		if (ImGui::Checkbox("##1", &active))
+		{
+			((BaseGeometry*)model_ref)->Enable(active);
+		}
+		ImGui::SameLine();
 		ImGui::PopStyleVar();
-		ImGui::InputText("##nameModel", model_name, IM_ARRAYSIZE(model_name));
+		ImGui::InputText("##nameModel", model_name, 256, ImGuiInputTextFlags_ReadOnly);
 		ImGui::SameLine(); App->ShowHelpMarker("Hold SHIFT or use mouse to select text.\n" "CTRL+Left/Right to word jump.\n" "CTRL+A or double-click to select all.\n" "CTRL+X,CTRL+C,CTRL+V clipboard.\n" "CTRL+Z,CTRL+Y undo/redo.\n" "ESCAPE to revert.\n");
 		ImGui::PopStyleVar();
 	}
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
+
+	ImGui::Separator();
+
+	static bool bounding_box = false;
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 8));
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
+	ImGui::Text(""); ImGui::SameLine(8);
+	if (ImGui::Checkbox("##2", &bounding_box))
+	{
+		model_ref->EnableBoundingBox(bounding_box);
+	}
+	ImGui::SameLine();
+	ImGui::PopStyleVar();
+	ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "Bounding Box");
+	ImGui::PopStyleVar();
+
+	ImGui::Separator();
 
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
 	if (ImGui::TreeNodeEx("Transformation", ImGuiTreeNodeFlags_DefaultOpen))
@@ -169,6 +190,7 @@ void Inspector::ShowModelInfo()
 			for (uint j = 0; j < model_ref->meshes[i].textures.size(); j++)
 			{
 				ImGui::PushID(j);
+
 				ImGui::ImageButton((ImTextureID*)model_ref->meshes[i].textures[j].id, ImVec2(100, 100), ImVec2(-1, 1), ImVec2(0, 0));
 				if (App->input->dropped)
 				{

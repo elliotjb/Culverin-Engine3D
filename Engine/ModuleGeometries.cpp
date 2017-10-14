@@ -36,7 +36,10 @@ update_status ModuleGeometries::Update(float dt)
 	/*ONLY ONE GEOMETRY CAN BE LOADED FOR PRACTICE 1*/
 	if (geometry != nullptr) 
 	{
-		geometry->Draw();
+		if (geometry->isActive())
+		{
+			geometry->Draw();
+		}
 	}
 	
 	Update_t = perf_timer.ReadMs();

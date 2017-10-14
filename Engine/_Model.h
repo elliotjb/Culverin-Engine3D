@@ -46,6 +46,7 @@ public:
 	void SetTexture(const char *path, int m, int t, int t_id);/*Set specific texture to specific mesh*/
 	void SetName(const char *path);
 
+	void EnableBoundingBox(bool active);
 	AABB GetBoundingBox() const;
 
 	ModelInfo base_info;
@@ -56,5 +57,5 @@ public:
 
 private:
 	AABB bounding_box;
-
+	bool bb_active = false;
 };

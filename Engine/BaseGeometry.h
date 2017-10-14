@@ -84,7 +84,9 @@ public:
 	virtual void ClearTextures();
 	virtual void GenFaceNormals(float3* centers);
 
+	void Enable(bool active);
 	bool SetWireframe(bool w);
+	bool isActive() const;
 
 public:
 	Prim_Type type = P_UNKNOWN;
@@ -94,4 +96,6 @@ public:
 	bool wireframe = false;
 	bool Axis = false;
 	uint id = 0;
+
+	bool active = true;
 };
