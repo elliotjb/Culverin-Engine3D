@@ -35,6 +35,7 @@ bool ModuleCamera3D::Start()
 	LOG("Setting up the camera");
 	bool ret = true;
 	moveWithScroll = 30.0f;
+	speed_camera_move = 1;
 	return ret;
 }
 
@@ -129,19 +130,19 @@ update_status ModuleCamera3D::Update(float dt)
 		{
 			if (App->input->GetMouseXMotion() > 0)
 			{
-				newPos -= X * (App->input->GetMouseXMotion()* dt);
+				newPos -= X * (App->input->GetMouseXMotion() * dt) * speed_camera_move;
 			}
 			if (App->input->GetMouseXMotion() < 0)
 			{
-				newPos -= X * (App->input->GetMouseXMotion() * dt);
+				newPos -= X * (App->input->GetMouseXMotion() * dt) * speed_camera_move;
 			}
 			if (App->input->GetMouseYMotion() > 0)
 			{
-				newPos += Y * (App->input->GetMouseYMotion() * dt);
+				newPos += Y * (App->input->GetMouseYMotion() * dt) * speed_camera_move;
 			}
 			if (App->input->GetMouseYMotion() < 0)
 			{
-				newPos += Y * (App->input->GetMouseYMotion() * dt);
+				newPos += Y * (App->input->GetMouseYMotion() * dt) * speed_camera_move;
 			}			
 		}
 		// -------------------------------
@@ -176,6 +177,17 @@ update_status ModuleCamera3D::Update(float dt)
 
 update_status ModuleCamera3D::UpdateConfig(float dt)
 {
+	ImGui::BulletText("Camera Position"); ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%.2f, %.2f, %.2f)", Position.x, Position.y, Position.z);
+	//ImGui::BulletText("X"); ImGui::SameLine();
+	//ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%.2f, %.2f, %.2f)", X.x, X.y, X.z);
+	//ImGui::BulletText("Y"); ImGui::SameLine();
+	//ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%.2f, %.2f, %.2f)", Y.x, Y.y, Y.z);
+	//ImGui::BulletText("Z"); ImGui::SameLine();
+	//ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%.2f, %.2f, %.2f)", Z.x, Z.y, Z.z);
+	ImGui::BulletText("Speed Scroll"); ImGui::SameLine();
+	ImGui::SliderFloat("##speedScroll", &moveWithScroll, 0.0f, 100.0f, "Speed = %.1f");
+
 	return UPDATE_CONTINUE;
 }
 

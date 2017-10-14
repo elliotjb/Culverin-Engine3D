@@ -47,6 +47,7 @@ public:
 
 private:
 	bool canOut = false;
-	float moveWithScroll = 0;
+	float moveWithScroll = 1;
+	int speed_camera_move = 1;
 	mat4x4 ViewMatrix, ViewMatrixInverse;
 };

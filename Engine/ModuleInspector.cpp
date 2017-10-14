@@ -169,10 +169,13 @@ void Inspector::ShowModelInfo()
 			for (uint j = 0; j < model_ref->meshes[i].textures.size(); j++)
 			{
 				ImGui::PushID(j);
-				if (ImGui::ImageButtonHover((ImTextureID*)model_ref->meshes[i].textures[j].id, ImVec2(100, 100), ImVec2(-1, 1), ImVec2(0, 0)) 
-					&& App->input->dropped)
+				ImGui::ImageButton((ImTextureID*)model_ref->meshes[i].textures[j].id, ImVec2(100, 100), ImVec2(-1, 1), ImVec2(0, 0));
+				if (App->input->dropped)
 				{
-					App->fbx_loader->SetInfoToLoadTex(i, j, model_ref->meshes[i].textures[j].id);
+					if (ImGui::IsMouseInside(ImVec2(ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y), ImVec2(100, 100)))
+					{
+						App->fbx_loader->SetInfoToLoadTex(i, j, model_ref->meshes[i].textures[j].id);
+					}
 				}
 				ImGui::PopID();
 			}

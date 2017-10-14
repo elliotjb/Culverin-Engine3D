@@ -793,7 +793,7 @@ void ModuleGUI::UpdateWindows(float dt)
 
 	ImGui::Begin("MasterWindow", &show_scene3, ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar);
+		ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing);
 
 	//static GLuint icon_play = App->textures->LoadTexture("Imatges/UI/icon_play.png");
 	//static GLuint icon_pause = App->textures->LoadTexture("Imatges/UI/icon_pause.png");

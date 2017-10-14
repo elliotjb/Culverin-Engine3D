@@ -78,6 +78,9 @@ update_status ModuleFBXLoader::Update(float dt)
 
 			SDL_free(App->input->dropped_filedir);
 
+			mesh_index = -1;
+			tex_index = -1;
+
 			break;
 		}
 		case F_UNKNOWN:

@@ -3129,6 +3129,22 @@ bool ImGui::IsMouseHoveringRect(const ImVec2& r_min, const ImVec2& r_max, bool c
     return rect_for_touch.Contains(g.IO.MousePos);
 }
 
+// Position of window or button
+// Size of this type
+bool ImGui::IsMouseInside(const ImVec2& position, const ImVec2& size)
+{
+	ImGuiContext& g = *GImGui;
+	if (position.x < g.IO.MousePos.x && position.y < g.IO.MousePos.y
+		&& (position.x + size.x) > g.IO.MousePos.x && (position.y + size.y) > g.IO.MousePos.y)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 bool ImGui::IsAnyWindowHovered()
 {
     ImGuiContext& g = *GImGui;
