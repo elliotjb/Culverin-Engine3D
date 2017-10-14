@@ -51,8 +51,8 @@ private:
 	int scale = SCREEN_SIZE;
 	int brightness = 100;
 
-	int selected_op = -1;
-	int selected_res = -1;
+	int selected_op = 2;
+	int selected_res = 4;
 
 	bool fullscreen = false;
 	bool fullscreen_d = false;

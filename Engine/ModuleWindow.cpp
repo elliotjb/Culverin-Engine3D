@@ -157,6 +157,7 @@ void ModuleWindow::SetTitle(const char* title)
 update_status ModuleWindow::UpdateConfig(float dt)
 {
 	static int refresh = displaymode.refresh_rate;
+	ImGui::PushItemWidth(ImGui::GetWindowWidth() / 4);
 	ImGui::InputText("Window Name", textBuf, IM_ARRAYSIZE(textBuf));
 	ImGui::SameLine();
 	if (ImGui::Button("APPLY##window_name"))
@@ -172,15 +173,17 @@ update_status ModuleWindow::UpdateConfig(float dt)
 		float value = (float)brightness * 0.01;
 		SDL_SetWindowBrightness(window, value);
 	}
+	ImGui::Separator();
+	ImGui::Text("Window Resolution");
 	const char* win_res[] = { "640x480", "800x600", "1024x768","1280x1024","1365x768","1920x1080" };
-	ImGui::Combo("WINDOW RESOLUTION", &selected_res, win_res, IM_ARRAYSIZE(win_res)); ImGui::SameLine();
+	ImGui::Combo("Select Resolution", &selected_res, win_res, IM_ARRAYSIZE(win_res)); ImGui::SameLine();
 	if (ImGui::Button("APPLY##win_resolution"))
 	{
 		SetWindowRes(selected_res);
 
 	}
 	const char* win_opt[] = { "Fullscreen", "Full Desktop", "Windowed" };
-	ImGui::Combo("WINDOW OPTIONS", &selected_op, win_opt, IM_ARRAYSIZE(win_opt)); ImGui::SameLine();
+	ImGui::Combo("Window Options", &selected_op, win_opt, IM_ARRAYSIZE(win_opt)); ImGui::SameLine();
 	if (ImGui::Button("APPLY##win_options"))
 	{
 		SetWindowOption(selected_op);
@@ -196,7 +199,7 @@ update_status ModuleWindow::UpdateConfig(float dt)
 			SDL_SetWindowBordered(window, SDL_TRUE);
 		}
 	}
-
+	ImGui::PopItemWidth();
 	return UPDATE_CONTINUE;
 }
 
