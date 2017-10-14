@@ -46,13 +46,19 @@ void _Model::Clear()
 	//CLEAR MESHES OF THE MODEL
 	for (uint i = 0; i < meshes.size(); i++)
 	{
-		meshes[i].vertices.clear();
-		meshes[i].indices.clear();
-		meshes[i].textures.clear();
-		meshes[i].face_centers.clear();
+		meshes[i].Clear();
 	}
 
 	loaded_tex.clear();
+}
+
+void _Model::ClearTextures()
+{
+	//CLEAR TEXTURES OF EACH MESH
+	for (uint i = 0; i < meshes.size(); i++)
+	{
+		meshes[i].ClearTex();
+	}
 }
 
 void _Model::LoadModel(const char * path)
@@ -250,10 +256,12 @@ void _Model::SetTexture(const char * path)
 {
 	if (path != nullptr)
 	{
+		uint texture_id = App->textures->LoadTexture(path);
+
 		//At the moment we can only load a single texture
 		for (uint i = 0; i < meshes.size(); i++)
 		{
-			meshes[i].textures[0].id = App->textures->LoadTexture(path);
+			meshes[i].SetTex(texture_id);
 		}
 		//((Inspector*)App->gui->winManager[INSPECTOR])->SetTexInfo(this);
 	}

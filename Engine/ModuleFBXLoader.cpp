@@ -62,7 +62,13 @@ update_status ModuleFBXLoader::Update(float dt)
 			//Check if there's a Geometry to apply the dropped texture
 			if (App->geometry_manager->geometry != nullptr)
 			{
+				/*Delete the previous textures to apply the new one*/
+				((_Model*)(App->geometry_manager->geometry))->ClearTextures();
 				((_Model*)(App->geometry_manager->geometry))->SetTexture(App->input->dropped_filedir);
+			}
+			else
+			{
+				LOG("FAIL LOADING TEXTURE: No model to apply it");
 			}
 
 			//Fix Camera to model ------------------------
@@ -144,15 +150,13 @@ FileType ModuleFBXLoader::CheckFileType(char * filedir)
 
 BaseGeometry* ModuleFBXLoader::LoadMesh(const char* filename)
 {
-	_Model* new_model = new _Model(filename, P_MODEL, App->renderer3D->wireframe);
-	//new_model->id = App->geometry_manager->count++;
-	//App->geometry_manager->objects.push_back(new_model);
-
 	if (App->geometry_manager->geometry != nullptr)
 	{
 		App->geometry_manager->geometry->Clear();
 		RELEASE(App->geometry_manager->geometry);
 	}
+
+	_Model* new_model = new _Model(filename, P_MODEL, App->renderer3D->wireframe);
 
 	((Inspector*)App->gui->winManager[INSPECTOR])->model_loaded = true;
 	((Inspector*)App->gui->winManager[INSPECTOR])->SetInfo(new_model);

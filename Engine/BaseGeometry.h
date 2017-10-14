@@ -45,8 +45,12 @@ public:
 	Mesh(std::vector<Vertex> vertices, std::vector<uint> indices, std::vector<Texture> textures, bool normals, uint faces);
 	~Mesh();
 
+	void Clear();
+	void ClearTex();
+
 	void Draw();
 	void SetupMesh();
+	void SetTex(uint texID);
 
 public:
 	std::vector<Vertex> vertices;
@@ -74,6 +78,7 @@ public:
 	virtual void Draw();
 	virtual void Init();
 	virtual void Clear();
+	virtual void ClearTextures();
 	virtual void GenFaceNormals(float3* centers);
 
 	bool SetWireframe(bool w);

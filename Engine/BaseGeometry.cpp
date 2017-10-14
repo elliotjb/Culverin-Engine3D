@@ -49,6 +49,10 @@ void BaseGeometry::Clear()
 {
 }
 
+void BaseGeometry::ClearTextures()
+{
+}
+
 void BaseGeometry::GenFaceNormals(float3* centers)
 {
 }
@@ -144,6 +148,35 @@ Mesh::Mesh(std::vector<Vertex> vert, std::vector<uint> ids, std::vector<Texture>
 
 Mesh::~Mesh()
 {
+}
+
+void Mesh::Clear()
+{
+	//Free Buffers
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &vertices_id);
+	glDeleteBuffers(1, &indices_id);
+
+	//Free Textures
+	for (uint i = 0; i < textures.size(); i++)
+	{
+		glDeleteTextures(1, &textures[i].id);
+	}
+
+	vertices.clear();
+	indices.clear();
+	textures.clear();
+	face_centers.clear();
+
+}
+
+void Mesh::ClearTex()
+{
+	//Free Textures
+	for (uint i = 0; i < textures.size(); i++)
+	{
+		glDeleteTextures(1, &textures[i].id);
+	}
 }
 
 void Mesh::Draw()
@@ -249,4 +282,12 @@ void Mesh::SetupMesh()
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 
 	glBindVertexArray(0);
+}
+
+void Mesh::SetTex(uint texID)
+{
+	for (uint i = 0; i < textures.size(); i++)
+	{
+		textures[i].id = texID;
+	}
 }

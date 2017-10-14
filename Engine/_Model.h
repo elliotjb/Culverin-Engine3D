@@ -32,6 +32,7 @@ public:
 
 	void Draw();
 	void Clear();
+	void ClearTextures();
 
 	void LoadModel(const char* path);
 	void ProcessNode(aiNode* node, const aiScene* scene, float3* min, float3* max);
