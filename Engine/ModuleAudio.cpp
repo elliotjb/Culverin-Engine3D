@@ -9,8 +9,9 @@
 
 ModuleAudio::ModuleAudio(bool start_enabled) : Module(start_enabled), music(NULL)
 {
-	name = "Audio";
+	volume = 10;
 	haveConfig = true;
+	name = "Audio";
 }
 
 // Destructor
@@ -52,6 +53,15 @@ bool ModuleAudio::Init(JSON_Object* node)
 	mute = json_object_get_boolean(node, "Mute");
 
 	return ret;
+}
+
+bool ModuleAudio::SaveConfig(JSON_Object * node)
+{
+	//Save audio config info --------------------------------
+	json_object_set_number(node, "Volume", volume);
+	json_object_set_boolean(node, "Mute", mute);
+	// ------------------------------------------------------
+	return true;
 }
 
 // Called before quitting
@@ -96,7 +106,6 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 		{
 			Mix_HaltMusic();
 		}
-
 		// this call blocks until fade out is done
 		Mix_FreeMusic(music);
 	}
@@ -125,6 +134,15 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 				LOG("Cannot play in music %s. Mix_GetError(): %s", path, Mix_GetError());
 				ret = false;
 			}
+		}
+
+		if (mute == false)
+		{
+			VolumeMusic(volume);
+		}
+		else
+		{
+			VolumeMusic(0);
 		}
 	}
 
@@ -174,9 +192,20 @@ void ModuleAudio::VolumeMusic(int volume)
 {
 	if (music != NULL)
 	{
-		LOG("volume was    : %d\n", Mix_VolumeMusic(MIX_MAX_VOLUME / 2));
 		Mix_VolumeMusic(volume);
 		LOG("volume is now : %d\n", Mix_VolumeMusic(-1));
+	}
+}
+
+void ModuleAudio::Mute(bool mute)
+{
+	if (mute)
+	{
+		VolumeMusic(0);
+	}
+	else
+	{
+		VolumeMusic((float)volume / 100 * 128);
 	}
 }
 
@@ -232,10 +261,17 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 
 update_status ModuleAudio::UpdateConfig(float dt)
 {
-	ImGui::SliderInt("Volume", &volume, 0, 100);
+	if (ImGui::SliderInt("Volume", &volume, 0, 100))
+	{
+		if (mute == false)
+		{
+			VolumeMusic((float)volume / 100 * 128);
+		}
+	}
+
 	if (ImGui::Checkbox("Mute", &mute))
 	{
-		//MuteVolume(mute);
+		Mute(mute);
 	}
 	return UPDATE_CONTINUE;
 }

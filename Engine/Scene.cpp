@@ -23,7 +23,7 @@ bool Scene::Start()
 {
 	float3 pos = { 1, 1, 1 };
 	float3 size = { 1, 1, 1 };
-
+	App->audio->PlayMusic("Dragon_Ball_Super_.ogg");
 
 	//App->objects->CreateCube(pos, size);
 	

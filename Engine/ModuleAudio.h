@@ -15,6 +15,7 @@ public:
 	~ModuleAudio();
 
 	bool Init(JSON_Object* node);
+	bool SaveConfig(JSON_Object* node);
 	bool CleanUp();
 
 	// Play a music file
@@ -22,6 +23,7 @@ public:
 	bool StopMusic();
 	bool ResumeMusic();
 	void VolumeMusic(int volume);
+	void Mute(bool mute);
 	void FadeMusic(int ms);
 
 	// Load a WAV in memory
