@@ -18,6 +18,10 @@ struct ModelInfo
 	uint total_meshes = 0;
 	uint total_vertex = 0;
 	uint total_faces = 0;
+
+	//FILE & NAME INFO
+	std::string path;
+	std::string name;
 };
 
 class _Model :public BaseGeometry
@@ -35,31 +39,19 @@ public:
 	
 	std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, const char *typeName);
 	uint TextureFromFile(const char *path, const std::string& dir);
+	
 	void SetTexture(const char *path);
-
 	void SetName(const char *path);
-	std::string GetName() const;
 
 	AABB GetBoundingBox() const;
 
-	uint GetTotalMeshes() const;
-	uint GetTotalVertex() const;
-	uint GetTotalFaces() const;
-	uint GetTexID() const;
-
-	float3 GetPosition() const;
-	float3 GetRotation() const;
-	float3 GetScale() const;
+	ModelInfo base_info;
+	std::vector<Mesh> meshes;
+	
+	/*Don't load the same texture more than once*/
+	std::vector<Texture> loaded_tex;
 
 private:
-	std::string path;
-	std::string name;
-
-	std::vector<Texture> loaded_tex;
-	std::vector<Mesh> meshes;
-
-	ModelInfo info;
-
 	AABB bounding_box;
 
 };

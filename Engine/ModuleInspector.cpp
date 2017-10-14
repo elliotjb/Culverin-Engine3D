@@ -49,25 +49,22 @@ void Inspector::ShowInspector()
 	EndDock();
 }
 
-void Inspector::SetInfo(const _Model& model)
+void Inspector::SetInfo(_Model* model)
 {
-	mesh_num = model.GetTotalMeshes();
-	vertex_num = model.GetTotalVertex();
-	faces_num = model.GetTotalFaces();
-	tex_id = model.GetTexID();
+	if (model != nullptr)
+	{
+		model_ref = model;
 
-	object_pos = model.GetPosition();
-	object_rot = model.GetRotation();
-	object_scale = model.GetScale();
-	std::string temp = model.GetName();
-	name = new char[temp.size() + 1];
-	std::copy(temp.begin(), temp.end(), name);
-	name[temp.size()] = '\0';
+		std::string temp = model_ref->base_info.name.c_str();
+		model_name = new char[temp.size() + 1];
+		std::copy(temp.begin(), temp.end(), model_name);
+		model_name[temp.size()] = '\0';
+	}
 }
 
-void Inspector::SetTexInfo(uint texID)
+void Inspector::SetTexInfo(_Model* model)
 {
-	tex_id = texID;
+	model_ref = model;
 }
 
 void Inspector::ShowModelInfo() const
@@ -80,7 +77,7 @@ void Inspector::ShowModelInfo() const
 	ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, ImVec4(0.211f, 0.211f, 0.211f, 1.00f));
 	if (ImGui::BeginChild(ImGui::GetID("Inspector"),ImVec2(ImGui::GetWindowWidth(), 40)))
 	{
-		static GLuint icon_GameObject = App->textures->LoadTexture("Imatges/UI/icon_GameObject.png");
+		static GLuint icon_GameObject = App->textures->LoadTexture("Images/UI/icon_GameObject.png");
 		ImGui::Spacing();
 		//ImGui
 		ImGui::Text(""); ImGui::SameLine(5); 
@@ -90,7 +87,7 @@ void Inspector::ShowModelInfo() const
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
 		ImGui::Checkbox("##1", &isEnable);	ImGui::SameLine();
 		ImGui::PopStyleVar();
-		ImGui::InputText("", name, IM_ARRAYSIZE(name));
+		ImGui::InputText("", model_name, IM_ARRAYSIZE(model_name));
 		ImGui::SameLine(); App->ShowHelpMarker("Hold SHIFT or use mouse to select text.\n" "CTRL+Left/Right to word jump.\n" "CTRL+A or double-click to select all.\n" "CTRL+X,CTRL+C,CTRL+V clipboard.\n" "CTRL+Z,CTRL+Y undo/redo.\n" "ESCAPE to revert.\n");
 		ImGui::PopStyleVar();
 		ImGui::EndChild();
@@ -98,9 +95,9 @@ void Inspector::ShowModelInfo() const
 	ImGui::PopStyleColor();
 	if (ImGui::TreeNodeEx("Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		float3 pos = object_pos;//70
-		float3 rot = object_rot;//70
-		float3 scale = object_scale;//70
+		float3 pos = model_ref->base_info.position; //70
+		float3 rot = model_ref->base_info.rotation; //70
+		float3 scale = model_ref->base_info.scale; //70
 		int op = ImGui::GetWindowWidth() / 4;
 		ImGui::PushItemWidth(op - 40);
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 1));
@@ -123,23 +120,37 @@ void Inspector::ShowModelInfo() const
 		ImGui::TreePop();
 	}
 	ImGui::Separator();
-	if (ImGui::TreeNodeEx("Geometry", ImGuiTreeNodeFlags_DefaultOpen))
+	if (ImGui::TreeNodeEx("Total Geometry", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::Text("Total Vertices:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", vertex_num);
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", model_ref->base_info.total_vertex);
 		ImGui::Text("Total Meshes:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", mesh_num);
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", model_ref->base_info.total_meshes);
 		ImGui::Text("Total Faces:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", faces_num);
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", model_ref->base_info.total_faces);
 		ImGui::TreePop();
 	}
 	ImGui::Separator();
-	if (ImGui::TreeNodeEx("Texture", ImGuiTreeNodeFlags_DefaultOpen))
+	if (ImGui::CollapsingHeader("MESHES"))
 	{
-		ImGui::Text("Texture:");
-		ImGui::Image((ImTextureID*)tex_id, ImVec2(150, 150), ImVec2(-1, 1), ImVec2(0, 0));
-		ImGui::TreePop();
+		for (uint i = 0; i < model_ref->meshes.size(); i++)
+		{
+			ImGui::Text(" MESH %i", i);
+			ImGui::Text(" Vertices:"); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", model_ref->meshes[i].vertices.size());
+			ImGui::Text(" Faces:"); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", model_ref->meshes[i].numFaces);
+
+			ImGui::Separator();
+		}
 	}
+
+	//if (ImGui::TreeNodeEx("Texture", ImGuiTreeNodeFlags_DefaultOpen))
+	//{
+	//	ImGui::Text("Texture:");
+	//	ImGui::Image((ImTextureID*)tex_id, ImVec2(150, 150), ImVec2(-1, 1), ImVec2(0, 0));
+	//	ImGui::TreePop();
+	//}
 }
 
 bool Inspector::CleanUp()

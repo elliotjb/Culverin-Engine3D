@@ -80,11 +80,11 @@ void _Model::LoadModel(const char * path)
 		ProcessNode(scene->mRootNode, scene, &min, &max);
 
 		//Set Base Info --------------------
-		info.total_meshes = meshes.size();
-		for (uint i = 0; i < info.total_meshes; i++)
+		base_info.total_meshes = meshes.size();
+		for (uint i = 0; i < base_info.total_meshes; i++)
 		{
-			info.total_vertex += meshes[i].vertices.size();
-			info.total_faces += meshes[i].numFaces;
+			base_info.total_vertex += meshes[i].vertices.size();
+			base_info.total_faces += meshes[i].numFaces;
 		}
 
 		aiQuaternion rot_quat;
@@ -95,9 +95,9 @@ void _Model::LoadModel(const char * path)
 		scene->mRootNode->mTransformation.Decompose(scal, rot_quat, pos);
 		rot = rot_quat.GetEuler();
 
-		info.position.Set(pos.x, pos.y, pos.z);
-		info.rotation.Set(rot.x, rot.y, rot.z);
-		info.scale.Set(scal.x, scal.y, scal.z);
+		base_info.position.Set(pos.x, pos.y, pos.z);
+		base_info.rotation.Set(rot.x, rot.y, rot.z);
+		base_info.scale.Set(scal.x, scal.y, scal.z);
 
 		/*Set Bounding Box Min & Max Vertex*/
 		bounding_box.minPoint = min;
@@ -229,7 +229,7 @@ std::vector<Texture> _Model::loadMaterialTextures(aiMaterial * mat, aiTextureTyp
 		if (skip == false)
 		{
 			Texture tex;
-			tex.id = TextureFromFile(str.C_Str(), this->path);
+			tex.id = TextureFromFile(str.C_Str(), base_info.path);
 			tex.type = typeName;
 			tex.path = str.C_Str();
 			textures.push_back(tex);
@@ -255,63 +255,23 @@ void _Model::SetTexture(const char * path)
 		{
 			meshes[i].textures[0].id = App->textures->LoadTexture(path);
 		}
-		((Inspector*)App->gui->winManager[INSPECTOR])->SetTexInfo(meshes[0].textures[0].id);
+		//((Inspector*)App->gui->winManager[INSPECTOR])->SetTexInfo(this);
 	}
 }
 
 void _Model::SetName(const char* filepath)
 {
-	path = filepath;
-	size_t BeginName = path.find_last_of("\\/");
-	size_t EndName = path.find_last_of(".");
+	base_info.path = filepath;
 
-	name = path.substr(BeginName + 1);
-	size_t namesize = name.find_last_of(".");
-	name = name.substr(0, namesize);
-}
-
-std::string _Model::GetName() const
-{
-	return name;
+	size_t BeginName = base_info.path.find_last_of("\\/");
+	size_t EndName = base_info.path.find_last_of(".");
+	base_info.name = base_info.path.substr(BeginName + 1);
+	size_t namesize = base_info.name.find_last_of(".");
+	
+	base_info.name = base_info.name.substr(0, namesize);
 }
 
 AABB _Model::GetBoundingBox() const
 {
 	return bounding_box;
-}
-
-uint _Model::GetTotalMeshes() const
-{
-	return info.total_meshes;
-}
-
-uint _Model::GetTotalVertex() const
-{
-	return info.total_vertex;
-}
-
-uint _Model::GetTotalFaces() const
-{
-	return info.total_faces;
-}
-
-uint _Model::GetTexID() const
-{
-	/* Only one texture loaded by now*/ // TODO -< MODIFY THIS!!! URGENT!!!!
-	return meshes[0].textures[0].id;
-}
-
-float3 _Model::GetPosition() const
-{
-	return info.position;
-}
-
-float3 _Model::GetRotation() const
-{
-	return info.rotation;
-}
-
-float3 _Model::GetScale() const
-{
-	return info.scale;
 }

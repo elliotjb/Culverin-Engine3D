@@ -44,10 +44,7 @@ update_status ModuleFBXLoader::Update(float dt)
 		{
 		case F_MODEL:
 		{
-			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "MODEL dropped on window",
-				App->input->dropped_filedir, App->window->window);
 			LOG("IMPORTING MODEL, File Path: %s", App->input->dropped_filedir);
-
 			LoadMesh(App->input->dropped_filedir);
 
 			//Fix Camera to model ------------------------
@@ -60,8 +57,6 @@ update_status ModuleFBXLoader::Update(float dt)
 		}
 		case F_TEXTURE:
 		{
-			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "TEXTURE dropped on window", 
-				App->input->dropped_filedir, App->window->window);
 			LOG("IMPORTING TEXTURE, File Path: %s", App->input->dropped_filedir);
 
 			//Check if there's a Geometry to apply the dropped texture
@@ -160,9 +155,10 @@ BaseGeometry* ModuleFBXLoader::LoadMesh(const char* filename)
 	}
 
 	((Inspector*)App->gui->winManager[INSPECTOR])->model_loaded = true;
-	((Inspector*)App->gui->winManager[INSPECTOR])->SetInfo(*new_model);
+	((Inspector*)App->gui->winManager[INSPECTOR])->SetInfo(new_model);
 	
 	App->geometry_manager->geometry = new_model;
+
 	return m;
 }
 

@@ -19,8 +19,8 @@ public:
 	bool CleanUp();
 
 	void ShowInspector();
-	void SetInfo(const _Model& model);
-	void SetTexInfo(uint texID);
+	void SetInfo(_Model* model);
+	void SetTexInfo(_Model* model);
 	void ShowModelInfo() const;
 	
 	//void OpenClose();
@@ -30,19 +30,9 @@ public:
 
 private:
 
-	//TRANSFORM INFO
-	float3 object_pos = { 0,0,0 };
-	float3 object_rot = { 0,0,0 };
-	float3 object_scale = { 0,0,0 };
+	_Model* model_ref = nullptr;
+	char* model_name = nullptr;
 
-	//GEOMETRY INFO
-	uint mesh_num = 0;
-	uint vertex_num = 0;
-	uint faces_num = 0;
 
-	//TEXTURE INFO
-	uint tex_id = 0;
 
-	//OBJECT NAME
-	char* name = nullptr;
 };
