@@ -42,7 +42,7 @@ class Mesh
 {
 public:
 	Mesh();
-	Mesh(std::vector<Vertex> vertices, std::vector<uint> indices, std::vector<Texture> textures, bool normals, uint faces);
+	Mesh(std::vector<Vertex> vertices, std::vector<uint> indices, std::vector<Texture> textures, bool normals, uint faces, const char* name);
 	~Mesh();
 
 	void Clear();
@@ -53,6 +53,7 @@ public:
 	void SetTex(uint texID);
 
 public:
+	std::string name;
 	std::vector<Vertex> vertices;
 	std::vector<uint> indices;
 	std::vector<Texture> textures;

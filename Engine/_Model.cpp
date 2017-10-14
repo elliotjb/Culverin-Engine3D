@@ -210,7 +210,7 @@ Mesh _Model::ProcessMesh(aiMesh * mesh, const aiScene * scene, float3 * min, flo
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	}
 
-	return Mesh(vertices, indices, textures, mesh->HasNormals(), mesh->mNumFaces);
+	return Mesh(vertices, indices, textures, mesh->HasNormals(), mesh->mNumFaces, mesh->mName.C_Str());
 }
 
 std::vector<Texture> _Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type, const char * typeName)

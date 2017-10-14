@@ -134,8 +134,10 @@ Mesh::Mesh()
 {
 }
 
-Mesh::Mesh(std::vector<Vertex> vert, std::vector<uint> ids, std::vector<Texture> tex, bool normals, uint faces)
+Mesh::Mesh(std::vector<Vertex> vert, std::vector<uint> ids, std::vector<Texture> tex, bool normals, uint faces, const char* name)
 {
+	this->name = name;
+
 	hasNormals = normals;
 	numFaces = faces;
 

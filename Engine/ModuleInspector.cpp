@@ -98,6 +98,7 @@ void Inspector::ShowModelInfo() const
 	if (ImGui::TreeNodeEx("Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::PopStyleColor();
+		ImGui::Separator();
 		float3 pos = model_ref->base_info.position; //70
 		float3 rot = model_ref->base_info.rotation; //70
 		float3 scale = model_ref->base_info.scale; //70
@@ -133,6 +134,7 @@ void Inspector::ShowModelInfo() const
 	if (ImGui::TreeNodeEx("Total Geometry", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::PopStyleColor();
+		ImGui::Separator();
 		ImGui::Text("Total Vertices:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", model_ref->base_info.total_vertex);
 		ImGui::Text("Total Meshes:"); ImGui::SameLine();
@@ -150,19 +152,22 @@ void Inspector::ShowModelInfo() const
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
 	if (ImGui::TreeNodeEx("Meshes", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		ImGui::Separator();
 		ImGui::PopStyleColor();
 		for (uint i = 0; i < model_ref->meshes.size(); i++)
 		{
-			ImGui::Text("MESH %i", i);
+			ImGui::Text("Mesh %i: ", i); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", model_ref->meshes[i].name.c_str());
 			ImGui::Text("Vertices:"); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", model_ref->meshes[i].vertices.size());
 			ImGui::Text("Faces:"); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", model_ref->meshes[i].numFaces);
 			ImGui::Text("Textures:"); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", model_ref->meshes[i].textures.size());
+
 			for (uint j = 0; j < model_ref->meshes[i].textures.size(); j++)
 			{
-				ImGui::Image((ImTextureID*)model_ref->meshes[i].textures[j].id, ImVec2(100, 100), ImVec2(-1, 1), ImVec2(0, 0));
+				ImGui::ImageButton((ImTextureID*)model_ref->meshes[i].textures[j].id, ImVec2(100, 100), ImVec2(-1, 1), ImVec2(0, 0));
 			}
 
 			ImGui::Separator();
@@ -173,13 +178,6 @@ void Inspector::ShowModelInfo() const
 	{
 		ImGui::PopStyleColor();
 	}
-
-	//if (ImGui::TreeNodeEx("Texture", ImGuiTreeNodeFlags_DefaultOpen))
-	//{
-	//	ImGui::Text("Texture:");
-	//	ImGui::Image((ImTextureID*)tex_id, ImVec2(150, 150), ImVec2(-1, 1), ImVec2(0, 0));
-	//	ImGui::TreePop();
-	//}
 }
 
 bool Inspector::CleanUp()
