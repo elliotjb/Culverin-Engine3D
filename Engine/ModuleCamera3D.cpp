@@ -34,7 +34,6 @@ bool ModuleCamera3D::Start()
 {
 	LOG("Setting up the camera");
 	bool ret = true;
-	freecam = false;
 	moveWithScroll = 30.0f;
 	return ret;
 }
@@ -53,9 +52,11 @@ update_status ModuleCamera3D::Update(float dt)
 	perf_timer.Start();
 
 	ImGuiIO& io = ImGui::GetIO();
+	//Check out mouse
+	CheckOut();
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
-	if (io.WantTextInput == false && isMouseOnWindow())
+	if (io.WantTextInput == false && isMouseOnWindow() || canOut)
 	{
 		vec3 newPos(0, 0, 0);
 		float speed = 3.0f * dt;
@@ -263,6 +264,22 @@ void ModuleCamera3D::LookAndMoveToObject()
 bool ModuleCamera3D::isMouseOnWindow()
 {
 	return CanMoveCamera;
+}
+
+void ModuleCamera3D::CheckOut()
+{
+	if ((App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN ||
+		App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN ||
+		App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_DOWN) && isMouseOnWindow())
+	{
+		canOut = true;
+	}
+	if ((App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_UP ||
+		App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP ||
+		App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_UP) && isMouseOnWindow())
+	{
+		canOut = false;
+	}
 }
 
 

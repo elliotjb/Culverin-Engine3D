@@ -21,6 +21,7 @@ public:
 	bool CleanUp();
 
 	void ShowPerformance(int ms_index);
+	void DrawPlane();
 
 	GameObject* CreateGameObject();
 

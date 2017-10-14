@@ -87,11 +87,11 @@ void Inspector::ShowModelInfo() const
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
 		ImGui::Checkbox("##1", &isEnable);	ImGui::SameLine();
 		ImGui::PopStyleVar();
-		ImGui::InputText("", model_name, IM_ARRAYSIZE(model_name));
+		ImGui::InputText("##nameModel", model_name, IM_ARRAYSIZE(model_name));
 		ImGui::SameLine(); App->ShowHelpMarker("Hold SHIFT or use mouse to select text.\n" "CTRL+Left/Right to word jump.\n" "CTRL+A or double-click to select all.\n" "CTRL+X,CTRL+C,CTRL+V clipboard.\n" "CTRL+Z,CTRL+Y undo/redo.\n" "ESCAPE to revert.\n");
 		ImGui::PopStyleVar();
-		ImGui::EndChild();
 	}
+	ImGui::EndChild();
 	ImGui::PopStyleColor();
 	if (ImGui::TreeNodeEx("Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
@@ -102,21 +102,22 @@ void Inspector::ShowModelInfo() const
 		ImGui::PushItemWidth(op - 40);
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 1));
 		ImGui::Text("Position"); ImGui::SameLine(op + 40);
-		ImGui::Text("X"); ImGui::SameLine(); ImGui::InputFloat("", &pos.x, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-		ImGui::Text("Y"); ImGui::SameLine(); ImGui::InputFloat("", &pos.y, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-		ImGui::Text("Z"); ImGui::SameLine(); ImGui::InputFloat("", &pos.z, 0, 0, 3, ImGuiInputTextFlags_ReadOnly);
+		ImGui::Text("X"); ImGui::SameLine(); ImGui::InputFloat("##X_1", &pos.x, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+		ImGui::Text("Y"); ImGui::SameLine(); ImGui::InputFloat("##Y_1", &pos.y, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+		ImGui::Text("Z"); ImGui::SameLine(); ImGui::InputFloat("##Z_1", &pos.z, 0, 0, 3, ImGuiInputTextFlags_ReadOnly);
 		//ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "X = %.4f Y = %.4f Z = %.4f", object_pos.x, object_pos.y, object_pos.z);
 		//ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "X = %.4f Y = %.4f Z = %.4f", object_rot.x, object_rot.y, object_rot.z);
 		//ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "X = %.4f Y = %.4f Z = %.4f", object_scale.x, object_scale.y, object_scale.z);
 		ImGui::Text("Rotation"); ImGui::SameLine(op + 40);
-		ImGui::Text("X"); ImGui::SameLine(); ImGui::InputFloat("", &rot.x, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-		ImGui::Text("Y"); ImGui::SameLine(); ImGui::InputFloat("", &rot.y, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-		ImGui::Text("Z"); ImGui::SameLine(); ImGui::InputFloat("", &rot.z, 0, 0, 3, ImGuiInputTextFlags_ReadOnly);
+		ImGui::Text("X"); ImGui::SameLine(); ImGui::InputFloat("##X_2", &rot.x, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+		ImGui::Text("Y"); ImGui::SameLine(); ImGui::InputFloat("##Y_2", &rot.y, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+		ImGui::Text("Z"); ImGui::SameLine(); ImGui::InputFloat("##Z_2", &rot.z, 0, 0, 3, ImGuiInputTextFlags_ReadOnly);
 		ImGui::Text("Scale"); ImGui::SameLine(op + 40);
-		ImGui::Text("X"); ImGui::SameLine(); ImGui::InputFloat("", &scale.x, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-		ImGui::Text("Y"); ImGui::SameLine(); ImGui::InputFloat("", &scale.y, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-		ImGui::Text("Z"); ImGui::SameLine(); ImGui::InputFloat("", &scale.z, 0, 0, 3, ImGuiInputTextFlags_ReadOnly);
+		ImGui::Text("X"); ImGui::SameLine(); ImGui::InputFloat("##X_3", &scale.x, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+		ImGui::Text("Y"); ImGui::SameLine(); ImGui::InputFloat("##Y_3", &scale.y, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+		ImGui::Text("Z"); ImGui::SameLine(); ImGui::InputFloat("##Z_3", &scale.z, 0, 0, 3, ImGuiInputTextFlags_ReadOnly);
 		ImGui::PopStyleVar();
+		ImGui::PopItemWidth();
 		ImGui::TreePop();
 	}
 	ImGui::Separator();
@@ -131,7 +132,7 @@ void Inspector::ShowModelInfo() const
 		ImGui::TreePop();
 	}
 	ImGui::Separator();
-	if (ImGui::CollapsingHeader("MESHES"))
+	if (ImGui::TreeNodeEx("Meshes", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		for (uint i = 0; i < model_ref->meshes.size(); i++)
 		{
@@ -143,6 +144,7 @@ void Inspector::ShowModelInfo() const
 
 			ImGui::Separator();
 		}
+		ImGui::TreePop();
 	}
 
 	//if (ImGui::TreeNodeEx("Texture", ImGuiTreeNodeFlags_DefaultOpen))

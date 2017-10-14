@@ -29,6 +29,7 @@ public:
 private:
 
 	void CalculateViewMatrix();
+	void CheckOut();
 
 public:
 	
@@ -45,7 +46,7 @@ public:
 	bool CanMoveCamera = false;
 
 private:
-	bool freecam = false;
+	bool canOut = false;
 	float moveWithScroll = 0;
 	mat4x4 ViewMatrix, ViewMatrixInverse;
 };
