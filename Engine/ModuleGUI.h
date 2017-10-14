@@ -40,7 +40,7 @@ public:
 	void ShowHardware();
 	void ShowInfoMouse(bool* active);
 	void ShowWindowExit(bool* active);
-	void ShowPerformance(int ms_index);
+
 	void ShowStyleEditor(ImGuiStyle* ref = NULL);
 	//void ShowConfig();
 	void LoadDocks();

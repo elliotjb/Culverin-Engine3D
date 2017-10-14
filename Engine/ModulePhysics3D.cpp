@@ -948,16 +948,3 @@ int	 DebugDrawer::getDebugMode() const
 {
 	return mode;
 }
-
-void ModulePhysics3D::ShowPerformance(int ms_index)
-{
-	if (ImGui::CollapsingHeader("PHYSICS"))
-	{
-		ImGui::Text("Pre-Update:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%.4f", pre_log[ms_index - 1]);
-		ImGui::Text("Update:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%.4f", up_log[ms_index - 1]);
-		ImGui::Text("Post-Update:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%.4f", post_log[ms_index - 1]);
-	}
-}

@@ -7,6 +7,9 @@
 
 ModuleInput::ModuleInput(bool start_enabled) : Module(start_enabled)
 {
+	Awake_enabled = true;
+	preUpdate_enabled = true;
+
 	keyboard = new KEY_STATE[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(KEY_STATE) * MAX_KEYS);
 	memset(mouse_buttons, KEY_IDLE, sizeof(KEY_STATE) * MAX_MOUSE_BUTTONS);
@@ -24,6 +27,8 @@ ModuleInput::~ModuleInput()
 // Called before render is available
 bool ModuleInput::Init(JSON_Object* node)
 {
+	perf_timer.Start();
+
 	LOG("Init SDL input event system");
 	bool ret = true;
 	SDL_Init(0);
@@ -36,6 +41,8 @@ bool ModuleInput::Init(JSON_Object* node)
 
 	SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 
+	Awake_t = perf_timer.ReadMs();
+
 	return ret;
 }
 
@@ -45,7 +52,6 @@ update_status ModuleInput::PreUpdate(float dt)
 	perf_timer.Start();
 
 	SDL_PumpEvents();
-
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 	
 	for(int i = 0; i < MAX_KEYS; ++i)
@@ -182,15 +188,3 @@ bool ModuleInput::CleanUp()
 	return true;
 }
 
-void ModuleInput::ShowPerformance(int ms_index)
-{
-	if (ImGui::CollapsingHeader("INPUT"))
-	{
-		ImGui::Text("Pre-Update:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%.4f", pre_log[ms_index - 1]);
-		ImGui::Text("Update:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%.4f", up_log[ms_index - 1]);
-		ImGui::Text("Post-Update:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%.4f", post_log[ms_index - 1]);
-	}
-}

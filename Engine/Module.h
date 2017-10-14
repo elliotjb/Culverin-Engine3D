@@ -54,7 +54,33 @@ public:
 		return true;
 	}
 
-	virtual void ShowPerformance(int ms_index) {}
+	void ShowPerformance(int ms_index)
+	{
+
+		if (ImGui::CollapsingHeader(name.c_str()))
+		{
+			if (Awake_enabled)
+			{
+				ImGui::TextColored(ImVec4(0.883f, 0.721f, 0.00f, 1.00f), "AWAKE - %.4f ms", Awake_t);
+			}
+			if (Start_enabled)
+			{
+				ImGui::TextColored(ImVec4(0.207f, 0.947f, 0.958f, 1.00f), "START - %.4f ms", Start_t);
+			}
+			if (preUpdate_enabled)
+			{
+				ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "PREUPDATE - %.4f ms", pre_log[ms_index - 1]);
+			}
+			if (Update_enabled)
+			{
+				ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "UPDATE - %.4f ms", up_log[ms_index - 1]);
+			}
+			if (postUpdate_enabled)
+			{
+				ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "POSTUPDATE - %.4f ms", post_log[ms_index - 1]);
+			}
+		}
+	}
 
 	virtual bool CleanUp() 
 	{ 
@@ -104,9 +130,17 @@ public:
 	float up_log[70] = { 0 };
 	float post_log[70] = { 0 };
 
+	float Awake_t = 0;
+	float Start_t = 0;
 	float preUpdate_t = 0;
 	float Update_t = 0;
 	float postUpdate_t = 0;
+
+	bool Awake_enabled = false;
+	bool Start_enabled = false;
+	bool preUpdate_enabled = false;
+	bool Update_enabled = false;
+	bool postUpdate_enabled = false;
 
 	ImVec4 color;
 };

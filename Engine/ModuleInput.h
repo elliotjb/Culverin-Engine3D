@@ -60,8 +60,6 @@ public:
 		return mouse_y_motion;
 	}
 
-	void ShowPerformance(int ms_index);
-
 private:
 	KEY_STATE* keyboard;
 	KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];

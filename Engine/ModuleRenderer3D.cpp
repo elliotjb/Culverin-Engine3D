@@ -13,6 +13,11 @@
 
 ModuleRenderer3D::ModuleRenderer3D(bool start_enabled) : Module(start_enabled)
 {
+	Awake_enabled = true;
+	Start_enabled = true;
+	preUpdate_enabled = true;
+	postUpdate_enabled = true;
+
 	name = "Renderer";
 	haveConfig = true;
 }
@@ -24,6 +29,8 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init(JSON_Object* node)
 {
+	perf_timer.Start();
+
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
 	
@@ -120,7 +127,7 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		fog_active = json_object_get_boolean(node, "Active");
 		fog_density = json_object_get_number(node, "Density");
 
-
+		Awake_t = perf_timer.ReadMs();
 	}
 
 	// Projection matrix for
@@ -131,6 +138,8 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 
 bool ModuleRenderer3D::Start()
 {
+	perf_timer.Start();
+
 	(depth_test) ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
 	(cull_face) ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
 	lights[0].Active(true);
@@ -144,6 +153,9 @@ bool ModuleRenderer3D::Start()
 		glEnable(GL_FOG);
 		glFogfv(GL_FOG_DENSITY, &fog_density);
 	}
+
+	Start_t = perf_timer.ReadMs();
+
 	return true;
 }
 
@@ -293,17 +305,4 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-}
-
-void ModuleRenderer3D::ShowPerformance(int ms_index)
-{
-	if (ImGui::CollapsingHeader("RENDERER 3D"))
-	{
-		ImGui::Text("Pre-Update:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%.4f", pre_log[ms_index - 1]);
-		ImGui::Text("Update:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%.4f", up_log[ms_index - 1]);
-		ImGui::Text("Post-Update:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%.4f", post_log[ms_index - 1]);
-	}
 }

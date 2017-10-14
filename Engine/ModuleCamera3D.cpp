@@ -10,6 +10,9 @@
 
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 {
+	Start_enabled = true;
+	Update_enabled = true;
+
 	CalculateViewMatrix();
 
 	X = vec3(1.0f, 0.0f, 0.0f);
@@ -32,10 +35,15 @@ ModuleCamera3D::~ModuleCamera3D()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::Start()
 {
+	perf_timer.Start();
+
 	LOG("Setting up the camera");
 	bool ret = true;
 	moveWithScroll = 30.0f;
 	speed_camera_move = 1;
+
+	Start_t = perf_timer.ReadMs();
+
 	return ret;
 }
 
@@ -326,17 +334,4 @@ void ModuleCamera3D::CalculateViewMatrix()
 {
 	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -dot(X, Position), -dot(Y, Position), -dot(Z, Position), 1.0f);
 	ViewMatrixInverse = inverse(ViewMatrix);
-}
-
-void ModuleCamera3D::ShowPerformance(int ms_index)
-{
-	if (ImGui::CollapsingHeader("CAMERA"))
-	{
-		ImGui::Text("Pre-Update:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%.4f", pre_log[ms_index - 1]);
-		ImGui::Text("Update:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%.4f", up_log[ms_index - 1]);
-		ImGui::Text("Post-Update:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%.4f", post_log[ms_index - 1]);
-	}
 }

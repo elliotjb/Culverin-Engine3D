@@ -13,7 +13,6 @@ public:
 	virtual ~ModuleTextures();
 
 	bool Init(JSON_Object* node);
-	bool Start();
 	update_status UpdateConfig(float dt);
 	bool CleanUp();
 

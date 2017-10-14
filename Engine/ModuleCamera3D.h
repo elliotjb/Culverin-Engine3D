@@ -15,8 +15,6 @@ public:
 	update_status UpdateConfig(float dt);
 	bool CleanUp();
 
-	void ShowPerformance(int ms_index);
-
 	void Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const vec3 &Spot);
 	void LookObject(const vec3 &Spot);

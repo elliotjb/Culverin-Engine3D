@@ -9,6 +9,8 @@
 
 ModuleAudio::ModuleAudio(bool start_enabled) : Module(start_enabled), music(NULL)
 {
+	Awake_enabled = true;
+
 	volume = 10;
 	haveConfig = true;
 	name = "Audio";
@@ -21,6 +23,8 @@ ModuleAudio::~ModuleAudio()
 // Called before render is available
 bool ModuleAudio::Init(JSON_Object* node)
 {
+	perf_timer.Start();
+
 	LOG("Loading Audio Mixer");
 	bool ret = true;
 	SDL_Init(0);
@@ -51,6 +55,8 @@ bool ModuleAudio::Init(JSON_Object* node)
 
 	volume = json_object_get_number(node, "Volume");
 	mute = json_object_get_boolean(node, "Mute");
+
+	Awake_t = perf_timer.ReadMs();
 
 	return ret;
 }

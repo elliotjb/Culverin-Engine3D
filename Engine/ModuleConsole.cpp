@@ -27,11 +27,6 @@ Console::~Console()
 		free(History[i]);
 }
 
-bool Console::Start()
-{
-	return true;
-}
-
 update_status Console::Update(float dt)
 {
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_UP)

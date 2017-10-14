@@ -11,6 +11,8 @@
 
 ModuleTextures::ModuleTextures(bool start_enabled)
 {
+	Awake_enabled = true;
+
 	name = "Textures";
 }
 
@@ -20,6 +22,8 @@ ModuleTextures::~ModuleTextures()
 
 bool ModuleTextures::Init(JSON_Object * node)
 {
+	perf_timer.Start();
+
 	bool ret = true;
 
 	if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION ||
@@ -36,12 +40,9 @@ bool ModuleTextures::Init(JSON_Object * node)
 
 	ilutRenderer(ILUT_OPENGL);
 
-	return ret;
-}
+	Awake_t = perf_timer.ReadMs();
 
-bool ModuleTextures::Start()
-{
-	return true;
+	return ret;
 }
 
 update_status ModuleTextures::UpdateConfig(float dt)

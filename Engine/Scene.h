@@ -22,8 +22,6 @@ public:
 
 	void DrawPlane(int size);
 
-	void ShowPerformance(int ms_index);
-
 	GameObject* CreateGameObject();
 
 public:

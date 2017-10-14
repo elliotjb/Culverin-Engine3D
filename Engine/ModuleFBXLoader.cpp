@@ -17,6 +17,9 @@
 
 ModuleFBXLoader::ModuleFBXLoader(bool start_enabled): Module(start_enabled)
 {
+	Start_enabled = true;
+	Update_enabled = true;
+
 	name = "FBX Loader";
 }
 
@@ -26,15 +29,17 @@ ModuleFBXLoader::~ModuleFBXLoader()
 
 bool ModuleFBXLoader::Start()
 {
+
 	struct aiLogStream stream;
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
-
 	return true;
 }
 
 update_status ModuleFBXLoader::Update(float dt)
 {
+	perf_timer.Start();
+
 	//TODO -> place it in postUpdate method
 	if (App->input->dropped)
 	{
@@ -99,6 +104,8 @@ update_status ModuleFBXLoader::Update(float dt)
 
 		App->input->dropped = false;
 	}
+
+	Update_t = perf_timer.ReadMs();
 
 	return UPDATE_CONTINUE;
 }

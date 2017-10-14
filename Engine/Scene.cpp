@@ -12,6 +12,10 @@
 
 Scene::Scene(bool start_enabled) : Module(start_enabled)
 {
+	Start_enabled = true;
+	preUpdate_enabled = true;
+	Update_enabled = true;
+
 	name = "Scene";
 }
 
@@ -21,6 +25,8 @@ Scene::~Scene()
 
 bool Scene::Start()
 {
+	perf_timer.Start();
+
 	float3 pos = { 1, 1, 1 };
 	float3 size = { 1, 1, 1 };
 
@@ -53,12 +59,19 @@ bool Scene::Start()
 
 	//BaseObject* house = App->fbx_loader->LoadMesh("BakerHouse.fbx", "BakerHouse.png"); //LOAD MODEL
 	*/
+	Start_t = perf_timer.ReadMs();
+
 	return true;
 }
 
 update_status Scene::PreUpdate(float dt)
 {
+	perf_timer.Start();
+
 	frBuff->Bind();
+
+	preUpdate_t = perf_timer.ReadMs();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -167,18 +180,6 @@ void Scene::DrawPlane(int size)
 	glEnd();
 }
 
-void Scene::ShowPerformance(int ms_index)
-{
-	if (ImGui::CollapsingHeader("SCENE"))
-	{
-		ImGui::Text("Pre-Update:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%.4f", pre_log[ms_index - 1]);
-		ImGui::Text("Update:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%.4f", up_log[ms_index - 1]);
-		ImGui::Text("Post-Update:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%.4f", post_log[ms_index - 1]);
-	}
-}
 
 GameObject* Scene::CreateGameObject()
 {

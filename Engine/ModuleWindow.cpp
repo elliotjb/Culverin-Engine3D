@@ -8,6 +8,8 @@
 
 ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)
 {
+	Awake_enabled = true;
+
 	window = NULL;
 	screen_surface = NULL;
 	name = "Window";
@@ -22,6 +24,8 @@ ModuleWindow::~ModuleWindow()
 // Called before render is available
 bool ModuleWindow::Init(JSON_Object* node)
 {
+	perf_timer.Start();
+
 	LOG("Init SDL window & surface");
 	bool ret = true;
 
@@ -122,6 +126,8 @@ bool ModuleWindow::Init(JSON_Object* node)
 			SDL_SetWindowBordered(window, SDL_TRUE);
 		}
 	}
+
+	Awake_t = perf_timer.ReadMs();
 
 	return ret;
 }

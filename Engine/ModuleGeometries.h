@@ -21,8 +21,6 @@ public:
 	update_status UpdateConfig(float dt);
 	bool CleanUp();
 
-	void ShowPerformance(int ms_index);
-
 	//OBJECT CREATION--------------------
 	bool Index_vert(float3* vertex_triangulate, uint num_vertex, Mesh* obj);
 	
