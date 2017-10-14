@@ -61,6 +61,18 @@ void _Model::ClearTextures()
 	}
 }
 
+void _Model::ClearTexture(int m, int t, int t_id)
+{
+	if (m >= 0 && m < meshes.size())
+	{
+		meshes[m].ClearTexture(t);
+	}
+	else
+	{
+		LOG("Mesh index is wrong: %i", m);
+	}
+}
+
 void _Model::LoadModel(const char * path)
 {
 	bool ret = false;
@@ -172,19 +184,19 @@ Mesh _Model::ProcessMesh(aiMesh * mesh, const aiScene * scene, float3 * min, flo
 		}
 
 		// Texture Coords ------------------
-		if (mesh->mTextureCoords[0]) 
-		{
-			vec2.x = mesh->mTextureCoords[0][i].x;
-			vec2.y = mesh->mTextureCoords[0][i].y;
-			vertex.texCoords = vec2;
-		}
-		else
-		{
-			vertex.texCoords = float2(0, 0);
-		}
-		
-		/*Push Vertex into the Array*/
-		vertices.push_back(vertex); 
+if (mesh->mTextureCoords[0])
+{
+	vec2.x = mesh->mTextureCoords[0][i].x;
+	vec2.y = mesh->mTextureCoords[0][i].y;
+	vertex.texCoords = vec2;
+}
+else
+{
+	vertex.texCoords = float2(0, 0);
+}
+
+/*Push Vertex into the Array*/
+vertices.push_back(vertex);
 	}
 
 	// SET INDEX DATA -----------------------------------------
@@ -264,6 +276,23 @@ void _Model::SetTexture(const char * path)
 			meshes[i].SetTex(texture_id);
 		}
 		//((Inspector*)App->gui->winManager[INSPECTOR])->SetTexInfo(this);
+	}
+}
+
+void _Model::SetTexture(const char * path, int m, int t, int t_id)
+{
+	if (path != nullptr)
+	{
+		if (m >= 0 && m < meshes.size())
+		{
+			uint texture_id = App->textures->LoadTexture(path);
+			
+			meshes[m].SetTexture(t, texture_id);
+		}
+		else
+		{
+			LOG("SETTING TEXTURE ERROR - Mesh index is wrong: %i", m)
+		}
 	}
 }
 

@@ -63,8 +63,9 @@ update_status ModuleFBXLoader::Update(float dt)
 			if (App->geometry_manager->geometry != nullptr)
 			{
 				/*Delete the previous textures to apply the new one*/
-				((_Model*)(App->geometry_manager->geometry))->ClearTextures();
-				((_Model*)(App->geometry_manager->geometry))->SetTexture(App->input->dropped_filedir);
+				((_Model*)(App->geometry_manager->geometry))->ClearTexture(mesh_index, tex_index, tex_id);
+				((_Model*)(App->geometry_manager->geometry))->SetTexture(App->input->dropped_filedir, mesh_index, tex_index, tex_id);
+
 			}
 			else
 			{
@@ -99,16 +100,16 @@ update_status ModuleFBXLoader::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleFBXLoader::postUpdate(float dt)
-{
-	if (App->input->dropped)
-	{
-		LoadMesh(App->input->dropped_filedir);
-		App->input->dropped = false;
-	}
-
-	return UPDATE_CONTINUE;
-}
+//update_status ModuleFBXLoader::postUpdate(float dt)
+//{
+//	if (App->input->dropped)
+//	{
+//		LoadMesh(App->input->dropped_filedir);
+//		App->input->dropped = false;
+//	}
+//
+//	return UPDATE_CONTINUE;
+//}
 
 bool ModuleFBXLoader::CleanUp()
 {
@@ -164,5 +165,12 @@ BaseGeometry* ModuleFBXLoader::LoadMesh(const char* filename)
 	App->geometry_manager->geometry = new_model;
 
 	return m;
+}
+
+void ModuleFBXLoader::SetInfoToLoadTex(int m, int t, int t_id)
+{
+	mesh_index = m;
+	tex_index = t;
+	tex_id = t_id;
 }
 

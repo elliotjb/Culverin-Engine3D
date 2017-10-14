@@ -22,15 +22,19 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
-	update_status postUpdate(float dt);
+	//update_status postUpdate(float dt);
 	bool CleanUp();
 
 	FileType CheckFileType(char* filedir);
 
 	BaseGeometry* LoadMesh(const char* filename);
-	
-private:
+	void SetInfoToLoadTex(int m, int t, int t_id);
 
+private:
 	BaseGeometry* m;
 	FileType dropped_Filetype = F_UNKNOWN;
+
+	int mesh_index = -1;
+	int tex_index = -1;
+	int tex_id = -1;
 };

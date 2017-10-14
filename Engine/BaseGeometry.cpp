@@ -181,6 +181,19 @@ void Mesh::ClearTex()
 	}
 }
 
+void Mesh::ClearTexture(int t)
+{
+	if (t >= 0 && t < textures.size())
+	{
+		glDeleteTextures(1, &textures[t].id);
+	}
+
+	else
+	{
+		LOG("Texture index is wrong: %i", t);
+	}
+}
+
 void Mesh::Draw()
 {
 	if (vertices.size() > 0 && indices.size() > 0)
@@ -291,5 +304,17 @@ void Mesh::SetTex(uint texID)
 	for (uint i = 0; i < textures.size(); i++)
 	{
 		textures[i].id = texID;
+	}
+}
+
+void Mesh::SetTexture(int t_index, uint texID)
+{
+	if (t_index >= 0 && t_index < textures.size())
+	{
+		textures[t_index].id = texID;
+	}
+	else
+	{
+		LOG("SETTING TEXTURE ERROR - texture index is wrong: %i", t_index);
 	}
 }

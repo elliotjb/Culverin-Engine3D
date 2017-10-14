@@ -21,18 +21,18 @@ public:
 	void ShowInspector();
 	void SetInfo(_Model* model);
 	void SetTexInfo(_Model* model);
-	void ShowModelInfo() const;
+	void ShowModelInfo();
 	
 	//void OpenClose();
 	//bool IsOpen();
 
 	bool model_loaded = false;
 
-private:
+	int mesh_index = -1;
+	int tex_index = -1;
+	int tex_id = -1;
 
+private:
 	_Model* model_ref = nullptr;
 	char* model_name = nullptr;
-
-
-
 };

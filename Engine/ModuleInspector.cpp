@@ -67,7 +67,7 @@ void Inspector::SetTexInfo(_Model* model)
 	model_ref = model;
 }
 
-void Inspector::ShowModelInfo() const
+void Inspector::ShowModelInfo() 
 {
 	//ImGui::Text("MODEL INFO");
 	//ImGuiStyleVar_FramePadding
@@ -156,6 +156,7 @@ void Inspector::ShowModelInfo() const
 		ImGui::PopStyleColor();
 		for (uint i = 0; i < model_ref->meshes.size(); i++)
 		{
+			ImGui::PushID(i);
 			ImGui::Text("Mesh %i: ", i); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", model_ref->meshes[i].name.c_str());
 			ImGui::Text("Vertices:"); ImGui::SameLine();
@@ -167,10 +168,16 @@ void Inspector::ShowModelInfo() const
 
 			for (uint j = 0; j < model_ref->meshes[i].textures.size(); j++)
 			{
-				ImGui::ImageButton((ImTextureID*)model_ref->meshes[i].textures[j].id, ImVec2(100, 100), ImVec2(-1, 1), ImVec2(0, 0));
+				ImGui::PushID(j);
+				if (ImGui::ImageButtonHover((ImTextureID*)model_ref->meshes[i].textures[j].id, ImVec2(100, 100), ImVec2(-1, 1), ImVec2(0, 0)) 
+					&& App->input->dropped)
+				{
+					App->fbx_loader->SetInfoToLoadTex(i, j, model_ref->meshes[i].textures[j].id);
+				}
+				ImGui::PopID();
 			}
-
 			ImGui::Separator();
+			ImGui::PopID();
 		}
 		ImGui::TreePop();
 	}

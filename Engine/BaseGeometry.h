@@ -47,10 +47,12 @@ public:
 
 	void Clear();
 	void ClearTex();
+	void ClearTexture(int t);
 
 	void Draw();
 	void SetupMesh();
-	void SetTex(uint texID);
+	void SetTex(uint texID); /*Same texture to all textures structs*/
+	void SetTexture(int t_index, uint texID); /*Only change one texture*/
 
 public:
 	std::string name;
