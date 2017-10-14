@@ -53,7 +53,9 @@ update_status ModuleFBXLoader::Update(float dt)
 			//Fix Camera to model ------------------------
 			App->camera->LookAndMoveToObject();
 			// ---------------------------------
-			
+
+			SDL_free(App->input->dropped_filedir);
+
 			break;
 		}
 		case F_TEXTURE:
@@ -71,6 +73,8 @@ update_status ModuleFBXLoader::Update(float dt)
 			//Fix Camera to model ------------------------
 			App->camera->LookAndMoveToObject();
 			// ---------------------------------
+
+			SDL_free(App->input->dropped_filedir);
 
 			break;
 		}
@@ -159,8 +163,6 @@ BaseGeometry* ModuleFBXLoader::LoadMesh(const char* filename)
 	((Inspector*)App->gui->winManager[INSPECTOR])->SetInfo(*new_model);
 	
 	App->geometry_manager->geometry = new_model;
-
-
 	return m;
 }
 
