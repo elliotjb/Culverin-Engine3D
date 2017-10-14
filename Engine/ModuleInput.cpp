@@ -141,12 +141,36 @@ update_status ModuleInput::PreUpdate(float dt)
 update_status ModuleInput::UpdateConfig(float dt)
 {
 	ImGui::Text("Mouse Data");
+	ImGui::Spacing();
 	ImGui::Text("Mouse Position:"); ImGui::SameLine();
 	ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%i, %i)", mouse_x, mouse_y);
 	ImGui::Text("Mouse Motion:"); ImGui::SameLine();
 	ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%i, %i)", mouse_x_motion, mouse_y_motion);
-	ImGui::Text("Mouse Click Left:"); ImGui::SameLine();
-	//ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%i - %i)", mouse_x, mouse_y);
+	ImGui::Separator();
+	ImGui::Text("Mouse Click"); ImGui::SameLine();
+	//ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "%i", SDL_GetMouseState(NULL, NULL));
+	int but = SDL_GetMouseState(NULL, NULL);
+	switch (but)
+	{
+	case 1:
+		ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "Left");
+		break;
+	case 2:
+		ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "Middle");
+		break;
+	case 4:
+		ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "Right");
+		break;
+	case 5:
+		ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "Left - Right");
+		break;
+	default:
+		ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "NoN");
+		break;
+	}
+
+	//ImGui::Text("Keyboard Click");
+	//ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "%i", SDL_GetKeyboardState(NULL));
 	return UPDATE_CONTINUE;
 }
 

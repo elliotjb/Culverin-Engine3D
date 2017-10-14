@@ -156,8 +156,11 @@ update_status ModuleCamera3D::Update(float dt)
 			BaseGeometry* geo = App->geometry_manager->geometry;
 			if (geo != NULL)
 			{
-				float3 geoPosition = ((_Model*)(geo))->base_info.position;
-				LookObject(vec3(geoPosition.x, geoPosition.y, geoPosition.z));//Need pass the positon of object
+				AABB* box = &((_Model*)(App->geometry_manager->geometry))->GetBoundingBox();
+				float3 center = box->Centroid();
+				LookObject(vec3(center.x, center.y, center.z));
+				//float3 geoPosition = ((_Model*)(geo))->base_info.position;
+				//LookObject(vec3(geoPosition.x, geoPosition.y, geoPosition.z));
 			}
 			else
 				LookObject(vec3(0, 0, 0));
