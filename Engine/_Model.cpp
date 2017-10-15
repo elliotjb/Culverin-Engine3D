@@ -105,6 +105,7 @@ void _Model::LoadModel(const char * path)
 			base_info.total_faces += meshes[i].numFaces;
 		}
 
+		/*Set the base info of the Root Node*/
 		aiQuaternion rot_quat;
 		aiVector3D pos;
 		aiVector3D rot;
@@ -141,9 +142,9 @@ void _Model::ProcessNode(aiNode * node, const aiScene * scene, float3 * min, flo
 	for (uint i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.push_back(ProcessMesh(mesh, scene, min, max));
+		meshes.push_back(ProcessMesh(mesh, scene, min, max, node->mTransformation, node->mName.C_Str()));	
 	}
-
+	
 	// Process children
 	for (uint i = 0; i < node->mNumChildren; i++)
 	{
@@ -151,7 +152,7 @@ void _Model::ProcessNode(aiNode * node, const aiScene * scene, float3 * min, flo
 	}
 }
 
-Mesh _Model::ProcessMesh(aiMesh * mesh, const aiScene * scene, float3 * min, float3 * max)
+Mesh _Model::ProcessMesh(aiMesh * mesh, const aiScene * scene, float3 * min, float3 * max, aiMatrix4x4 transform, const char* name)
 {
 	std::vector<Vertex> vertices;
 	std::vector<uint> indices;
@@ -184,19 +185,19 @@ Mesh _Model::ProcessMesh(aiMesh * mesh, const aiScene * scene, float3 * min, flo
 		}
 
 		// Texture Coords ------------------
-if (mesh->mTextureCoords[0])
-{
-	vec2.x = mesh->mTextureCoords[0][i].x;
-	vec2.y = mesh->mTextureCoords[0][i].y;
-	vertex.texCoords = vec2;
-}
-else
-{
-	vertex.texCoords = float2(0, 0);
-}
+		if (mesh->mTextureCoords[0])
+		{
+			vec2.x = mesh->mTextureCoords[0][i].x;
+			vec2.y = mesh->mTextureCoords[0][i].y;
+			vertex.texCoords = vec2;
+		}
+		else
+		{
+			vertex.texCoords = float2(0, 0);
+		}
 
-/*Push Vertex into the Array*/
-vertices.push_back(vertex);
+		/*Push Vertex into the Array*/
+		vertices.push_back(vertex);
 	}
 
 	// SET INDEX DATA -----------------------------------------
@@ -222,7 +223,21 @@ vertices.push_back(vertex);
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	}
 
-	return Mesh(vertices, indices, textures, mesh->HasNormals(), mesh->mNumFaces, mesh->mName.C_Str());
+	//TRANSFORM DATA ---------------------------
+	aiQuaternion rot_quat;
+	aiVector3D pos, rot, scal;
+	float3 pos_vec, rot_vec, scal_vec;
+
+	transform.Decompose(scal, rot_quat, pos);
+	rot = rot_quat.GetEuler();
+
+	pos_vec.Set(pos.x, pos.y, pos.z);
+	rot_vec.Set(rot.x, rot.y, rot.z);
+	scal_vec.Set(scal.x, scal.y, scal.z);
+	//------------------------------------------
+
+	return Mesh(vertices, indices, textures,
+		mesh->HasNormals(), mesh->mNumFaces, name, pos_vec, rot_vec, scal_vec);
 }
 
 std::vector<Texture> _Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type, const char * typeName)
@@ -275,7 +290,6 @@ void _Model::SetTexture(const char * path)
 		{
 			meshes[i].SetTex(texture_id);
 		}
-		//((Inspector*)App->gui->winManager[INSPECTOR])->SetTexInfo(this);
 	}
 }
 

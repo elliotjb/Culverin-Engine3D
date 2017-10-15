@@ -37,7 +37,7 @@ public:
 
 	void LoadModel(const char* path);
 	void ProcessNode(aiNode* node, const aiScene* scene, float3* min, float3* max);
-	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene, float3* min, float3* max);
+	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene, float3* min, float3* max, aiMatrix4x4 transform, const char* name);
 	
 	std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, const char *typeName);
 	uint TextureFromFile(const char *path, const std::string& dir);

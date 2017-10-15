@@ -42,7 +42,7 @@ class Mesh
 {
 public:
 	Mesh();
-	Mesh(std::vector<Vertex> vertices, std::vector<uint> indices, std::vector<Texture> textures, bool normals, uint faces, const char* name);
+	Mesh(std::vector<Vertex> vertices, std::vector<uint> indices, std::vector<Texture> textures, bool normals, uint faces, const char* name, float3 pos, float3 rot, float3 scale);
 	~Mesh();
 
 	void Clear();
@@ -55,6 +55,11 @@ public:
 	void SetTexture(int t_index, uint texID); /*Only change one texture*/
 
 public:
+	float3 pos;
+	float3 rot;
+	float3 scale;
+	Color color;
+
 	std::string name;
 	std::vector<Vertex> vertices;
 	std::vector<uint> indices;

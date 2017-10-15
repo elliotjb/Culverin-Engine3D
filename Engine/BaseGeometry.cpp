@@ -144,9 +144,12 @@ Mesh::Mesh()
 {
 }
 
-Mesh::Mesh(std::vector<Vertex> vert, std::vector<uint> ids, std::vector<Texture> tex, bool normals, uint faces, const char* name)
+Mesh::Mesh(std::vector<Vertex> vert, std::vector<uint> ids, std::vector<Texture> tex, bool normals, uint faces, const char* name, float3 pos, float3 rot, float3 scale)
 {
 	this->name = name;
+	this->pos = pos;
+	this->rot = rot;
+	this->scale = scale;
 
 	hasNormals = normals;
 	numFaces = faces;
@@ -154,6 +157,7 @@ Mesh::Mesh(std::vector<Vertex> vert, std::vector<uint> ids, std::vector<Texture>
 	vertices = vert;
 	indices = ids;
 	textures = tex;
+
 
 	SetupMesh();
 }

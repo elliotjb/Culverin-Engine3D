@@ -130,9 +130,6 @@ void Inspector::ShowModelInfo()
 		ImGui::Text("X"); ImGui::SameLine(); ImGui::InputFloat("##X_1", &pos.x, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
 		ImGui::Text("Y"); ImGui::SameLine(); ImGui::InputFloat("##Y_1", &pos.y, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
 		ImGui::Text("Z"); ImGui::SameLine(); ImGui::InputFloat("##Z_1", &pos.z, 0, 0, 3, ImGuiInputTextFlags_ReadOnly);
-		//ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "X = %.4f Y = %.4f Z = %.4f", object_pos.x, object_pos.y, object_pos.z);
-		//ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "X = %.4f Y = %.4f Z = %.4f", object_rot.x, object_rot.y, object_rot.z);
-		//ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "X = %.4f Y = %.4f Z = %.4f", object_scale.x, object_scale.y, object_scale.z);
 		ImGui::Text("Rotation"); ImGui::SameLine(op + 40);
 		ImGui::Text("X"); ImGui::SameLine(); ImGui::InputFloat("##X_2", &rot.x, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
 		ImGui::Text("Y"); ImGui::SameLine(); ImGui::InputFloat("##Y_2", &rot.y, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
@@ -180,17 +177,38 @@ void Inspector::ShowModelInfo()
 			ImGui::PushID(i);
 			ImGui::Text("Mesh %i: ", i); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", model_ref->meshes[i].name.c_str());
+			
 			ImGui::Text("Vertices:"); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", model_ref->meshes[i].vertices.size());
 			ImGui::Text("Faces:"); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", model_ref->meshes[i].numFaces);
+
+			int op = ImGui::GetWindowWidth() / 4;
+			ImGui::PushItemWidth(op - 40);
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 1));
+			ImGui::Text("Position"); ImGui::SameLine(op + 40);
+			ImGui::Text("X"); ImGui::SameLine(); ImGui::InputFloat("##X_1", &model_ref->meshes[i].pos.x, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+			ImGui::Text("Y"); ImGui::SameLine(); ImGui::InputFloat("##Y_1", &model_ref->meshes[i].pos.y, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+			ImGui::Text("Z"); ImGui::SameLine(); ImGui::InputFloat("##Z_1", &model_ref->meshes[i].pos.z, 0, 0, 3, ImGuiInputTextFlags_ReadOnly);
+			ImGui::Text("Rotation"); ImGui::SameLine(op + 40);
+			ImGui::Text("X"); ImGui::SameLine(); ImGui::InputFloat("##X_2", &model_ref->meshes[i].rot.x, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+			ImGui::Text("Y"); ImGui::SameLine(); ImGui::InputFloat("##Y_2", &model_ref->meshes[i].rot.y, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+			ImGui::Text("Z"); ImGui::SameLine(); ImGui::InputFloat("##Z_2", &model_ref->meshes[i].rot.z, 0, 0, 3, ImGuiInputTextFlags_ReadOnly);
+			ImGui::Text("Scale"); ImGui::SameLine(op + 40);
+			ImGui::Text("X"); ImGui::SameLine(); ImGui::InputFloat("##X_3", &model_ref->meshes[i].scale.x, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+			ImGui::Text("Y"); ImGui::SameLine(); ImGui::InputFloat("##Y_3", &model_ref->meshes[i].scale.y, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+			ImGui::Text("Z"); ImGui::SameLine(); ImGui::InputFloat("##Z_3", &model_ref->meshes[i].scale.z, 0, 0, 3, ImGuiInputTextFlags_ReadOnly);
+			ImGui::PopStyleVar();
+			ImGui::PopItemWidth();
+			
 			ImGui::Text("Textures:"); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", model_ref->meshes[i].textures.size());
 
 			for (uint j = 0; j < model_ref->meshes[i].textures.size(); j++)
 			{
 				ImGui::PushID(j);
-
+				ImGui::Text("Type:"); ImGui::SameLine();
+				ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", model_ref->meshes[i].textures[j].type.c_str());
 				ImGui::ImageButton((ImTextureID*)model_ref->meshes[i].textures[j].id, ImVec2(100, 100), ImVec2(-1, 1), ImVec2(0, 0));
 				if (App->input->dropped)
 				{
