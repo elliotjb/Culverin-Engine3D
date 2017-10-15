@@ -46,6 +46,7 @@ public:
 	void LoadDocks();
 	void RevertStyleDocks();
 	void DockTest();
+	void LogOpenCloseWindow(bool active, std::string name);
 
 public:
 

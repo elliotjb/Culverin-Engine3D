@@ -154,7 +154,7 @@ update_status ModuleGUI::Update(float dt)
 			//ImGui::Separator();
 			if (ImGui::MenuItem("Look View to Selected", "F"))
 			{
-
+				App->camera->LookAndMoveToObject();
 			}
 			ImGui::EndMenu();
 		}
@@ -199,6 +199,7 @@ update_status ModuleGUI::Update(float dt)
 			if (ImGui::MenuItem("Inspector"))
 			{
 				winManager[INSPECTOR]->active[0].OpenClose();
+				LogOpenCloseWindow(winManager[INSPECTOR]->active[0].active, winManager[INSPECTOR]->name);
 			}
 			//if (ImGui::MenuItem("Create Objects"))
 			//{
@@ -211,41 +212,49 @@ update_status ModuleGUI::Update(float dt)
 			if (ImGui::MenuItem("Hardware"))
 			{
 				winManager[HARDWARE]->active[0].OpenClose();
+				LogOpenCloseWindow(winManager[HARDWARE]->active[0].active, winManager[HARDWARE]->name);
 			}
 			if (ImGui::MenuItem("Console", "º"))
 			{
 				App->console->OpenClose();
+				LogOpenCloseWindow(App->console->console_activated, App->console->name);
 			}
 			if (ImGui::MenuItem("Scene"))
 			{
 				winManager[SCENEWORLD]->active[0].OpenClose();
+				LogOpenCloseWindow(winManager[SCENEWORLD]->active[0].active, winManager[SCENEWORLD]->name);
 			}
 			if (ImGui::MenuItem("Hierarchy"))
 			{
 				winManager[HIERARCHY]->active[0].OpenClose();
+				LogOpenCloseWindow(winManager[HIERARCHY]->active[0].active, winManager[HIERARCHY]->name);
 			}
 			ImGui::Separator();
 
 			if (ImGui::MenuItem("Info Mouse", NULL, &window_infoMouse))
 			{
-
+				LogOpenCloseWindow(window_infoMouse, std::string("Info Mouse"));
 			}
 			if (ImGui::MenuItem("Style Editor"))
 			{
 				window_style = !window_style;
+				LogOpenCloseWindow(window_style, std::string("Style Editor"));
 			}
 			if (ImGui::MenuItem("Random Generator"))
 			{
 				window_Random_generator = !window_Random_generator;
+				LogOpenCloseWindow(window_Random_generator, std::string("Random Generator"));
 			}
 			ImGui::Separator();
 			if (ImGui::MenuItem("Performance"))
 			{
 				App->showperformance = !App->showperformance;
+				LogOpenCloseWindow(App->showperformance, std::string("Performance"));
 			}
 			if (ImGui::MenuItem("Configuration"))
 			{
 				App->showconfig = !App->showconfig;
+				LogOpenCloseWindow(App->showconfig, std::string("Configuration"));
 			}
 			ImGui::EndMenu();
 		}
@@ -257,6 +266,7 @@ update_status ModuleGUI::Update(float dt)
 			if (ImGui::MenuItem("About Culverin..."))
 			{
 				window_about_us = !window_about_us;
+				LogOpenCloseWindow(window_about_us, std::string("About Culverin"));
 			}
 
 			ImGui::Separator();
@@ -835,6 +845,18 @@ void ModuleGUI::DockTest()
 	}
 	ImGui::EndDock();*/
 	//-------------------------------------------------------
+}
+
+void ModuleGUI::LogOpenCloseWindow(bool active, std::string name)
+{
+	if (active)
+	{
+		LOG("Opened %s Window...", name.c_str());
+	}
+	else
+	{
+		LOG("Closed %s Window...", name.c_str());
+	}
 }
 
 void ModuleGUI::UpdateWindows(float dt)
