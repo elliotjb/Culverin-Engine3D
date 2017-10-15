@@ -71,13 +71,3 @@ bool Hardware::CleanUp()
 
 	return true;
 }
-
-//void Hardware::OpenClose()
-//{
-//	hardware_activated = !hardware_activated;
-//}
-
-//bool Hardware::IsOpen()
-//{
-//	return hardware_activated;
-//}

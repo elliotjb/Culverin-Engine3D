@@ -60,11 +60,6 @@ bool ModuleGUI::Start()
 	}
 
 	LoadDocks();
-
-	//Capsule_A = (Capsule(float3(200, 0, 0), float3(200, 0, 3), 1));
-	//Capsule_B = (Capsule(float3(0, -3, 0), float3(0, 3, 0), 1));
-	//line = (Line(float3(0, 0, 0), float3(3, 1, 2)));
-	//plane = (Plane(float3(3, 2, 1), float3(-3, 0, -2)));
 	return true;
 }
 
@@ -81,14 +76,6 @@ update_status ModuleGUI::Update(float dt)
 	{
 		ImGui::ShowTestWindow();
 	}
-
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-	{
-		dock_test = !dock_test;
-	}
-
-
-
 
 	// Main Menu --------------------------------
 	if (ImGui::BeginMainMenuBar())
@@ -159,40 +146,40 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("GameObject"))
-		{
-			//if (ImGui::MenuItem("Create Empty", "Ctrl + Shift + N"))
-			//{
+		//if (ImGui::BeginMenu("GameObject"))
+		//{
+		//	//if (ImGui::MenuItem("Create Empty", "Ctrl + Shift + N"))
+		//	//{
 
-			//}
-			//ImGui::Separator();
-			//if (ImGui::BeginMenu("3D Object"))
-			//{
-			//	if (ImGui::MenuItem("Cube"))
-			//	{
-			//		//winManager[CREATEOBJETCS]->SpecialFunction("cube");
-			//	}
+		//	//}
+		//	//ImGui::Separator();
+		//	//if (ImGui::BeginMenu("3D Object"))
+		//	//{
+		//	//	if (ImGui::MenuItem("Cube"))
+		//	//	{
+		//	//		//winManager[CREATEOBJETCS]->SpecialFunction("cube");
+		//	//	}
 
-			//	if (ImGui::MenuItem("Sphere"))
-			//	{
-			//		//winManager[CREATEOBJETCS]->SpecialFunction("sphere");
-			//	}
-			//	if (ImGui::MenuItem("Capsule"))
-			//	{
+		//	//	if (ImGui::MenuItem("Sphere"))
+		//	//	{
+		//	//		//winManager[CREATEOBJETCS]->SpecialFunction("sphere");
+		//	//	}
+		//	//	if (ImGui::MenuItem("Capsule"))
+		//	//	{
 
-			//	}
-			//	if (ImGui::MenuItem("Cylinder"))
-			//	{
+		//	//	}
+		//	//	if (ImGui::MenuItem("Cylinder"))
+		//	//	{
 
-			//	}
-			//	ImGui::EndMenu();
-			//}
-			//if (ImGui::MenuItem("Audio"))
-			//{
+		//	//	}
+		//	//	ImGui::EndMenu();
+		//	//}
+		//	//if (ImGui::MenuItem("Audio"))
+		//	//{
 
-			//}
-			ImGui::EndMenu();
-		}
+		//	//}
+		//	ImGui::EndMenu();
+		//}
 
 		if (ImGui::BeginMenu("Windows"))
 		{
@@ -315,16 +302,11 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::EndMainMenuBar();
 	}
 
-	if (dock_test)
-	{
-		DockTest();
-	}
-
 	//Machine Generator -------------------
 	if (window_Random_generator)
 	{
 		static LCG random_generator;
-		ImGui::Begin("Random Numbers Generator", &window_Random_generator, ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::Begin("Random Numbers Generator", &window_Random_generator, ImGuiWindowFlags_ShowBorders | ImGuiWindowFlags_AlwaysAutoResize);
 		ImGui::Spacing();
 		ImGui::PushItemWidth(60);
 		static int numbers_f = 0;
@@ -395,7 +377,7 @@ update_status ModuleGUI::Update(float dt)
 	// Window About Us... ---------------------------------
 	if (window_about_us)
 	{
-		if (!ImGui::Begin("About Culverin", &window_about_us, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize))
+		if (!ImGui::Begin("About Culverin", &window_about_us, ImGuiWindowFlags_ShowBorders | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize))
 		{
 			ImGui::End();
 			return UPDATE_CONTINUE;
@@ -403,7 +385,7 @@ update_status ModuleGUI::Update(float dt)
 		//Name of your Engine
 		ImGui::Spacing();
 		ImGui::Spacing();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "CULVERIN Engine");
+		ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Culverin Engine");
 
 		ImGui::Spacing();
 		ImGui::Separator();
@@ -416,7 +398,7 @@ update_status ModuleGUI::Update(float dt)
 		// Libraries
 		ImGui::Text("Libraries used:");
 		ImGui::Spacing();
-
+		ImGui::Bullet(); ImGui::SameLine();
 		if (ImGui::MenuItem("SDL - v2.0.3"))
 		{
 			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
@@ -424,6 +406,7 @@ update_status ModuleGUI::Update(float dt)
 				ShellExecuteA(NULL, "open", "http://www.sdl.com/", NULL, NULL, SW_SHOWNORMAL);
 			}
 		}
+		ImGui::Bullet(); ImGui::SameLine();
 		if (ImGui::MenuItem("ImGui - v1.51"))
 		{
 			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
@@ -431,6 +414,7 @@ update_status ModuleGUI::Update(float dt)
 				ShellExecuteA(NULL, "open", "https://github.com/ocornut/imgui", NULL, NULL, SW_SHOWNORMAL);
 			}
 		}
+		ImGui::Bullet(); ImGui::SameLine();
 		if (ImGui::MenuItem("MathGeoLib - v1.5"))
 		{
 			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
@@ -438,6 +422,7 @@ update_status ModuleGUI::Update(float dt)
 				ShellExecuteA(NULL, "open", "http://clb.demon.fi/MathGeoLib/nightly/", NULL, NULL, SW_SHOWNORMAL);
 			}
 		}
+		ImGui::Bullet(); ImGui::SameLine();
 		if (ImGui::MenuItem("Parson, JSON library"))
 		{
 			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
@@ -445,6 +430,7 @@ update_status ModuleGUI::Update(float dt)
 				ShellExecuteA(NULL, "open", "https://github.com/kgabis/parson", NULL, NULL, SW_SHOWNORMAL);
 			}
 		}
+		ImGui::Bullet(); ImGui::SameLine();
 		if (ImGui::MenuItem("Open Asset Import Library (ASSIMP) - v3.1.1"))
 		{
 			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
@@ -452,6 +438,7 @@ update_status ModuleGUI::Update(float dt)
 				ShellExecuteA(NULL, "open", "http://assimp.sourceforge.net/", NULL, NULL, SW_SHOWNORMAL);
 			}
 		}
+		ImGui::Bullet(); ImGui::SameLine();
 		if (ImGui::MenuItem("DevIL - v1.7.8"))
 		{
 			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
@@ -467,6 +454,7 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::Text("Authors:");
 		ImGui::Spacing();
 
+		ImGui::Bullet(); ImGui::SameLine();
 		if (ImGui::MenuItem("Elliot Jimenez Bosch"))
 		{
 			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
@@ -475,6 +463,7 @@ update_status ModuleGUI::Update(float dt)
 			}
 		}
 
+		ImGui::Bullet(); ImGui::SameLine();
 		if (ImGui::MenuItem("Jordi Ona Rufi"))
 		{
 			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
@@ -495,7 +484,7 @@ update_status ModuleGUI::Update(float dt)
 	//Window Style -----------------------
 	if (window_style)
 	{
-		ImGui::Begin("Style Editor", &window_style);
+		ImGui::Begin("Style Editor", &window_style, ImGuiWindowFlags_ShowBorders);
 		ShowStyleEditor();
 		ImGui::End();
 	}
@@ -511,16 +500,10 @@ update_status ModuleGUI::Update(float dt)
 	}
 
 	// ----------------------------------------------
-
+	//Window Info Mouse inse scenworld
 	if (window_infoMouse)
 	{
 		ShowInfoMouse(&window_infoMouse);
-	}
-
-	// Console --------------------------
-	if (App->console->IsOpen())
-	{
-		//ShowExampleAppConsole();
 	}
 
 	//Update All Modules ----------------------------------
@@ -532,6 +515,7 @@ update_status ModuleGUI::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
+//Update Window Configuration -----------------------------
 update_status ModuleGUI::UpdateConfig(float dt)
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
@@ -801,52 +785,6 @@ void ModuleGUI::ShowStyleEditor(ImGuiStyle* ref)
 	ImGui::PopItemWidth();
 }
 
-void ModuleGUI::DockTest()
-{
-
-	static bool show_scene1 = true;
-	static bool show_scene2 = true;
-	static bool show_scene3 = true;
-	static bool show_scene4 = true;
-	static bool show_scene5 = true;
-	static bool show_scene6 = true;
-
-	//DOCKING TEST -----------------------------------------------------------
-	/*if (ImGui::GetIO().DisplaySize.y > 0) 
-	{
-		////////////////////////////////////////////////////
-		// Setup root docking window                      //
-		// taking into account menu height and status bar //
-		////////////////////////////////////////////////////
-		auto pos = ImVec2(0, menu_height);
-		auto size = ImGui::GetIO().DisplaySize;
-		size.y -= pos.y;
-		ImGui::DockContext::rootDock(pos, ImVec2(size.x, size.y - 25.0f));
-
-		// Draw status bar (no docking)
-		ImGui::SetNextWindowSize(ImVec2(size.x, 25.0f), ImGuiSetCond_Always);
-		ImGui::SetNextWindowPos(ImVec2(0, size.y - 6.0f), ImGuiSetCond_Always);
-		ImGui::Begin("statusbar", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize);
-		ImGui::Text("FPS: %f", ImGui::GetIO().Framerate);
-		ImGui::End();
-	}
-	ImGui::Separator();
-	// Draw docking windows
-	if (ImGui::BeginDock("Docks", &show_scene1)) {
-		ImGui::Print(); // print docking information
-	}
-	ImGui::EndDock();
-	if (ImGui::BeginDock("Dummy1", &show_scene2)) {
-		ImGui::Text("Placeholder!");
-	}
-	ImGui::EndDock();
-	if (ImGui::BeginDock("Dummy2", &show_scene3)) {
-		ImGui::Text("Placeholder!");
-	}
-	ImGui::EndDock();*/
-	//-------------------------------------------------------
-}
-
 void ModuleGUI::LogOpenCloseWindow(bool active, std::string name)
 {
 	if (active)
@@ -993,84 +931,3 @@ void ModuleGUI::ShowWindowExit(bool* active)
 	}
 	ImGui::End();
 }
-
-//void ModuleGUI::ShowConfig()
-//{
-//	ImGui::Begin("CONFIGURATION");
-//	ImGui::Spacing();
-//	//ImGui::PushItemWidth(150);
-//	if (ImGui::CollapsingHeader("Application"))
-//	{
-//		ImGui::Text("App Name:"); ImGui::SameLine();
-//		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "3D Engine");
-//		ImGui::Text("Organization Name:"); ImGui::SameLine();
-//		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Elliot & Jordi S.A.");
-//		static int fps = 60;
-//		ImGui::SliderInt("Max FPS", &fps, 0, 60);
-//		ImGui::SameLine(); App->ShowHelpMarker("0 = no frame cap");
-//		ImGui::Text("Framerate:"); ImGui::SameLine();
-//		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", App->fps_log[App->frame_index-1]);
-//		ImGui::PlotHistogram("", App->fps_log, IM_ARRAYSIZE(App->fps_log), 0, NULL, 0.0f, 120.0f, ImVec2(0, 80));
-//		ImGui::Text("Milliseconds:"); ImGui::SameLine();
-//		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f", App->ms_log[App->ms_index-1]);
-//		ImGui::PlotHistogram("", App->ms_log, IM_ARRAYSIZE(App->ms_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
-//
-//	}
-//
-//	if (ImGui::CollapsingHeader("Window"))
-//	{
-//		static bool fullscreen = false;
-//		static bool resizable = true;
-//		static bool borderless = false;
-//		static bool full_desktop = false;
-//		static int brightness = 0;
-//		static int width = SCREEN_WIDTH * SCREEN_SIZE;
-//		static int height = SCREEN_HEIGHT * SCREEN_SIZE;
-//		static int refresh = displaymode.refresh_rate;
-//
-//		ImGui::Text("Refresh rate:"); ImGui::SameLine();
-//		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", displaymode.refresh_rate);
-//		ImGui::SliderInt("Brightness", &brightness, 0, 100);
-//		ImGui::SliderInt("Width", &width, 0, 4096);
-//		ImGui::SliderInt("Height", &height, 0, 3072);
-//
-//		if (ImGui::Checkbox("Fullscreen", &fullscreen))
-//		{
-//			//App->window->SetFullscreeen(fullscreen);
-//		}
-//		ImGui::SameLine();
-//		if (ImGui::Checkbox("Resizable", &resizable))
-//		{
-//			//App->window->SetResizable(resizable);
-//		}
-//		if (ImGui::IsItemHovered())
-//		{
-//			ImGui::SetTooltip("Restart to apply");
-//		}
-//		if (ImGui::Checkbox("Borderless", &borderless))
-//		{
-//			//App->window->SetBorderless(fullscreen);
-//		}
-//		ImGui::SameLine();
-//		if (ImGui::Checkbox("Full Desktop", &full_desktop))
-//		{
-//			//App->window->SetFullDesktop(resizable);
-//		}
-//		if (ImGui::IsItemHovered())
-//		{
-//			ImGui::SetTooltip("Restart to apply");
-//		}
-//	}
-//
-//	if (ImGui::CollapsingHeader("Audio"))
-//	{
-//		static int volume = 50;
-//		ImGui::SliderInt("Volume", &volume, 0, 100);
-//	}
-//
-//	//if (ImGui::CollapsingHeader("Input"))
-//	//{
-//	//}
-//
-//	ImGui::End();
-//}

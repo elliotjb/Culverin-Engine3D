@@ -177,7 +177,6 @@
     <ClInclude Include="ModuleInspector.h" />
     <ClInclude Include="ModuleObjectsUI.h" />
     <ClInclude Include="ModulePhysics3D.h" />
-    <ClInclude Include="ModulePlayer.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="p2List.h" />
     <ClInclude Include="Module.h" />
@@ -264,7 +263,6 @@
     <ClCompile Include="ModuleInspector.cpp" />
     <ClCompile Include="ModuleObjectsUI.cpp" />
     <ClCompile Include="ModulePhysics3D.cpp" />
-    <ClCompile Include="ModulePlayer.cpp" />
     <ClCompile Include="ModuleRenderer3D.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="parson.cpp" />

@@ -16,9 +16,6 @@
     <Filter Include="Engine\Helpers">
       <UniqueIdentifier>{121f8e6b-df36-4ab0-be0d-601ddfc9e503}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Modules\Player %28need%3f%29">
-      <UniqueIdentifier>{83f46af7-e02f-40c0-9e56-41d76082527b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Modules\Scene">
       <UniqueIdentifier>{6b6604d6-5443-4ace-bc98-2b5ec7a6644c}</UniqueIdentifier>
     </Filter>
@@ -116,9 +113,6 @@
     </ClInclude>
     <ClInclude Include="PhysVehicle3D.h">
       <Filter>Engine\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="ModulePlayer.h">
-      <Filter>Engine\Modules\Player %28need%3f%29</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Engine\Modules\Scene</Filter>
@@ -451,9 +445,6 @@
     </ClCompile>
     <ClCompile Include="PhysVehicle3D.cpp">
       <Filter>Engine\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="ModulePlayer.cpp">
-      <Filter>Engine\Modules\Player %28need%3f%29</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Engine\Modules\Scene</Filter>

@@ -45,7 +45,6 @@ public:
 	//void ShowConfig();
 	void LoadDocks();
 	void RevertStyleDocks();
-	void DockTest();
 	void LogOpenCloseWindow(bool active, std::string name);
 
 public:
@@ -79,7 +78,6 @@ private:
 	bool window_style = false;
 
 	int menu_height = 0;
-	bool dock_test = false;
 
 };
 #endif

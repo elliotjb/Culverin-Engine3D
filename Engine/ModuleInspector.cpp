@@ -42,8 +42,8 @@ void Inspector::ShowInspector()
 	}
 
 	if (model_loaded)
-	{
-ShowModelInfo();
+	{ 
+		ShowModelInfo();
 	}
 
 	EndDock();

@@ -7,6 +7,7 @@
 #include "ImGui\imgui.h"
 #include "WindowManager.h"
 
+class _Model;
 
 class Hierarchy : public WindowManager
 {
@@ -18,14 +19,12 @@ public:
 	bool Start();
 	update_status Update(float dt);
 	void ShowHierarchy();
+	void SetName(_Model* model);
 	bool CleanUp();
 
-	//void OpenClose();
-	//bool IsOpen();
-
-
 private:
-
+	std::string model_name = "";
+	bool haveModel = false;
 
 };
 

@@ -9,7 +9,6 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
-#include "ModulePlayer.h"
 #include "Scene.h"
 #include "ModuleConsole.h"
 #include "ModuleGUI.h"
@@ -36,7 +35,6 @@ public:
 	ModuleCamera3D* camera;
 	ModulePhysics3D* physics;
 	ModuleGeometries* geometry_manager;
-	ModulePlayer* player;
 	Scene* scene;
 	Console* console;
 	ModuleGUI* gui;

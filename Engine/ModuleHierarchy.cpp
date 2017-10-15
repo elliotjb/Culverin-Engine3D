@@ -1,6 +1,7 @@
 #include "ModuleHierarchy.h"
 #include "Application.h"
 #include "_Sphere.h"
+#include "_Model.h"
 
 
 Hierarchy::Hierarchy() : WindowManager()
@@ -29,42 +30,29 @@ update_status Hierarchy::Update(float dt)
 
 void Hierarchy::ShowHierarchy()
 {
-	static int width;
-	static int height;
-	SDL_GetWindowSize(App->window->window, &width, &height);
-	//ImGui::SetNextWindowPos(ImVec2(width - 300, 20));
-	//ImGui::SetNextWindowSize(ImVec2(300, height - 20 - (height - 700)));
-	if (!BeginDock("Hierarchy", /*&App->gui->winManager[HIERARCHY]->active[0].active*/ NULL, ImGuiWindowFlags_HorizontalScrollbar)) //TODO ELLIOT CLOSE Windows example
+	if (!BeginDock("Hierarchy", NULL, ImGuiWindowFlags_HorizontalScrollbar))
 	{
 		EndDock();
 		return;
 	}
-	/*for (int i = 0; i < App->geometry_manager->objects.size(); i++)
-	{
-		if (App->geometry_manager->objects[i]->type == P_SPHERE)
-		{
-			ImGui::PushID(i);
-			if (ImGui::TreeNode("Sphere:"))
-			{
-				_Sphere* temp = (_Sphere*)App->geometry_manager->objects[i];
-				ImGui::Spacing();
-				ImGui::Text("Position:");
-				ImGui::Text("x: %.3f", temp->pos.x);
-				ImGui::SameLine();
-				ImGui::Text("y: %.3f", temp->pos.y);
-				ImGui::SameLine();
-				ImGui::Text("z: %.3f", temp->pos.z);
-				ImGui::Spacing();
-				ImGui::Spacing();
-				ImGui::Text("Radius: %.3f", temp->radius);
-				ImGui::TreePop();
-			}
-			ImGui::PopID();
-		}
-	}*/
 
+	if (haveModel)
+	{
+		if (ImGui::TreeNodeEx(model_name.c_str(), ImGuiTreeNodeFlags_NoTreePushOnOpen))
+		{
+		}
+	}
 
 	EndDock();
+}
+
+void Hierarchy::SetName(_Model* model)
+{
+	if (model != nullptr)
+	{
+		haveModel = true;
+		model_name = model->base_info.name;
+	}
 }
 
 bool Hierarchy::CleanUp()

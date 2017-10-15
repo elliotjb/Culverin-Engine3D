@@ -26,39 +26,7 @@ Scene::~Scene()
 bool Scene::Start()
 {
 	perf_timer.Start();
-
-	float3 pos = { 1, 1, 1 };
-	float3 size = { 1, 1, 1 };
-
-	//App->audio->PlayMusic("Dragon_Ball_Super_.ogg");
-	//App->objects->CreateCube(pos, size);
 	
-	/*for (int i = 0; i < CHECKERS_HEIGHT; i++)
-	{
-		for (int j = 0; j < CHECKERS_WIDTH; j++)
-		{
-			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
-			checkImage[i][j][0] = (GLubyte)c;
-			checkImage[i][j][1] = (GLubyte)c;
-			checkImage[i][j][2] = (GLubyte)c;
-			checkImage[i][j][3] = (GLubyte)255;
-		}
-	}
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &tex);
-	glBindTexture(GL_TEXTURE_2D, tex);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
-
-	//Lenna = App->textures->LoadTexture("Lenna.png");
-
-	//BaseObject* house = App->fbx_loader->LoadMesh("BakerHouse.fbx", "BakerHouse.png"); //LOAD MODEL
-	*/
 	Start_t = perf_timer.ReadMs();
 
 	return true;
@@ -79,78 +47,8 @@ update_status Scene::Update(float dt)
 {
 	perf_timer.Start();
 
-	//Plane_p p(0, 1, 0, 0);
-	//p.axis = true;
-	//p.Render();
-
+	//Draw Plane
 	DrawPlane(7);
-
-	/*ImGui::Begin("Test");
-
-	ImGui::Image((ImTextureID)frBuff->frame_id, ImVec2(frBuff->width, frBuff->height));
-	ImGui::End();
-
-	frBuff->UnBind();*/
-
-	/*glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindTexture(GL_TEXTURE_2D, Lenna);
-
-	
-	glBegin(GL_TRIANGLES);
-
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, 0);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, 0);
-
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, 0);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, 0);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, 0);
-
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, 0);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(1, 0, 0);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, -1);
-
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, 0);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, -1);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, -1);
-
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, 0);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(1, 1, 0);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 1, -1);
-
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, 0);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 1, -1);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(0, 1, -1);
-
-
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, -1);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, -1);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 0, 0);
-
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, -1);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 0, 0);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(0, 1, 0);
-
-
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, -1);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(1, 0, -1);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 0, -1);
-
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, -1);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 0, -1);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(0, 1, -1);
-
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 0, -0);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, -1);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, -1);
-
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 0, 0);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, -1);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 0, 0);
-	glEnd();
-
-	glBindTexture(GL_TEXTURE_2D, 0);*/
 
 	Update_t = perf_timer.ReadMs();
 
@@ -187,3 +85,15 @@ GameObject* Scene::CreateGameObject()
 	rootObject = obj;
 	return obj;
 }
+
+/*for (int i = 0; i < CHECKERS_HEIGHT; i++)
+{
+for (int j = 0; j < CHECKERS_WIDTH; j++)
+{
+int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+checkImage[i][j][0] = (GLubyte)c;
+checkImage[i][j][1] = (GLubyte)c;
+checkImage[i][j][2] = (GLubyte)c;
+checkImage[i][j][3] = (GLubyte)255;
+}
+}*/

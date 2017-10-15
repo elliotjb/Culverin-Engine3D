@@ -19,7 +19,6 @@ Application::Application()
 	camera = new ModuleCamera3D();
 	physics = new ModulePhysics3D();
 	geometry_manager = new ModuleGeometries();
-	player = new ModulePlayer();
 	scene = new Scene();
 	console = new Console();
 	gui = new ModuleGUI();
@@ -206,7 +205,7 @@ update_status Application::Update()
 		static bool stop_perf = false;
 		item = list_modules.getFirst();
 
-		if (!ImGui::Begin("PERFORMANCE", &showperformance, ImGuiWindowFlags_NoCollapse))
+		if (!ImGui::Begin("PERFORMANCE", &showperformance, ImGuiWindowFlags_ShowBorders | ImGuiWindowFlags_NoCollapse))
 		{
 			ImGui::End();
 			stop_perf = true;

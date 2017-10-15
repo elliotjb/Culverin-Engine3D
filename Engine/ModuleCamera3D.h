@@ -34,12 +34,6 @@ public:
 	
 	vec3 X, Y, Z, Position, Reference;
 
-	mat4x4 vehicle_info;
-
-	btVector3 temp;
-	vec3 player_pos;
-	vec3 camera_pos;
-	vec3 vec_view;
 	bool changecam = false;
 
 	bool CanMoveCamera = false;

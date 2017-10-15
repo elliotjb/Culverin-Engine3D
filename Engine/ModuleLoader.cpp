@@ -5,6 +5,7 @@
 #include "ModuleGeometries.h"
 #include "WindowManager.h"
 #include "ModuleInspector.h"
+#include "ModuleHierarchy.h"
 #include "ModuleCamera3D.h"
 #include "_Model.h"
 #include "Assimp/include/cimport.h"
@@ -171,6 +172,7 @@ BaseGeometry* ModuleLoader::LoadMesh(const char* filename)
 
 	((Inspector*)App->gui->winManager[INSPECTOR])->model_loaded = true;
 	((Inspector*)App->gui->winManager[INSPECTOR])->SetInfo(new_model);
+	((Hierarchy*)App->gui->winManager[HIERARCHY])->SetName(new_model);
 	
 	App->geometry_manager->geometry = new_model;
 

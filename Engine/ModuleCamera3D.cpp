@@ -1,7 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleCamera3D.h"
-#include "ModulePlayer.h"
 #include "PhysVehicle3D.h"
 #include "PhysBody3D.h"
 #include "_Model.h"
@@ -21,9 +20,6 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 
 	Position = vec3(0.0f, 3.0f, 10.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
-
-	camera_pos = vec3(0.0f, 0.0f, 0.0f);
-	vec_view = vec3(0.0f, 0.0f, 0.0f);
 
 	name = "Camera";
 	haveConfig = true;
@@ -108,6 +104,7 @@ update_status ModuleCamera3D::Update(float dt)
 				}
 				//Position = Reference + Z * length(Position);
 			}
+			//Mode Camera with keyboard
 			if (App->input->GetKey(SDL_SCANCODE_T) == KEY_REPEAT) newPos.y += speed;
 			if (App->input->GetKey(SDL_SCANCODE_G) == KEY_REPEAT) newPos.y -= speed;
 
@@ -117,7 +114,8 @@ update_status ModuleCamera3D::Update(float dt)
 			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
 			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
 		}
-
+		
+		//Set position and view camera to object in scene (Like Unity...)
 		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 		{
 			LookAndMoveToObject();
@@ -159,6 +157,7 @@ update_status ModuleCamera3D::Update(float dt)
 		Position += newPos;
 		Reference += newPos;
 
+		//Rotate camera by object
 		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT &&
 			App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 		{
@@ -218,12 +217,6 @@ update_status ModuleCamera3D::UpdateConfig(float dt)
 {
 	ImGui::BulletText("Camera Position"); ImGui::SameLine();
 	ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%.2f, %.2f, %.2f)", Position.x, Position.y, Position.z);
-	//ImGui::BulletText("X"); ImGui::SameLine();
-	//ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%.2f, %.2f, %.2f)", X.x, X.y, X.z);
-	//ImGui::BulletText("Y"); ImGui::SameLine();
-	//ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%.2f, %.2f, %.2f)", Y.x, Y.y, Y.z);
-	//ImGui::BulletText("Z"); ImGui::SameLine();
-	//ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%.2f, %.2f, %.2f)", Z.x, Z.y, Z.z);
 	ImGui::BulletText("Speed Scroll"); ImGui::SameLine();
 	ImGui::SliderFloat("##speedScroll", &moveWithScroll, 0.0f, 100.0f, "Speed = %.1f");
 
