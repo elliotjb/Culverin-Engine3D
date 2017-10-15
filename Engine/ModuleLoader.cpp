@@ -1,4 +1,4 @@
-#include "ModuleFBXLoader.h"
+#include "ModuleLoader.h"
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
@@ -15,7 +15,7 @@
 
 #pragma comment(lib, "Assimp/libx86/assimp.lib")
 
-ModuleFBXLoader::ModuleFBXLoader(bool start_enabled): Module(start_enabled)
+ModuleLoader::ModuleLoader(bool start_enabled): Module(start_enabled)
 {
 	Start_enabled = true;
 	Update_enabled = true;
@@ -23,11 +23,11 @@ ModuleFBXLoader::ModuleFBXLoader(bool start_enabled): Module(start_enabled)
 	name = "FBX Loader";
 }
 
-ModuleFBXLoader::~ModuleFBXLoader()
+ModuleLoader::~ModuleLoader()
 {
 }
 
-bool ModuleFBXLoader::Start()
+bool ModuleLoader::Start()
 {
 
 	struct aiLogStream stream;
@@ -36,7 +36,7 @@ bool ModuleFBXLoader::Start()
 	return true;
 }
 
-update_status ModuleFBXLoader::Update(float dt)
+update_status ModuleLoader::Update(float dt)
 {
 	perf_timer.Start();
 
@@ -121,13 +121,13 @@ update_status ModuleFBXLoader::Update(float dt)
 //	return UPDATE_CONTINUE;
 //}
 
-bool ModuleFBXLoader::CleanUp()
+bool ModuleLoader::CleanUp()
 {
 	aiDetachAllLogStreams();
 	return true;
 }
 
-FileType ModuleFBXLoader::CheckFileType(char * filedir)
+FileType ModuleLoader::CheckFileType(char * filedir)
 {
 	if (filedir != nullptr)
 	{
@@ -159,7 +159,7 @@ FileType ModuleFBXLoader::CheckFileType(char * filedir)
 	}
 }
 
-BaseGeometry* ModuleFBXLoader::LoadMesh(const char* filename)
+BaseGeometry* ModuleLoader::LoadMesh(const char* filename)
 {
 	if (App->geometry_manager->geometry != nullptr)
 	{
@@ -177,7 +177,7 @@ BaseGeometry* ModuleFBXLoader::LoadMesh(const char* filename)
 	return m;
 }
 
-void ModuleFBXLoader::SetInfoToLoadTex(int m, int t, int t_id)
+void ModuleLoader::SetInfoToLoadTex(int m, int t, int t_id)
 {
 	mesh_index = m;
 	tex_index = t;

@@ -219,8 +219,10 @@ Mesh _Model::ProcessMesh(aiMesh * mesh, const aiScene * scene, float3 * min, flo
 		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
 		std::vector<Texture> diffuseMaps = loadMaterialTextures(mat, aiTextureType_DIFFUSE, "texture_diffuse");
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-		std::vector<Texture> specularMaps = loadMaterialTextures(mat, aiTextureType_SPECULAR, "texture_specular");
-		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+
+		// For the moment, we only load textures on the diffuse channel
+	/*	std::vector<Texture> specularMaps = loadMaterialTextures(mat, aiTextureType_SPECULAR, "texture_specular");
+		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());*/
 	}
 
 	//TRANSFORM DATA ---------------------------

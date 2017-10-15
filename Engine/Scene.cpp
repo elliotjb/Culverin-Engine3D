@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "Scene.h"
 #include "Primitive.h"
-#include "ModuleFBXLoader.h"
+#include "ModuleLoader.h"
 #include "Gl3W\include\glew.h"
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_sdl_gl3.h"

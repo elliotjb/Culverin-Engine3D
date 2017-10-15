@@ -13,12 +13,12 @@ enum FileType
 	F_TEXTURE
 };
 
-class ModuleFBXLoader : public Module
+class ModuleLoader : public Module
 {
 public:
 
-	ModuleFBXLoader(bool start_enabled = true);
-	virtual ~ModuleFBXLoader();
+	ModuleLoader(bool start_enabled = true);
+	virtual ~ModuleLoader();
 
 	bool Start();
 	update_status Update(float dt);
