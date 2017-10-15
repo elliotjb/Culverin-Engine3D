@@ -44,7 +44,6 @@ void _Model::Draw()
 
 void _Model::Clear()
 {
-	
 	//CLEAR MESHES OF THE MODEL
 	for (uint i = 0; i < meshes.size(); i++)
 	{
@@ -77,7 +76,6 @@ void _Model::ClearTexture(int m, int t, int t_id)
 
 void _Model::LoadModel(const char * path)
 {
-	bool ret = false;
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
@@ -130,11 +128,13 @@ void _Model::LoadModel(const char * path)
 		//-----------------------------------
 
 		aiReleaseImport(scene);
+		loaded_success = true;
 	}
 
 	else
 	{
-		LOG("ASSIMP Error: scene %s cannot be loaded");
+		LOG("ASSIMP Error: scene cannot be loaded");
+		loaded_success = false;
 	}
 }
 

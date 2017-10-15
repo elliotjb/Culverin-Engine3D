@@ -57,6 +57,8 @@ public:
 	/*Don't load the same texture more than once*/
 	std::vector<Texture> loaded_tex;
 
+	bool loaded_success = false;
+
 private:
 	AABB bounding_box;
 	bool bb_active = false;

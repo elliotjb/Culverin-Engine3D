@@ -100,6 +100,8 @@ GLuint ModuleTextures::LoadTexture(const char * filename)
 			ilGetInteger(IL_IMAGE_FORMAT),
 			GL_UNSIGNED_BYTE, 
 			ilGetData());
+
+		LOG("Texture CREATION SUCCESSFUL");
 	}
 
 	else
@@ -110,8 +112,6 @@ GLuint ModuleTextures::LoadTexture(const char * filename)
 
 	//RELEASE MEMORY used by the image
 	ilDeleteImages(1, &textureID); 
-
-	LOG("Texture CREATION SUCCESSFUL");
 
 	return textureID;
 }
