@@ -55,6 +55,9 @@
     <Filter Include="Engine\Modules\Scene\Components">
       <UniqueIdentifier>{f93e1b93-4b03-4d39-a9fe-b23aeb1ec2aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\mmgr">
+      <UniqueIdentifier>{95959b6b-83d6-4c50-bdfd-14d1bd442b66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -393,6 +396,12 @@
     <ClInclude Include="ModuleFramebuffers.h">
       <Filter>Engine\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="mmgr\mmgr.h">
+      <Filter>Engine\mmgr</Filter>
+    </ClInclude>
+    <ClInclude Include="mmgr\nommgr.h">
+      <Filter>Engine\mmgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -622,6 +631,9 @@
     </ClCompile>
     <ClCompile Include="ModuleFramebuffers.cpp">
       <Filter>Engine\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="mmgr\mmgr.cpp">
+      <Filter>Engine\mmgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

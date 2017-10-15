@@ -4,6 +4,7 @@
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_sdl_gl3.h"
 #include "SDL\include\SDL.h"
+#include "mmgr\mmgr.h"
 
 static int malloc_count;
 static void *counted_malloc(size_t size);
@@ -288,6 +289,37 @@ void Application::Config()
 				ImGui::PlotHistogram("", ms_log, IM_ARRAYSIZE(ms_log), 0, NULL, 0.0f, 50.0f, ImVec2(0, 80));
 				ImGui::Checkbox("VSYNC", &vsync); ImGui::SameLine();
 				ShowHelpMarker("Restart to apply changes");
+
+				configuration->_EndDock();
+			}
+			sMStats stats = m_getMemoryStatistics();
+			if (!configuration->_BeginDock("Memory Consumption", temp, 0))
+			{
+				configuration->_EndDock();
+			}
+			else
+			{
+				ImGui::BulletText("Accumulated Actual Memory:"); ImGui::SameLine(); 
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.accumulatedActualMemory);
+				ImGui::BulletText("Peak Actual Memory:"); ImGui::SameLine(); 
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.peakActualMemory);
+				ImGui::BulletText("Total actual memory:"); ImGui::SameLine(); 
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.totalActualMemory);
+				ImGui::Spacing();
+				ImGui::BulletText("Accumulated allocated memory:"); ImGui::SameLine(); 
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.accumulatedAllocUnitCount);
+				ImGui::BulletText("Peak actual allocated memory:"); ImGui::SameLine(); 
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.peakAllocUnitCount);
+				ImGui::BulletText("Total actual allocated memory:"); ImGui::SameLine(); 
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.totalAllocUnitCount);
+				ImGui::Spacing();
+				ImGui::BulletText("Accumulated reported memory:"); ImGui::SameLine(); 
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.accumulatedReportedMemory);
+				ImGui::BulletText("Peak reported memory:"); ImGui::SameLine(); 
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.peakReportedMemory);
+				ImGui::BulletText("Total reported memory:"); ImGui::SameLine(); 
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.totalReportedMemory);
+
 
 				configuration->_EndDock();
 			}
