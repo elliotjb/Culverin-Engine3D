@@ -65,6 +65,7 @@ public:
 	std::vector<uint> indices;
 	std::vector<Texture> textures;
 	std::vector<FaceCenter> face_centers;
+	std::vector<float3> vertices_normals;
 
 	bool hasNormals = false;
 	uint numFaces = 0;
@@ -74,6 +75,7 @@ private:
 	uint VAO = 0; /*Vertex Array Object*/
 	uint vertices_id = 0; /*VERTICES ID*/
 	uint indices_id = 0; /*INDICES ID*/
+	uint vertices_norm_id = 0; /*NORMALS OF VERTICES ID*/
 };
 
 class BaseGeometry

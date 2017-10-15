@@ -102,7 +102,7 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, LightModelAmbient);
 		
 		lights[0].ref = GL_LIGHT0;
-		lights[0].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
+		lights[0].ambient.Set(0.5f, 0.5f, 0.5f, 1.0f);
 		lights[0].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
 		lights[0].SetPos(0.0f, 5.0f, 5.0f);
 		lights[0].Init();
@@ -140,9 +140,9 @@ bool ModuleRenderer3D::Start()
 {
 	perf_timer.Start();
 
+	lights[0].Active(true);
 	(depth_test) ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
 	(cull_face) ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
-	lights[0].Active(true);
 	(lightning) ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
 	(color_material) ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
 	(texture_2d) ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);

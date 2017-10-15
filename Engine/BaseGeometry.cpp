@@ -158,6 +158,17 @@ Mesh::Mesh(std::vector<Vertex> vert, std::vector<uint> ids, std::vector<Texture>
 	indices = ids;
 	textures = tex;
 
+	float3 vert_origin;
+	float3 vert_norm;
+
+	for (uint i = 0; i < vertices.size(); i++)
+	{
+		vert_origin.Set(vertices[i].pos.x, vertices[i].pos.y, vertices[i].pos.z);
+		vert_norm.Set(vertices[i].pos.x + vertices[i].norm.x, vertices[i].pos.y + vertices[i].norm.y, vertices[i].pos.z + vertices[i].norm.z);
+		vertices_normals.push_back(vert_origin);
+		vertices_normals.push_back(vert_norm);
+	}
+
 	SetupMesh();
 }
 
@@ -171,6 +182,7 @@ void Mesh::Clear()
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &vertices_id);
 	glDeleteBuffers(1, &indices_id);
+	glDeleteBuffers(1, &vertices_norm_id);
 
 	//Free Textures
 	for (uint i = 0; i < textures.size(); i++)
@@ -182,6 +194,7 @@ void Mesh::Clear()
 	indices.clear();
 	textures.clear();
 	face_centers.clear();
+	vertices_normals.clear();
 
 }
 
@@ -243,15 +256,12 @@ void Mesh::Draw()
 	
 		if (App->renderer3D->normals && hasNormals)
 		{
-			// VERTEX NORMALS ------------------------------------------
-			for (uint i = 0; i < vertices.size(); i++)
-			{
-				glBegin(GL_LINES);
-				glLineWidth(1.0f);
-				glVertex3f(vertices[i].pos.x, vertices[i].pos.y, vertices[i].pos.z);
-				glVertex3f(vertices[i].pos.x + vertices[i].norm.x, vertices[i].pos.y + vertices[i].norm.y, vertices[i].pos.z + vertices[i].norm.z);
-				glEnd();
-			}
+			// VERTEX NORMALS ----------------------------------
+			glBindBuffer(GL_ARRAY_BUFFER, vertices_norm_id);
+			glVertexPointer(3, GL_FLOAT, sizeof(float3), NULL);
+			glDrawArrays(GL_LINES, 0, vertices.size() * 2);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 
 			// FACE NORMALS ------------------------------------------
 			/*for (uint i = 0; i < face_centers.size(); i++)
@@ -288,6 +298,7 @@ void Mesh::SetupMesh()
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &vertices_id);
 	glGenBuffers(1, &indices_id);
+	glGenBuffers(1, &vertices_norm_id);
 
 	glBindVertexArray(VAO);
 	
@@ -296,6 +307,12 @@ void Mesh::SetupMesh()
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint), &indices[0], GL_STATIC_DRAW);
+
+	if (hasNormals)
+	{
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertices_norm_id);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertices_normals.size() * sizeof(float3), &vertices_normals[0], GL_STATIC_DRAW);
+	}
 
 	// Vertex Positions -------------
 	glEnableVertexAttribArray(0);
