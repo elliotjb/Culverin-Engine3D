@@ -170,11 +170,19 @@ BaseGeometry* ModuleLoader::LoadMesh(const char* filename)
 
 	_Model* new_model = new _Model(filename, P_MODEL, App->renderer3D->wireframe);
 
-	((Inspector*)App->gui->winManager[INSPECTOR])->model_loaded = true;
-	((Inspector*)App->gui->winManager[INSPECTOR])->SetInfo(new_model);
-	((Hierarchy*)App->gui->winManager[HIERARCHY])->SetName(new_model);
-	
-	App->geometry_manager->geometry = new_model;
+	if (new_model->loaded_success)
+	{
+		((Inspector*)App->gui->winManager[INSPECTOR])->model_loaded = true;
+		((Inspector*)App->gui->winManager[INSPECTOR])->SetInfo(new_model);
+		((Hierarchy*)App->gui->winManager[HIERARCHY])->SetName(new_model);
+
+		App->geometry_manager->geometry = new_model;
+	}
+	else
+	{
+		new_model->Clear();
+		RELEASE(new_model);
+	}
 
 	return m;
 }
