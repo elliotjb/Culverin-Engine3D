@@ -8,6 +8,13 @@
 - Intersection with polygons calculations.
 - Configuration options (App, Window, Audio, Render).
 
+# Controls Camera (is Like Unity)
+- Only Mouse Right: Move Camera with static position
+- Mouse Left with Alt-Left: Move Camera arround object (model)
+- Mouse wheel: Move Camera forward and backward
+- Mouse Middle: Move Camera like 2D.
+- F: Center the Camera on an object
+
 # Updates  
 - 0.5:
 	* Implemented diference movement Camera (Now is Like Unity).
