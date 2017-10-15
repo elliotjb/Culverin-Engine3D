@@ -158,7 +158,6 @@ Mesh::Mesh(std::vector<Vertex> vert, std::vector<uint> ids, std::vector<Texture>
 	indices = ids;
 	textures = tex;
 
-
 	SetupMesh();
 }
 

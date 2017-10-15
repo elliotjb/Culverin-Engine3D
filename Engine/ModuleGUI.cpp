@@ -395,7 +395,6 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::Spacing();
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "CULVERIN Engine");
 
-
 		ImGui::Spacing();
 		ImGui::Separator();
 		ImGui::Spacing();
@@ -457,9 +456,22 @@ update_status ModuleGUI::Update(float dt)
 		// Name of the Author
 		ImGui::Text("Authors:");
 		ImGui::Spacing();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Elliot Jimenez Bosch");
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Jordi Ona Rufi");
 
+		if (ImGui::MenuItem("Elliot Jimenez Bosch"))
+		{
+			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+			{
+				ShellExecuteA(NULL, "open", "https://github.com/elliotjb", NULL, NULL, SW_SHOWNORMAL);
+			}
+		}
+
+		if (ImGui::MenuItem("Jordi Ona Rufi"))
+		{
+			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+			{
+				ShellExecuteA(NULL, "open", "https://github.com/Jordior97", NULL, NULL, SW_SHOWNORMAL);
+			}
+		}
 
 		ImGui::End();
 	}
