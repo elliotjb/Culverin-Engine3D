@@ -153,12 +153,8 @@ void Inspector::ShowModelInfo()
 	{
 		ImGui::PopStyleColor();
 		ImGui::Separator();
-		static bool hdr = false;
-		static bool alpha_preview = true;
-		static bool alpha_half_preview = false;
-		static bool options_menu = true;
-		int misc_flags = (hdr ? ImGuiColorEditFlags_HDR : 0) | (alpha_half_preview ? ImGuiColorEditFlags_AlphaPreviewHalf : (alpha_preview ? ImGuiColorEditFlags_AlphaPreview : 0)) | (options_menu ? 0 : ImGuiColorEditFlags_NoOptions);
-		if (ImGui::ColorEdit4("", (float*)&color_picker, ImGuiColorEditFlags_RGB | misc_flags))
+		
+		if (ImGui::ColorEdit3("", (float*)&color_picker))
 		{
 			model_ref->color.Set(color_picker.x, color_picker.y, color_picker.z, color_picker.w);
 			model_ref->SetColor(model_ref->color);

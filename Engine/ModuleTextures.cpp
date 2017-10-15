@@ -101,7 +101,7 @@ GLuint ModuleTextures::LoadTexture(const char * filename)
 			GL_UNSIGNED_BYTE, 
 			ilGetData());
 
-		LOG("Texture CREATION SUCCESSFUL");
+		LOG("Texture Application Successful.");
 	}
 
 	else

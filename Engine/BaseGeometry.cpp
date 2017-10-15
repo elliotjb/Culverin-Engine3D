@@ -178,6 +178,8 @@ Mesh::~Mesh()
 
 void Mesh::Clear()
 {
+	LOG(" - Deleting mesh: %s.", name.c_str());
+
 	//Free Buffers
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &vertices_id);

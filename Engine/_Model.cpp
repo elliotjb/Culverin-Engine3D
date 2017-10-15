@@ -44,6 +44,8 @@ void _Model::Draw()
 
 void _Model::Clear()
 {
+	LOG("DELETING MODEL %s.", base_info.name.c_str());
+
 	//CLEAR MESHES OF THE MODEL
 	for (uint i = 0; i < meshes.size(); i++)
 	{
