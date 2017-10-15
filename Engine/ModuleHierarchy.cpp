@@ -38,9 +38,7 @@ void Hierarchy::ShowHierarchy()
 
 	if (haveModel)
 	{
-		if (ImGui::TreeNodeEx(model_name.c_str(), ImGuiTreeNodeFlags_NoTreePushOnOpen))
-		{
-		}
+		ImGui::Text(model_name.c_str());
 	}
 
 	EndDock();
