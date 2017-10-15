@@ -342,9 +342,6 @@
     <ClInclude Include="ImGui\stb_truetype.h">
       <Filter>Engine\ImGUI</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleFBXLoader.h">
-      <Filter>Engine\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Resource</Filter>
     </ClInclude>
@@ -401,6 +398,9 @@
     </ClInclude>
     <ClInclude Include="mmgr\nommgr.h">
       <Filter>Engine\mmgr</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleLoader.h">
+      <Filter>Engine\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -581,9 +581,6 @@
     <ClCompile Include="ImGui\imgui_impl_sdl_gl3.cpp">
       <Filter>Engine\ImGUI</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleFBXLoader.cpp">
-      <Filter>Engine\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="_Cylinder.cpp">
       <Filter>Engine\Modules\Geometries</Filter>
     </ClCompile>
@@ -634,6 +631,9 @@
     </ClCompile>
     <ClCompile Include="mmgr\mmgr.cpp">
       <Filter>Engine\mmgr</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleLoader.cpp">
+      <Filter>Engine\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

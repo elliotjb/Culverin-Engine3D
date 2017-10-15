@@ -23,7 +23,7 @@ Application::Application()
 	scene = new Scene();
 	console = new Console();
 	gui = new ModuleGUI();
-	fbx_loader = new ModuleFBXLoader();
+	loader = new ModuleLoader();
 	textures = new ModuleTextures();
 
 	// The order of calls is very important!
@@ -40,7 +40,7 @@ Application::Application()
 	AddModule(console);
 	AddModule(scene);
 	AddModule(gui);
-	AddModule(fbx_loader);
+	AddModule(loader);
 	AddModule(textures);
 
 	// Renderer last!
