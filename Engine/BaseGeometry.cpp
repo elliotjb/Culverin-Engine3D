@@ -234,6 +234,8 @@ void Mesh::Draw()
 		glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
+
+
 		if (App->renderer3D->texture_2d)
 		{
 			glEnable(GL_TEXTURE_2D);
@@ -242,6 +244,8 @@ void Mesh::Draw()
 				glBindTexture(GL_TEXTURE_2D, textures[i].id);
 			}
 		}
+
+		glColor4f(color.r, color.g, color.b, color.a);
 
 		glBindBuffer(GL_ARRAY_BUFFER, vertices_id); //VERTEX ID
 		glVertexPointer(3, GL_FLOAT, sizeof(Vertex), NULL);
@@ -252,7 +256,7 @@ void Mesh::Draw()
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL);
 		
 		glBindTexture(GL_TEXTURE_2D, 0);
-
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	
 		if (App->renderer3D->normals && hasNormals)
 		{
@@ -275,7 +279,6 @@ void Mesh::Draw()
 			}*/
 		}
 		
-
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);

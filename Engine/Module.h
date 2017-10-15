@@ -56,10 +56,8 @@ public:
 
 	void ShowPerformance(int ms_index)
 	{
-		ImGui::Separator();
-		if (ImGui::TreeNodeEx(name.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+		if (ImGui::TreeNodeEx(name.c_str()))
 		{
-			ImGui::Separator();
 			if (Awake_enabled)
 			{
 				ImGui::TextColored(ImVec4(0.883f, 0.721f, 0.00f, 1.00f), "AWAKE - %.4f ms", Awake_t);

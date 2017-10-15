@@ -149,6 +149,31 @@ void Inspector::ShowModelInfo()
 	ImGui::Separator();
 
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
+	if (ImGui::TreeNodeEx("Color", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::PopStyleColor();
+		ImGui::Separator();
+		static bool hdr = false;
+		static bool alpha_preview = true;
+		static bool alpha_half_preview = false;
+		static bool options_menu = true;
+		int misc_flags = (hdr ? ImGuiColorEditFlags_HDR : 0) | (alpha_half_preview ? ImGuiColorEditFlags_AlphaPreviewHalf : (alpha_preview ? ImGuiColorEditFlags_AlphaPreview : 0)) | (options_menu ? 0 : ImGuiColorEditFlags_NoOptions);
+		if (ImGui::ColorEdit4("", (float*)&color_picker, ImGuiColorEditFlags_RGB | misc_flags))
+		{
+			model_ref->color.Set(color_picker.x, color_picker.y, color_picker.z, color_picker.w);
+			model_ref->SetColor(model_ref->color);
+		}
+	
+		
+		ImGui::TreePop();
+	}
+	else
+	{
+		ImGui::PopStyleColor();
+	}
+	ImGui::Separator();
+
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
 	if (ImGui::TreeNodeEx("Total Geometry", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::PopStyleColor();

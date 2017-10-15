@@ -35,4 +35,6 @@ public:
 private:
 	_Model* model_ref = nullptr;
 	char* model_name = nullptr;
+
+	ImVec4 color_picker = { 255, 255, 255, 255 };
 };

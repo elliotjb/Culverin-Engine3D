@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+
 enum Prim_Type
 {
 	P_UNKNOWN = -1,
@@ -58,7 +59,7 @@ public:
 	float3 pos;
 	float3 rot;
 	float3 scale;
-	Color color;
+	Color color = White;
 
 	std::string name;
 	std::vector<Vertex> vertices;
@@ -97,7 +98,7 @@ public:
 
 public:
 	Prim_Type type = P_UNKNOWN;
-	Color color;
+	Color color = White;
 	float3 pos;
 	bool isKynematic = false;
 	bool wireframe = false;
