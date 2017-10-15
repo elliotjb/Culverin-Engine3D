@@ -162,17 +162,48 @@ update_status ModuleCamera3D::Update(float dt)
 		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT &&
 			App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 		{
-			BaseGeometry* geo = App->geometry_manager->geometry;
-			if (geo != NULL)
+			//BaseGeometry* geo = App->geometry_manager->geometry;
+			//if (geo != NULL)
+			//{
+			//	AABB* box = &((_Model*)(App->geometry_manager->geometry))->GetBoundingBox();
+			//	float3 center = box->Centroid();
+			//	LookObject(vec3(center.x, center.y, center.z));
+			//}
+			//else
+			//	LookObject(vec3(0, 0, 0));
+			int dx = -App->input->GetMouseXMotion();
+			int dy = -App->input->GetMouseYMotion();
+
+			float Sensitivity = 0.25f;
+
+			Position -= Reference;
+
+			if (dx != 0)
 			{
-				AABB* box = &((_Model*)(App->geometry_manager->geometry))->GetBoundingBox();
-				float3 center = box->Centroid();
-				LookObject(vec3(center.x, center.y, center.z));
-				//float3 geoPosition = ((_Model*)(geo))->base_info.position;
-				//LookObject(vec3(geoPosition.x, geoPosition.y, geoPosition.z));
+				float DeltaX = (float)dx * Sensitivity;
+
+				X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+				Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+				Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
 			}
-			else
-				LookObject(vec3(0, 0, 0));
+
+			if (dy != 0)
+			{
+				float DeltaY = (float)dy * Sensitivity;
+
+				Y = rotate(Y, DeltaY, X);
+				Z = rotate(Z, DeltaY, X);
+
+				if (Y.y < 0.0f)
+				{
+					Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+					Y = cross(Z, X);
+				}
+			}
+
+			Position = Reference + Z * length(Position);
+
+			Rotate(Reference.x, Reference.y);
 		}
 	}
 	// Recalculate matrix -------------
@@ -228,6 +259,29 @@ void ModuleCamera3D::LookAt(const vec3 &Spot)
 	Y = cross(Z, X);
 
 	CalculateViewMatrix();
+}
+
+void ModuleCamera3D::Rotate(float dx, float dy)
+{
+	float Sensitivity = 0.25f;
+	dx = -App->input->GetMouseXMotion();
+
+	if (dx != 0 && dy != 0)
+	{
+		Position -= Reference;
+
+		if (dx == Reference.x, dy == Reference.y)
+		{
+
+			float DeltaX = (float)dx * Sensitivity;
+			X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+			Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+			Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+
+
+		}
+		Position = Reference + Z * length(Position);
+	}
 }
 
 void ModuleCamera3D::LookObject(const vec3 &Spot)
