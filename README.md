@@ -1,24 +1,39 @@
 ﻿# 3D Engine
+This is a project consistent of creating a Game Engine,
+that allows you to use tools to create video games.
+At this moment, this is a Geometry Loader, where you can import your model (.fbx, etc.)
+and see info about it. Also you can change/apply textures to the different meshes
+that composes the entire model (only .png or .jpg formats).
 
-
-# Features
-
-- Object Creation and Color Modification.
-- Random numbers generation.
-- Intersection with polygons calculations.
+# FEATURES
 - Configuration options (App, Window, Audio, Render).
+- Model Viewer (Position, Rotation, Meshes, Textures).
 
-# Controls Camera (is Like Unity)
+# CAMERA CONTROLS(is Like Unity)
 - Only Mouse Right: Move Camera with static position
 - Mouse Left with Alt-Left: Move Camera arround object (model)
 - Mouse wheel: Move Camera forward and backward
 - Mouse Middle: Move Camera like 2D.
 - F: Center the Camera on an object
 
-# Updates  
+# MODEL/TEXTURES IMPORTING
+To import a model (.fbx/.obj) to the Engine, just drag it inside the window.
+If loaded correctly, you will see an Inspector Window with Basic information of the model.
+To load textures to a model (that accept textures), first of all, they have to be .png/.jpg. Then, 
+in the Inspector Window, you will see the textures applied to the model in a small square.
+The specular channel of the models is only to show the textures that will be shown in specular channel.
+
+TO APPLY/CHANGE A TEXTURE OF A MESH, DRAG AND DROP IT INSIDE THE IMAGE SQUARE OF THE TEXTURE, IN THE INSPECTOR WINDOW.
+Visual Explanation Here -> ![](https://i.gyazo.com/d8da58aaf53a70c7a150e8bf1adee4f6.gif)](https://gyazo.com/d8da58aaf53a70c7a150e8bf1adee4f6)
+
+# UPDATES
 - 0.5:
 	* Implemented diference movement Camera (Now is Like Unity).
 	* Add more modules in Configuration Window
+	* We can set different textures on each different mesh of the model (if imported correctly).
+	* Color of the model can be edited.
+	* Debug info 
+	* Bounding box, Enable/Disable the model.
 - 0.4.1:
 	* Add buttom to Revert Style Docking. (v0.4.1.1)
 	* Added Basic GameObject - Component Structure (Like Unity Engine)
@@ -63,10 +78,10 @@
 - Bullet -> http://bulletphysics.org 
 - Sdl -> http://www.libsdl.org/
 - parson (json parser) -> https://github.com/kgabis/parson
-
+- ASSIMP -> http://assimp.sourceforge.net/
+- DevIL -> http://openil.sourceforge.net/
 
 Authors: 
-
 - Elliot Jimenez: https://github.com/elliotjb
 - Jordi Oña: https://github.com/Jordior97
 
