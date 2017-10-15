@@ -164,7 +164,6 @@ void Inspector::ShowModelInfo()
 			model_ref->SetColor(model_ref->color);
 		}
 	
-		
 		ImGui::TreePop();
 	}
 	else
