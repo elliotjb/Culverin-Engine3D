@@ -78,10 +78,6 @@ update_status ModuleLoader::Update(float dt)
 				LOG("FAIL LOADING TEXTURE: No model to apply it");
 			}
 
-			//Fix Camera to model ------------------------
-			App->camera->LookAndMoveToObject();
-			// ---------------------------------
-
 			SDL_free(App->input->dropped_filedir);
 
 			mesh_index = -1;
