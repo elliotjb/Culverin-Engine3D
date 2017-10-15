@@ -300,25 +300,25 @@ void Application::Config()
 			else
 			{
 				ImGui::BulletText("Accumulated Actual Memory:"); ImGui::SameLine(); 
-				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.accumulatedActualMemory);
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i b", stats.accumulatedActualMemory);
 				ImGui::BulletText("Peak Actual Memory:"); ImGui::SameLine(); 
-				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.peakActualMemory);
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i b", stats.peakActualMemory);
 				ImGui::BulletText("Total actual memory:"); ImGui::SameLine(); 
-				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.totalActualMemory);
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i b", stats.totalActualMemory);
 				ImGui::Spacing();
 				ImGui::BulletText("Accumulated allocated memory:"); ImGui::SameLine(); 
-				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.accumulatedAllocUnitCount);
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i b", stats.accumulatedAllocUnitCount);
 				ImGui::BulletText("Peak actual allocated memory:"); ImGui::SameLine(); 
-				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.peakAllocUnitCount);
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i b", stats.peakAllocUnitCount);
 				ImGui::BulletText("Total actual allocated memory:"); ImGui::SameLine(); 
-				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.totalAllocUnitCount);
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i b", stats.totalAllocUnitCount);
 				ImGui::Spacing();
 				ImGui::BulletText("Accumulated reported memory:"); ImGui::SameLine(); 
-				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.accumulatedReportedMemory);
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i b", stats.accumulatedReportedMemory);
 				ImGui::BulletText("Peak reported memory:"); ImGui::SameLine(); 
-				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.peakReportedMemory);
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i b", stats.peakReportedMemory);
 				ImGui::BulletText("Total reported memory:"); ImGui::SameLine(); 
-				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.totalReportedMemory);
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i b", stats.totalReportedMemory);
 
 
 				configuration->_EndDock();
