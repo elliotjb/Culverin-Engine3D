@@ -13,6 +13,7 @@
 
 _Model::_Model(const char * path, Prim_Type type, bool wire) :BaseGeometry(type, wire)
 {
+	color = White;
 	LoadModel(path);
 	SetColor(color);
 }
@@ -282,6 +283,7 @@ uint _Model::TextureFromFile(const char * path, const std::string&  dir)
 	return App->textures->LoadTexture(filename.c_str());
 }
 
+void _Model::SetColor(Color col)
 {
 	for (uint i = 0; i < meshes.size(); i++)
 	{

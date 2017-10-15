@@ -42,6 +42,7 @@ public:
 	std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, const char *typeName);
 	uint TextureFromFile(const char *path, const std::string& dir);
 	
+	void SetColor(Color col);
 
 	void SetTexture(const char *path);/*Set the same texture to all meshes*/
 	void SetTexture(const char *path, int m, int t, int t_id);/*Set specific texture to specific mesh*/
