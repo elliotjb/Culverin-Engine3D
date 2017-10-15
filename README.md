@@ -8,7 +8,10 @@
 - Intersection with polygons calculations.
 - Configuration options (App, Window, Audio, Render).
 
-# Updates
+# Updates  
+- 0.5:
+	* Implemented diference movement Camera (Now is Like Unity).
+	* Add more modules in Configuration Window
 - 0.4.1:
 	* Add buttom to Revert Style Docking. (v0.4.1.1)
 	* Added Basic GameObject - Component Structure (Like Unity Engine)
