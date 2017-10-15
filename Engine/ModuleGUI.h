@@ -67,6 +67,16 @@ private:
 	bool gameSave = false;
 	bool reposition_exit = true;
 
+	// bools statics ----------------------
+	bool window_create_objects = false;
+	bool window_show_objects = false;
+	bool window_Random_generator = false;
+	bool window_about_us = false;
+	bool configuration = false;
+	bool window_infoMouse = false;
+	bool window_exit = false;
+	bool window_style = false;
+
 	int menu_height = 0;
 	bool dock_test = false;
 

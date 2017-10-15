@@ -88,39 +88,31 @@ update_status ModuleGUI::Update(float dt)
 	}
 
 
-	// bools statics ----------------------
-	static bool window_create_objects = false;
-	static bool window_show_objects = false;
-	static bool window_Random_generator = false;
-	static bool window_about_us = false;
-	static bool configuration = false;
-	static bool window_infoMouse = false;
-	static bool window_exit = false;
-	static bool window_style = false;
+
 
 	// Main Menu --------------------------------
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
 		{
-			if (ImGui::MenuItem("New Scene", "Ctrl + N"))
-			{
+			//if (ImGui::MenuItem("New Scene", "Ctrl + N"))
+			//{
 
-			}
-			if (ImGui::MenuItem("Open Scene", "Ctrl + O"))
-			{
+			//}
+			//if (ImGui::MenuItem("Open Scene", "Ctrl + O"))
+			//{
 
-			}
-			ImGui::Separator();
-			if (ImGui::MenuItem("Save Scene", "Ctrl + S"))
-			{
+			//}
+			//ImGui::Separator();
+			//if (ImGui::MenuItem("Save Scene", "Ctrl + S"))
+			//{
 
-			}
-			if (ImGui::MenuItem("Save Scene as..."))
-			{
+			//}
+			//if (ImGui::MenuItem("Save Scene as..."))
+			//{
 
-			}
-			ImGui::Separator();
+			//}
+			//ImGui::Separator();
 			if (ImGui::MenuItem("Exit", NULL, &window_exit))
 			{
 				if (isSaved)
@@ -138,28 +130,28 @@ update_status ModuleGUI::Update(float dt)
 		}
 		if (ImGui::BeginMenu("Edit"))
 		{
-			if (ImGui::MenuItem("Undo", "Ctrl + Z"))
-			{
+			//if (ImGui::MenuItem("Undo", "Ctrl + Z"))
+			//{
 
-			}
-			if (ImGui::MenuItem("Redo", "Ctrl + Y"))
-			{
+			//}
+			//if (ImGui::MenuItem("Redo", "Ctrl + Y"))
+			//{
 
-			}
-			ImGui::Separator();
-			if (ImGui::MenuItem("Cut", "Ctrl + X"))
-			{
+			//}
+			//ImGui::Separator();
+			//if (ImGui::MenuItem("Cut", "Ctrl + X"))
+			//{
 
-			}
-			if (ImGui::MenuItem("Copy", "Ctrl + C"))
-			{
+			//}
+			//if (ImGui::MenuItem("Copy", "Ctrl + C"))
+			//{
 
-			}
-			if (ImGui::MenuItem("Paste", "Ctrl + V"))
-			{
+			//}
+			//if (ImGui::MenuItem("Paste", "Ctrl + V"))
+			//{
 
-			}
-			ImGui::Separator();
+			//}
+			//ImGui::Separator();
 			if (ImGui::MenuItem("Look View to Selected", "F"))
 			{
 
@@ -169,36 +161,36 @@ update_status ModuleGUI::Update(float dt)
 
 		if (ImGui::BeginMenu("GameObject"))
 		{
-			if (ImGui::MenuItem("Create Empty", "Ctrl + Shift + N"))
-			{
+			//if (ImGui::MenuItem("Create Empty", "Ctrl + Shift + N"))
+			//{
 
-			}
-			ImGui::Separator();
-			if (ImGui::BeginMenu("3D Object"))
-			{
-				if (ImGui::MenuItem("Cube"))
-				{
-					//winManager[CREATEOBJETCS]->SpecialFunction("cube");
-				}
+			//}
+			//ImGui::Separator();
+			//if (ImGui::BeginMenu("3D Object"))
+			//{
+			//	if (ImGui::MenuItem("Cube"))
+			//	{
+			//		//winManager[CREATEOBJETCS]->SpecialFunction("cube");
+			//	}
 
-				if (ImGui::MenuItem("Sphere"))
-				{
-					//winManager[CREATEOBJETCS]->SpecialFunction("sphere");
-				}
-				if (ImGui::MenuItem("Capsule"))
-				{
+			//	if (ImGui::MenuItem("Sphere"))
+			//	{
+			//		//winManager[CREATEOBJETCS]->SpecialFunction("sphere");
+			//	}
+			//	if (ImGui::MenuItem("Capsule"))
+			//	{
 
-				}
-				if (ImGui::MenuItem("Cylinder"))
-				{
+			//	}
+			//	if (ImGui::MenuItem("Cylinder"))
+			//	{
 
-				}
-				ImGui::EndMenu();
-			}
-			if (ImGui::MenuItem("Audio"))
-			{
+			//	}
+			//	ImGui::EndMenu();
+			//}
+			//if (ImGui::MenuItem("Audio"))
+			//{
 
-			}
+			//}
 			ImGui::EndMenu();
 		}
 
@@ -234,7 +226,7 @@ update_status ModuleGUI::Update(float dt)
 			}
 			ImGui::Separator();
 
-			if (ImGui::MenuItem("Property editor", NULL, &window_infoMouse))
+			if (ImGui::MenuItem("Info Mouse", NULL, &window_infoMouse))
 			{
 
 			}
@@ -408,27 +400,66 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::Separator();
 		ImGui::Spacing();
 		// Description
-		ImGui::Text("This is a project consistent of creating a Game Engine,\nthat allows you to use tools to create video games");
-
+		ImGui::Text("This is a project consistent of creating a Game Engine,\nthat allows you to use tools to create video games.\nAt this moment, this is a Geometry Loader, where you can import your model (.fbx, etc.)\nand see info about it. Also you can change/apply textures to the different meshes\nthat composes the entire model (only .png or .jpg formats).");
 		ImGui::Spacing();
 		ImGui::Separator();
 		ImGui::Spacing();
+		// Libraries
+		ImGui::Text("Libraries used:");
+		ImGui::Spacing();
+
+		if (ImGui::MenuItem("SDL - v2.0.3"))
+		{
+			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+			{
+				ShellExecuteA(NULL, "open", "http://www.sdl.com/", NULL, NULL, SW_SHOWNORMAL);
+			}
+		}
+		if (ImGui::MenuItem("ImGui - v1.51"))
+		{
+			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+			{
+				ShellExecuteA(NULL, "open", "https://github.com/ocornut/imgui", NULL, NULL, SW_SHOWNORMAL);
+			}
+		}
+		if (ImGui::MenuItem("MathGeoLib - v1.5"))
+		{
+			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+			{
+				ShellExecuteA(NULL, "open", "http://clb.demon.fi/MathGeoLib/nightly/", NULL, NULL, SW_SHOWNORMAL);
+			}
+		}
+		if (ImGui::MenuItem("Parson, JSON library"))
+		{
+			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+			{
+				ShellExecuteA(NULL, "open", "https://github.com/kgabis/parson", NULL, NULL, SW_SHOWNORMAL);
+			}
+		}
+		if (ImGui::MenuItem("Open Asset Import Library (ASSIMP) - v3.1.1"))
+		{
+			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+			{
+				ShellExecuteA(NULL, "open", "http://assimp.sourceforge.net/", NULL, NULL, SW_SHOWNORMAL);
+			}
+		}
+		if (ImGui::MenuItem("DevIL - v1.7.8"))
+		{
+			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+			{
+				ShellExecuteA(NULL, "open", "http://openil.sourceforge.net/", NULL, NULL, SW_SHOWNORMAL);
+			}
+		}
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();		
 		// Name of the Author
 		ImGui::Text("Authors:");
 		ImGui::Spacing();
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Elliot Jimenez Bosch");
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Jordi Ona Rufi");
-		ImGui::Spacing();
-		ImGui::Separator();
-		ImGui::Spacing();
-		// Libraries
-		ImGui::Text("Libraries:");
-		ImGui::Spacing();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SDL");
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "ImGui");
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "MathGeoLib");
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Parson");
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "OpenGL");
+
 
 		ImGui::End();
 	}
@@ -481,8 +512,30 @@ update_status ModuleGUI::Update(float dt)
 
 update_status ModuleGUI::UpdateConfig(float dt)
 {
-	//
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
+	ImGui::Text("Windows:");
+	ImGui::Checkbox("##SceneActive", &winManager[SCENEWORLD]->active[0].active); ImGui::SameLine();
+	ImGui::Text("Scene");
+	ImGui::Checkbox("##InspectorActive", &winManager[INSPECTOR]->active[0].active); ImGui::SameLine();
+	ImGui::Text("Inspector");
+	ImGui::Checkbox("##HierarchyActive", &winManager[HIERARCHY]->active[0].active); ImGui::SameLine();
+	ImGui::Text("Hierarchy");
+	ImGui::Checkbox("##ConsoleActive", &App->console->console_activated); ImGui::SameLine();
+	ImGui::Text("Console");
+	ImGui::Checkbox("##HardwareActive", &winManager[HARDWARE]->active[0].active); ImGui::SameLine();
+	ImGui::Text("Hardware");
+	ImGui::Checkbox("##RandomActive", &window_Random_generator); ImGui::SameLine();
+	ImGui::Text("Random Generation");
+	ImGui::Checkbox("##AboutActive", &window_about_us); ImGui::SameLine();
+	ImGui::Text("About Culverin");
+	ImGui::Checkbox("##PerformanceActive", &App->showperformance); ImGui::SameLine();
+	ImGui::Text("Performance");
+	ImGui::Checkbox("##StyleEsditorActive", &window_style); ImGui::SameLine();
+	ImGui::Text("Style Editor");
+	ImGui::Checkbox("##WindowInfoMouse", &window_infoMouse); ImGui::SameLine();
+	ImGui::Text("Info Mouse");
 
+	ImGui::PopStyleVar();
 
 
 	return UPDATE_CONTINUE;

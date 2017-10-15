@@ -11,7 +11,7 @@ ModuleGeometries::ModuleGeometries(bool start_enabled) : Module(start_enabled)
 {
 	name = "Geometries Manager";
 	geometry = nullptr;
-	haveConfig = true;
+	haveConfig = false;
 }
 
 ModuleGeometries::~ModuleGeometries()

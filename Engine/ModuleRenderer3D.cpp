@@ -208,6 +208,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 update_status ModuleRenderer3D::UpdateConfig(float dt)
 {
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
 	if (ImGui::Checkbox("Depth Test", &depth_test))
 	{
 		(depth_test) ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
@@ -259,6 +260,8 @@ update_status ModuleRenderer3D::UpdateConfig(float dt)
 			}
 		}
 	}
+
+	ImGui::PopStyleVar();
 	return UPDATE_CONTINUE;
 }
 

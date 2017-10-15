@@ -29,8 +29,10 @@ public:
 	static int TextEditCallbackStub(ImGuiTextEditCallbackData* data); // In C++11 you are better off using lambdas for this sort of forwarding callbacks
 	int TextEditCallback(ImGuiTextEditCallbackData* data); // In C++11 you are better off using lambdas for this sort of forwarding callbacks
 
-private:
+public:
 	bool console_activated = false;
+
+private:
 
 	char                  InputBuf[256];
 	ImVector<char*>       Items;
