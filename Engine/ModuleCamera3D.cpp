@@ -125,10 +125,13 @@ update_status ModuleCamera3D::Update(float dt)
 		if (App->input->GetMouseZ() == 1)
 		{
 			newPos -= Z * (moveWithScroll * dt);
+			ReajustLook();
+
 		}
 		if (App->input->GetMouseZ() == -1)
 		{
 			newPos += Z * (moveWithScroll * dt);
+			ReajustLook();
 		} 
 		// -------------------------------------
 		//Mouse Middle ------------------------
@@ -350,6 +353,34 @@ void ModuleCamera3D::CheckOut()
 	{
 		canOut = false;
 	}
+}
+
+void ModuleCamera3D::ReajustLook()
+{
+	BaseGeometry* geo = App->geometry_manager->geometry;
+	float3 center;
+	if (geo != NULL)
+	{
+		AABB* box = &((_Model*)(App->geometry_manager->geometry))->GetBoundingBox();
+		center = box->Centroid();
+	}
+	else
+	{
+		center.Set(0, 0, 0);
+	}
+	Reference = vec3(center.x, center.y, center.z);
+
+	Z = normalize(Position - Reference);
+	X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));
+	Y = cross(Z, X);
+
+	int dx = -App->input->GetMouseXMotion();
+	int dy = -App->input->GetMouseYMotion();
+
+	float Sensitivity = 0.25f;
+
+	Position -= Reference;
+	if (Y.y > 0.0f)Position = Reference + Z * length(Position);
 }
 
 

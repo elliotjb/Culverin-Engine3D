@@ -29,6 +29,7 @@ private:
 
 	void CalculateViewMatrix();
 	void CheckOut();
+	void ReajustLook();
 
 public:
 	
