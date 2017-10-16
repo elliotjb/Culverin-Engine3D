@@ -2,6 +2,8 @@
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
+#include "_Model.h"
+#include "BaseGeometry.h"
 #include "Bullet/include/btBulletDynamicsCommon.h"
 
 class ModuleCamera3D : public Module
@@ -41,6 +43,9 @@ public:
 
 private:
 	bool canOut = false;
+	BaseGeometry* geo = nullptr;
+	//AABB* box = nullptr;
+	bool needReajust = false;
 	float moveWithScroll = 1;
 	int speed_camera_move = 1;
 	mat4x4 ViewMatrix, ViewMatrixInverse;

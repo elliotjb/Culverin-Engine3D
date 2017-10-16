@@ -1,9 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleCamera3D.h"
-#include "PhysVehicle3D.h"
 #include "PhysBody3D.h"
-#include "_Model.h"
 #include "ImGui\imgui.h"
 
 
@@ -71,7 +69,6 @@ update_status ModuleCamera3D::Update(float dt)
 		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT &&
 			App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE)
 		{
-			if (1)
 			{
 				int dx = -App->input->GetMouseXMotion();
 				int dy = -App->input->GetMouseYMotion();
@@ -79,7 +76,6 @@ update_status ModuleCamera3D::Update(float dt)
 				float Sensitivity = 0.25f;
 
 				//Position -= Reference;
-
 				if (dx != 0)
 				{
 					float DeltaX = (float)dx * Sensitivity;
@@ -105,14 +101,37 @@ update_status ModuleCamera3D::Update(float dt)
 				//Position = Reference + Z * length(Position);
 			}
 			//Mode Camera with keyboard
-			if (App->input->GetKey(SDL_SCANCODE_T) == KEY_REPEAT) newPos.y += speed;
-			if (App->input->GetKey(SDL_SCANCODE_G) == KEY_REPEAT) newPos.y -= speed;
+			if (App->input->GetKey(SDL_SCANCODE_T) == KEY_REPEAT)
+			{
+				needReajust = true;
+				newPos.y += speed;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_G) == KEY_REPEAT)
+			{
+				needReajust = true;
+				newPos.y -= speed;
+			}
 
-			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
-			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
-
-			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
-			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			{
+				needReajust = true;
+				newPos -= Z * speed;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			{
+				needReajust = true;
+				newPos += Z * speed;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				needReajust = true;
+				newPos -= X * speed;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
+				needReajust = true;
+				newPos += X * speed;
+			}
 		}
 		
 		//Set position and view camera to object in scene (Like Unity...)
@@ -125,13 +144,13 @@ update_status ModuleCamera3D::Update(float dt)
 		if (App->input->GetMouseZ() == 1)
 		{
 			newPos -= Z * (moveWithScroll * dt);
-			ReajustLook();
+			needReajust = true;
 
 		}
 		if (App->input->GetMouseZ() == -1)
 		{
 			newPos += Z * (moveWithScroll * dt);
-			ReajustLook();
+			needReajust = true;
 		} 
 		// -------------------------------------
 		//Mouse Middle ------------------------
@@ -164,6 +183,11 @@ update_status ModuleCamera3D::Update(float dt)
 		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT &&
 			App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 		{
+			if (needReajust)
+			{
+				ReajustLook();
+				needReajust = false;
+			}
 			//BaseGeometry* geo = App->geometry_manager->geometry;
 			//if (geo != NULL)
 			//{
@@ -323,7 +347,7 @@ void ModuleCamera3D::LookObject(const vec3 &Spot)
 
 void ModuleCamera3D::LookAndMoveToObject()
 {
-	BaseGeometry* geo = App->geometry_manager->geometry;
+	geo = App->geometry_manager->geometry;
 	if (geo != NULL)
 	{
 		AABB* box = &((_Model*)(App->geometry_manager->geometry))->GetBoundingBox();
@@ -357,11 +381,11 @@ void ModuleCamera3D::CheckOut()
 
 void ModuleCamera3D::ReajustLook()
 {
-	BaseGeometry* geo = App->geometry_manager->geometry;
+	geo = App->geometry_manager->geometry;
 	float3 center;
 	if (geo != NULL)
 	{
-		AABB* box = &((_Model*)(App->geometry_manager->geometry))->GetBoundingBox();
+		AABB* box = &((_Model*)(geo))->GetBoundingBox();
 		center = box->Centroid();
 	}
 	else
