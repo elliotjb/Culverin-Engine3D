@@ -119,7 +119,6 @@ void Inspector::ShowModelInfo()
 	if (ImGui::TreeNodeEx("Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::PopStyleColor();
-		ImGui::Separator();
 		float3 pos = model_ref->base_info.position; //70
 		float3 rot = model_ref->base_info.rotation; //70
 		float3 scale = model_ref->base_info.scale; //70
@@ -152,7 +151,6 @@ void Inspector::ShowModelInfo()
 	if (ImGui::TreeNodeEx("Color", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::PopStyleColor();
-		ImGui::Separator();
 		
 		if (ImGui::ColorEdit3("", (float*)&color_picker))
 		{
@@ -172,7 +170,6 @@ void Inspector::ShowModelInfo()
 	if (ImGui::TreeNodeEx("Total Geometry", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::PopStyleColor();
-		ImGui::Separator();
 		ImGui::Text("Total Vertices:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", model_ref->base_info.total_vertex);
 		ImGui::Text("Total Meshes:"); ImGui::SameLine();
@@ -190,7 +187,6 @@ void Inspector::ShowModelInfo()
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
 	if (ImGui::TreeNodeEx("Meshes", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		ImGui::Separator();
 		ImGui::PopStyleColor();
 		for (uint i = 0; i < model_ref->meshes.size(); i++)
 		{
@@ -248,6 +244,11 @@ void Inspector::ShowModelInfo()
 	{
 		ImGui::PopStyleColor();
 	}
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(20, 6));
+	ImGui::ButtonEx("Add Component");
+	ImGui::PopStyleVar();
 }
 
 bool Inspector::CleanUp()

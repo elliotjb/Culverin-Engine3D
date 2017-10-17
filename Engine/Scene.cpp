@@ -9,6 +9,7 @@
 #include "ModuleGeometries.h"
 #include "_Cube.h"
 #include "GameObject.h"
+#include <direct.h>
 
 Scene::Scene(bool start_enabled) : Module(start_enabled)
 {
@@ -50,6 +51,13 @@ update_status Scene::Update(float dt)
 	//Draw Plane
 	DrawPlane(7);
 
+	//if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+	//{
+	//	mkdir("C:/Users/elliotjb/Documents/GitHub/3D-Engine/Engine/NewFolderElliot");
+	//}
+	//FILE* temp; 
+	//temp = fopen("C:/Users/elliotjb", "r");
+	
 	Update_t = perf_timer.ReadMs();
 
 	return UPDATE_CONTINUE;

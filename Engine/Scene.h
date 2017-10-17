@@ -32,6 +32,7 @@ public:
 	GLuint Lenna;
 
 	//
+	std::vector<GameObject*> scene_obj;
 	FrameBuffer* frBuff = nullptr;
 	GameObject* rootObject = nullptr;
 };

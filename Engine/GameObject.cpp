@@ -57,7 +57,7 @@ bool GameObject::isActive() const
 	return active;
 }
 
-Component * GameObject::FindComponentByType(Comp_Type type)
+Component* GameObject::FindComponentByType(Comp_Type type)
 {
 	Component* comp = nullptr;
 
@@ -73,7 +73,7 @@ Component * GameObject::FindComponentByType(Comp_Type type)
 	return comp;
 }
 
-Component * GameObject::CreateComponent(Comp_Type type)
+Component* GameObject::CreateComponent(Comp_Type type)
 {
 	Component* comp = nullptr;
 	bool dupe = false;
