@@ -19,7 +19,8 @@ enum WindowName
 	CREATEOBJETCS,
 	INSPECTOR,
 	HIERARCHY,
-	SCENEWORLD
+	SCENEWORLD,
+	PROJECT
 };
 
 class ModuleGUI : public Module

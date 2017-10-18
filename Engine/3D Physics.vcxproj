@@ -101,6 +101,7 @@
     <ClInclude Include="ModuleFramebuffers.h" />
     <ClInclude Include="ModuleHierarchy.h" />
     <ClInclude Include="ModuleImporter.h" />
+    <ClInclude Include="ModuleProject.h" />
     <ClInclude Include="ModuleSceneWorld.h" />
     <ClInclude Include="ModuleTextures.h" />
     <ClInclude Include="Transform.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="ModuleFramebuffers.cpp" />
     <ClCompile Include="ModuleHierarchy.cpp" />
     <ClCompile Include="ModuleImporter.cpp" />
+    <ClCompile Include="ModuleProject.cpp" />
     <ClCompile Include="ModuleSceneWorld.cpp" />
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="Transform.cpp" />
