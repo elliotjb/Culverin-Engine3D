@@ -17,7 +17,7 @@ public:
 	bool isActive() const;
 
 	Component* FindComponentByType(Comp_Type type);
-	Component* CreateComponent(Comp_Type type);
+	Component* AddComponent(Comp_Type type);
 
 private:
 	std::string name;

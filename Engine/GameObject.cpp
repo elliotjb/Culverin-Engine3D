@@ -73,15 +73,15 @@ Component* GameObject::FindComponentByType(Comp_Type type)
 	return comp;
 }
 
-Component* GameObject::CreateComponent(Comp_Type type)
+Component* GameObject::AddComponent(Comp_Type type)
 {
-	Component* comp = nullptr;
 	bool dupe = false;
 	for (uint i = 0; i < components.size(); i++)
 	{
 		if (components[i]->GetType() == type) //We need to check if the component is ACTIVE first?¿
 		{
 			dupe = true;
+			LOG("There's already one component of this type in the Game Object.");
 			break;
 		}
 	}
@@ -90,7 +90,8 @@ Component* GameObject::CreateComponent(Comp_Type type)
 	{
 		Component* comp = new Component(type);
 		components.push_back(comp);
+		return comp;
 	}
 
-	return comp;
+	return nullptr;
 }

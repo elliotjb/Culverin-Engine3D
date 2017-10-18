@@ -10,19 +10,21 @@ struct Axis
 	float3 z = { 0, 0, 1 };
 };
 
-class Transform :public Component
+class CompTransform :public Component
 {
 public:
-	Transform(Comp_Type t);
-	~Transform();
+	CompTransform(Comp_Type t);
+	~CompTransform();
 
 	void SetPos(float3 pos);
 	void SetRot(float3 rot);
-	void SetSize(float3 size);
+	void SetScale(float3 scale);
+
+	void Init(float3 p, float3 r, float3 s);
 
 private:
 	Axis axis;
 	float3 position = { 0, 0, 0 };
 	float3 rotation = { 0, 0, 0 };
-	float3 size = { 0, 0, 0 };
+	float3 scale = { 0, 0, 0 };
 };

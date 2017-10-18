@@ -3,12 +3,13 @@
 #include "Scene.h"
 #include "Primitive.h"
 #include "ModuleLoader.h"
+#include "GameObject.h"
+#include "Component.h"
+#include "CompTransform.h"
+#include "CompMesh.h"
 #include "Gl3W\include\glew.h"
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_sdl_gl3.h"
-#include "ModuleGeometries.h"
-#include "_Cube.h"
-#include "GameObject.h"
 #include <direct.h>
 
 Scene::Scene(bool start_enabled) : Module(start_enabled)
@@ -57,6 +58,13 @@ update_status Scene::Update(float dt)
 	//}
 	//FILE* temp; 
 	//temp = fopen("elliotjb", "r");
+
+
+	// Update Root Game Objects
+	//for (uint i = 0; i < gameobjects.size(); i++)
+	//{
+	//	gameobjects[i]->Update();
+	//}
 	
 	Update_t = perf_timer.ReadMs();
 
@@ -90,8 +98,29 @@ void Scene::DrawPlane(int size)
 GameObject* Scene::CreateGameObject()
 {
 	GameObject* obj = new GameObject();
-	rootObject = obj;
+	gameobjects.push_back(obj);
 	return obj;
+}
+
+GameObject * Scene::CreateCube(float3 p, float3 r, float3 s)
+{
+	GameObject* obj = new GameObject();
+
+	/*Predefined Cube has 2 Base components: Transform & Mesh*/
+	CompTransform* transform = nullptr;
+
+	//TRANSFORM COMPONENT --------------
+	obj->AddComponent(C_TRANSFORM);
+	transform = (CompTransform*)(obj->FindComponentByType(C_TRANSFORM));
+	transform->Init(p, s, r);
+
+	//MESH COMPONENT -------------------
+	obj->AddComponent(C_MESH);
+
+
+	//Set this Cube Active
+	Enable();
+	return nullptr;
 }
 
 /*for (int i = 0; i < CHECKERS_HEIGHT; i++)

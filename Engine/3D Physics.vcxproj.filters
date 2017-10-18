@@ -58,6 +58,9 @@
     <Filter Include="Engine\Modules\Importer">
       <UniqueIdentifier>{e2f9b83b-9fdf-4f22-a19a-c5339cbd8c80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Modules\Scene\GameObjects">
+      <UniqueIdentifier>{3e5dc33e-7212-40b1-92c9-9ed45dbfb6a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -372,19 +375,10 @@
     <ClInclude Include="ModuleGeometries.h">
       <Filter>Engine\Modules\Geometries</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Engine\Modules\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Engine\Modules\Scene\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Engine\Modules\Scene\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Material.h">
-      <Filter>Engine\Modules\Scene\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
       <Filter>Engine\Modules\Scene\Components</Filter>
     </ClInclude>
     <ClInclude Include="ModuleFramebuffers.h">
@@ -411,7 +405,15 @@
     <ClInclude Include="ModuleProject.h">
       <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleDirectory.h" />
+    <ClInclude Include="GameObject.h">
+      <Filter>Engine\Modules\Scene\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="CompTransform.h">
+      <Filter>Engine\Modules\Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CompMesh.h">
+      <Filter>Engine\Modules\Scene\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -618,19 +620,10 @@
     <ClCompile Include="ModuleGeometries.cpp">
       <Filter>Engine\Modules\Geometries</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Engine\Modules\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Engine\Modules\Scene\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Engine\Modules\Scene\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Material.cpp">
-      <Filter>Engine\Modules\Scene\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
       <Filter>Engine\Modules\Scene\Components</Filter>
     </ClCompile>
     <ClCompile Include="ModuleFramebuffers.cpp">
@@ -654,7 +647,15 @@
     <ClCompile Include="ModuleProject.cpp">
       <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleDirectory.cpp" />
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Engine\Modules\Scene\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="CompTransform.cpp">
+      <Filter>Engine\Modules\Scene\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CompMesh.cpp">
+      <Filter>Engine\Modules\Scene\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Geometry\KDTree.inl">
