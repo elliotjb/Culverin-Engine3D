@@ -53,10 +53,10 @@ update_status Scene::Update(float dt)
 
 	//if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
 	//{
-	//	mkdir("C:/Users/elliotjb/Documents/GitHub/3D-Engine/Engine/NewFolderElliot");
+	//	mkdir("NewFolderElliot");
 	//}
 	//FILE* temp; 
-	//temp = fopen("C:/Users/elliotjb", "r");
+	//temp = fopen("elliotjb", "r");
 	
 	Update_t = perf_timer.ReadMs();
 

@@ -140,7 +140,7 @@ void _Model::LoadModel(const char * path)
 	}
 }
 
-void _Model::ProcessNode(aiNode * node, const aiScene * scene, float3 * min, float3 * max)
+void _Model::ProcessNode(aiNode* node, const aiScene* scene, float3* min, float3* max)
 {
 	// Process all the Node's MESHES
 	for (uint i = 0; i < node->mNumMeshes; i++)

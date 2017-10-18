@@ -4,7 +4,6 @@
 #include "BaseGeometry.h"
 #include <vector>
 #include <string>
-class BaseGeometry;
 
 enum FileType
 {
@@ -12,6 +11,8 @@ enum FileType
 	F_MODEL,
 	F_TEXTURE
 };
+
+class BaseGeometry;
 
 class ModuleLoader : public Module
 {

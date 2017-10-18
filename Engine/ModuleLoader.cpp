@@ -14,6 +14,7 @@
 #include "Assimp/include/cfileio.h"
 #include <string>
 
+
 #pragma comment(lib, "Assimp/libx86/assimp.lib")
 
 ModuleLoader::ModuleLoader(bool start_enabled): Module(start_enabled)

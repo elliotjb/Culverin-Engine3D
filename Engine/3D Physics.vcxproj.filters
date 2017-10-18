@@ -55,6 +55,9 @@
     <Filter Include="Engine\mmgr">
       <UniqueIdentifier>{95959b6b-83d6-4c50-bdfd-14d1bd442b66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Modules\Importer">
+      <UniqueIdentifier>{e2f9b83b-9fdf-4f22-a19a-c5339cbd8c80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -396,6 +399,15 @@
     <ClInclude Include="ModuleLoader.h">
       <Filter>Engine\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleImporter.h">
+      <Filter>Engine\Modules\Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="ImportMaterial.h">
+      <Filter>Engine\Modules\Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="ImportMesh.h">
+      <Filter>Engine\Modules\Importer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -625,6 +637,15 @@
     </ClCompile>
     <ClCompile Include="ModuleLoader.cpp">
       <Filter>Engine\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleImporter.cpp">
+      <Filter>Engine\Modules\Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="ImportMaterial.cpp">
+      <Filter>Engine\Modules\Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="ImportMesh.cpp">
+      <Filter>Engine\Modules\Importer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
