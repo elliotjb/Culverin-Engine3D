@@ -11,7 +11,7 @@ public:
 	ImportMesh();
 	~ImportMesh();
 
-	bool Import(const char* file, const char* path, std::string& output_file);
+	//bool Import(const char* file, const char* path, std::string& output_file);
 	bool Load(const char* exported_file, Texture* resource);
 };
 

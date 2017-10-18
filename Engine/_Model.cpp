@@ -11,7 +11,7 @@
 
 #pragma comment(lib, "Assimp/libx86/assimp.lib")
 
-_Model::_Model(const char * path, Prim_Type type, bool wire) :BaseGeometry(type, wire)
+_Model::_Model(const char* path, Prim_Type type, bool wire) :BaseGeometry(type, wire)
 {
 	color = White;
 	LoadModel(path);

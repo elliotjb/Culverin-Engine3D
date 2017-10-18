@@ -13,12 +13,13 @@ ImportMesh::~ImportMesh()
 {
 }
 
-bool ImportMesh::Import(const char * file, const char * path, std::string & output_file)
-{
-	return false;
-}
+//bool ImportMesh::ImportMesh(const char* file, const char * path, std::string & output_file)
+//{
+//	return false;
+//}
 
 bool ImportMesh::Load(const char * exported_file, Texture * resource)
 {
 	return false;
 }
+
