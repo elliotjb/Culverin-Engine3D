@@ -22,14 +22,16 @@ class CompMesh: public Component
 {
 public:
 	CompMesh(Comp_Type t);
-	CompMesh(Comp_Type t, std::vector<_Vertex> vertices, std::vector<uint> indices);
 	~CompMesh();
 
+	void InitRanges(uint num_vertices, uint num_indices, uint num_normals);
+	void Init(const float3* vertices, const uint* indices, const float3* vert_normals, const float2* texCoord);
 	void Draw();
 	void SetupMesh();
 
-
 public:
+	uint num_vertices = 0;
+	uint num_indices = 0;
 	std::vector<_Vertex> vertices;
 	std::vector<uint> indices;
 	std::vector<_FaceCenter> face_centers;

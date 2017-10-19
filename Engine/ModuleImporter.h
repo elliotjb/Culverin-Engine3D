@@ -1,8 +1,16 @@
 #pragma once
 #include "Module.h"
-#include "Application.h"
-#include "ModuleLoader.h"
+#include "Assimp/include/cimport.h"
+#include "Assimp/include/scene.h"
+#include "Assimp/include/postprocess.h"
+#include "Assimp/include/cfileio.h"
 
+enum FileTypeImport
+{
+	F_UNKNOWN_i = -1,
+	F_MODEL_i,
+	F_TEXTURE_i
+};
 
 class ModuleImporter : public Module
 {
@@ -13,16 +21,17 @@ public:
 	bool Init(JSON_Object* node);
 	bool Start();
 	update_status PreUpdate(float dt);
+	void ProcessNode(aiNode * node, const aiScene * scene);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	update_status UpdateConfig(float dt);
 	bool CleanUp();
 
-	FileType CheckFileType(char* filedir);
-	bool Import();
+	FileTypeImport CheckFileType(char* filedir);
+	//bool Import();
 
 public:
 	char directoryExe[MAX_PATH];
-	//FileType dropped_Filetype = F_UNKNOWN;
+	FileTypeImport dropped_File_type = F_UNKNOWN_i;
 };
 

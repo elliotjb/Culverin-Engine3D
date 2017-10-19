@@ -31,7 +31,7 @@ void SceneWorld::ShowSceneWorld()
 		EndDock();
 		return;
 	}
-	App->camera->CanMoveCamera = ImGui::IsMouseHoveringWindow();
+	App->camera->CanMoveCamera = ImGui::IsMouseHoveringWindow(); //TODO ELLIOT CHange to variable in WindowManager.h
 	
 	ImGui::Image((void*)App->scene->frBuff->GetTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 

@@ -43,65 +43,65 @@ update_status ModuleLoader::Update(float dt)
 	perf_timer.Start();
 
 	//TODO -> place it in postUpdate method
-	if (App->input->dropped)
-	{
-		dropped_Filetype = CheckFileType(App->input->dropped_filedir);
+	//if (App->input->dropped)
+	//{
+	//	dropped_Filetype = CheckFileType(App->input->dropped_filedir);
 
-		switch (dropped_Filetype)
-		{
-		case F_MODEL:
-		{
-			LOG("IMPORTING MODEL, File Path: %s", App->input->dropped_filedir);
-			LoadMesh(App->input->dropped_filedir);
+	//	switch (dropped_Filetype)
+	//	{
+	//	case F_MODEL:
+	//	{
+	//		LOG("IMPORTING MODEL, File Path: %s", App->input->dropped_filedir);
+	//		LoadMesh(App->input->dropped_filedir);
 
-			//Fix Camera to model ------------------------
-			App->camera->LookAndMoveToObject();
-			// ---------------------------------
+	//		//Fix Camera to model ------------------------
+	//		App->camera->LookAndMoveToObject();
+	//		// ---------------------------------
 
-			SDL_free(App->input->dropped_filedir);
+	//		SDL_free(App->input->dropped_filedir);
 
-			break;
-		}
-		case F_TEXTURE:
-		{
-			LOG("IMPORTING TEXTURE, File Path: %s", App->input->dropped_filedir);
+	//		break;
+	//	}
+	//	case F_TEXTURE:
+	//	{
+	//		LOG("IMPORTING TEXTURE, File Path: %s", App->input->dropped_filedir);
 
-			//Check if there's a Geometry to apply the dropped texture
-			if (App->geometry_manager->geometry != nullptr)
-			{
-				/*Delete the previous textures to apply the new one*/
-				((_Model*)(App->geometry_manager->geometry))->ClearTexture(mesh_index, tex_index, tex_id);
-				((_Model*)(App->geometry_manager->geometry))->SetTexture(App->input->dropped_filedir, mesh_index, tex_index, tex_id);
+	//		//Check if there's a Geometry to apply the dropped texture
+	//		if (App->geometry_manager->geometry != nullptr)
+	//		{
+	//			/*Delete the previous textures to apply the new one*/
+	//			((_Model*)(App->geometry_manager->geometry))->ClearTexture(mesh_index, tex_index, tex_id);
+	//			((_Model*)(App->geometry_manager->geometry))->SetTexture(App->input->dropped_filedir, mesh_index, tex_index, tex_id);
 
-			}
-			else
-			{
-				LOG("FAIL LOADING TEXTURE: No model to apply it");
-			}
+	//		}
+	//		else
+	//		{
+	//			LOG("FAIL LOADING TEXTURE: No model to apply it");
+	//		}
 
-			SDL_free(App->input->dropped_filedir);
+	//		SDL_free(App->input->dropped_filedir);
 
-			mesh_index = -1;
-			tex_index = -1;
+	//		mesh_index = -1;
+	//		tex_index = -1;
 
-			break;
-		}
-		case F_UNKNOWN:
-		{
-			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "UNKNOWN file type dropped on window", 
-				App->input->dropped_filedir, App->window->window);
-			LOG("UNKNOWN FILE TYPE, File Path: %s", App->input->dropped_filedir);
-			
-			break;
-		}
+	//		break;
+	//	}
+	//	case F_UNKNOWN:
+	//	{
+	//		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "UNKNOWN file type dropped on window", 
+	//			App->input->dropped_filedir, App->window->window);
+	//		LOG("UNKNOWN FILE TYPE, File Path: %s", App->input->dropped_filedir);
+	//		
+	//		break;
+	//	}
 
-		default:
-			break;
+	//	default:
+	//		break;
 
-		}
+	//	}
 
-		App->input->dropped = false;
-	}
+	//	App->input->dropped = false;
+	//}
 
 	Update_t = perf_timer.ReadMs();
 
@@ -125,7 +125,7 @@ bool ModuleLoader::CleanUp()
 	return true;
 }
 
-FileType ModuleLoader::CheckFileType(char * filedir)
+FileType ModuleLoader::CheckFileType(char* filedir)
 {
 	if (filedir != nullptr)
 	{

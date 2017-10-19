@@ -9,18 +9,6 @@ CompMesh::CompMesh(Comp_Type t): Component(t)
 {
 }
 
-CompMesh::CompMesh(Comp_Type t, std::vector<_Vertex> v, std::vector<uint> i): Component(t)
-{
-	vertices = v;
-	indices = i;
-
-	float3 vert_origin;
-	float3 vert_norm;
-
-	SetupMesh();
-}
-
-
 CompMesh::~CompMesh()
 {
 }
@@ -57,6 +45,86 @@ void CompMesh::SetupMesh()
 	glBindVertexArray(0);
 }
 
+
+//void CompMesh::Init(std::vector<_Vertex> v, std::vector<uint> i)
+//{
+//	vertices = v;
+//	indices = i;
+//
+//	float3 vert_origin;
+//	float3 vert_norm;
+//
+//	SetupMesh();
+//}
+
+void CompMesh::InitRanges(uint num_vert, uint num_ind, uint num_normals)
+{
+	num_vertices = num_vert;
+	num_indices = num_ind;
+
+	vertices.reserve(num_vert);
+	indices.reserve(num_ind);
+
+	if (num_normals > 0)
+	{
+		hasNormals = true;
+	}
+}
+
+void CompMesh::Init(const float3* vert, const uint* ind, const float3* vert_normals, const float2* texCoord)
+{
+
+	// SET VERTEX DATA -------------------------------
+	for (uint i = 0; i < num_vertices; i++)
+	{
+		// Vertex Positions ------------------
+		vertices[i].pos = vert[i];
+
+		// Vertex Normals ------------------
+		if (hasNormals)
+		{
+			vertices[i].norm = vert_normals[i];
+		}
+		else
+		{
+			vertices[i].norm.Set(0, 0, 0);
+		}
+
+		// Vertex Tex Coords ------------------
+		vertices[i].texCoords = texCoord[i];
+	}
+
+	// SET INDEX DATA -----------------------------------------
+	for (uint i = 0; i < num_indices; i++)
+	{
+		indices[i] = ind[i];
+	}
+
+	//// SET MATERIAL DATA -----------------------------------------
+	//if (mesh->mMaterialIndex >= 0)
+	//{
+	//	aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
+	//	std::vector<Texture> diffuseMaps = loadMaterialTextures(mat, aiTextureType_DIFFUSE, "texture_diffuse");
+	//	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+
+	//	// For the moment, we can only see textures on the diffuse channel, but we can load the specular ones
+	//	std::vector<Texture> specularMaps = loadMaterialTextures(mat, aiTextureType_SPECULAR, "texture_specular");
+	//	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+	//}
+
+	////TRANSFORM DATA ---------------------------
+	//aiQuaternion rot_quat;
+	//aiVector3D pos, rot, scal;
+	//float3 pos_vec, rot_vec, scal_vec;
+
+	//transform.Decompose(scal, rot_quat, pos);
+	//rot = rot_quat.GetEuler();
+
+	//pos_vec.Set(pos.x, pos.y, pos.z);
+	//rot_vec.Set(rot.x, rot.y, rot.z);
+	//scal_vec.Set(scal.x, scal.y, scal.z);
+	//------------------------------------------
+}
 
 void CompMesh::Draw()
 {

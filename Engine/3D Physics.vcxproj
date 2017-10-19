@@ -98,6 +98,7 @@
     <ClInclude Include="CompMesh.h" />
     <ClInclude Include="mmgr\mmgr.h" />
     <ClInclude Include="mmgr\nommgr.h" />
+    <ClInclude Include="ModuleFS.h" />
     <ClInclude Include="ModuleFramebuffers.h" />
     <ClInclude Include="ModuleHierarchy.h" />
     <ClInclude Include="ModuleImporter.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="ImportMaterial.cpp" />
     <ClCompile Include="CompMesh.cpp" />
     <ClCompile Include="mmgr\mmgr.cpp" />
+    <ClCompile Include="ModuleFS.cpp" />
     <ClCompile Include="ModuleFramebuffers.cpp" />
     <ClCompile Include="ModuleHierarchy.cpp" />
     <ClCompile Include="ModuleImporter.cpp" />

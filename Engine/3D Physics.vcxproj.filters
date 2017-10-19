@@ -414,6 +414,9 @@
     <ClInclude Include="CompMesh.h">
       <Filter>Engine\Modules\Scene\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleFS.h">
+      <Filter>Engine\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -655,6 +658,9 @@
     </ClCompile>
     <ClCompile Include="CompMesh.cpp">
       <Filter>Engine\Modules\Scene\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFS.cpp">
+      <Filter>Engine\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

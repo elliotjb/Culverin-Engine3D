@@ -23,6 +23,8 @@ Application::Application()
 	console = new Console();
 	gui = new ModuleGUI();
 	loader = new ModuleLoader();
+	importer = new ModuleImporter();
+	fs = new ModuleFS();
 	textures = new ModuleTextures();
 
 	// The order of calls is very important!
@@ -31,6 +33,7 @@ Application::Application()
 
 	// Main Modules
 	AddModule(window);
+	AddModule(fs);
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
@@ -40,6 +43,7 @@ Application::Application()
 	AddModule(scene);
 	AddModule(gui);
 	AddModule(loader);
+	AddModule(importer);
 	AddModule(textures);
 
 	// Renderer last!
