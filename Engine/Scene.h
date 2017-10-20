@@ -22,10 +22,10 @@ public:
 
 
 	//OBJECTS CREATION ---------------------
-	void IndexVertex(float3* vertex_trianglulate, uint num_vertex, CompMesh* mesh);
+	void Init_IndexVertex(float3* vertex_triangulate, uint num_vertex, CompMesh* mesh);
 
 	GameObject* CreateGameObject();
-	GameObject* CreateCube(float3 p, float3 r, float3 s);
+	GameObject* CreateCube();
 
 
 

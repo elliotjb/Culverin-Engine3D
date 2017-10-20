@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "CompMesh.h"
+#include "CompTransform.h"
 
 GameObject::GameObject()
 {
@@ -94,8 +95,15 @@ Component* GameObject::AddComponent(Comp_Type type)
 			LOG("Adding MESH COMPONENT.");
 			CompMesh* mesh = new CompMesh(type);
 			components.push_back(mesh);
-
 			return mesh;
+		}
+
+		if (type == C_TRANSFORM)
+		{
+			LOG("Adding TRANSFORM COMPONENT.");
+			CompTransform* transform = new CompTransform(type);
+			components.push_back(transform);
+			return transform;
 		}
 		
 	}

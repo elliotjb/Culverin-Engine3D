@@ -7,6 +7,7 @@
 #include "Component.h"
 #include "CompTransform.h"
 #include "CompMesh.h"
+#include "MathGeoLib.h"
 #include "Gl3W\include\glew.h"
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_sdl_gl3.h"
@@ -95,6 +96,37 @@ void Scene::DrawPlane(int size)
 }
 
 
+void Scene::Init_IndexVertex(float3 * vertex_triangulate, uint num_vertex, CompMesh * mesh)
+{
+	std::vector<float3> all_index;
+	uint size = 0;
+	bool temp = false;
+
+	for (int i = 0; i < num_vertex; i++)
+	{
+		temp = false;
+		size = all_index.size();
+
+		for (int j = 0; j < size; j++)
+		{
+			if (all_index[j] == vertex_triangulate[i])
+			{
+				mesh->indices.push_back(j);
+				temp = true;
+			}
+		}
+
+		if (temp == false)
+		{
+			_Vertex vertex;
+			all_index.push_back(vertex_triangulate[i]);
+			mesh->indices.push_back(all_index.size() - 1);
+			vertex.pos = vertex_triangulate[i];
+			mesh->vertices.push_back(vertex);
+		}
+	}
+}
+
 GameObject* Scene::CreateGameObject()
 {
 	GameObject* obj = new GameObject();
@@ -102,25 +134,39 @@ GameObject* Scene::CreateGameObject()
 	return obj;
 }
 
-GameObject * Scene::CreateCube(float3 p, float3 r, float3 s)
+GameObject * Scene::CreateCube()
 {
 	GameObject* obj = new GameObject();
 
 	/*Predefined Cube has 2 Base components: Transform & Mesh*/
-	CompTransform* transform = nullptr;
 
 	//TRANSFORM COMPONENT --------------
-	obj->AddComponent(C_TRANSFORM);
-	transform = (CompTransform*)(obj->FindComponentByType(C_TRANSFORM));
-	transform->Init(p, s, r);
+	CompTransform* transform = (CompTransform*)obj->AddComponent(C_TRANSFORM);
+	transform->Init(float3(0, 0, 0), float3(0, 0, 0), float3(1, 1, 1));
+	transform->Enable();
 
 	//MESH COMPONENT -------------------
-	obj->AddComponent(C_MESH);
+	CompMesh* mesh = (CompMesh*)obj->AddComponent(C_MESH);
+	mesh->InitRanges(8, 36, 0); // 0 normals by now.
+
+	OBB* box = new OBB();
+	box->pos = transform->GetPos();
+	box->r = transform->GetScale();
+	box->axis[0] = float3(1, 0, 0);
+	box->axis[1] = float3(0, 1, 0);
+	box->axis[2] = float3(0, 0, 1);
+
+	AABB* bounding_box = new AABB(*box);
+	float3* vertices_array = new float3[36];
+
+	bounding_box->Triangulate(1, 1, 1, vertices_array, NULL, NULL, false);
+
+	Init_IndexVertex(vertices_array, mesh->num_vertices, mesh);
+	mesh->SetupMesh();
+	mesh->Enable();
 
 
-	//Set this Cube Active
-	Enable();
-	return nullptr;
+	return obj;
 }
 
 /*for (int i = 0; i < CHECKERS_HEIGHT; i++)

@@ -16,11 +16,15 @@ public:
 	CompTransform(Comp_Type t);
 	~CompTransform();
 
+	void Init(float3 p, float3 r, float3 s);
+
 	void SetPos(float3 pos);
 	void SetRot(float3 rot);
 	void SetScale(float3 scale);
 
-	void Init(float3 p, float3 r, float3 s);
+	float3 GetPos() const;
+	float3 GetRot() const;
+	float3 GetScale() const;
 
 private:
 	Axis axis;

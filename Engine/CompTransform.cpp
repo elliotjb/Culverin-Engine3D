@@ -9,6 +9,13 @@ CompTransform::~CompTransform()
 {
 }
 
+void CompTransform::Init(float3 p, float3 r, float3 s)
+{
+	SetPos(p);
+	SetRot(r);
+	SetScale(s);
+}
+
 void CompTransform::SetPos(float3 pos)
 {
 	position = pos;
@@ -24,9 +31,18 @@ void CompTransform::SetScale(float3 scal)
 	scale = scal;
 }
 
-void CompTransform::Init(float3 p, float3 r, float3 s)
+float3 CompTransform::GetPos() const
 {
-	SetPos(p);
-	SetRot(r);
-	SetScale(s);
+	return position;
 }
+
+float3 CompTransform::GetRot() const
+{
+	return rotation;
+}
+
+float3 CompTransform::GetScale() const
+{
+	return scale;
+}
+
