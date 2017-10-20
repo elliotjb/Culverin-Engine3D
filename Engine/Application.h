@@ -13,7 +13,6 @@
 #include "ModuleConsole.h"
 #include "ModuleGUI.h"
 #include "ModuleGeometries.h" //TODO JORDI OÑA AND ELLIOT forward declaration
-#include "ModuleLoader.h"
 #include "ModuleImporter.h"
 #include "ModuleTextures.h"
 #include "ModuleFS.h"
@@ -39,7 +38,6 @@ public:
 	Scene* scene;
 	Console* console;
 	ModuleGUI* gui;
-	ModuleLoader* loader;
 	ModuleImporter* importer;
 	ModuleFS* fs;
 	ModuleTextures* textures;

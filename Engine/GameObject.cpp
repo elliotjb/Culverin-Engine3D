@@ -89,10 +89,15 @@ Component* GameObject::AddComponent(Comp_Type type)
 
 	if (!dupe)
 	{
-		//Component* comp = new Component(type);
-		CompMesh* mesh = new CompMesh(type);
-		components.push_back(mesh);
-		return mesh;
+		if (type == C_MESH)
+		{
+			LOG("Adding MESH COMPONENT.");
+			CompMesh* mesh = new CompMesh(type);
+			components.push_back(mesh);
+
+			return mesh;
+		}
+		
 	}
 
 	return nullptr;

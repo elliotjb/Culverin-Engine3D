@@ -22,9 +22,6 @@ bool ImportMesh::Import(aiScene* scene, std::string & output_file)
 	{
 		scene->mRootNode;
 
-
-
-
 	}
 
 
@@ -43,6 +40,7 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 	if (mesh != nullptr)
 	{
 		LOG("Importing Mesh %s", mesh->mName.C_Str());
+		
 		// SET VERTEX DATA -------------------------------
 		num_vertices = mesh->mNumVertices;
 		vertices = new float3[num_vertices];
@@ -71,6 +69,7 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 		{
 			LOG("- Mesh %s hasn't got Faces", mesh->mName.C_Str());
 		}
+
 		// SET NORMAL DATA -------------------------------
 		if (mesh->HasNormals())
 		{
@@ -86,11 +85,11 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 		}
 
 		// SET TEX COORD DATA -------------------------------
-		num_tex_coords = num_vertices;
-		tex_coords = new float2[num_tex_coords];
+		//num_tex_coords = num_vertices;
+		tex_coords = new float2[num_vertices];
 		if (mesh->mTextureCoords[0])
 		{
-			for (uint i = 0; i < num_tex_coords; i++)
+			for (uint i = 0; i < num_vertices; i++)
 			{
 				tex_coords[i].x = mesh->mTextureCoords[0][i].x;
 				tex_coords[i].y = mesh->mTextureCoords[0][i].y;
@@ -100,7 +99,7 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 		}
 		else
 		{
-			for (uint i = 0; i < num_tex_coords; i++)
+			for (uint i = 0; i < num_vertices; i++)
 			{
 				tex_coords[i] = float2(0, 0);
 			}
@@ -143,9 +142,9 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 	
 
 	// ALLOCATING DATA INTO BUFFER ------------------------
-	uint ranges[4] = { num_vertices, num_indices, num_normals, num_tex_coords };
+	uint ranges[3] = { num_vertices, num_indices, num_normals }; //,num_tex_coords };
 
-	uint size = sizeof(ranges) + sizeof(float3) *  num_vertices + sizeof(uint) * num_indices + sizeof(float3) *  num_normals + sizeof(float2) *  num_tex_coords;
+	uint size = sizeof(ranges) + sizeof(float3) *  num_vertices + sizeof(uint) * num_indices + sizeof(float3) *  num_normals + sizeof(float2) *  num_vertices;
 
 	// Allocating all data 
 	char* data = new char[size];
@@ -172,7 +171,7 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 
 	// Storing Tex Coords
 	cursor += bytes;
-	bytes = sizeof(float2) * num_tex_coords;
+	bytes = sizeof(float2) * num_vertices; //num_tex_coords;
 	memcpy(cursor, tex_coords, bytes);
 
 	//// Release all pointers
@@ -184,19 +183,21 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 	std::string fileName = name;
 	fileName += ".rin";
 
-	//Move to FileSistem
+	//Move to FileSystem ----------------------------------------
 	std::ofstream outfile(fileName, std::ofstream::binary);
 
-	if (outfile.good()) {
+	if (outfile.good()) 
+	{
 		// write to outfile
 		outfile.write(data, size);
 	}
-	else {
-		LOG("Failed to write the file %s", fileName);
+	else 
+	{
+		LOG("Failed to write the file %s", fileName.c_str());
 	}
 
-
 	outfile.close();
+	// ------------------------------------------------------------
 
 	return ret;
 }
@@ -206,13 +207,16 @@ bool ImportMesh::Load(const char* file)
 {
 
 	char* buffer = nullptr;
+
 	// Loading File
 	uint size = App->fs->LoadFile(file, &buffer);
+
 	if (buffer != nullptr && size > 0)
 	{
 		char* cursor = buffer;
-		// Amount vertex, amount index, amount normals, amount tex_coords, vertices, indices, normals, tex_coords
-		uint ranges[8];
+
+		// Amount vertices, amount indices, amount normals
+		uint ranges[3];
 		uint bytes = sizeof(ranges);
 		memcpy(ranges, cursor, bytes);
 
@@ -220,7 +224,7 @@ bool ImportMesh::Load(const char* file)
 		num_vertices = ranges[0];
 		num_indices = ranges[1];
 		num_normals = ranges[2];
-		num_tex_coords = ranges[3];
+		//num_tex_coords = ranges[3];
 		
 		//Load Vertices
 		cursor += bytes;
@@ -242,18 +246,18 @@ bool ImportMesh::Load(const char* file)
 
 		//Load Tex Coords
 		cursor += bytes;
-		bytes = sizeof(float2) * num_tex_coords;
-		tex_coords = new float2[num_tex_coords];
+		bytes = sizeof(float2) * num_vertices; //num_tex_coords;
+		tex_coords = new float2[num_vertices];
 		memcpy(tex_coords, cursor, bytes);
 		
 		GameObject* gameobject = new GameObject();
 		CompMesh* mesh = (CompMesh*)gameobject->AddComponent(C_MESH);
-		CompMesh* meshf = (CompMesh*)gameobject->FindComponentByType(C_MESH);
-		meshf->InitRanges(num_vertices, num_indices, num_normals);
-		meshf->Init(vertices, indices, vert_normals, tex_coords);
+		
+		mesh->InitRanges(num_vertices, num_indices, num_normals);
+		mesh->Init(vertices, indices, vert_normals, tex_coords);
+		mesh->SetupMesh();
+		mesh->Enable();
 
-		meshf->SetupMesh();
-		meshf->Enable();
 		App->scene->gameobjects.push_back(gameobject);
 		
 	}

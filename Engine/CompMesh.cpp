@@ -13,37 +13,6 @@ CompMesh::~CompMesh()
 {
 }
 
-void CompMesh::SetupMesh()
-{
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &vertices_id);
-	glGenBuffers(1, &indices_id);
-	glGenBuffers(1, &vertices_norm_id);
-
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(_Vertex), &vertices[0], GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint), &indices[0], GL_STATIC_DRAW);
-
-	if (hasNormals)
-	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertices_norm_id);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertices_normals.size() * sizeof(float3), &vertices_normals[0], GL_STATIC_DRAW);
-	}
-
-	// Vertex Positions -------------
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(_Vertex), (void*)0);
-
-	// Vertex Normals ----------------
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(_Vertex), (void*)offsetof(_Vertex, norm));
-
-	glBindVertexArray(0);
-}
 
 
 //void CompMesh::Init(std::vector<_Vertex> v, std::vector<uint> i)
@@ -78,7 +47,7 @@ void CompMesh::Init(const float3* vert, const uint* ind, const float3* vert_norm
 		// Vertex Positions ------------------
 		ver.pos = vert[i];
 
-		// Vertex Normals ------------------
+		// Vertex Normals --------------------
 		if (hasNormals)
 		{
 			ver.norm = vert_normals[i];
@@ -100,7 +69,7 @@ void CompMesh::Init(const float3* vert, const uint* ind, const float3* vert_norm
 		indices.push_back(ind[i]);
 	}
 
-	//NORMALS ---------
+	//NORMALS ARRAY ---------
 	for (int i = 0; i < num_vertices; i++)
 	{
 		vertices_normals.push_back(float3(vertices[i].pos.x, vertices[i].pos.y, vertices[i].pos.z));
@@ -133,6 +102,39 @@ void CompMesh::Init(const float3* vert, const uint* ind, const float3* vert_norm
 	//scal_vec.Set(scal.x, scal.y, scal.z);
 	//------------------------------------------
 }
+
+void CompMesh::SetupMesh()
+{
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &vertices_id);
+	glGenBuffers(1, &indices_id);
+	glGenBuffers(1, &vertices_norm_id);
+
+	glBindVertexArray(VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(_Vertex), &vertices[0], GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint), &indices[0], GL_STATIC_DRAW);
+
+	if (hasNormals)
+	{
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertices_norm_id);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertices_normals.size() * sizeof(float3), &vertices_normals[0], GL_STATIC_DRAW);
+	}
+
+	// Vertex Positions -------------
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(_Vertex), (void*)0);
+
+	// Vertex Normals ----------------
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(_Vertex), (void*)offsetof(_Vertex, norm));
+
+	glBindVertexArray(0);
+}
+
 
 void CompMesh::Draw()
 {

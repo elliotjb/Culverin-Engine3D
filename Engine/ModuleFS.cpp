@@ -47,6 +47,7 @@ uint ModuleFS::LoadFile(const char* file, char** buffer)
 		{
 			LOG("Error %s", is.gcount());
 		}
+
 		is.close();
 	}
 	else

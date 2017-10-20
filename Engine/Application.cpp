@@ -22,7 +22,6 @@ Application::Application()
 	scene = new Scene();
 	console = new Console();
 	gui = new ModuleGUI();
-	loader = new ModuleLoader();
 	importer = new ModuleImporter();
 	fs = new ModuleFS();
 	textures = new ModuleTextures();
@@ -42,7 +41,6 @@ Application::Application()
 	AddModule(console);
 	AddModule(scene);
 	AddModule(gui);
-	AddModule(loader);
 	AddModule(importer);
 	AddModule(textures);
 

@@ -230,7 +230,7 @@ void Inspector::ShowModelInfo()
 				{
 					if (ImGui::IsMouseInside(ImVec2(ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y), ImVec2(100, 100)))
 					{
-						App->loader->SetInfoToLoadTex(i, j, model_ref->meshes[i].textures[j].id);
+						//App->loader->SetInfoToLoadTex(i, j, model_ref->meshes[i].textures[j].id);
 					}
 				}
 				ImGui::PopID();

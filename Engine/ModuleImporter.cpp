@@ -14,6 +14,7 @@ ModuleImporter::ModuleImporter(bool start_enabled) : Module(start_enabled)
 	//	// When passing NULL to GetModuleHandle, it returns handle of exe itself
 	//	GetModuleFileName(hModule, ownPth, (sizeof(ownPth)));
 	//}
+	name = "Importer";
 }
 
 
@@ -36,8 +37,9 @@ bool ModuleImporter::Init(JSON_Object* node)
 
 bool ModuleImporter::Start()
 {
-
-
+	struct aiLogStream stream;
+	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
+	aiAttachLogStream(&stream);
 
 	return true;
 }
@@ -51,6 +53,7 @@ update_status ModuleImporter::PreUpdate(float dt)
 		ImportMesh* imp = new ImportMesh();
 		imp->Load("Baker_house.rin");
 	}
+
 	if (App->input->dropped)
 	{
 		dropped_File_type = CheckFileType(App->input->dropped_filedir);
@@ -59,12 +62,13 @@ update_status ModuleImporter::PreUpdate(float dt)
 		{
 		case F_MODEL_i:
 		{
-			//LOG("IMPORTING MODEL, File Path: %s", App->input->dropped_filedir);
+			LOG("IMPORTING MODEL, File Path: %s", App->input->dropped_filedir);
 			std::string file;
 
 			const aiScene* scene = aiImportFile(App->input->dropped_filedir, aiProcessPreset_TargetRealtime_MaxQuality);
 			ProcessNode(scene->mRootNode, scene);
 			aiReleaseImport(scene);
+			
 			break;
 		}
 		case F_TEXTURE_i:
@@ -133,33 +137,22 @@ void ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene)
 
 update_status ModuleImporter::Update(float dt)
 {
-
-
-
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleImporter::PostUpdate(float dt)
 {
-
-
-
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleImporter::UpdateConfig(float dt)
 {
-
-
-
 	return UPDATE_CONTINUE;
 }
 
 bool ModuleImporter::CleanUp()
 {
-
-
-
+	aiDetachAllLogStreams();
 	return true;
 }
 

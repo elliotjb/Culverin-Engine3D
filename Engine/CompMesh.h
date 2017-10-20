@@ -26,20 +26,21 @@ public:
 
 	void InitRanges(uint num_vertices, uint num_indices, uint num_normals);
 	void Init(const float3* vertices, const uint* indices, const float3* vert_normals, const float2* texCoord);
+	void SetupMesh();
+	
 	void Draw();
 	void Update();
-	void SetupMesh();
 
 public:
+	bool hasNormals = false;
 	uint num_vertices = 0;
 	uint num_indices = 0;
 	std::vector<_Vertex> vertices;
 	std::vector<uint> indices;
-	std::vector<_FaceCenter> face_centers;
 	std::vector<float3> vertices_normals;
+	//std::vector<_FaceCenter> face_centers;
 
 private:
-	bool hasNormals = false;
 	uint VAO = 0; /*Vertex Array Object*/
 	uint vertices_id = 0; /*VERTICES ID*/
 	uint indices_id = 0; /*INDICES ID*/
