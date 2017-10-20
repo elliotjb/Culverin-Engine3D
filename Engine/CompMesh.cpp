@@ -62,9 +62,6 @@ void CompMesh::InitRanges(uint num_vert, uint num_ind, uint num_normals)
 	num_vertices = num_vert;
 	num_indices = num_ind;
 
-	vertices.reserve(num_vert);
-	indices.reserve(num_ind);
-
 	if (num_normals > 0)
 	{
 		hasNormals = true;
@@ -77,28 +74,39 @@ void CompMesh::Init(const float3* vert, const uint* ind, const float3* vert_norm
 	// SET VERTEX DATA -------------------------------
 	for (uint i = 0; i < num_vertices; i++)
 	{
+		_Vertex ver;
 		// Vertex Positions ------------------
-		vertices[i].pos = vert[i];
+		ver.pos = vert[i];
 
 		// Vertex Normals ------------------
 		if (hasNormals)
 		{
-			vertices[i].norm = vert_normals[i];
+			ver.norm = vert_normals[i];
 		}
 		else
 		{
-			vertices[i].norm.Set(0, 0, 0);
+			ver.norm.Set(0, 0, 0);
 		}
 
 		// Vertex Tex Coords ------------------
-		vertices[i].texCoords = texCoord[i];
+		ver.texCoords = texCoord[i];
+
+		vertices.push_back(ver);
 	}
 
 	// SET INDEX DATA -----------------------------------------
 	for (uint i = 0; i < num_indices; i++)
 	{
-		indices[i] = ind[i];
+		indices.push_back(ind[i]);
 	}
+
+	//NORMALS ---------
+	for (int i = 0; i < num_vertices; i++)
+	{
+		vertices_normals.push_back(float3(vertices[i].pos.x, vertices[i].pos.y, vertices[i].pos.z));
+		vertices_normals.push_back(float3(vertices[i].pos.x + vertices[i].norm.x, vertices[i].pos.y + vertices[i].norm.y, vertices[i].pos.z + vertices[i].norm.z));
+	}
+
 
 	//// SET MATERIAL DATA -----------------------------------------
 	//if (mesh->mMaterialIndex >= 0)
@@ -170,4 +178,9 @@ void CompMesh::Draw()
 	{
 		LOG("Cannot draw the mesh");
 	}
+}
+
+void CompMesh::Update()
+{
+	Draw();
 }

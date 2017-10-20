@@ -61,10 +61,10 @@ update_status Scene::Update(float dt)
 
 
 	// Update Root Game Objects
-	//for (uint i = 0; i < gameobjects.size(); i++)
-	//{
-	//	gameobjects[i]->Update();
-	//}
+	for (uint i = 0; i < gameobjects.size(); i++)
+	{
+		gameobjects[i]->Update();
+	}
 	
 	Update_t = perf_timer.ReadMs();
 

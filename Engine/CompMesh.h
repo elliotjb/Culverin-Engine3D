@@ -27,6 +27,7 @@ public:
 	void InitRanges(uint num_vertices, uint num_indices, uint num_normals);
 	void Init(const float3* vertices, const uint* indices, const float3* vert_normals, const float2* texCoord);
 	void Draw();
+	void Update();
 	void SetupMesh();
 
 public:

@@ -46,7 +46,11 @@ update_status ModuleImporter::PreUpdate(float dt)
 {
 	perf_timer.Start();
 
-	
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+	{
+		ImportMesh* imp = new ImportMesh();
+		imp->Load("Baker_house.rin");
+	}
 	if (App->input->dropped)
 	{
 		dropped_File_type = CheckFileType(App->input->dropped_filedir);
@@ -60,7 +64,7 @@ update_status ModuleImporter::PreUpdate(float dt)
 
 			const aiScene* scene = aiImportFile(App->input->dropped_filedir, aiProcessPreset_TargetRealtime_MaxQuality);
 			ProcessNode(scene->mRootNode, scene);
-
+			aiReleaseImport(scene);
 			break;
 		}
 		case F_TEXTURE_i:

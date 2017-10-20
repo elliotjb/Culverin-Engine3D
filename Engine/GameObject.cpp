@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "Component.h"
+#include "CompMesh.h"
 
 GameObject::GameObject()
 {
@@ -88,9 +89,10 @@ Component* GameObject::AddComponent(Comp_Type type)
 
 	if (!dupe)
 	{
-		Component* comp = new Component(type);
-		components.push_back(comp);
-		return comp;
+		//Component* comp = new Component(type);
+		CompMesh* mesh = new CompMesh(type);
+		components.push_back(mesh);
+		return mesh;
 	}
 
 	return nullptr;

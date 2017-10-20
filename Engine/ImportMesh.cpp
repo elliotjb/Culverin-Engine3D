@@ -175,11 +175,11 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 	bytes = sizeof(float2) * num_tex_coords;
 	memcpy(cursor, tex_coords, bytes);
 
-	// Release all pointers
-	RELEASE(vertices);
-	RELEASE(indices);
-	RELEASE(vert_normals);
-	RELEASE(tex_coords);
+	//// Release all pointers
+	//RELEASE(vertices);
+	//RELEASE(indices);
+	//RELEASE(vert_normals);
+	//RELEASE(tex_coords);
 
 	std::string fileName = name;
 	fileName += ".rin";
@@ -248,8 +248,12 @@ bool ImportMesh::Load(const char* file)
 		
 		GameObject* gameobject = new GameObject();
 		CompMesh* mesh = (CompMesh*)gameobject->AddComponent(C_MESH);
-		mesh->InitRanges(num_vertices, num_indices, num_normals);
-		mesh->Init(vertices, indices, vert_normals, tex_coords);
+		CompMesh* meshf = (CompMesh*)gameobject->FindComponentByType(C_MESH);
+		meshf->InitRanges(num_vertices, num_indices, num_normals);
+		meshf->Init(vertices, indices, vert_normals, tex_coords);
+
+		meshf->SetupMesh();
+		meshf->Enable();
 		App->scene->gameobjects.push_back(gameobject);
 		
 	}
