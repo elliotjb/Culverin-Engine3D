@@ -39,7 +39,7 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 
 	if (mesh != nullptr)
 	{
-		LOG("Importing Mesh %s", mesh->mName.C_Str());
+		LOG("Importing Mesh %s", name);
 		
 		// SET VERTEX DATA -------------------------------
 		num_vertices = mesh->mNumVertices;
@@ -182,22 +182,8 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 
 	std::string fileName = name;
 	fileName += ".rin";
-
-	//Move to FileSystem ----------------------------------------
-	std::ofstream outfile(fileName, std::ofstream::binary);
-
-	if (outfile.good()) 
-	{
-		// write to outfile
-		outfile.write(data, size);
-	}
-	else 
-	{
-		LOG("Failed to write the file %s", fileName.c_str());
-	}
-
-	outfile.close();
-	// ------------------------------------------------------------
+	//Save Mesh
+	App->fs->SaveFile(data, fileName, size);
 
 	return ret;
 }
