@@ -305,6 +305,20 @@ update_status ModuleGUI::Update(float dt)
 			}
 			ImGui::EndMenu();
 		}
+
+		if (ImGui::BeginMenu("Create"))
+		{
+			if (ImGui::BeginMenu("3D Object"))
+			{
+				if (ImGui::MenuItem("Cube"))
+				{
+					App->scene->CreateCube();
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenu();
+		}
+
 		menu_height = ImGui::GetWindowSize().y;
 
 		ImGui::EndMainMenuBar();

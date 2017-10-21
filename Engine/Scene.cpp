@@ -96,13 +96,13 @@ void Scene::DrawPlane(int size)
 }
 
 
-void Scene::Init_IndexVertex(float3 * vertex_triangulate, uint num_vertex, CompMesh * mesh)
+void Scene::Init_IndexVertex(float3 * vertex_triangulate, uint num_index, CompMesh * mesh)
 {
 	std::vector<float3> all_index;
 	uint size = 0;
 	bool temp = false;
 
-	for (int i = 0; i < num_vertex; i++)
+	for (int i = 0; i < num_index; i++)
 	{
 		temp = false;
 		size = all_index.size();
@@ -161,10 +161,11 @@ GameObject * Scene::CreateCube()
 
 	bounding_box->Triangulate(1, 1, 1, vertices_array, NULL, NULL, false);
 
-	Init_IndexVertex(vertices_array, mesh->num_vertices, mesh);
+	Init_IndexVertex(vertices_array, mesh->num_indices, mesh);
 	mesh->SetupMesh();
 	mesh->Enable();
 
+	App->scene->gameobjects.push_back(obj);
 
 	return obj;
 }

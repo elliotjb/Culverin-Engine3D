@@ -93,8 +93,8 @@ bool ModuleGeometries::Index_vert(float3* vertex_triangulate, uint num_vertex, M
 
 void ModuleGeometries::CreateCube(float3 pos, float3 size, bool k, Color color)
 {
-	//_Cube* cube = new _Cube(P_CUBE, pos, size, k, color, wireframe_mode);
-	//Index_vert(cube->vertex_array.data(), 36, &cube->cube_mesh);
+	/*_Cube* cube = new _Cube(P_CUBE, pos, size, k, color, wireframe_mode);
+	Index_vert(cube->vertex_array.data(), 36, &cube->cube_mesh);*/
 	//cube->GenFaceNormals(cube->face_centers.data());
 	//cube->id = count++;
 	//cube->Init();

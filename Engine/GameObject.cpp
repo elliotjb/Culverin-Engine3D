@@ -105,7 +105,6 @@ Component* GameObject::AddComponent(Comp_Type type)
 			components.push_back(transform);
 			return transform;
 		}
-		
 	}
 
 	return nullptr;
