@@ -37,6 +37,12 @@ void GameObject::Update()
 				childs[i]->Update();
 			}
 		}
+
+		// Draw Bounding Box
+		if (bb_active)
+		{
+			DrawBoundingBox();
+		}
 	}
 }
 
@@ -84,10 +90,9 @@ void GameObject::ShowHierarchy()
 
 void GameObject::ShowInspectorInfo()
 {
-	ImGui::SetNextWindowSize(ImVec2(ImGui::GetWindowWidth(), 40));
 	ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, ImVec4(0.211f, 0.211f, 0.211f, 1.00f));
 
-	if (ImGui::BeginChild(ImGui::GetID("Inspector"), ImVec2(ImGui::GetWindowWidth(), 40)))
+	if (ImGui::BeginChild(ImGui::GetID("Inspector"), ImVec2(ImGui::GetWindowWidth(), 70)))
 	{
 		static GLuint icon_GameObject = App->textures->LoadTexture("Images/UI/icon_GameObject.png");
 		ImGui::Spacing();
@@ -107,6 +112,18 @@ void GameObject::ShowInspectorInfo()
 		ImGui::SameLine(); App->ShowHelpMarker("Hold SHIFT or use mouse to select text.\n" "CTRL+Left/Right to word jump.\n" "CTRL+A or double-click to select all.\n" "CTRL+X,CTRL+C,CTRL+V clipboard.\n" "CTRL+Z,CTRL+Y undo/redo.\n" "ESCAPE to revert.\n");
 		ImGui::PopStyleVar();
 	}
+
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 8));
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
+	ImGui::Text(""); ImGui::SameLine(8);
+
+	/* BOUNDING BOX CHECKBOX */
+	ImGui::Checkbox("##2", &bb_active);
+
+	ImGui::SameLine();
+	ImGui::PopStyleVar();
+	ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "Bounding Box");
+	ImGui::PopStyleVar();
 
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
@@ -194,4 +211,20 @@ Component* GameObject::AddComponent(Comp_Type type)
 	}
 
 	return nullptr;
+}
+
+void GameObject::DrawBoundingBox()
+{
+	glBegin(GL_LINES);
+	glLineWidth(3.0f);
+	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
+
+	for (uint i = 0; i < 12; i++)
+	{
+		glVertex3f(bounding_box->Edge(i).a.x, bounding_box->Edge(i).a.y, bounding_box->Edge(i).a.z);
+		glVertex3f(bounding_box->Edge(i).b.x, bounding_box->Edge(i).b.y, bounding_box->Edge(i).b.z);
+	}
+
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }

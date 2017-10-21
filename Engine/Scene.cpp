@@ -169,10 +169,10 @@ GameObject * Scene::CreateCube()
 	box->axis[1] = float3(0, 1, 0);
 	box->axis[2] = float3(0, 0, 1);
 
-	AABB* bounding_box = new AABB(*box);
+	obj->bounding_box = new AABB(*box);
 	float3* vertices_array = new float3[36];
 
-	bounding_box->Triangulate(1, 1, 1, vertices_array, NULL, NULL, false);
+	obj->bounding_box->Triangulate(1, 1, 1, vertices_array, NULL, NULL, false);
 
 	Init_IndexVertex(vertices_array, mesh->num_indices, mesh);
 	mesh->SetupMesh();
@@ -220,6 +220,11 @@ GameObject * Scene::CreateSphere()
 	mesh->InitRanges(mesh->vertices.size(), mesh->indices.size(), 0);
 	mesh->SetupMesh();
 	mesh->Enable();
+
+	/* Set Bounding Box */
+	obj->bounding_box = new AABB();
+	obj->bounding_box->SetNegativeInfinity();
+	obj->bounding_box->Enclose(*sphere);
 
 	//MATERIAL COMPONENT -------------------
 	CompMaterial* mat = (CompMaterial*)obj->AddComponent(C_MATERIAL);
