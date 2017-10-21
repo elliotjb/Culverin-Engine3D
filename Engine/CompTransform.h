@@ -18,6 +18,8 @@ public:
 
 	void Init(float3 p, float3 r, float3 s);
 
+	void ShowInspectorInfo();
+
 	void SetPos(float3 pos);
 	void SetRot(float3 rot);
 	void SetScale(float3 scale);

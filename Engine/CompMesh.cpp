@@ -136,15 +136,41 @@ void CompMesh::SetupMesh()
 }
 
 
+void CompMesh::ShowInspectorInfo()
+{
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
+	if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::PopStyleColor();
+		ImGui::Text("Name:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", name);
+		ImGui::Text("Vertices:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", num_vertices);
+		ImGui::Text("Indices:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", num_indices);
+
+		ImGui::TreePop();
+	}
+	else
+	{
+		ImGui::PopStyleColor();
+	}
+}
+
 void CompMesh::Draw()
 {
 	if (vertices.size() > 0 && indices.size() > 0)
 	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+
 		//Set Wireframe
 		if (App->renderer3D->wireframe)
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
+
+		//Set Color
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);

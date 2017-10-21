@@ -169,9 +169,9 @@ BaseGeometry* ModuleLoader::LoadMesh(const char* filename)
 
 	if (new_model->loaded_success)
 	{
-		((Inspector*)App->gui->winManager[INSPECTOR])->model_loaded = true;
-		((Inspector*)App->gui->winManager[INSPECTOR])->SetInfo(new_model);
-		((Hierarchy*)App->gui->winManager[HIERARCHY])->SetName(new_model);
+		//((Inspector*)App->gui->winManager[INSPECTOR])->model_loaded = true;
+		//((Inspector*)App->gui->winManager[INSPECTOR])->SetInfo(new_model);
+		//((Hierarchy*)App->gui->winManager[HIERARCHY])->SetName(new_model);
 
 		App->geometry_manager->geometry = new_model;
 	}

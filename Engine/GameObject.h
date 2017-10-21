@@ -14,13 +14,15 @@ public:
 	bool Enable();
 	bool Disable();
 
+	void ShowInspectorInfo();
+
 	bool isActive() const;
 
 	Component* FindComponentByType(Comp_Type type);
 	Component* AddComponent(Comp_Type type);
 
 private:
-	std::string name;
+	char* name = "CHANGE THIS";
 	std::vector<Component*> components;
 	std::vector<GameObject*> childs;
 	GameObject* parent = nullptr;

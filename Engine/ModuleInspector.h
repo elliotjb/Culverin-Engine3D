@@ -5,7 +5,7 @@
 #include "WindowManager.h"
 #include <string>
 
-class _Model;
+class GameObject;
 
 class Inspector : public WindowManager
 {
@@ -19,9 +19,8 @@ public:
 	bool CleanUp();
 
 	void ShowInspector();
-	void SetInfo(_Model* model);
-	void SetTexInfo(_Model* model);
-	void ShowModelInfo();
+
+	void LinkObject(GameObject* obj);
 	
 	//void OpenClose();
 	//bool IsOpen();
@@ -33,8 +32,7 @@ public:
 	int tex_id = -1;
 
 private:
-	_Model* model_ref = nullptr;
-	char* model_name = nullptr;
+	GameObject* selected_object = nullptr;
 
 	ImVec4 color_picker = { 255, 255, 255, 255 };
 };

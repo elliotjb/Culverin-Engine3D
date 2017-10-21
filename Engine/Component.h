@@ -1,5 +1,6 @@
 #pragma once
 #include "Globals.h"
+#include "ImGui\imgui.h"
 
 enum Comp_Type 
 {	
@@ -18,6 +19,8 @@ public:
 	virtual bool Enable();
 	virtual bool Disable();
 	virtual void Update();
+
+	virtual void ShowInspectorInfo();
 
 	Comp_Type GetType() const;
 	bool isActive() const;

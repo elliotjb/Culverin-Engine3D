@@ -1,3 +1,4 @@
+#include "Application.h"
 #include "GameObject.h"
 #include "Component.h"
 #include "CompMesh.h"
@@ -52,6 +53,44 @@ bool GameObject::Disable()
 		active = false;
 	}
 	return active;
+}
+
+void GameObject::ShowInspectorInfo()
+{
+	ImGui::SetNextWindowSize(ImVec2(ImGui::GetWindowWidth(), 40));
+	ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, ImVec4(0.211f, 0.211f, 0.211f, 1.00f));
+
+	if (ImGui::BeginChild(ImGui::GetID("Inspector"), ImVec2(ImGui::GetWindowWidth(), 40)))
+	{
+		static GLuint icon_GameObject = App->textures->LoadTexture("Images/UI/icon_GameObject.png");
+		ImGui::Spacing();
+
+		ImGui::Text(""); ImGui::SameLine(5);
+		ImGui::Image((ImTextureID*)icon_GameObject, ImVec2(23, 23), ImVec2(-1, 1), ImVec2(0, 0)); ImGui::SameLine();
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 8));
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
+
+		/* ENABLE-DISABLE CHECKBOX*/
+		ImGui::Checkbox("##1", &active);
+
+		/* NAME OF THE GAMEOBJECT */
+		ImGui::SameLine();
+		ImGui::PopStyleVar();
+		ImGui::InputText("##nameModel", name, 256, ImGuiInputTextFlags_ReadOnly);
+		ImGui::SameLine(); App->ShowHelpMarker("Hold SHIFT or use mouse to select text.\n" "CTRL+Left/Right to word jump.\n" "CTRL+A or double-click to select all.\n" "CTRL+X,CTRL+C,CTRL+V clipboard.\n" "CTRL+Z,CTRL+Y undo/redo.\n" "ESCAPE to revert.\n");
+		ImGui::PopStyleVar();
+	}
+
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
+
+	ImGui::Separator();
+
+	for (uint i = 0; i < components.size(); i++)
+	{
+		components[i]->ShowInspectorInfo();
+		ImGui::Separator();
+	}
 }
 
 bool GameObject::isActive() const

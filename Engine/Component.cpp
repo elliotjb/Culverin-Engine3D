@@ -30,6 +30,10 @@ void Component::Update()
 {
 }
 
+void Component::ShowInspectorInfo()
+{
+}
+
 Comp_Type Component::GetType() const
 {
 	return type;

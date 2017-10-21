@@ -28,10 +28,12 @@ public:
 	void Init(const float3* vertices, const uint* indices, const float3* vert_normals, const float2* texCoord);
 	void SetupMesh();
 	
+	void ShowInspectorInfo();
 	void Draw();
 	void Update();
 
 public:
+	char* name = "MESH NAME";
 	bool hasNormals = false;
 	uint num_vertices = 0;
 	uint num_indices = 0;
