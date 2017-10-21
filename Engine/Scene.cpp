@@ -13,6 +13,8 @@
 #include "ImGui\imgui_impl_sdl_gl3.h"
 #include <direct.h>
 
+#define SPHERE_DEFINITION 1536
+
 Scene::Scene(bool start_enabled) : Module(start_enabled)
 {
 	Start_enabled = true;
@@ -166,6 +168,39 @@ GameObject * Scene::CreateCube()
 	mesh->Enable();
 
 	App->scene->gameobjects.push_back(obj);
+
+	LOG("CUBE Created.");
+
+	return obj;
+}
+
+GameObject * Scene::CreateSphere()
+{
+	GameObject* obj = new GameObject();
+
+	/*Predefined sPHERE has 2 Base components: Transform & Mesh*/
+
+	//TRANSFORM COMPONENT --------------
+	CompTransform* transform = (CompTransform*)obj->AddComponent(C_TRANSFORM);
+	transform->Init(float3(0, 0, 0), float3(0, 0, 0), float3(1, 1, 1));
+	transform->Enable();
+
+	//MESH COMPONENT -------------------
+	CompMesh* mesh = (CompMesh*)obj->AddComponent(C_MESH);
+
+	float3* vertices_array = new float3[SPHERE_DEFINITION];
+
+	Sphere* sphere = new Sphere(transform->GetPos(), 1);
+	sphere->Triangulate(vertices_array, NULL, NULL, SPHERE_DEFINITION, false);
+	
+	Init_IndexVertex(vertices_array, SPHERE_DEFINITION, mesh);
+	mesh->InitRanges(mesh->vertices.size(), mesh->indices.size(), 0);
+	mesh->SetupMesh();
+	mesh->Enable();
+
+	App->scene->gameobjects.push_back(obj);
+
+	LOG("SPHERE Created.");
 
 	return obj;
 }

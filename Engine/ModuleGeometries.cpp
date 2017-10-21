@@ -109,6 +109,6 @@ void ModuleGeometries::CreateSphere(float3 pos, float radius, uint def, bool k, 
 	//sphere->id = count++;
 	//sphere->Init();
 	//objects.push_back(sphere);
-	////spheres.push_back(sphere);
+	//spheres.push_back(sphere);
 
 }

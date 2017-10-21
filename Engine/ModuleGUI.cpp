@@ -314,6 +314,11 @@ update_status ModuleGUI::Update(float dt)
 				{
 					App->scene->CreateCube();
 				}
+				if (ImGui::MenuItem("Sphere"))
+				{
+					App->scene->CreateSphere();
+				}
+
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenu();

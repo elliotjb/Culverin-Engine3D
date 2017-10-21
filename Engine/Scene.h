@@ -26,6 +26,7 @@ public:
 
 	GameObject* CreateGameObject();
 	GameObject* CreateCube();
+	GameObject* CreateSphere();
 
 
 
