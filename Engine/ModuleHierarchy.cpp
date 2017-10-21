@@ -1,7 +1,7 @@
 #include "ModuleHierarchy.h"
 #include "Application.h"
-#include "_Sphere.h"
-#include "_Model.h"
+#include "Scene.h"
+#include "GameObject.h"
 
 
 Hierarchy::Hierarchy() : WindowManager()
@@ -36,9 +36,9 @@ void Hierarchy::ShowHierarchy()
 		return;
 	}
 
-	if (haveModel)
+	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
-		ImGui::Text(model_name.c_str());
+		App->scene->gameobjects[i]->ShowHierarchy();
 	}
 
 	EndDock();

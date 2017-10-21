@@ -14,6 +14,9 @@ public:
 	bool Enable();
 	bool Disable();
 
+	void SetName(char* name);
+
+	void ShowHierarchy();
 	void ShowInspectorInfo();
 
 	bool isActive() const;

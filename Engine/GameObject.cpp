@@ -1,4 +1,6 @@
 #include "Application.h"
+#include "ModuleInspector.h"
+#include "ModuleInput.h"
 #include "GameObject.h"
 #include "Component.h"
 #include "CompMesh.h"
@@ -53,6 +55,30 @@ bool GameObject::Disable()
 		active = false;
 	}
 	return active;
+}
+
+void GameObject::SetName(char * name)
+{
+	this->name = name;
+}
+
+void GameObject::ShowHierarchy()
+{
+	if (ImGui::TreeNodeEx(name))
+	{
+		for (uint i = 0; i < childs.size(); i++)
+		{
+			childs[i]->ShowHierarchy();
+		}
+
+		ImGui::TreePop();
+	}
+
+	if (ImGui::IsItemClicked())
+	{
+		//Set inspector window of this Game Object
+		((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(this);
+	}
 }
 
 void GameObject::ShowInspectorInfo()

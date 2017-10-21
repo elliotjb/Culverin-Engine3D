@@ -140,6 +140,14 @@ GameObject * Scene::CreateCube()
 {
 	GameObject* obj = new GameObject();
 
+	// SET NAME -----------------------------------
+	static uint cube_count = 0;
+	std::string name = "Cube ";
+	name += std::to_string(cube_count++);
+	char* name_str = new char[name.size()+1];
+	strcpy(name_str, name.c_str());
+	obj->SetName(name_str);
+
 	/*Predefined Cube has 2 Base components: Transform & Mesh*/
 
 	//TRANSFORM COMPONENT --------------
@@ -177,6 +185,14 @@ GameObject * Scene::CreateCube()
 GameObject * Scene::CreateSphere()
 {
 	GameObject* obj = new GameObject();
+
+	// SET NAME ----------------------------------
+	static uint sphere_count = 0;
+	std::string name = "Sphere ";
+	name += std::to_string(sphere_count++);
+	char* name_str = new char[name.size() + 1];
+	strcpy(name_str, name.c_str());
+	obj->SetName(name_str);
 
 	/*Predefined sPHERE has 2 Base components: Transform & Mesh*/
 
