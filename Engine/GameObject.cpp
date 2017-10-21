@@ -5,6 +5,7 @@
 #include "Component.h"
 #include "CompMesh.h"
 #include "CompTransform.h"
+#include "CompMaterial.h"
 
 GameObject::GameObject()
 {
@@ -163,12 +164,32 @@ Component* GameObject::AddComponent(Comp_Type type)
 			return mesh;
 		}
 
-		if (type == C_TRANSFORM)
+		else if (type == C_TRANSFORM)
 		{
 			LOG("Adding TRANSFORM COMPONENT.");
 			CompTransform* transform = new CompTransform(type);
 			components.push_back(transform);
 			return transform;
+		}
+
+		else if (type == C_MATERIAL)
+		{
+			LOG("Adding MATERIAL COMPONENT.");
+			CompMaterial* material = new CompMaterial(type);
+			components.push_back(material);
+
+			/* Link Material to the Mesh if exists */
+			CompMesh* mesh_to_link = (CompMesh*)FindComponentByType(C_MESH);
+			if (mesh_to_link != nullptr)
+			{
+				mesh_to_link->LinkMaterial(material);
+			}
+			else
+			{
+				LOG("MATERIAL not linked to any mesh");
+			}
+
+			return material;
 		}
 	}
 

@@ -7,6 +7,7 @@
 #include "Component.h"
 #include "CompTransform.h"
 #include "CompMesh.h"
+#include "CompMaterial.h"
 #include "MathGeoLib.h"
 #include "Gl3W\include\glew.h"
 #include "ImGui\imgui.h"
@@ -82,6 +83,8 @@ bool Scene::CleanUp()
 
 void Scene::DrawPlane(int size)
 {
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
 	glBegin(GL_LINES);
 	for (int i = -size; i <= size; i++)
 	{
@@ -148,7 +151,7 @@ GameObject * Scene::CreateCube()
 	strcpy(name_str, name.c_str());
 	obj->SetName(name_str);
 
-	/*Predefined Cube has 2 Base components: Transform & Mesh*/
+	/* Predefined Cube has 3 Base components: Transform, Mesh & Material */
 
 	//TRANSFORM COMPONENT --------------
 	CompTransform* transform = (CompTransform*)obj->AddComponent(C_TRANSFORM);
@@ -175,6 +178,10 @@ GameObject * Scene::CreateCube()
 	mesh->SetupMesh();
 	mesh->Enable();
 
+	//MATERIAL COMPONENT -------------------
+	CompMaterial* mat = (CompMaterial*)obj->AddComponent(C_MATERIAL);
+	mat->Enable();
+
 	App->scene->gameobjects.push_back(obj);
 
 	LOG("CUBE Created.");
@@ -194,7 +201,7 @@ GameObject * Scene::CreateSphere()
 	strcpy(name_str, name.c_str());
 	obj->SetName(name_str);
 
-	/*Predefined sPHERE has 2 Base components: Transform & Mesh*/
+	/*Predefined sPHERE has 2 Base components: Transform, Mesh & Material */
 
 	//TRANSFORM COMPONENT --------------
 	CompTransform* transform = (CompTransform*)obj->AddComponent(C_TRANSFORM);
@@ -213,6 +220,10 @@ GameObject * Scene::CreateSphere()
 	mesh->InitRanges(mesh->vertices.size(), mesh->indices.size(), 0);
 	mesh->SetupMesh();
 	mesh->Enable();
+
+	//MATERIAL COMPONENT -------------------
+	CompMaterial* mat = (CompMaterial*)obj->AddComponent(C_MATERIAL);
+	mat->Enable();
 
 	App->scene->gameobjects.push_back(obj);
 

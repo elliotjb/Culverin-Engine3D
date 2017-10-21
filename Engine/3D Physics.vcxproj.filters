@@ -378,9 +378,6 @@
     <ClInclude Include="Component.h">
       <Filter>Engine\Modules\Scene\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Engine\Modules\Scene\Components</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleFramebuffers.h">
       <Filter>Engine\Modules</Filter>
     </ClInclude>
@@ -416,6 +413,9 @@
     </ClInclude>
     <ClInclude Include="ModuleFS.h">
       <Filter>Engine\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="CompMaterial.h">
+      <Filter>Engine\Modules\Scene\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -626,9 +626,6 @@
     <ClCompile Include="Component.cpp">
       <Filter>Engine\Modules\Scene\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Engine\Modules\Scene\Components</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleFramebuffers.cpp">
       <Filter>Engine\Modules</Filter>
     </ClCompile>
@@ -661,6 +658,9 @@
     </ClCompile>
     <ClCompile Include="ModuleFS.cpp">
       <Filter>Engine\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="CompMaterial.cpp">
+      <Filter>Engine\Modules\Scene\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
