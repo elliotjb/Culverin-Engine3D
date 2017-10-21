@@ -24,10 +24,17 @@ public:
 	Component* FindComponentByType(Comp_Type type);
 	Component* AddComponent(Comp_Type type);
 
+	AABB* bounding_box = nullptr;
+	void DrawBoundingBox();
+
 private:
 	char* name = "CHANGE THIS";
+	bool active = false;
+
 	std::vector<Component*> components;
 	std::vector<GameObject*> childs;
+	
 	GameObject* parent = nullptr;
-	bool active = false;
+
+	bool bb_active = false;
 };

@@ -7,6 +7,7 @@
 #include "Component.h"
 #include "CompTransform.h"
 #include "CompMesh.h"
+#include "CompMaterial.h"
 #include "MathGeoLib.h"
 #include "Gl3W\include\glew.h"
 #include "ImGui\imgui.h"
@@ -82,6 +83,8 @@ bool Scene::CleanUp()
 
 void Scene::DrawPlane(int size)
 {
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
 	glBegin(GL_LINES);
 	for (int i = -size; i <= size; i++)
 	{
@@ -148,7 +151,7 @@ GameObject * Scene::CreateCube()
 	strcpy(name_str, name.c_str());
 	obj->SetName(name_str);
 
-	/*Predefined Cube has 2 Base components: Transform & Mesh*/
+	/* Predefined Cube has 3 Base components: Transform, Mesh & Material */
 
 	//TRANSFORM COMPONENT --------------
 	CompTransform* transform = (CompTransform*)obj->AddComponent(C_TRANSFORM);
@@ -166,14 +169,18 @@ GameObject * Scene::CreateCube()
 	box->axis[1] = float3(0, 1, 0);
 	box->axis[2] = float3(0, 0, 1);
 
-	AABB* bounding_box = new AABB(*box);
+	obj->bounding_box = new AABB(*box);
 	float3* vertices_array = new float3[36];
 
-	bounding_box->Triangulate(1, 1, 1, vertices_array, NULL, NULL, false);
+	obj->bounding_box->Triangulate(1, 1, 1, vertices_array, NULL, NULL, false);
 
 	Init_IndexVertex(vertices_array, mesh->num_indices, mesh);
 	mesh->SetupMesh();
 	mesh->Enable();
+
+	//MATERIAL COMPONENT -------------------
+	CompMaterial* mat = (CompMaterial*)obj->AddComponent(C_MATERIAL);
+	mat->Enable();
 
 	App->scene->gameobjects.push_back(obj);
 
@@ -194,7 +201,7 @@ GameObject * Scene::CreateSphere()
 	strcpy(name_str, name.c_str());
 	obj->SetName(name_str);
 
-	/*Predefined sPHERE has 2 Base components: Transform & Mesh*/
+	/*Predefined sPHERE has 2 Base components: Transform, Mesh & Material */
 
 	//TRANSFORM COMPONENT --------------
 	CompTransform* transform = (CompTransform*)obj->AddComponent(C_TRANSFORM);
@@ -213,6 +220,15 @@ GameObject * Scene::CreateSphere()
 	mesh->InitRanges(mesh->vertices.size(), mesh->indices.size(), 0);
 	mesh->SetupMesh();
 	mesh->Enable();
+
+	/* Set Bounding Box */
+	obj->bounding_box = new AABB();
+	obj->bounding_box->SetNegativeInfinity();
+	obj->bounding_box->Enclose(*sphere);
+
+	//MATERIAL COMPONENT -------------------
+	CompMaterial* mat = (CompMaterial*)obj->AddComponent(C_MATERIAL);
+	mat->Enable();
 
 	App->scene->gameobjects.push_back(obj);
 

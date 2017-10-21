@@ -1,6 +1,9 @@
 #include "CompTransform.h"
 #include "Component.h"
 
+#include <gl/GL.h>
+#include <gl/GLU.h>
+
 CompTransform::CompTransform(Comp_Type t) :Component(t)
 {
 }
@@ -16,30 +19,41 @@ void CompTransform::Init(float3 p, float3 r, float3 s)
 	SetScale(s);
 }
 
+void CompTransform::Update()
+{
+	glMultMatrixf((float*)&matrix.Transposed());
+}
+
 void CompTransform::ShowInspectorInfo()
 {
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
 	if (ImGui::TreeNodeEx("Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::PopStyleColor();
-		int op = ImGui::GetWindowWidth() / 4;
-		ImGui::PushItemWidth(op - 40);
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 1));
-		ImGui::Text("Position"); ImGui::SameLine(op + 40);
-		ImGui::Text("X"); ImGui::SameLine(); ImGui::InputFloat("##X_1", &position.x, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-		ImGui::Text("Y"); ImGui::SameLine(); ImGui::InputFloat("##Y_1", &position.y, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-		ImGui::Text("Z"); ImGui::SameLine(); ImGui::InputFloat("##Z_1", &position.z, 0, 0, 3, ImGuiInputTextFlags_ReadOnly);
-		ImGui::Text("Rotation"); ImGui::SameLine(op + 40);
-		ImGui::Text("X"); ImGui::SameLine(); ImGui::InputFloat("##X_2", &rotation.x, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-		ImGui::Text("Y"); ImGui::SameLine(); ImGui::InputFloat("##Y_2", &rotation.y, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-		ImGui::Text("Z"); ImGui::SameLine(); ImGui::InputFloat("##Z_2", &rotation.z, 0, 0, 3, ImGuiInputTextFlags_ReadOnly);
-		ImGui::Text("Scale"); ImGui::SameLine(op + 40);
-		ImGui::Text("X"); ImGui::SameLine(); ImGui::InputFloat("##X_3", &scale.x, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-		ImGui::Text("Y"); ImGui::SameLine(); ImGui::InputFloat("##Y_3", &scale.y, 0, 0, 3, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-		ImGui::Text("Z"); ImGui::SameLine(); ImGui::InputFloat("##Z_3", &scale.z, 0, 0, 3, ImGuiInputTextFlags_ReadOnly);
 		
-		ImGui::PopStyleVar();
-		ImGui::PopItemWidth();
+		/*int op = ImGui::GetWindowWidth() / 4;
+		ImGui::PushItemWidth(op - 40);
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 1));*/
+
+		ImGui::Text("Position"); 
+		if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
+		{
+			SetPos(position);
+		}
+		static float3 rot = rotation;
+		ImGui::Text("Rotation");
+		if (ImGui::DragFloat3("##rot", &rot[0], 0.5f))
+		{
+			SetRot(rot);
+		}
+		ImGui::Text("Scale");
+		if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
+		{
+			SetScale(scale);
+		}
+
+		//ImGui::PopStyleVar();
+		//ImGui::PopItemWidth();
 		ImGui::TreePop();
 	}
 	else
@@ -51,16 +65,29 @@ void CompTransform::ShowInspectorInfo()
 void CompTransform::SetPos(float3 pos)
 {
 	position = pos;
+
+	UpdateMatrix();
 }
 
 void CompTransform::SetRot(float3 rot)
 {
+	rot_angle = (rot - rotation) * DEGTORAD;
+	rot_quat = rot_quat * Quat::FromEulerXYZ(rot_angle.x, rot_angle.y, rot_angle.z);
 	rotation = rot;
+
+	UpdateMatrix();
 }
 
 void CompTransform::SetScale(float3 scal)
 {
 	scale = scal;
+
+	UpdateMatrix();
+}
+
+void CompTransform::UpdateMatrix()
+{
+	matrix = float4x4::FromTRS(position, rot_quat, scale);
 }
 
 float3 CompTransform::GetPos() const

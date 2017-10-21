@@ -4,6 +4,8 @@
 #include "Math/float2.h"
 #include <vector>
 
+class CompMaterial;
+
 struct _FaceCenter
 {
 	float3 pos;
@@ -32,6 +34,8 @@ public:
 	void Draw();
 	void Update();
 
+	void LinkMaterial(CompMaterial* mat);
+
 public:
 	char* name = "MESH NAME";
 	bool hasNormals = false;
@@ -47,4 +51,6 @@ private:
 	uint vertices_id = 0; /*VERTICES ID*/
 	uint indices_id = 0; /*INDICES ID*/
 	uint vertices_norm_id = 0; /*NORMALS OF VERTICES ID*/
+
+	CompMaterial* material = nullptr;
 };

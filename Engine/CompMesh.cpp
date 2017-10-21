@@ -2,7 +2,9 @@
 #include "Globals.h"
 #include "Component.h"
 #include "CompMesh.h"
+#include "CompMaterial.h"
 #include "ModuleRenderer3D.h"
+#include "Color.h"
 #include <vector>
 
 CompMesh::CompMesh(Comp_Type t): Component(t)
@@ -170,11 +172,17 @@ void CompMesh::Draw()
 		}
 
 		//Set Color
-		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		if (material != nullptr)
+		{
+			glColor4f(material->GetColor().r, material->GetColor().g, material->GetColor().b, material->GetColor().a);
+		}
+		else
+		{
+			glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
+		}
 
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
-
 
 		glBindBuffer(GL_ARRAY_BUFFER, vertices_id); //VERTEX ID
 		glVertexPointer(3, GL_FLOAT, sizeof(_Vertex), NULL);
@@ -192,6 +200,7 @@ void CompMesh::Draw()
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
 
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
 
@@ -211,4 +220,13 @@ void CompMesh::Draw()
 void CompMesh::Update()
 {
 	Draw();
+}
+
+void CompMesh::LinkMaterial(CompMaterial * mat)
+{
+	if (mat != nullptr)
+	{
+		material = mat;
+		LOG("MATERIAL linked to MESH %s", name);
+	}
 }
