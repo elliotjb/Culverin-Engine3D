@@ -2,7 +2,6 @@
 #include "Component.h"
 #include "Geometry/Frustum.h"
 
-
 class CompCamera : public Component
 {
 public:

@@ -1,4 +1,6 @@
 #include "CompCamera.h"
+#include "MathGeoLib.h"
+#include "SDL\include\SDL_opengl.h"
 #include <math.h>
 
 CompCamera::CompCamera(Comp_Type t) :Component(t)
@@ -6,7 +8,7 @@ CompCamera::CompCamera(Comp_Type t) :Component(t)
 	/* Set camera vars*/
 	width = 16;
 	height = 9;
-	aspect_ratio = width / height;
+	aspect_ratio = width / height; // We set aspect ratio 16:9 by now
 
 	near_plane = 0.2;
 	far_plane = 500;
@@ -18,6 +20,10 @@ CompCamera::CompCamera(Comp_Type t) :Component(t)
 	cam_frustum.farPlaneDistance = far_plane;
 	cam_frustum.verticalFov = vertical_fov;
 	cam_frustum.horizontalFov = atan2(tan(vertical_fov / 2), aspect_ratio);
+
+	/* Direction vectors (orthonormals) */
+	cam_frustum.front.Set(0, -1, 0);
+	cam_frustum.up.Set(0, 1, 0);
 }
 
 CompCamera::~CompCamera()
@@ -31,7 +37,18 @@ void CompCamera::Update()
 
 void CompCamera::DebugDraw()
 {
+	glBegin(GL_LINES);
+	glLineWidth(3.0f);
+	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
 
+	for (uint i = 0; i < 12; i++)
+	{
+		glVertex3f(cam_frustum.Edge(i).a.x, cam_frustum.Edge(i).a.y, cam_frustum.Edge(i).a.z);
+		glVertex3f(cam_frustum.Edge(i).b.x, cam_frustum.Edge(i).b.y, cam_frustum.Edge(i).b.z);
+	}
+
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 void CompCamera::ShowInspectorInfo()
@@ -53,5 +70,5 @@ void CompCamera::SetFar(float far_p)
 void CompCamera::SetFov(float vertical)
 {
 	vertical_fov = vertical;
-	cam_frustum.horizontalFov = atan2(tan(vertical_fov / 2), ASPECT_RATIO);
+	cam_frustum.horizontalFov = atan2(tan(vertical_fov / 2), aspect_ratio);
 }
