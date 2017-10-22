@@ -233,7 +233,7 @@ GameObject * Scene::CreateSphere()
 	/* Set Bounding Box */
 	obj->bounding_box = new AABB();
 	obj->bounding_box->SetNegativeInfinity();
-	obj->bounding_box->Enclose(*sphere);
+	obj->bounding_box->Enclose(mesh->vertices, mesh->num_vertices);
 
 	//MATERIAL COMPONENT -------------------
 	CompMaterial* mat = (CompMaterial*)obj->AddComponent(C_MATERIAL);

@@ -41,10 +41,18 @@ void GameObject::Update()
 			}
 		}
 
-		// Draw Bounding Box
+		// BOUNDING BOX -----------------
 		if (bb_active)
 		{
-			DrawBoundingBox();
+			CompMesh* mesh = (CompMesh*)(FindComponentByType(C_MESH));
+			if (mesh != nullptr)
+			{
+				//Resize the Bounding Box
+				bounding_box->Enclose(mesh->vertices, mesh->num_vertices);
+
+				// Draw Bounding Box
+				DrawBoundingBox();
+			}
 		}
 
 		/* Reset the matrix (don't want to affect the rest of GameObjects*/

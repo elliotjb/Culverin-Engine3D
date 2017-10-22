@@ -21,6 +21,9 @@
 #include "../Math/float3.h"
 #include "../Math/SSEMath.h"
 
+#include "../CompMesh.h"
+#include <vector>
+
 #ifdef MATH_OGRE_INTEROP
 #include <OgreAxisAlignedBox.h>
 #endif
@@ -441,6 +444,9 @@ public:
 	void Enclose(const Polygon &polygon);
 	void Enclose(const Polyhedron &polyhedron);
 	void Enclose(const float3 *pointArray, int numPoints);
+
+	/* Created this function to Encole Bounding Box according our Vertex Array of the mesh*/
+	void Enclose(const std::vector<_Vertex>& vert, int numPoints);
 
 	/// Generates an unindexed triangle mesh representation of this AABB.
 	/** @param numFacesX The number of faces to generate along the X axis. This value must be >= 1.
