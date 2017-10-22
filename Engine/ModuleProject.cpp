@@ -258,7 +258,7 @@ void Project::Folders_update(std::vector<Folders> folder)
 	for (int i = 0; i < folder.size(); i++)
 	{
 		ImGui::PushID(i);
-		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_Selected | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 
 		if (ImGui::TreeNodeEx(folder[i].file_name, node_flags))
 		{

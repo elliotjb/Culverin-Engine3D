@@ -23,6 +23,7 @@ Scene::Scene(bool start_enabled) : Module(start_enabled)
 	Update_enabled = true;
 
 	name = "Scene";
+	haveConfig = true;
 }
 
 Scene::~Scene()
@@ -32,7 +33,7 @@ Scene::~Scene()
 bool Scene::Start()
 {
 	perf_timer.Start();
-	
+	size_plane = 7;
 	Start_t = perf_timer.ReadMs();
 
 	return true;
@@ -54,7 +55,7 @@ update_status Scene::Update(float dt)
 	perf_timer.Start();
 
 	//Draw Plane
-	DrawPlane(7);
+	DrawPlane(size_plane);
 
 	//if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
 	//{
@@ -72,6 +73,14 @@ update_status Scene::Update(float dt)
 	
 	Update_t = perf_timer.ReadMs();
 
+	return UPDATE_CONTINUE;
+}
+
+update_status Scene::UpdateConfig(float dt)
+{
+	ImGui::PushItemWidth(ImGui::GetWindowWidth() / 4);
+	ImGui::SliderInt("Plane Size", &size_plane, 5, 1000);
+	ImGui::PopItemWidth();
 	return UPDATE_CONTINUE;
 }
 

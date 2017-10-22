@@ -16,6 +16,7 @@ public:
 	bool Start();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
+	update_status UpdateConfig(float dt);
 	bool CleanUp();
 
 	void DrawPlane(int size);
@@ -43,4 +44,6 @@ public:
 	//Container Vector of all Game Objects
 	std::vector<GameObject*> gameobjects;
 
+private:
+	int size_plane;
 };
