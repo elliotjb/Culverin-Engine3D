@@ -417,6 +417,9 @@
     <ClInclude Include="CompMaterial.h">
       <Filter>Engine\Modules\Scene\Components</Filter>
     </ClInclude>
+    <ClInclude Include="CompCamera.h">
+      <Filter>Engine\Modules\Scene\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -660,6 +663,9 @@
       <Filter>Engine\Modules</Filter>
     </ClCompile>
     <ClCompile Include="CompMaterial.cpp">
+      <Filter>Engine\Modules\Scene\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CompCamera.cpp">
       <Filter>Engine\Modules\Scene\Components</Filter>
     </ClCompile>
   </ItemGroup>

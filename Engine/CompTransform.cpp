@@ -31,10 +31,6 @@ void CompTransform::ShowInspectorInfo()
 	{
 		ImGui::PopStyleColor();
 		
-		/*int op = ImGui::GetWindowWidth() / 4;
-		ImGui::PushItemWidth(op - 40);
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 1));*/
-
 		ImGui::Text("Position"); 
 		if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
 		{
@@ -52,8 +48,6 @@ void CompTransform::ShowInspectorInfo()
 			SetScale(scale);
 		}
 
-		//ImGui::PopStyleVar();
-		//ImGui::PopItemWidth();
 		ImGui::TreePop();
 	}
 	else

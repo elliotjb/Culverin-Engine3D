@@ -89,6 +89,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="BaseGeometry.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="CompCamera.h" />
     <ClInclude Include="CompMaterial.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameObject.h" />
@@ -209,6 +210,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BaseGeometry.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="CompCamera.cpp" />
     <ClCompile Include="CompMaterial.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
