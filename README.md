@@ -27,6 +27,14 @@ TO APPLY/CHANGE A TEXTURE OF A MESH, DRAG AND DROP IT INSIDE THE IMAGE SQUARE OF
 Visual Explanation Here -> ![](https://i.gyazo.com/d8da58aaf53a70c7a150e8bf1adee4f6.gif)
 
 # UPDATES
+- 0.5.4:
+	* Add Window Project:
+		> In left window, you can see a hierarchy folders.
+		> In right, All files from a folder Test.
+	* Add Modules Importers and Loads
+		> Import and Load Meshes.
+		> Import Textures.
+	* Add ModuleFs.
 - 0.5:
 	* Implemented diference movement Camera (Now is Like Unity).
 	* Add more modules in Configuration Window
