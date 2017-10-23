@@ -7,7 +7,9 @@ that composes the entire model (only .png or .jpg formats).
 
 # FEATURES
 - Configuration options (App, Window, Audio, Render).
-- Model Viewer (Position, Rotation, Meshes, Textures).
+- Game Objects Structure (with components).
+- Basic GameObject Creation (Cube, Sphere).
+- Main Camera (Frustum geometry)
 
 # CAMERA CONTROLS(is Like Unity)
 - Only Mouse Right: Move Camera with static position
@@ -35,6 +37,9 @@ Visual Explanation Here -> ![](https://i.gyazo.com/d8da58aaf53a70c7a150e8bf1adee
 		> Import and Load Meshes.
 		> Import Textures.
 	* Add ModuleFs.
+	* GameObject & Components Structure:
+		> Components: transform, mesh, material and camera.
+	*Hierarchy and Inspector Windows work on Game Objects structure.
 - 0.5:
 	* Implemented diference movement Camera (Now is Like Unity).
 	* Add more modules in Configuration Window
