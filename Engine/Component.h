@@ -7,7 +7,8 @@ enum Comp_Type
 	C_UNKNOWN = -1,
 	C_TRANSFORM,
 	C_MESH,
-	C_MATERIAL
+	C_MATERIAL,
+	C_CAMERA
 };
 
 class Component

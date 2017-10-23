@@ -8,15 +8,20 @@ public:
 	CompCamera(Comp_Type t);
 	~CompCamera();
 
+	void Init(float3 pos);
 	void Update();
 	void DebugDraw();
+
 	void ShowInspectorInfo();
 
+
+	void SetPos(float3 pos);
 	void SetNear(float near_p);
 	void SetFar(float far_p);
 	void SetFov(float vertical);
 
 private:
+	bool culling = false;
 
 	float width = 0.0f;
 	float height = 0.0f;

@@ -8,6 +8,7 @@
 #include "CompTransform.h"
 #include "CompMesh.h"
 #include "CompMaterial.h"
+#include "CompCamera.h"
 #include "MathGeoLib.h"
 #include "Gl3W\include\glew.h"
 #include "ImGui\imgui.h"
@@ -33,7 +34,10 @@ Scene::~Scene()
 bool Scene::Start()
 {
 	perf_timer.Start();
+
 	size_plane = 7;
+	CreateMainCamera();
+
 	Start_t = perf_timer.ReadMs();
 
 	return true;
@@ -212,12 +216,12 @@ GameObject * Scene::CreateSphere()
 
 	/*Predefined sPHERE has 2 Base components: Transform, Mesh & Material */
 
-	//TRANSFORM COMPONENT --------------
+	// TRANSFORM COMPONENT --------------
 	CompTransform* transform = (CompTransform*)obj->AddComponent(C_TRANSFORM);
 	transform->Init(float3(0, 0, 0), float3(0, 0, 0), float3(1, 1, 1));
 	transform->Enable();
 
-	//MESH COMPONENT -------------------
+	// MESH COMPONENT -------------------
 	CompMesh* mesh = (CompMesh*)obj->AddComponent(C_MESH);
 
 	float3* vertices_array = new float3[SPHERE_DEFINITION];
@@ -235,13 +239,42 @@ GameObject * Scene::CreateSphere()
 	obj->bounding_box->SetNegativeInfinity();
 	obj->bounding_box->Enclose(mesh->vertices, mesh->num_vertices);
 
-	//MATERIAL COMPONENT -------------------
+	// MATERIAL COMPONENT -------------------
 	CompMaterial* mat = (CompMaterial*)obj->AddComponent(C_MATERIAL);
 	mat->Enable();
 
 	App->scene->gameobjects.push_back(obj);
 
 	LOG("SPHERE Created.");
+
+	return obj;
+}
+
+GameObject * Scene::CreateMainCamera()
+{
+	GameObject* obj = new GameObject();
+
+	// SET NAME -----------------------------------
+	std::string name = "MainCamera";
+	char* name_str = new char[name.size() + 1];
+	strcpy(name_str, name.c_str());
+	obj->SetName(name_str);
+
+	/* Predefined Main Camera has 2 Base components: Transform & Camera */
+
+	// TRANSFORM COMPONENT --------------
+	CompTransform* transform = (CompTransform*)obj->AddComponent(C_TRANSFORM);
+	transform->Init(float3(0, 0, 0), float3(0, 0, 0), float3(1, 1, 1));
+	transform->Enable();
+
+	// CAMERA COMPONENT -----------------
+	CompCamera* camera = (CompCamera*)obj->AddComponent(C_CAMERA);
+	camera->Init(transform->GetPos());
+	camera->Enable();
+
+	App->scene->gameobjects.push_back(obj);
+
+	LOG("MAIN CAMERA Created.");
 
 	return obj;
 }

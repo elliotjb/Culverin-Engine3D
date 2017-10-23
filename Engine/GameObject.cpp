@@ -6,6 +6,7 @@
 #include "CompMesh.h"
 #include "CompTransform.h"
 #include "CompMaterial.h"
+#include "CompCamera.h"
 
 GameObject::GameObject()
 {
@@ -219,8 +220,15 @@ Component* GameObject::AddComponent(Comp_Type type)
 			{
 				LOG("MATERIAL not linked to any mesh");
 			}
-
 			return material;
+		}
+
+		else if (type == C_CAMERA)
+		{
+			LOG("Adding CAMERA COMPONENT.");
+			CompCamera* camera = new CompCamera(type);
+			components.push_back(camera);
+			return camera;
 		}
 	}
 

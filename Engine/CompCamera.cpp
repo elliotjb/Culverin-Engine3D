@@ -11,32 +11,37 @@ CompCamera::CompCamera(Comp_Type t) :Component(t)
 	aspect_ratio = width / height; // We set aspect ratio 16:9 by now
 
 	near_plane = 0.2;
-	far_plane = 500;
-	vertical_fov = 60;
+	far_plane = 10;
+	vertical_fov = 60; /* In degrees */
 
 	/* Set frustum vars */
 	cam_frustum.type = PerspectiveFrustum;
+	cam_frustum.front.Set(0, 0, -1);
+	cam_frustum.up.Set(0, 1, 0);
+
 	cam_frustum.nearPlaneDistance = near_plane;
 	cam_frustum.farPlaneDistance = far_plane;
-	cam_frustum.verticalFov = vertical_fov;
-	cam_frustum.horizontalFov = atan2(tan(vertical_fov / 2), aspect_ratio);
-
-	/* Direction vectors (orthonormals) */
-	cam_frustum.front.Set(0, -1, 0);
-	cam_frustum.up.Set(0, 1, 0);
+	cam_frustum.verticalFov = vertical_fov * DEGTORAD;
+	cam_frustum.horizontalFov = Atan(aspect_ratio*Tan(cam_frustum.verticalFov / 2)) * 2;
 }
 
 CompCamera::~CompCamera()
 {
 }
 
+void CompCamera::Init(float3 pos)
+{
+	cam_frustum.pos = pos;
+}
+
 void CompCamera::Update()
 {
-
+	DebugDraw();
 }
 
 void CompCamera::DebugDraw()
 {
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glBegin(GL_LINES);
 	glLineWidth(3.0f);
 	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
@@ -53,22 +58,51 @@ void CompCamera::DebugDraw()
 
 void CompCamera::ShowInspectorInfo()
 {
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
+	if (ImGui::TreeNodeEx("Camera", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::PopStyleColor();
+		ImGui::PushItemWidth(60);
+		if (ImGui::DragFloat("Near Plane", &near_plane, 0.5f, 0.01f, far_plane - 0.01f))
+		{
+			SetNear(near_plane);
+		}
+		if (ImGui::DragFloat("Far Plane", &far_plane, 0.5f, near_plane + 0.01f, 1000.0f))
+		{
+			SetFar(far_plane);
+		}
+		if (ImGui::SliderFloat("FOV", &vertical_fov, 1, 179))
+		{
+			SetFov(vertical_fov);
+		}
+
+		ImGui::PopItemWidth();
+		ImGui::TreePop();
+
+	}
+	else
+	{
+		ImGui::PopStyleColor();
+	}
+}
+
+void CompCamera::SetPos(float3 pos)
+{
+	cam_frustum.pos = pos;
 }
 
 void CompCamera::SetNear(float near_p)
 {
-	near_plane = near_p;
 	cam_frustum.nearPlaneDistance = near_p;
 }
 
 void CompCamera::SetFar(float far_p)
 {
-	far_plane = far_p;
 	cam_frustum.farPlaneDistance = far_p;
 }
 
 void CompCamera::SetFov(float vertical)
 {
-	vertical_fov = vertical;
-	cam_frustum.horizontalFov = atan2(tan(vertical_fov / 2), aspect_ratio);
+	cam_frustum.verticalFov = vertical * DEGTORAD;
+	cam_frustum.horizontalFov = Atan(aspect_ratio*Tan(cam_frustum.verticalFov / 2)) * 2;
 }
