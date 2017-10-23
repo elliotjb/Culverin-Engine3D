@@ -19,6 +19,7 @@ public:
 
 	virtual bool Enable();
 	virtual bool Disable();
+	virtual void preUpdate();
 	virtual void Update();
 
 	virtual void ShowInspectorInfo();

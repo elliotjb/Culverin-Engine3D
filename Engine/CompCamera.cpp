@@ -34,6 +34,15 @@ void CompCamera::Init(float3 pos)
 	cam_frustum.pos = pos;
 }
 
+void CompCamera::preUpdate()
+{
+	if (culling)
+	{
+		// Iterate All GameObjects and apply culling
+
+	}
+}
+
 void CompCamera::Update()
 {
 	DebugDraw();

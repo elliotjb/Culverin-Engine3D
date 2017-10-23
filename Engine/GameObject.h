@@ -10,6 +10,7 @@ public:
 	GameObject();
 	~GameObject();
 
+	void PreUpdate();
 	void Update();
 	bool Enable();
 	bool Disable();

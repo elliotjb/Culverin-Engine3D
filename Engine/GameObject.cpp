@@ -17,6 +17,30 @@ GameObject::~GameObject()
 {
 }
 
+void GameObject::PreUpdate()
+{
+	if (active)
+	{
+		//preUpdate Components --------------------------
+		for (uint i = 0; i < components.size(); i++)
+		{
+			if (components[i]->isActive())
+			{
+				components[i]->preUpdate();
+			}
+		}
+
+		//preUpdate child Game Objects -------------------
+		for (uint i = 0; i < childs.size(); i++)
+		{
+			if (childs[i]->isActive())
+			{
+				childs[i]->PreUpdate();
+			}
+		}
+	}
+}
+
 void GameObject::Update()
 {
 	if (active)

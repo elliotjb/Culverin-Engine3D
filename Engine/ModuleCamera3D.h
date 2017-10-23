@@ -42,6 +42,7 @@ public:
 	bool CanMoveCamera = false;
 
 private:
+
 	bool canOut = false;
 	BaseGeometry* geo = nullptr;
 	//AABB* box = nullptr;

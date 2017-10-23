@@ -26,6 +26,10 @@ bool Component::Disable()
 	return active;
 }
 
+void Component::preUpdate()
+{
+}
+
 void Component::Update()
 {
 }

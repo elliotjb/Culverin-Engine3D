@@ -244,7 +244,7 @@ update_status ModuleCamera3D::UpdateConfig(float dt)
 {
 	ImGui::BulletText("Camera Position"); ImGui::SameLine();
 	ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%.2f, %.2f, %.2f)", Position.x, Position.y, Position.z);
-	ImGui::BulletText("Speed Scroll"); ImGui::SameLine();
+	ImGui::BulletText("Scroll Speed"); ImGui::SameLine();
 	ImGui::SliderFloat("##speedScroll", &moveWithScroll, 0.0f, 300.0f, "Speed = %.1f");
 
 	return UPDATE_CONTINUE;

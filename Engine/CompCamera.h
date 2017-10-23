@@ -9,6 +9,7 @@ public:
 	~CompCamera();
 
 	void Init(float3 pos);
+	void preUpdate();
 	void Update();
 	void DebugDraw();
 
