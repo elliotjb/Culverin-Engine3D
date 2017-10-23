@@ -76,8 +76,9 @@ update_status ModuleImporter::PreUpdate(float dt)
 		{
 			LOG("IMPORTING TEXTURE, File Path: %s", App->input->dropped_filedir);
 
-			ImportMaterial* mat = new ImportMaterial();
-			mat->Import(App->input->dropped_filedir);
+			ImportMaterial* importmaterial = new ImportMaterial();
+			importmaterial->Import(App->input->dropped_filedir);
+			delete importmaterial;
 		
 			break;
 		}
@@ -112,6 +113,7 @@ void ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene)
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		ImportMesh* imp = new ImportMesh(); // TODO ELLIOT
 		imp->Import(mesh, node->mName.C_Str());
+		delete imp;
 	}
 
 	// Process children

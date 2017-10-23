@@ -175,16 +175,19 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 	memcpy(cursor, tex_coords, bytes);
 
 	//// Release all pointers
-	//RELEASE(vertices);
-	//RELEASE(indices);
-	//RELEASE(vert_normals);
-	//RELEASE(tex_coords);
+	RELEASE_ARRAY(vertices);
+	RELEASE_ARRAY(indices);
+	RELEASE_ARRAY(vert_normals);
+	RELEASE_ARRAY(tex_coords);
 
 	std::string fileName = name;
 	fileName += ".rin";
 
 	//Save Mesh
 	App->fs->SaveFile(data, fileName, size);
+
+	RELEASE_ARRAY(data);
+
 
 	return ret;
 }

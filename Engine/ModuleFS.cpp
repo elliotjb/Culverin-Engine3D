@@ -71,7 +71,7 @@ std::vector<std::string> ModuleFS::Get_filenames(std::experimental::filesystem::
 
 	std::vector<std::string> filenames;
 
-	const stdfs::directory_iterator end{};
+	const stdfs::directory_iterator end{};//End iterator
 
 	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
 	{
@@ -137,9 +137,37 @@ uint ModuleFS::LoadFile(const char* file, char** buffer)
 	return length;
 }
 
-bool ModuleFS::SaveFile(const char* data, std::string name, uint size)
+bool ModuleFS::SaveFile(const char* data, std::string name, uint size, DIRECTORY_IMPORT directory)
 {
-	//Move to FileSystem ----------------------------------------
+	// First apply direcotry
+	switch (directory)
+	{
+	case IMPORT_DEFAULT:
+	{
+		break;
+	}
+	case IMPORT_DIRECTORY_ASSETS:
+	{
+		name = DIRECTORY_ASSETS + name;
+		break;
+	}
+	case IMPORT_DIRECTORY_LIBRARY:
+	{
+		name = DIRECTORY_LIBRARY + name;
+		break;
+	}
+	case IMPORT_DIRECTORY_LIBRARY_MESHES:
+	{
+		name = DIRECTORY_LIBRARY_MESHES + name;
+		break;
+	}
+	case IMPORT_DIRECTORY_LIBRARY_MATERIALS:
+	{
+		name = DIRECTORY_LIBRARY_MATERIALS + name;
+		break;
+	}
+	}
+	// Open or Created ----------------------------------------
 	std::ofstream outfile(name, std::ofstream::binary);
 
 	if (outfile.good())
@@ -181,6 +209,14 @@ std::string ModuleFS::FixName_directory(std::string file)
 {
 	size_t EndName = file.find_last_of("\\");
 	file = file.substr(EndName + 1);
+	return file;
+}
+
+std::string ModuleFS::FixExtension(std::string file, char* newExtension)
+{
+	size_t EndName = file.find_last_of(".");
+	file = file.substr(0, EndName);
+	file += newExtension;
 	return file;
 }
 

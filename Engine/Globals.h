@@ -28,6 +28,16 @@ void log(const char file[], int line, const char* format, ...);
        }\
     }
 
+// Deletes an array of buffers
+#define RELEASE_ARRAY( x )\
+	{\
+       if( x != nullptr )\
+       {\
+           delete[] x;\
+	       x = nullptr;\
+		 }\
+	 }
+
 #define CHECKERS_HEIGHT 64
 #define CHECKERS_WIDTH 64
 

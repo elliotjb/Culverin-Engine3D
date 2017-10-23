@@ -8,9 +8,18 @@
 #include <experimental/filesystem>
 #include <fstream>
 
-enum DIRECTORYSAVE
-{
+#define DIRECTORY_ASSETS "Assets\\"
+#define DIRECTORY_LIBRARY "Library\\"
+#define DIRECTORY_LIBRARY_MESHES "Library\\Meshes\\"
+#define DIRECTORY_LIBRARY_MATERIALS "Library\\Materials\\"
 
+enum DIRECTORY_IMPORT
+{
+	IMPORT_DEFAULT,
+	IMPORT_DIRECTORY_ASSETS,
+	IMPORT_DIRECTORY_LIBRARY,
+	IMPORT_DIRECTORY_LIBRARY_MESHES,
+	IMPORT_DIRECTORY_LIBRARY_MATERIALS
 };
 
 class ModuleFS : public Module
@@ -28,7 +37,9 @@ public:
 	//update_status UpdateConfig(float dt);
 
 	uint LoadFile(const char* file, char** buffer);
-	bool SaveFile(const char* data, std::string name, uint size);
+
+	//Name of file NOT DIRECTORY!!!
+	bool SaveFile(const char* data, std::string name, uint size, DIRECTORY_IMPORT directory = IMPORT_DEFAULT);
 
 	std::vector<std::string> Get_filenames(std::experimental::filesystem::path path);
 	std::vector<Folders> Get_AllFolders(std::experimental::filesystem::path path);
@@ -39,6 +50,7 @@ public:
 	// Utilities ----------------------------------
 	void FixNames_directories(std::vector<std::string>& files);
 	std::string FixName_directory(std::string files);
+	std::string FixExtension(std::string file, char * newExtension);
 	char* ConverttoChar(std::string name);
 	void CreateFolder(const char* file_name);
 

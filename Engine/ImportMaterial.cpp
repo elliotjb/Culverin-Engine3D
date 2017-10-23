@@ -27,16 +27,24 @@ ImportMaterial::~ImportMaterial()
 bool ImportMaterial::Import(char* file)
 {
 	bool ret = false;
-	ILuint size;
-	ILubyte *data;
-	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use
-	size = ilSaveL(IL_DDS, file, 0); // Get the size of the data buffer
-	if (size > 0) 
+	char* buffer;
+	uint size_file = App->fs->LoadFile(file, &buffer);
+	if (ilLoadL(IL_TYPE_UNKNOWN, (const void*)buffer, size_file))
 	{
-		data = new ILubyte[size]; // allocate data buffer
-		if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
-			ret = App->fs->SaveFile((char*)data, file, size);
-		//RELEASE(data);
+		ILuint size;
+		ILubyte *data;
+		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use
+		size = ilSaveL(IL_DDS, NULL, 0); // Get the size of the data buffer
+		if (size > 0)
+		{
+			data = new ILubyte[size]; // allocate data buffer
+			std::string name = file;
+			name = App->fs->FixName_directory(name);
+			name = App->fs->FixExtension(name, ".dds");
+			if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
+				ret = App->fs->SaveFile((char*)data, name, size, IMPORT_DIRECTORY_LIBRARY_MATERIALS);
+			RELEASE_ARRAY(data);
+		}
 	}
 
 	//return ret;
