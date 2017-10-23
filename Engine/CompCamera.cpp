@@ -51,7 +51,7 @@ void CompCamera::preUpdate()
 
 void CompCamera::Update()
 {
-	UpdateFrustum();
+	//UpdateFrustum();
 
 	DebugDraw();
 }

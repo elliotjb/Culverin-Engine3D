@@ -20,6 +20,7 @@ enum WindowName
 	INSPECTOR,
 	HIERARCHY,
 	SCENEWORLD,
+	GAME,
 	PROJECT
 };
 

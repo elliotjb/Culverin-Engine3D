@@ -7,6 +7,7 @@
 #include "ModuleInspector.h"
 #include "ModuleHierarchy.h"
 #include "ModuleSceneWorld.h"
+#include "WindowGame.h"
 #include "ModuleProject.h"
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_sdl_gl3.h"
@@ -48,12 +49,14 @@ bool ModuleGUI::Start()
 	winManager.push_back(new Hierarchy()); //3---- Hierarchy
 	winManager.push_back(new SceneWorld()); //4---- SceneWorld
 	winManager.push_back(new Project()); //5---- Project
+	winManager.push_back(new WindowGame()); //6----- WindowGame
 
 	
 	//TODO ELLIOT NEED ACTIVE bye JSON, Also Console
 	winManager[INSPECTOR]->active[0].active = true;
 	winManager[HIERARCHY]->active[0].active = true;
 	winManager[SCENEWORLD]->active[0].active = true;
+	winManager[GAME]->active[0].active = true;
 	winManager[PROJECT]->active[0].active = true;
 
 	std::vector<WindowManager*>::iterator window = winManager.begin();
@@ -213,6 +216,11 @@ update_status ModuleGUI::Update(float dt)
 			{
 				winManager[SCENEWORLD]->active[0].OpenClose();
 				LogOpenCloseWindow(winManager[SCENEWORLD]->active[0].active, winManager[SCENEWORLD]->name);
+			}
+			if (ImGui::MenuItem("Game"))
+			{
+				winManager[GAME]->active[0].OpenClose();
+				LogOpenCloseWindow(winManager[GAME]->active[0].active, winManager[GAME]->name);
 			}
 			if (ImGui::MenuItem("Hierarchy"))
 			{

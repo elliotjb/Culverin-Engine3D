@@ -107,6 +107,7 @@
     <ClInclude Include="ModuleSceneWorld.h" />
     <ClInclude Include="ModuleTextures.h" />
     <ClInclude Include="CompTransform.h" />
+    <ClInclude Include="WindowGame.h" />
     <ClInclude Include="_Cube.h" />
     <ClInclude Include="_Cylinder.h" />
     <ClInclude Include="ImGui\imconfig.h" />
@@ -227,6 +228,7 @@
     <ClCompile Include="ModuleSceneWorld.cpp" />
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="CompTransform.cpp" />
+    <ClCompile Include="WindowGame.cpp" />
     <ClCompile Include="_Cube.cpp" />
     <ClCompile Include="_Cylinder.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />

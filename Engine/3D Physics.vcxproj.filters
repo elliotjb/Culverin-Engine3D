@@ -420,6 +420,9 @@
     <ClInclude Include="CompCamera.h">
       <Filter>Engine\Modules\Scene\Components</Filter>
     </ClInclude>
+    <ClInclude Include="WindowGame.h">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -667,6 +670,9 @@
     </ClCompile>
     <ClCompile Include="CompCamera.cpp">
       <Filter>Engine\Modules\Scene\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowGame.cpp">
+      <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

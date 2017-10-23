@@ -26,7 +26,7 @@ update_status SceneWorld::Update(float dt)
 
 void SceneWorld::ShowSceneWorld()
 {
-	if (!BeginDock("Scene", NULL, 0)) //TODO ELLIOT CLOSE Windows example
+	if (!BeginDock("Scene", NULL, 0))
 	{
 		EndDock();
 		return;
