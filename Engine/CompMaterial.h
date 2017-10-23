@@ -14,7 +14,7 @@ struct Tex
 class CompMaterial : public Component
 {
 public:
-	CompMaterial(Comp_Type t);
+	CompMaterial(Comp_Type t, GameObject* parent);
 	~CompMaterial();
 
 	void SetColor(float r, float g, float b, float a);

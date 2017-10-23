@@ -4,6 +4,7 @@
 #include "Math/float2.h"
 #include <vector>
 
+class GameObject;
 class CompMaterial;
 
 struct _FaceCenter
@@ -23,7 +24,7 @@ struct _Vertex
 class CompMesh: public Component
 {
 public:
-	CompMesh(Comp_Type t);
+	CompMesh(Comp_Type t, GameObject* parent);
 	~CompMesh();
 
 	void InitRanges(uint num_vertices, uint num_indices, uint num_normals);
@@ -33,6 +34,7 @@ public:
 	void ShowInspectorInfo();
 	void Draw();
 	void Update();
+	void Render(bool render);
 
 	void LinkMaterial(CompMaterial* mat);
 
@@ -47,6 +49,7 @@ public:
 	//std::vector<_FaceCenter> face_centers;
 
 private:
+	bool render = true;
 	uint VAO = 0; /*Vertex Array Object*/
 	uint vertices_id = 0; /*VERTICES ID*/
 	uint indices_id = 0; /*INDICES ID*/

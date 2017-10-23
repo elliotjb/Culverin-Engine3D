@@ -17,7 +17,7 @@ GameObject::~GameObject()
 {
 }
 
-void GameObject::PreUpdate()
+void GameObject::preUpdate()
 {
 	if (active)
 	{
@@ -35,7 +35,7 @@ void GameObject::PreUpdate()
 		{
 			if (childs[i]->isActive())
 			{
-				childs[i]->PreUpdate();
+				childs[i]->preUpdate();
 			}
 		}
 	}
@@ -215,7 +215,7 @@ Component* GameObject::AddComponent(Comp_Type type)
 		if (type == C_MESH)
 		{
 			LOG("Adding MESH COMPONENT.");
-			CompMesh* mesh = new CompMesh(type);
+			CompMesh* mesh = new CompMesh(type, this);
 			components.push_back(mesh);
 			return mesh;
 		}
@@ -223,7 +223,7 @@ Component* GameObject::AddComponent(Comp_Type type)
 		else if (type == C_TRANSFORM)
 		{
 			LOG("Adding TRANSFORM COMPONENT.");
-			CompTransform* transform = new CompTransform(type);
+			CompTransform* transform = new CompTransform(type, this);
 			components.push_back(transform);
 			return transform;
 		}
@@ -231,7 +231,7 @@ Component* GameObject::AddComponent(Comp_Type type)
 		else if (type == C_MATERIAL)
 		{
 			LOG("Adding MATERIAL COMPONENT.");
-			CompMaterial* material = new CompMaterial(type);
+			CompMaterial* material = new CompMaterial(type, this);
 			components.push_back(material);
 
 			/* Link Material to the Mesh if exists */
@@ -250,7 +250,7 @@ Component* GameObject::AddComponent(Comp_Type type)
 		else if (type == C_CAMERA)
 		{
 			LOG("Adding CAMERA COMPONENT.");
-			CompCamera* camera = new CompCamera(type);
+			CompCamera* camera = new CompCamera(type, this);
 			components.push_back(camera);
 			return camera;
 		}

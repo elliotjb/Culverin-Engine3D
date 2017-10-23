@@ -49,6 +49,12 @@ update_status Scene::PreUpdate(float dt)
 
 	frBuff->Bind();
 
+	// PreUpdate GameObjects
+	for (uint i = 0; i < gameobjects.size(); i++)
+	{
+		gameobjects[i]->preUpdate();
+	}
+
 	preUpdate_t = perf_timer.ReadMs();
 
 	return UPDATE_CONTINUE;
@@ -62,7 +68,7 @@ update_status Scene::Update(float dt)
 	DrawPlane(size_plane);
 
 
-	// Update Root Game Objects
+	// Update GameObjects
 	for (uint i = 0; i < gameobjects.size(); i++)
 	{
 		gameobjects[i]->Update();

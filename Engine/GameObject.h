@@ -1,6 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include "Component.h"
+#include "MathGeoLib.h"
 #include <string>
 #include <vector>
 
@@ -10,7 +11,7 @@ public:
 	GameObject();
 	~GameObject();
 
-	void PreUpdate();
+	void preUpdate();
 	void Update();
 	bool Enable();
 	bool Disable();

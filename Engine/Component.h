@@ -2,6 +2,8 @@
 #include "Globals.h"
 #include "ImGui\imgui.h"
 
+class GameObject;
+
 enum Comp_Type 
 {	
 	C_UNKNOWN = -1,
@@ -14,7 +16,7 @@ enum Comp_Type
 class Component
 {
 public:
-	Component(Comp_Type t);
+	Component(Comp_Type t, GameObject* parent);
 	virtual ~Component();
 
 	virtual bool Enable();
@@ -30,4 +32,7 @@ public:
 private:
 	Comp_Type type = C_UNKNOWN;
 	bool active = false;
+
+protected:
+	GameObject* parent = nullptr;
 };

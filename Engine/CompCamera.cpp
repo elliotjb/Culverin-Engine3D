@@ -1,9 +1,15 @@
 #include "CompCamera.h"
+#include "CompMesh.h"
+#include "CompTransform.h"
 #include "MathGeoLib.h"
+#include "Application.h"
+#include "Scene.h"
+#include "GameObject.h"
+
 #include "SDL\include\SDL_opengl.h"
 #include <math.h>
 
-CompCamera::CompCamera(Comp_Type t) :Component(t)
+CompCamera::CompCamera(Comp_Type t, GameObject* parent) :Component(t, parent)
 {
 	/* Set camera vars*/
 	width = 16;
@@ -39,13 +45,28 @@ void CompCamera::preUpdate()
 	if (culling)
 	{
 		// Iterate All GameObjects and apply culling
-
+		DoCulling();
 	}
 }
 
 void CompCamera::Update()
 {
+	UpdateFrustum();
+
 	DebugDraw();
+}
+
+void CompCamera::UpdateFrustum()
+{
+	const CompTransform* parent_transform = (CompTransform*)this->parent->FindComponentByType(C_TRANSFORM);
+
+	//Z axis of the transform
+	cam_frustum.front = parent_transform->GetTransform().Col3(2);
+
+	//Y axis of the transform
+	cam_frustum.up = parent_transform->GetTransform().Col3(1);
+
+	cam_frustum.pos = parent_transform->GetPos();
 }
 
 void CompCamera::DebugDraw()
@@ -71,7 +92,10 @@ void CompCamera::ShowInspectorInfo()
 	if (ImGui::TreeNodeEx("Camera", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::PopStyleColor();
-		ImGui::PushItemWidth(60);
+
+		ImGui::Checkbox("Culling", &culling);
+
+		ImGui::PushItemWidth(80);
 		if (ImGui::DragFloat("Near Plane", &near_plane, 0.5f, 0.01f, far_plane - 0.01f))
 		{
 			SetNear(near_plane);
@@ -93,6 +117,76 @@ void CompCamera::ShowInspectorInfo()
 	{
 		ImGui::PopStyleColor();
 	}
+}
+
+void CompCamera::DoCulling()
+{
+	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
+	{
+		// Check if the GameObject has a mesh to draw
+		CompMesh* mesh = (CompMesh*)App->scene->gameobjects[i]->FindComponentByType(C_MESH);
+		if (mesh != nullptr)
+		{
+			// Check its bounding box
+			AABB* box = App->scene->gameobjects[i]->bounding_box;
+			if (box != nullptr)
+			{
+				if (ContainsAABox(*box) == CULL_OUT)
+				{
+					mesh->Render(false);
+				}
+				else
+				{
+					mesh->Render(true);
+				}
+			}
+		}
+		
+	}
+}
+
+Culling CompCamera::ContainsAABox(const AABB& refBox) const
+{
+	float3 corner[8];
+	int totalIn = 0;
+	refBox.GetCornerPoints(corner); // get the corners of the box into corner array
+	
+	// Test all 8 corners against the 6 sides of the frustum.
+	// If all of them are behinf one specific plane = OUT.
+	// If one of them is inside all the planes = IN or INTERSECT
+	for (uint p = 0; p < 6; p++)
+	{
+		int In_count = 8;
+		int point_In = 1;
+
+		for(uint i = 0; i < 8; i++)
+		{
+			//Test all points against plane[p]
+			if (cam_frustum.GetPlane(p).IsOnPositiveSide(corner[i])) 
+			{
+				// The point is behind the plane
+				point_In = 0;
+				In_count--;
+			}
+		}
+
+		// If all points are out of the plane
+		if (In_count == 0)
+		{
+			return CULL_OUT;
+		}
+
+		// Sum all points that are inside of the planes
+		totalIn += point_In;
+	}
+
+	if (totalIn == 6)
+	{
+		return CULL_IN;
+	}
+	
+
+	return CULL_INTERSECT;
 }
 
 void CompCamera::SetPos(float3 pos)

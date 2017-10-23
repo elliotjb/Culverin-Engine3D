@@ -1,10 +1,11 @@
 #include "CompTransform.h"
 #include "Component.h"
+#include "GameObject.h"
 
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-CompTransform::CompTransform(Comp_Type t) :Component(t)
+CompTransform::CompTransform(Comp_Type t, GameObject* parent) :Component(t, parent)
 {
 }
 
@@ -97,5 +98,10 @@ float3 CompTransform::GetRot() const
 float3 CompTransform::GetScale() const
 {
 	return scale;
+}
+
+float4x4 CompTransform::GetTransform() const
+{
+	return matrix;
 }
 

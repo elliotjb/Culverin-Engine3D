@@ -5,9 +5,10 @@
 #include "CompMaterial.h"
 #include "ModuleRenderer3D.h"
 #include "Color.h"
+#include "GameObject.h"
 #include <vector>
 
-CompMesh::CompMesh(Comp_Type t): Component(t)
+CompMesh::CompMesh(Comp_Type t, GameObject* parent) : Component(t, parent)
 {
 }
 
@@ -143,6 +144,7 @@ void CompMesh::ShowInspectorInfo()
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
 	if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+
 		ImGui::PopStyleColor();
 		ImGui::Text("Name:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", name);
@@ -150,6 +152,8 @@ void CompMesh::ShowInspectorInfo()
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", num_vertices);
 		ImGui::Text("Indices:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", num_indices);
+		
+		ImGui::Checkbox("Render", &render);
 
 		ImGui::TreePop();
 	}
@@ -219,7 +223,15 @@ void CompMesh::Draw()
 
 void CompMesh::Update()
 {
-	Draw();
+	if (render)
+	{
+		Draw();
+	}
+}
+
+void CompMesh::Render(bool render)
+{
+	this->render = render;
 }
 
 void CompMesh::LinkMaterial(CompMaterial * mat)

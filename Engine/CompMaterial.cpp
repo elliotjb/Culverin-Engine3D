@@ -1,8 +1,9 @@
 #pragma once
 #include "CompMaterial.h"
 #include "Color.h"
+#include "GAmeObject.h"
 
-CompMaterial::CompMaterial(Comp_Type t): Component(t)
+CompMaterial::CompMaterial(Comp_Type t, GameObject* parent): Component(t, parent)
 {
 	color = White;
 }

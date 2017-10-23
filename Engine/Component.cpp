@@ -1,6 +1,7 @@
 #include "Component.h"
+#include "GameObject.h"
 
-Component::Component(Comp_Type t):type(t)
+Component::Component(Comp_Type t, GameObject* parent) :type(t), parent(parent)
 {
 }
 

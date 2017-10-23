@@ -2,19 +2,31 @@
 #include "Component.h"
 #include "Geometry/Frustum.h"
 
+class GameObject;
+
+enum Culling
+{
+	CULL_IN = 0,
+	CULL_OUT,
+	CULL_INTERSECT
+};
+
 class CompCamera : public Component
 {
 public:
-	CompCamera(Comp_Type t);
+	CompCamera(Comp_Type t, GameObject* parent);
 	~CompCamera();
 
 	void Init(float3 pos);
 	void preUpdate();
 	void Update();
+	void UpdateFrustum();
 	void DebugDraw();
 
 	void ShowInspectorInfo();
 
+	void DoCulling();
+	Culling ContainsAABox(const AABB& refBox) const;
 
 	void SetPos(float3 pos);
 	void SetNear(float near_p);

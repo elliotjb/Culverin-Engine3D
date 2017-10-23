@@ -3,6 +3,8 @@
 #include "MathGeoLib.h"
 #include <vector>
 
+class GameObject;
+
 struct Axis
 {
 	float3 x = { 1, 0, 0 };
@@ -13,7 +15,7 @@ struct Axis
 class CompTransform :public Component
 {
 public:
-	CompTransform(Comp_Type t);
+	CompTransform(Comp_Type t, GameObject* parent);
 	~CompTransform();
 
 	void Init(float3 p, float3 r, float3 s);
@@ -29,6 +31,7 @@ public:
 	float3 GetPos() const;
 	float3 GetRot() const;
 	float3 GetScale() const;
+	float4x4 GetTransform() const;
 
 private:
 	Axis axis;
