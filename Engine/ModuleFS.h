@@ -8,6 +8,11 @@
 #include <experimental/filesystem>
 #include <fstream>
 
+enum DIRECTORYSAVE
+{
+
+};
+
 class ModuleFS : public Module
 {
 public:

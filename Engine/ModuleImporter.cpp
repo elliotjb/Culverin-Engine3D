@@ -1,6 +1,7 @@
 #include "ModuleImporter.h"
 #include "Application.h"
 #include "ImportMesh.h"
+#include "ImportMaterial.h"
 
 
 ModuleImporter::ModuleImporter(bool start_enabled) : Module(start_enabled)
@@ -73,25 +74,10 @@ update_status ModuleImporter::PreUpdate(float dt)
 		}
 		case F_TEXTURE_i:
 		{
-			//LOG("IMPORTING TEXTURE, File Path: %s", App->input->dropped_filedir);
+			LOG("IMPORTING TEXTURE, File Path: %s", App->input->dropped_filedir);
 
-			////Check if there's a Geometry to apply the dropped texture
-			//if (App->geometry_manager->geometry != nullptr)
-			//{
-			//	/*Delete the previous textures to apply the new one*/
-			//	((_Model*)(App->geometry_manager->geometry))->ClearTexture(mesh_index, tex_index, tex_id);
-			//	((_Model*)(App->geometry_manager->geometry))->SetTexture(App->input->dropped_filedir, mesh_index, tex_index, tex_id);
-
-			//}
-			//else
-			//{
-			//	LOG("FAIL LOADING TEXTURE: No model to apply it");
-			//}
-
-			//SDL_free(App->input->dropped_filedir);
-
-			//mesh_index = -1;
-			//tex_index = -1;
+			ImportMaterial* mat = new ImportMaterial();
+			mat->Import(App->input->dropped_filedir);
 		
 			break;
 		}
@@ -124,7 +110,7 @@ void ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene)
 	for (uint i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		ImportMesh* imp = new ImportMesh();
+		ImportMesh* imp = new ImportMesh(); // TODO ELLIOT
 		imp->Import(mesh, node->mName.C_Str());
 	}
 

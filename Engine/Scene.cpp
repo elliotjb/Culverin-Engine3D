@@ -61,13 +61,6 @@ update_status Scene::Update(float dt)
 	//Draw Plane
 	DrawPlane(size_plane);
 
-	//if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
-	//{
-	//	mkdir("NewFolderElliot");
-	//}
-	//FILE* temp; 
-	//temp = fopen("elliotjb", "r");
-
 
 	// Update Root Game Objects
 	for (uint i = 0; i < gameobjects.size(); i++)
