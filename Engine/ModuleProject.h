@@ -56,12 +56,12 @@ public:
 	std::vector<Files>* Folders_update(std::vector<Folders>& folder);
 
 	void SetAllFolderBool(std::vector<Folders>& folders, bool setBoolean);
-
+	void ChangefileViwer(std::vector<Folders>& folder, std::string name);
 
 private:
 
 	std::vector<Folders> folders;
 	std::string directory_see;
 	int sizeFiles;
-	std::vector<Files>* ret = nullptr;
+	std::vector<Files>* fileViwer = nullptr;
 };

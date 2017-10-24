@@ -17,12 +17,12 @@ Project::~Project()
 bool Project::Start()
 {
 	//directory_see = App->fs->GetMainDirectory();
-	directory_see = "Assets\\";
-	//directory_see = "";
+	//directory_see = "Assets\\";
+	directory_see = "";
 	folders = App->fs->Get_AllFolders(directory_see);
 	Iterate_files(folders);
-	//ReorderFiles(folders);
-	folders[0].folder_child[0].active = true;
+	ReorderFiles(folders);
+	folders[0].active = true;
 	sizeFiles = 50;
 
 	return true;
@@ -178,9 +178,9 @@ void Project::ReorderFiles(std::vector<Folders>& folders)
 		{
 			if (folders[i].files[x].file_type == FOLDER)
 			{
-				for (int j = 0; j < folders.size(); j++)
+				for (int j = 0; j < folders[i].files.size(); j++)
 				{
-					if (j == size)
+					if (j == size && folders[i].files[j].file_type != FOLDER)
 					{
 						Swap(folders[i].files[x], folders[i].files[j]);
 						size++;
@@ -251,9 +251,7 @@ void Project::Files_Update(std::vector<Files>& files)
 				//LOG("%.2f - %.2f  / /  %.2f - %.2f", ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y, ImGui::GetItemRectMax().x, ImGui::GetItemRectMax().y);
 				if (ImGui::IsMouseDoubleClicked(0))
 				{
-					SetAllFolderBool(folders, false);
-					files[i].parentFolder->active = true;
-					ret = &files[i].parentFolder->folder_child[1].files;
+					ChangefileViwer(files[i].parentFolder->folder_child, files[i].file_name);
 				}
 			}
 			break;
@@ -304,8 +302,15 @@ std::vector<Files>* Project::Folders_update(std::vector<Folders>& folder)
 	for (int i = 0; i < folder.size(); i++)
 	{
 		ImGui::PushID(i);
-		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_Selected | ImGuiTreeNodeFlags_OpenOnArrow;
-
+		ImGuiTreeNodeFlags node_flags;
+		if (folder[i].active)
+		{
+			node_flags = ImGuiTreeNodeFlags_Selected | ImGuiTreeNodeFlags_OpenOnArrow;
+		}
+		else
+		{
+			node_flags = ImGuiTreeNodeFlags_OpenOnArrow;
+		}
 		if (ImGui::TreeNodeEx(folder[i].file_name, node_flags))
 		{
 			if (ImGui::BeginPopupContextItem("rename context menu"))
@@ -321,7 +326,7 @@ std::vector<Files>* Project::Folders_update(std::vector<Folders>& folder)
 				{
 					SetAllFolderBool(folders, false);
 					folder[i].active = true;
-					ret = &folder[i].files;
+					fileViwer = &folder[i].files;
 				}
 			}
 			if (folder[i].folder_child.size() > 0)
@@ -337,11 +342,11 @@ std::vector<Files>* Project::Folders_update(std::vector<Folders>& folder)
 		ImGui::PopID();
 	}
 	ImGui::PopStyleColor();
-	if (ret == nullptr)
+	if (fileViwer == nullptr)
 	{
-		ret = &folder[0].files;
+		fileViwer = &folder[0].files;
 	}
-	return ret;
+	return fileViwer;
 }
 
 void Project::SetAllFolderBool(std::vector<Folders>& folders, bool setBoolean)
@@ -354,4 +359,17 @@ void Project::SetAllFolderBool(std::vector<Folders>& folders, bool setBoolean)
 		}
 		folders[i].active = setBoolean;
 	}
+}
+
+void Project::ChangefileViwer(std::vector<Folders>& folder, std::string name)
+{
+	SetAllFolderBool(folders, false);
+	for (int i = 0; i < folder.size(); i++)
+	{
+		if (folder[i].file_name == name)
+		{
+			folder[i].active = true;
+			fileViwer = &folder[i].files;
+		}
+	}	
 }
