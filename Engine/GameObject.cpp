@@ -45,8 +45,6 @@ void GameObject::Update()
 {
 	if (active)
 	{
-		/* Enable Editing Transform*/
-		glPushMatrix();
 
 		//Update Components --------------------------
 		for (uint i = 0; i < components.size(); i++)
@@ -79,9 +77,6 @@ void GameObject::Update()
 				DrawBoundingBox();
 			}
 		}
-
-		/* Reset the matrix (don't want to affect the rest of GameObjects*/
-		glPopMatrix();
 	}
 }
 

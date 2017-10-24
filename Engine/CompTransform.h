@@ -32,6 +32,7 @@ public:
 	float3 GetRot() const;
 	float3 GetScale() const;
 	float4x4 GetTransform() const;
+	const float* GetMultMatrixForOpenGL() const;
 
 private:
 	Axis axis;

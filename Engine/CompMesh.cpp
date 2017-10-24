@@ -3,6 +3,7 @@
 #include "Component.h"
 #include "CompMesh.h"
 #include "CompMaterial.h"
+#include "CompTransform.h"
 #include "ModuleRenderer3D.h"
 #include "Color.h"
 #include "GameObject.h"
@@ -165,6 +166,14 @@ void CompMesh::ShowInspectorInfo()
 
 void CompMesh::Draw()
 {
+	/* Push Matrix to Draw with transform applied, only if it contains a transform component */
+	glPushMatrix();
+	CompTransform* transform = (CompTransform*)parent->FindComponentByType(C_TRANSFORM);
+	if (transform != nullptr)
+	{
+		glMultMatrixf(transform->GetMultMatrixForOpenGL());
+	}
+
 	if (vertices.size() > 0 && indices.size() > 0)
 	{
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -219,6 +228,8 @@ void CompMesh::Draw()
 	{
 		LOG("Cannot draw the mesh");
 	}
+
+	glPopMatrix();
 }
 
 void CompMesh::Update()

@@ -105,3 +105,8 @@ float4x4 CompTransform::GetTransform() const
 	return matrix;
 }
 
+const float* CompTransform::GetMultMatrixForOpenGL() const
+{
+	return matrix.Transposed().ptr(); //Change Matrix to Global Matrix
+}
+
