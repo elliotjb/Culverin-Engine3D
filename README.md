@@ -20,13 +20,6 @@ that composes the entire model (only .png or .jpg formats).
 
 # MODEL/TEXTURES IMPORTING
 To import a model (.fbx/.obj) to the Engine, just drag it inside the window.
-If loaded correctly, you will see an Inspector Window with Basic information of the model.
-To load textures to a model (that accept textures), first of all, they have to be .png/.jpg. Then, 
-in the Inspector Window, you will see the textures applied to the model in a small square.
-The specular channel of the models is only to show the textures that will be shown in specular channel.
-
-TO APPLY/CHANGE A TEXTURE OF A MESH, DRAG AND DROP IT INSIDE THE IMAGE SQUARE OF THE TEXTURE, IN THE INSPECTOR WINDOW.
-Visual Explanation Here -> ![](https://i.gyazo.com/d8da58aaf53a70c7a150e8bf1adee4f6.gif)
 
 # UPDATES
 - 0.5.5:
