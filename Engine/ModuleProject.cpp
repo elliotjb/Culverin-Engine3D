@@ -18,9 +18,10 @@ bool Project::Start()
 {
 	//directory_see = App->fs->GetMainDirectory();
 	directory_see = "Assets\\";
+	//directory_see = "";
 	folders = App->fs->Get_AllFolders(directory_see);
 	Iterate_files(folders);
-	ReorderFiles(folders);
+	//ReorderFiles(folders);
 	folders[0].folder_child[0].active = true;
 	sizeFiles = 50;
 
@@ -102,6 +103,10 @@ void Project::Iterate_files(std::vector<Folders>& folders)
 	{
 		if (folders[i].folder_child.size() > 0)
 		{
+			//for (int x = 0; x < folders[i].folder_child.size(); x++)
+			//{
+			//	folders[i].folder_child[x].parent = &folders[i];
+			//}
 			Iterate_files(folders[i].folder_child);
 		}
 		std::vector<std::string> temp_directory = App->fs->Get_filenames(folders[i].directory_name);
@@ -116,6 +121,7 @@ void Project::Iterate_files(std::vector<Folders>& folders)
 			temp[temp_name[j].length()] = '\0';
 			file_temp.file_name = temp;
 			file_temp.file_type = SetType(temp_name[j]);
+			file_temp.parentFolder = &folders[i];
 			folders[i].files.push_back(file_temp);
 		}
 	}
@@ -186,7 +192,7 @@ void Project::ReorderFiles(std::vector<Folders>& folders)
 	}
 }
 
-void Project::Files_Update(const std::vector<Files>& files)
+void Project::Files_Update(std::vector<Files>& files)
 {
 	static GLuint folder_icon = App->textures->LoadTexture("Images/UI/folder_icon.png");
 	static GLuint icon_png = App->textures->LoadTexture("Images/UI/icon_png.png");
@@ -234,11 +240,22 @@ void Project::Files_Update(const std::vector<Files>& files)
 		case NON:
 		{
 			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_unknown, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
+
 			break;
 		}
 		case FOLDER:
 		{
 			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)folder_icon, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
+			if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
+			{
+				//LOG("%.2f - %.2f  / /  %.2f - %.2f", ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y, ImGui::GetItemRectMax().x, ImGui::GetItemRectMax().y);
+				if (ImGui::IsMouseDoubleClicked(0))
+				{
+					SetAllFolderBool(folders, false);
+					files[i].parentFolder->active = true;
+					ret = &files[i].parentFolder->folder_child[1].files;
+				}
+			}
 			break;
 		}
 		case FBX:
@@ -282,7 +299,7 @@ void Project::Files_Update(const std::vector<Files>& files)
 
 std::vector<Files>* Project::Folders_update(std::vector<Folders>& folder)
 {
-	std::vector<Files>* ret = nullptr;
+
 	ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.335f, 0.337f, 0.357f, 1.00f));
 	for (int i = 0; i < folder.size(); i++)
 	{
@@ -297,22 +314,26 @@ std::vector<Files>* Project::Folders_update(std::vector<Folders>& folder)
 				ImGui::InputText("##edit2", folder[i].file_name, 256);
 				ImGui::EndPopup();
 			}
-
+			if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
+			{
+				//LOG("%.2f - %.2f  / /  %.2f - %.2f", ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y, ImGui::GetItemRectMax().x, ImGui::GetItemRectMax().y);
+				if (ImGui::IsMouseDoubleClicked(0) && folder[i].active == false)
+				{
+					SetAllFolderBool(folders, false);
+					folder[i].active = true;
+					ret = &folder[i].files;
+				}
+			}
 			if (folder[i].folder_child.size() > 0)
 			{
 				Folders_update(folder[i].folder_child);
 			}
-			if (ImGui::IsMouseDoubleClicked(0))
-			{
-				SetAllFolderBool(folders, false);
-				folder[i].active = true;
-			}
 			ImGui::TreePop();
 		}
-		if (folder[i].active)
-		{
-			ret = &folder[i].files;
-		}
+		//if (folder[i].active)
+		//{
+		//	
+		//}
 		ImGui::PopID();
 	}
 	ImGui::PopStyleColor();

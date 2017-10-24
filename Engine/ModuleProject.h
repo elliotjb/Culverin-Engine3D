@@ -18,12 +18,14 @@ enum TYPE_FILE
 	JPG,
 	DDS
 };
+struct Folders;
 
 struct Files
 {
 	std::string directory_name;
 	char* file_name = nullptr;
 	TYPE_FILE file_type;
+	Folders* parentFolder = nullptr;
 };
 
 struct Folders
@@ -50,7 +52,7 @@ public:
 	void Iterate_files(std::vector<Folders>& folders);
 	TYPE_FILE SetType(std::string name);
 	void ReorderFiles(std::vector<Folders>& folders);
-	void Files_Update(const std::vector<Files>& files);
+	void Files_Update(std::vector<Files>& files);
 	std::vector<Files>* Folders_update(std::vector<Folders>& folder);
 
 	void SetAllFolderBool(std::vector<Folders>& folders, bool setBoolean);
@@ -61,4 +63,5 @@ private:
 	std::vector<Folders> folders;
 	std::string directory_see;
 	int sizeFiles;
+	std::vector<Files>* ret = nullptr;
 };

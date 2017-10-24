@@ -90,6 +90,11 @@ std::vector<Folders> ModuleFS::Get_AllFolders(std::experimental::filesystem::pat
 
 	const stdfs::directory_iterator end{};
 
+	if (path == "")
+	{
+		path = directory_Game;
+	}
+
 	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
 	{
 		if (stdfs::is_directory(*iter))
