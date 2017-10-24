@@ -3,6 +3,7 @@
 #include "PerfTimer.h"
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_sdl_gl3.h"
+#include "ImGui\ImGuizmo.h"
 #include "SDL\include\SDL.h"
 #include "mmgr\mmgr.h"
 
@@ -189,6 +190,7 @@ update_status Application::Update()
 	}
 
 	ImGui_ImplSdlGL3_NewFrame(window->window);
+	ImGuizmo::BeginFrame();
 
 	item = list_modules.getFirst();
 

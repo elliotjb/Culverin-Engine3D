@@ -93,6 +93,7 @@
     <ClInclude Include="CompMaterial.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="ImGui\ImGuizmo.h" />
     <ClInclude Include="ImGui\imgui_dock_v2.h" />
     <ClInclude Include="ImportMesh.h" />
     <ClInclude Include="ImportMaterial.h" />
@@ -215,6 +216,7 @@
     <ClCompile Include="CompMaterial.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ImGui\ImGuizmo.cpp" />
     <ClCompile Include="ImGui\imgui_dock_v2.cpp" />
     <ClCompile Include="ImportMesh.cpp" />
     <ClCompile Include="ImportMaterial.cpp" />
