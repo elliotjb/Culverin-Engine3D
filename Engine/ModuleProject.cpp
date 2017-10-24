@@ -104,23 +104,33 @@ void Project::ShowProject()
 	{
 		ImGui::PushID(i);
 
-		std::string namebySize = files[i].file_name;
-		ImVec2 size_name = ImGui::CalcTextSize(namebySize.c_str(), NULL, true);
+		//std::string namebySize = files[i].file_name;
+		static char nameTemp[100];
+		int lenght = strlen(files[i].file_name);
+		memset(nameTemp, 0, 99);
+		for (int j = 0; j < lenght; j++)
+		{
+			nameTemp[j] = files[i].file_name[j];
+		}
+		//ImVec2 size_name = ImGui::CalcTextSize(namebySize.c_str(), NULL, true);
+		ImVec2 size_name = ImGui::CalcTextSize(nameTemp, NULL, true);
 		if (size_name.x > sizeFiles)
 		{
-			for (uint ds = namebySize.size(); ds > 0; ds--)
+			int siz = strlen(nameTemp);
+			for (uint ds = siz; ds > 0; ds--)
 			{
-				size_name = ImGui::CalcTextSize(namebySize.c_str(), NULL, true);
+				uint st = strlen(nameTemp);
+				size_name = ImGui::CalcTextSize(nameTemp, NULL, true);
 				if (size_name.x < sizeFiles)
 				{
-					namebySize.pop_back();
-					namebySize.pop_back();
-					namebySize.pop_back();
-					namebySize += "...";
+					nameTemp[st - 3] = '.';
+					nameTemp[st - 2] = '.';
+					nameTemp[st - 1] = '.';
+					nameTemp[st] = '\0';
 					break;
 				}
 				else
-					namebySize.pop_back();
+					nameTemp[st - 1] = 0;
 			}
 		}
 
@@ -128,32 +138,32 @@ void Project::ShowProject()
 		{
 		case NON:
 		{
-			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_unknown, namebySize.c_str(), ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
+			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_unknown, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
 			break;
 		}
 		case FOLDER:
 		{
-			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)folder_icon, namebySize.c_str(), ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
+			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)folder_icon, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
 			break;
 		}
 		case FBX:
 		{
-			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_fbx, namebySize.c_str(), ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
+			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_fbx, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
 			break;
 		}
 		case OBJ:
 		{
-			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_obj, namebySize.c_str(), ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
+			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_obj, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
 			break;
 		}
 		case PNG:
 		{
-			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_png, namebySize.c_str(), ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
+			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_png, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
 			break;
 		}
 		case JPG:
 		{
-			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_jpg, namebySize.c_str(), ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
+			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_jpg, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
 			break;
 		}
 		}
@@ -252,7 +262,7 @@ void Project::ReorderFiles()
 	}
 }
 
-void Project::Folders_update(std::vector<Folders> folder)
+void Project::Folders_update(const std::vector<Folders>& folder)
 {
 	ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.335f, 0.337f, 0.357f, 1.00f));
 	for (int i = 0; i < folder.size(); i++)
@@ -260,7 +270,7 @@ void Project::Folders_update(std::vector<Folders> folder)
 		ImGui::PushID(i);
 		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_Selected | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 
-		if (ImGui::TreeNodeEx(folder[i].file_name, node_flags))
+		if (ImGui::TreeNodeEx(folder[i].file_name, 0))
 		{
 			if (ImGui::BeginPopupContextItem("rename context menu"))
 			{
@@ -268,8 +278,8 @@ void Project::Folders_update(std::vector<Folders> folder)
 				ImGui::InputText("##edit2", folder[i].file_name, 256);
 				ImGui::EndPopup();
 			}
-			if (ImGui::IsItemClicked())
-				folder[i].active = !folder[i].active;
+			//if (ImGui::IsItemClicked())
+				//folder[i].active = !folder[i].active;
 
 			if (folder[i].folder_child.size() > 0)
 			{

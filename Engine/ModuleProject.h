@@ -50,7 +50,7 @@ public:
 	void Iterate_files();
 	TYPE_FILE SetType(std::string name);
 	void ReorderFiles();
-	void Folders_update(std::vector<Folders> folder);
+	void Folders_update(const std::vector<Folders>& folder);
 
 
 private:
