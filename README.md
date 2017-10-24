@@ -29,6 +29,9 @@ TO APPLY/CHANGE A TEXTURE OF A MESH, DRAG AND DROP IT INSIDE THE IMAGE SQUARE OF
 Visual Explanation Here -> ![](https://i.gyazo.com/d8da58aaf53a70c7a150e8bf1adee4f6.gif)
 
 # UPDATES
+- 0.5.5:
+	* Fixed Bugs with transmors.
+	* Fixed Bugs with Window Project.
 - 0.5.4:
 	* Add Window Project:
 		> In left window, you can see a hierarchy folders.
