@@ -32,15 +32,23 @@ public:
 	float3 GetRot() const;
 	float3 GetScale() const;
 	float4x4 GetTransform() const;
+	float4x4 GetInheritedTransform() const;
 	const float* GetMultMatrixForOpenGL() const;
 
 private:
 	Axis axis;
+
+	// Output Values -----------------
 	float3 position = { 0, 0, 0 };
 	float3 rotation = { 0, 0, 0 };
+	float3 scale = { 0, 0, 0 };
+	// ---------------
+
 	float3 rot_angle = { 0, 0, 0 };
 	Quat rot_quat = { 1, 0, 0, 0 };
-	float3 scale = { 0, 0, 0 };
 
-	float4x4 matrix;
+	float4x4 local_transform;
+
+	float4x4 inherited_transform;
+	float3 inherited_pos = { 0, 0, 0 };
 };

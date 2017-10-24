@@ -65,16 +65,21 @@ void GameObject::Update()
 		}
 
 		// BOUNDING BOX -----------------
-		if (bb_active)
+		if (bounding_box != nullptr)
 		{
-			CompMesh* mesh = (CompMesh*)(FindComponentByType(C_MESH));
-			if (mesh != nullptr)
+			//CompMesh* mesh = (CompMesh*)(FindComponentByType(C_MESH));
+			CompTransform* transform = (CompTransform*)(FindComponentByType(C_TRANSFORM));
+			if (transform != nullptr)
 			{
 				//Resize the Bounding Box
-				bounding_box->Enclose(mesh->vertices, mesh->num_vertices);
-
-				// Draw Bounding Box
-				DrawBoundingBox();
+				//bounding_box->Enclose(mesh->vertices, mesh->num_vertices);
+				bounding_box->SetFromCenterAndSize(transform->GetPos(), transform->GetScale()*2);
+				
+				if (bb_active)
+				{
+					// Draw Bounding Box
+					DrawBoundingBox();
+				}
 			}
 		}
 	}
@@ -105,14 +110,28 @@ void GameObject::SetName(char * name)
 
 void GameObject::ShowHierarchy()
 {
+	if (!isVisible())
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.385f, 0.385f, 0.385f, 1.00f));
+	}
+	else
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.00f, 1.00f, 1.00f, 1.00f));
+	}
+
 	if (ImGui::TreeNodeEx(name))
 	{
+		ImGui::PopStyleColor();
 		for (uint i = 0; i < childs.size(); i++)
 		{
 			childs[i]->ShowHierarchy();
 		}
 
 		ImGui::TreePop();
+	}
+	else
+	{
+		ImGui::PopStyleColor();
 	}
 
 	if (ImGui::IsItemClicked())
@@ -147,17 +166,20 @@ void GameObject::ShowInspectorInfo()
 		ImGui::PopStyleVar();
 	}
 
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 8));
-	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
-	ImGui::Text(""); ImGui::SameLine(8);
-
 	/* BOUNDING BOX CHECKBOX */
-	ImGui::Checkbox("##2", &bb_active);
+	if (bounding_box != nullptr)
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 8));
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
+		ImGui::Text(""); ImGui::SameLine(8);
 
-	ImGui::SameLine();
-	ImGui::PopStyleVar();
-	ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "Bounding Box");
-	ImGui::PopStyleVar();
+		ImGui::Checkbox("##2", &bb_active);
+
+		ImGui::SameLine();
+		ImGui::PopStyleVar();
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "Bounding Box");
+		ImGui::PopStyleVar();
+	}
 
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
@@ -176,7 +198,37 @@ bool GameObject::isActive() const
 	return active;
 }
 
-Component* GameObject::FindComponentByType(Comp_Type type)
+bool GameObject::isVisible() const
+{
+	bool ret = false;
+
+	CompMesh* mesh = (CompMesh*)FindComponentByType(C_MESH);
+
+	if (mesh != nullptr)
+	{
+		// If the mesh is Drawing
+		if (mesh->isRendering())
+		{
+			ret = true;
+		}
+
+		// If not
+		else
+		{
+			ret = false;
+		}
+	}
+
+	// If the GameObject hasn't got a mesh, it's allways visible (unless you disable it)
+	else
+	{
+		ret = true;
+	}
+
+	return ret;
+}
+
+Component* GameObject::FindComponentByType(Comp_Type type) const
 {
 	Component* comp = nullptr;
 
@@ -256,6 +308,13 @@ Component* GameObject::AddComponent(Comp_Type type)
 
 void GameObject::DrawBoundingBox()
 {
+	//CompTransform* transform = (CompTransform*)FindComponentByType(C_TRANSFORM);
+	//if (transform != nullptr)
+	//{
+	//	glPushMatrix();
+	//	glMultMatrixf(transform->GetMultMatrixForOpenGL());
+	//}
+
 	glBegin(GL_LINES);
 	glLineWidth(3.0f);
 	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
@@ -265,7 +324,12 @@ void GameObject::DrawBoundingBox()
 		glVertex3f(bounding_box->Edge(i).a.x, bounding_box->Edge(i).a.y, bounding_box->Edge(i).a.z);
 		glVertex3f(bounding_box->Edge(i).b.x, bounding_box->Edge(i).b.y, bounding_box->Edge(i).b.z);
 	}
-
 	glEnd();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+	//if (transform != nullptr)
+	//{
+	//	glPopMatrix();
+	//}
+
 }

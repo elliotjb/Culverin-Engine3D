@@ -26,6 +26,8 @@ public:
 	void ShowInspectorInfo();
 
 	void DoCulling();
+	void UnCull();
+
 	Culling ContainsAABox(const AABB& refBox) const;
 
 	void SetPos(float3 pos);

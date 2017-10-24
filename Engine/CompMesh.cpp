@@ -166,11 +166,12 @@ void CompMesh::ShowInspectorInfo()
 
 void CompMesh::Draw()
 {
-	/* Push Matrix to Draw with transform applied, only if it contains a transform component */
-	glPushMatrix();
 	CompTransform* transform = (CompTransform*)parent->FindComponentByType(C_TRANSFORM);
 	if (transform != nullptr)
 	{
+		/* Push Matrix to Draw with transform applied, only if it contains a transform component */
+		//glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
 		glMultMatrixf(transform->GetMultMatrixForOpenGL());
 	}
 
@@ -229,7 +230,10 @@ void CompMesh::Draw()
 		LOG("Cannot draw the mesh");
 	}
 
-	glPopMatrix();
+	if (transform != nullptr)
+	{
+		glPopMatrix();
+	}
 }
 
 void CompMesh::Update()
@@ -243,6 +247,11 @@ void CompMesh::Update()
 void CompMesh::Render(bool render)
 {
 	this->render = render;
+}
+
+bool CompMesh::isRendering() const
+{
+	return render;
 }
 
 void CompMesh::LinkMaterial(CompMaterial * mat)

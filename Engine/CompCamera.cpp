@@ -51,22 +51,21 @@ void CompCamera::preUpdate()
 
 void CompCamera::Update()
 {
-	//UpdateFrustum();
-
+	UpdateFrustum();
 	DebugDraw();
 }
 
 void CompCamera::UpdateFrustum()
 {
-	const CompTransform* parent_transform = (CompTransform*)this->parent->FindComponentByType(C_TRANSFORM);
+	const CompTransform* transform = (CompTransform*)this->parent->FindComponentByType(C_TRANSFORM);
 
 	//Z axis of the transform
-	cam_frustum.front = parent_transform->GetTransform().Col3(2);
+	cam_frustum.front = transform->GetTransform().Col3(2).Normalized();
 
 	//Y axis of the transform
-	cam_frustum.up = parent_transform->GetTransform().Col3(1);
+	cam_frustum.up = transform->GetTransform().Col3(1).Normalized();
 
-	cam_frustum.pos = parent_transform->GetPos();
+	cam_frustum.pos = transform->GetPos();
 }
 
 void CompCamera::DebugDraw()
@@ -93,7 +92,13 @@ void CompCamera::ShowInspectorInfo()
 	{
 		ImGui::PopStyleColor();
 
-		ImGui::Checkbox("Culling", &culling);
+		if (ImGui::Checkbox("Culling", &culling))
+		{
+			if (!culling)
+			{
+				UnCull();
+			}
+		}
 
 		ImGui::PushItemWidth(80);
 		if (ImGui::DragFloat("Near Plane", &near_plane, 0.5f, 0.01f, far_plane - 0.01f))
@@ -123,25 +128,43 @@ void CompCamera::DoCulling()
 {
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
-		// Check if the GameObject has a mesh to draw
-		CompMesh* mesh = (CompMesh*)App->scene->gameobjects[i]->FindComponentByType(C_MESH);
-		if (mesh != nullptr)
+		if (App->scene->gameobjects[i]->isActive())
 		{
-			// Check its bounding box
-			AABB* box = App->scene->gameobjects[i]->bounding_box;
-			if (box != nullptr)
+			// Check if the GameObject has a mesh to draw
+			CompMesh* mesh = (CompMesh*)App->scene->gameobjects[i]->FindComponentByType(C_MESH);
+			if (mesh != nullptr)
 			{
-				if (ContainsAABox(*box) == CULL_OUT)
+				// Check its bounding box
+				AABB* box = App->scene->gameobjects[i]->bounding_box;
+				if (box != nullptr)
 				{
-					mesh->Render(false);
-				}
-				else
-				{
-					mesh->Render(true);
+					if (ContainsAABox(*box) == CULL_OUT)
+					{
+						mesh->Render(false);
+					}
+					else
+					{
+						mesh->Render(true);
+					}
 				}
 			}
 		}
-		
+	}
+}
+
+void CompCamera::UnCull()
+{
+	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
+	{
+		if (App->scene->gameobjects[i]->isActive())
+		{
+			// Check if the GameObject has a mesh to draw
+			CompMesh* mesh = (CompMesh*)App->scene->gameobjects[i]->FindComponentByType(C_MESH);
+			if (mesh != nullptr)
+			{
+				mesh->Render(true);
+			}
+		}
 	}
 }
 

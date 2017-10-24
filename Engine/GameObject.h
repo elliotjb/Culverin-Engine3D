@@ -22,8 +22,9 @@ public:
 	void ShowInspectorInfo();
 
 	bool isActive() const;
+	bool isVisible() const;
 
-	Component* FindComponentByType(Comp_Type type);
+	Component* FindComponentByType(Comp_Type type) const;
 	Component* AddComponent(Comp_Type type);
 
 	AABB* bounding_box = nullptr;

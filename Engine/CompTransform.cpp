@@ -22,7 +22,7 @@ void CompTransform::Init(float3 p, float3 r, float3 s)
 
 void CompTransform::Update()
 {
-	glMultMatrixf((float*)&matrix.Transposed());
+	//glMultMatrixf((float*)&local_transform.Transposed());
 }
 
 void CompTransform::ShowInspectorInfo()
@@ -82,7 +82,7 @@ void CompTransform::SetScale(float3 scal)
 
 void CompTransform::UpdateMatrix()
 {
-	matrix = float4x4::FromTRS(position, rot_quat, scale);
+	local_transform = float4x4::FromTRS(position, rot_quat, scale);
 }
 
 float3 CompTransform::GetPos() const
@@ -102,11 +102,16 @@ float3 CompTransform::GetScale() const
 
 float4x4 CompTransform::GetTransform() const
 {
-	return matrix;
+	return local_transform;
+}
+
+float4x4 CompTransform::GetInheritedTransform() const
+{
+	return inherited_transform;
 }
 
 const float* CompTransform::GetMultMatrixForOpenGL() const
 {
-	return matrix.Transposed().ptr(); //Change Matrix to Global Matrix
+	return local_transform.Transposed().ptr(); //Change Matrix to Global Matrix
 }
 

@@ -35,6 +35,7 @@ public:
 	void Draw();
 	void Update();
 	void Render(bool render);
+	bool isRendering() const;
 
 	void LinkMaterial(CompMaterial* mat);
 
