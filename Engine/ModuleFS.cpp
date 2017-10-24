@@ -75,7 +75,7 @@ std::vector<std::string> ModuleFS::Get_filenames(std::experimental::filesystem::
 
 	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
 	{
-		if (stdfs::is_regular_file(*iter))
+		//if (stdfs::is_regular_file(*iter))
 			filenames.push_back(iter->path().string());
 	}
 

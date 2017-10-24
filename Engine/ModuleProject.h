@@ -53,6 +53,8 @@ public:
 	void Files_Update(const std::vector<Files>& files);
 	std::vector<Files>* Folders_update(std::vector<Folders>& folder);
 
+	void SetAllFolderBool(std::vector<Folders>& folders, bool setBoolean);
+
 
 private:
 

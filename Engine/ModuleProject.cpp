@@ -107,15 +107,15 @@ void Project::Iterate_files(std::vector<Folders>& folders)
 		std::vector<std::string> temp_directory = App->fs->Get_filenames(folders[i].directory_name);
 		std::vector<std::string> temp_name = temp_directory;
 		App->fs->FixNames_directories(temp_name);
-		for (int i = 0; i < temp_name.size(); i++)
+		for (int j = 0; j < temp_name.size(); j++)
 		{
 			Files file_temp;
-			file_temp.directory_name = temp_directory[i];
-			char* temp = new char[temp_name[i].length() + 1];
-			strcpy(temp, temp_name[i].c_str());
-			temp[temp_name[i].length()] = '\0';
+			file_temp.directory_name = temp_directory[j];
+			char* temp = new char[temp_name[j].length() + 1];
+			strcpy(temp, temp_name[j].c_str());
+			temp[temp_name[j].length()] = '\0';
 			file_temp.file_name = temp;
-			file_temp.file_type = SetType(temp_name[i]);
+			file_temp.file_type = SetType(temp_name[j]);
 			folders[i].files.push_back(file_temp);
 		}
 	}
@@ -172,11 +172,14 @@ void Project::ReorderFiles(std::vector<Folders>& folders)
 		{
 			if (folders[i].files[x].file_type == FOLDER)
 			{
-				for (int j = size; j < folders.size(); j++)
+				for (int j = 0; j < folders.size(); j++)
 				{
-					Swap(folders[i].files[x], folders[i].files[j]);
-					size++;
-					break;
+					if (j == size)
+					{
+						Swap(folders[i].files[x], folders[i].files[j]);
+						size++;
+						break;
+					}
 				}
 			}
 		}
@@ -284,9 +287,9 @@ std::vector<Files>* Project::Folders_update(std::vector<Folders>& folder)
 	for (int i = 0; i < folder.size(); i++)
 	{
 		ImGui::PushID(i);
-		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_Selected | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_Selected | ImGuiTreeNodeFlags_OpenOnArrow;
 
-		if (ImGui::TreeNodeEx(folder[i].file_name, 0))
+		if (ImGui::TreeNodeEx(folder[i].file_name, node_flags))
 		{
 			if (ImGui::BeginPopupContextItem("rename context menu"))
 			{
@@ -294,14 +297,15 @@ std::vector<Files>* Project::Folders_update(std::vector<Folders>& folder)
 				ImGui::InputText("##edit2", folder[i].file_name, 256);
 				ImGui::EndPopup();
 			}
-			if (ImGui::IsItemClicked())
-			{
-				folder[i].active = !folder[i].active;
-			}
 
 			if (folder[i].folder_child.size() > 0)
 			{
 				Folders_update(folder[i].folder_child);
+			}
+			if (ImGui::IsMouseDoubleClicked(0))
+			{
+				SetAllFolderBool(folders, false);
+				folder[i].active = true;
 			}
 			ImGui::TreePop();
 		}
@@ -317,4 +321,16 @@ std::vector<Files>* Project::Folders_update(std::vector<Folders>& folder)
 		ret = &folder[0].files;
 	}
 	return ret;
+}
+
+void Project::SetAllFolderBool(std::vector<Folders>& folders, bool setBoolean)
+{
+	for (int i = 0; i < folders.size(); i++)
+	{
+		if (folders[i].folder_child.size() > 0)
+		{
+			SetAllFolderBool(folders[i].folder_child, setBoolean);
+		}
+		folders[i].active = setBoolean;
+	}
 }
