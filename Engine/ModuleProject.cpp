@@ -16,11 +16,12 @@ Project::~Project()
 
 bool Project::Start()
 {
-	directory_see = App->fs->GetMainDirectory();
-	directory_see += "\\Assets";
-	Iterate_files();
-	ReorderFiles();
+	//directory_see = App->fs->GetMainDirectory();
+	directory_see = "Assets\\";
 	folders = App->fs->Get_AllFolders(directory_see);
+	Iterate_files(folders);
+	ReorderFiles(folders);
+	folders[0].folder_child[0].active = true;
 	sizeFiles = 50;
 
 	return true;
@@ -80,25 +81,116 @@ void Project::ShowProject()
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
 
-	static GLuint folder_icon = App->textures->LoadTexture("Images/UI/folder_icon.png");
-	static GLuint icon_png = App->textures->LoadTexture("Images/UI/icon_png.png");
-	static GLuint icon_jpg = App->textures->LoadTexture("Images/UI/icon_jpg.png");
-	static GLuint icon_fbx = App->textures->LoadTexture("Images/UI/icon_fbx.png");
-	static GLuint icon_obj = App->textures->LoadTexture("Images/UI/icon_obj.png");
-	static GLuint icon_unknown = App->textures->LoadTexture("Images/UI/icon_unknown.png");
-
 	// ---------------------------------------------------------------------------------------------------
 	ImGui::Columns(2, "Project_Assets");
 	ImGui::SetColumnWidth(0, SPERATIONCOLUMN);
 	//Column 1 LEFT ------------------------
 	ImGui::Spacing();
 	// Folders ---------------------
-	Folders_update(folders);
+	std::vector<Files>* filesAvtive = Folders_update(folders);
 
 	ImGui::NextColumn();
 	ImGui::Separator();
+	Files_Update(*filesAvtive);
 
+	EndDock();
+}
 
+void Project::Iterate_files(std::vector<Folders>& folders)
+{
+	for (int i = 0; i < folders.size(); i++)
+	{
+		if (folders[i].folder_child.size() > 0)
+		{
+			Iterate_files(folders[i].folder_child);
+		}
+		std::vector<std::string> temp_directory = App->fs->Get_filenames(folders[i].directory_name);
+		std::vector<std::string> temp_name = temp_directory;
+		App->fs->FixNames_directories(temp_name);
+		for (int i = 0; i < temp_name.size(); i++)
+		{
+			Files file_temp;
+			file_temp.directory_name = temp_directory[i];
+			char* temp = new char[temp_name[i].length() + 1];
+			strcpy(temp, temp_name[i].c_str());
+			temp[temp_name[i].length()] = '\0';
+			file_temp.file_name = temp;
+			file_temp.file_type = SetType(temp_name[i]);
+			folders[i].files.push_back(file_temp);
+		}
+	}
+}
+
+TYPE_FILE Project::SetType(std::string name)
+{
+	size_t EndName = name.find_last_of(".");
+	std::string temp = name.substr(EndName + 1);
+	if (name.compare(temp) != 0)
+	{
+		// Isn't a Folder
+		if (temp == "png")
+		{
+			return PNG;
+		}
+		else if (temp == "jpg")
+		{
+			return JPG;
+		}
+		else if (temp == "dds")
+		{
+			return DDS;
+		}
+		else if (temp == "fbx")
+		{
+			return FBX;
+		}
+		else if (temp == "obj")
+		{
+			return OBJ;
+		}
+		else
+		{
+			return NON;
+		}
+	}
+	else
+	{
+		return FOLDER;
+	}
+}
+
+void Project::ReorderFiles(std::vector<Folders>& folders)
+{
+	uint size = 0;
+	for (uint i = 0; i < folders.size(); i++)
+	{
+		if (folders[i].folder_child.size() > 0)
+		{
+			ReorderFiles(folders[i].folder_child);
+		}
+		for (int x = 0; x < folders[i].files.size(); x++)
+		{
+			if (folders[i].files[x].file_type == FOLDER)
+			{
+				for (int j = size; j < folders.size(); j++)
+				{
+					Swap(folders[i].files[x], folders[i].files[j]);
+					size++;
+					break;
+				}
+			}
+		}
+	}
+}
+
+void Project::Files_Update(const std::vector<Files>& files)
+{
+	static GLuint folder_icon = App->textures->LoadTexture("Images/UI/folder_icon.png");
+	static GLuint icon_png = App->textures->LoadTexture("Images/UI/icon_png.png");
+	static GLuint icon_jpg = App->textures->LoadTexture("Images/UI/icon_jpg.png");
+	static GLuint icon_fbx = App->textures->LoadTexture("Images/UI/icon_fbx.png");
+	static GLuint icon_obj = App->textures->LoadTexture("Images/UI/icon_obj.png");
+	static GLuint icon_unknown = App->textures->LoadTexture("Images/UI/icon_unknown.png");
 	uint width = DISTANCEBUTTONS;
 	for (int i = 0; i < files.size(); i++)
 	{
@@ -175,7 +267,7 @@ void Project::ShowProject()
 		}
 		else
 		{
-			if(i + 1 <  files.size())
+			if (i + 1 <  files.size())
 				ImGui::SameLine();
 		}
 
@@ -183,87 +275,11 @@ void Project::ShowProject()
 		ImGui::PopID();
 	}
 
-	EndDock();
 }
 
-void Project::Iterate_files()
+std::vector<Files>* Project::Folders_update(std::vector<Folders>& folder)
 {
-	std::vector<std::string> temp_directory = App->fs->Get_filenames(directory_see);
-	std::vector<std::string> temp_name = temp_directory;
-	App->fs->FixNames_directories(temp_name);
-	for (int i = 0; i < temp_name.size(); i++)
-	{
-		Folder_Files file_temp;
-		file_temp.directory_name = temp_directory[i];
-		char* temp = new char[temp_name[i].length() + 1];
-		strcpy(temp, temp_name[i].c_str());
-		temp[temp_name[i].length()] = '\0';
-		file_temp.file_name = temp;
-		file_temp.file_type = SetType(temp_name[i]);
-		files.push_back(file_temp);
-	}
-}
-
-TYPE_FILE Project::SetType(std::string name)
-{
-	size_t EndName = name.find_last_of(".");
-	std::string temp = name.substr(EndName + 1);
-	if (name.compare(temp) != 0)
-	{
-		// Isn't a Folder
-		if (temp == "png")
-		{
-			return PNG;
-		}
-		else if (temp == "jpg")
-		{
-			return JPG;
-		}
-		else if (temp == "dds")
-		{
-			return DDS;
-		}
-		else if (temp == "fbx")
-		{
-			return FBX;
-		}
-		else if (temp == "obj")
-		{
-			return OBJ;
-		}
-		else
-		{
-			return NON;
-		}
-	}
-	else
-	{
-		return FOLDER;
-	}
-}
-
-void Project::ReorderFiles()
-{
-	uint size = 0;
-	for (uint i = 0; i < files.size(); i++)
-	{
-		if (files[i].file_type == FOLDER)
-		{
-			for (int j = 0; j < files.size(); j++)
-			{
-				if (j == size)
-				{
-					Swap(files[i], files[j]);
-					size++;
-					break;
-				}
-			}
-		}
-	}
-}
-
-void Project::Folders_update(const std::vector<Folders>& folder)
-{
+	std::vector<Files>* ret = nullptr;
 	ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.335f, 0.337f, 0.357f, 1.00f));
 	for (int i = 0; i < folder.size(); i++)
 	{
@@ -278,8 +294,10 @@ void Project::Folders_update(const std::vector<Folders>& folder)
 				ImGui::InputText("##edit2", folder[i].file_name, 256);
 				ImGui::EndPopup();
 			}
-			//if (ImGui::IsItemClicked())
-				//folder[i].active = !folder[i].active;
+			if (ImGui::IsItemClicked())
+			{
+				folder[i].active = !folder[i].active;
+			}
 
 			if (folder[i].folder_child.size() > 0)
 			{
@@ -287,7 +305,16 @@ void Project::Folders_update(const std::vector<Folders>& folder)
 			}
 			ImGui::TreePop();
 		}
+		if (folder[i].active)
+		{
+			ret = &folder[i].files;
+		}
 		ImGui::PopID();
 	}
 	ImGui::PopStyleColor();
+	if (ret == nullptr)
+	{
+		ret = &folder[0].files;
+	}
+	return ret;
 }

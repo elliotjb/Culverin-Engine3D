@@ -45,7 +45,7 @@ bool ModuleFS::Start()
 	CreateFolder("Library\\Animations");
 	CreateFolder("Assets");
 	//Iterate All Game
-	//files = Get_filenames(directory_Game);
+	files = Get_filenames("Assets\\");
 	return true;
 }
 
@@ -75,8 +75,8 @@ std::vector<std::string> ModuleFS::Get_filenames(std::experimental::filesystem::
 
 	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
 	{
-		//if (stdfs::is_regular_file(*iter))
-		filenames.push_back(iter->path().string());
+		if (stdfs::is_regular_file(*iter))
+			filenames.push_back(iter->path().string());
 	}
 
 	return filenames;

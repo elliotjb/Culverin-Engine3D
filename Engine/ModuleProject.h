@@ -19,7 +19,7 @@ enum TYPE_FILE
 	DDS
 };
 
-struct Folder_Files
+struct Files
 {
 	std::string directory_name;
 	char* file_name = nullptr;
@@ -31,8 +31,8 @@ struct Folders
 	std::string directory_name;
 	char* file_name = nullptr;
 	std::vector<Folders> folder_child;
+	std::vector<Files> files;
 	bool active = false;
-	Folder_Files* files = nullptr; // Pointer to files that you see now.
 };
 
 class Project : public WindowManager
@@ -47,14 +47,15 @@ public:
 	bool CleanUp();
 
 	void ShowProject();
-	void Iterate_files();
+	void Iterate_files(std::vector<Folders>& folders);
 	TYPE_FILE SetType(std::string name);
-	void ReorderFiles();
-	void Folders_update(const std::vector<Folders>& folder);
+	void ReorderFiles(std::vector<Folders>& folders);
+	void Files_Update(const std::vector<Files>& files);
+	std::vector<Files>* Folders_update(std::vector<Folders>& folder);
 
 
 private:
-	std::vector<Folder_Files> files;
+
 	std::vector<Folders> folders;
 	std::string directory_see;
 	int sizeFiles;
