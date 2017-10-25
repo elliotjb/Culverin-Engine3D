@@ -45,23 +45,92 @@ void CompTransform::ShowInspectorInfo()
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
 	if (ImGui::TreeNodeEx("Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+
+		// Set Size Windows
+		static int width;
+		static int height;
+		SDL_GetWindowSize(App->window->window, &width, &height);
+		// Button Reset Values
+		static GLuint icon_options_transform = App->textures->LoadTexture("Images/UI/icon_options_transform.png");
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
+		ImGui::SameLine(ImGui::GetWindowWidth() - 26);
+		static float3 rot = rotation;
+		if (ImGui::ImageButton((ImTextureID*)icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
+		{
+			ImGui::OpenPopup("Options");
+		}
+		ImGui::PopStyleVar();
 		ImGui::PopStyleColor();
-		
-		ImGui::Text("Position"); 
+
+		// Button Options --------------------------------------
+		ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.00f));
+		if (ImGui::BeginPopup("Options"))
+		{
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 2));
+			if (ImGui::Button("Reset Values"))
+			{
+				position = math::float3(0, 0, 0);
+				//SetRot(math::float3(-rot.x/2, -rot.y/2, -rot.z/2));
+				//rot = math::float3(0, 0, 0);
+				scale = math::float3(1, 1, 1);
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::Separator();
+			if (ImGui::Button("Reset Position"))
+			{
+				position = math::float3(0, 0, 0);
+				ImGui::CloseCurrentPopup();
+			}
+			if (ImGui::Button("Reset Rotation"))
+			{
+				//SetRot(math::float3(-rot.x/2, -rot.y/2, -rot.z/2));
+				//rot = math::float3(0, 0, 0);
+				ImGui::CloseCurrentPopup();
+			} ImGui::SameLine(); App->ShowHelpMarker("Doesn't Work!!");
+			if (ImGui::Button("Reset Size"))
+			{
+				scale = math::float3(1, 1, 1);
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::PopStyleVar();
+			ImGui::EndPopup();
+		}
+		ImGui::PopStyleColor();
+		// Values: Position, Rotation, Scale -------------------------------
+		ImGui::Spacing();
+		int op = ImGui::GetWindowWidth() / 4;
+		ImGui::Text("Position"); ImGui::SameLine(op + 30);
+		bool isMoveMouse = false;
 		if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
 		{
+			isMoveMouse = true;
 			SetPos(position);
 		}
-		static float3 rot = rotation;
-		ImGui::Text("Rotation");
+
+		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
 		if (ImGui::DragFloat3("##rot", &rot[0], 0.5f))
 		{
+			isMoveMouse = true;
 			SetRot(rot);
 		}
-		ImGui::Text("Scale");
+		ImGui::Text("Scale"); ImGui::SameLine(op + 30);
 		if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
 		{
+			isMoveMouse = true;
 			SetScale(scale);
+		}
+		if (isMoveMouse)
+		{
+			if (App->input->GetMouseX() <= width &&
+				App->input->GetMouseX() > width - 10)
+			{
+				SetCursorPos(30, App->input->GetMouseY());
+			}
+			if (App->input->GetMouseX() >= 0 &&
+				App->input->GetMouseX() < 10)
+			{
+				SetCursorPos(width - 20, App->input->GetMouseY());
+			}
 		}
 
 		//static bool useSnap(false);
@@ -75,6 +144,7 @@ void CompTransform::ShowInspectorInfo()
 	{
 		ImGui::PopStyleColor();
 	}
+
 
 	//ImGuizmo::RecomposeMatrixFromComponents((float*)&position, (float*)&rotation, (float*)&scale,(float*)&local_transform);
 	//float4 snap;

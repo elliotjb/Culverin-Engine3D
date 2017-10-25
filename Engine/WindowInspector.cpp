@@ -40,12 +40,13 @@ void Inspector::ShowInspector()
 		EndDock();
 		return;
 	}
-
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 3));
 	if (selected_object != nullptr)
 	{ 
 		selected_object->ShowInspectorInfo();
 	}
-
+	ImGui::PopStyleVar(2);
 	EndDock();
 }
 

@@ -53,11 +53,12 @@ update_status ModuleFS::PreUpdate(float dt)
 {
 	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
 	{
-		char* buffer = nullptr;
+		//char* buffer = nullptr;
 
-		// Loading File
-		uint size = LoadFile(files[1].c_str(), &buffer);
-		int x = 0;
+		//// Loading File
+		//uint size = LoadFile(files[1].c_str(), &buffer);
+		//int x = 0;
+		
 	}
 
 
