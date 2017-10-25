@@ -3,7 +3,7 @@
 #include "Application.h"
 #include "BaseGeometry.h"
 #include "ModuleTextures.h"
-#include "ModuleInspector.h"
+#include "WindowInspector.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"

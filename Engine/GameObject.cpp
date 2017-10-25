@@ -1,5 +1,5 @@
 #include "Application.h"
-#include "ModuleInspector.h"
+#include "WindowInspector.h"
 #include "ModuleInput.h"
 #include "GameObject.h"
 #include "Component.h"

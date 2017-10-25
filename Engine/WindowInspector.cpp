@@ -1,4 +1,4 @@
-#include "ModuleInspector.h"
+#include "WindowInspector.h"
 #include "_Model.h"
 #include "Application.h"
 #include "GameObject.h"

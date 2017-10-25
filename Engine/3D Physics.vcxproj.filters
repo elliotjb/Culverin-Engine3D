@@ -303,9 +303,6 @@
     <ClInclude Include="ModuleGUI.h">
       <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleHardware.h">
-      <Filter>Engine\Modules\UI</Filter>
-    </ClInclude>
     <ClInclude Include="WindowManager.h">
       <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
@@ -314,12 +311,6 @@
     </ClInclude>
     <ClInclude Include="PerfTimer.h">
       <Filter>Engine\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleObjectsUI.h">
-      <Filter>Engine\Modules\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleInspector.h">
-      <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
       <Filter>Engine\ImGUI</Filter>
@@ -360,12 +351,6 @@
     <ClInclude Include="ImGui\imgui_dock_v2.h">
       <Filter>Engine\ImGUI</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleHierarchy.h">
-      <Filter>Engine\Modules\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleSceneWorld.h">
-      <Filter>Engine\Modules\UI</Filter>
-    </ClInclude>
     <ClInclude Include="_Model.h">
       <Filter>Engine\Modules\Geometries</Filter>
     </ClInclude>
@@ -399,9 +384,6 @@
     <ClInclude Include="ImportMesh.h">
       <Filter>Engine\Modules\Importer</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleProject.h">
-      <Filter>Engine\Modules\UI</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Engine\Modules\Scene\GameObjects</Filter>
     </ClInclude>
@@ -425,6 +407,24 @@
     </ClInclude>
     <ClInclude Include="ImGui\ImGuizmo.h">
       <Filter>Engine\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowHardware.h">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowHierarchy.h">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowInspector.h">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowObjectsUI.h">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowProject.h">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowSceneWorld.h">
+      <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -575,20 +575,11 @@
     <ClCompile Include="ModuleGUI.cpp">
       <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleHardware.cpp">
-      <Filter>Engine\Modules\UI</Filter>
-    </ClCompile>
     <ClCompile Include="parson.cpp">
       <Filter>Engine\Parson</Filter>
     </ClCompile>
     <ClCompile Include="PerfTimer.cpp">
       <Filter>Engine\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleObjectsUI.cpp">
-      <Filter>Engine\Modules\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleInspector.cpp">
-      <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
       <Filter>Engine\ImGUI</Filter>
@@ -616,12 +607,6 @@
     </ClCompile>
     <ClCompile Include="ImGui\imgui_dock_v2.cpp">
       <Filter>Engine\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleHierarchy.cpp">
-      <Filter>Engine\Modules\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleSceneWorld.cpp">
-      <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
     <ClCompile Include="_Model.cpp">
       <Filter>Engine\Modules\Geometries</Filter>
@@ -653,9 +638,6 @@
     <ClCompile Include="ImportMesh.cpp">
       <Filter>Engine\Modules\Importer</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleProject.cpp">
-      <Filter>Engine\Modules\UI</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Engine\Modules\Scene\GameObjects</Filter>
     </ClCompile>
@@ -679,6 +661,24 @@
     </ClCompile>
     <ClCompile Include="ImGui\ImGuizmo.cpp">
       <Filter>Engine\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowHardware.cpp">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowHierarchy.cpp">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowInspector.cpp">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowObjectsUI.cpp">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowProject.cpp">
+      <Filter>Engine\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowSceneWorld.cpp">
+      <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

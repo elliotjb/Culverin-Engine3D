@@ -1,4 +1,4 @@
-#include "ModuleHardware.h"
+#include "WindowHardware.h"
 #include "Application.h"
 #include "SDL\include\SDL.h"
 

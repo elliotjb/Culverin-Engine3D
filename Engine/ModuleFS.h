@@ -1,7 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include "Module.h"
-#include "ModuleProject.h"
+#include "WindowProject.h"
 
 #include <filesystem>
 #include <iostream>

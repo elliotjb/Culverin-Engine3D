@@ -1,4 +1,4 @@
-#include "ModuleHierarchy.h"
+#include "WindowHierarchy.h"
 #include "Application.h"
 #include "Scene.h"
 #include "GameObject.h"
