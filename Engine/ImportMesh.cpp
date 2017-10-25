@@ -184,7 +184,7 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 	fileName += ".rin";
 
 	//Save Mesh
-	App->fs->SaveFile(data, fileName, size);
+	App->fs->SaveFile(data, fileName, size, IMPORT_DIRECTORY_LIBRARY_MESHES);
 
 	RELEASE_ARRAY(data);
 
