@@ -27,18 +27,16 @@ public:
 	void MoveAt(const vec3 &Movement);
 	float* GetViewMatrix();
 
-private:
+	void SetRay(int mouseX, int mouseY);
 
+private:
 	void CalculateViewMatrix();
 	void CheckOut();
 	void ReajustLook();
 
 public:
-	
 	vec3 X, Y, Z, Position, Reference;
-
 	bool changecam = false;
-
 	bool CanMoveCamera = false;
 
 private:
@@ -50,4 +48,6 @@ private:
 	float moveWithScroll = 1;
 	int speed_camera_move = 1;
 	mat4x4 ViewMatrix, ViewMatrixInverse;
+
+	LineSegment mouse_ray;
 };

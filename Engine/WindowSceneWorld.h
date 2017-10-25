@@ -25,7 +25,7 @@ public:
 
 
 private:
-
+	ImVec2 mouse_pos;
 
 };
 

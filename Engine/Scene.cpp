@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "Scene.h"
 #include "Primitive.h"
-#include "ModuleLoader.h"
 #include "GameObject.h"
 #include "Component.h"
 #include "CompTransform.h"
@@ -49,7 +48,7 @@ update_status Scene::PreUpdate(float dt)
 
 	frBuff->Bind();
 
-	// PreUpdate GameObjects
+	// PreUpdate GameObjects ------------------------
 	for (uint i = 0; i < gameobjects.size(); i++)
 	{
 		gameobjects[i]->preUpdate();
