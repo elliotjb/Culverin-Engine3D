@@ -4,6 +4,7 @@
 #include "PhysBody3D.h"
 #include "ImGui\imgui.h"
 
+#define ASPECT_RATIO 16/9
 
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 {
@@ -18,6 +19,17 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 
 	Position = vec3(0.0f, 3.0f, 10.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
+
+	// Set frustum variables for Scene Camera -----------
+	//frustum.type = PerspectiveFrustum;
+	//frustum.pos.Set(0, 0, 0);
+	//frustum.front.Set(0, 0, -1);
+	//frustum.up.Set(0, 1, 0);
+	//frustum.nearPlaneDistance = 0.125f;
+	//frustum.farPlaneDistance = 512.0f;
+	//frustum.verticalFov = 60.0f * DEGTORAD;
+	//frustum.horizontalFov = Atan(ASPECT_RATIO*Tan(frustum.verticalFov / 2)) * 2;
+	// -------------------------------------------------------
 
 	name = "Camera";
 	haveConfig = true;
@@ -429,6 +441,16 @@ void ModuleCamera3D::MoveAt(const vec3 &Movement)
 float* ModuleCamera3D::GetViewMatrix()
 {
 	return &ViewMatrix;
+}
+
+void ModuleCamera3D::SetRay(float mouseX, float mouseY, float screenW, float screenH)
+{
+	// Convert x, y from screen to normalized device coordinates [-1:1]
+	float x = (2.0f * mouseX) / screenW - 1.0f;
+	float y = 1.0f - (2.0f * mouseY) / screenH;
+
+	vec3 ray;
+	ray.Set(x, y, -1.0f);
 }
 
 // -----------------------------------------------------------------

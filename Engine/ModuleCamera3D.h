@@ -5,6 +5,7 @@
 #include "_Model.h"
 #include "BaseGeometry.h"
 #include "Bullet/include/btBulletDynamicsCommon.h"
+#include "Geometry\Frustum.h"
 
 class ModuleCamera3D : public Module
 {
@@ -27,7 +28,7 @@ public:
 	void MoveAt(const vec3 &Movement);
 	float* GetViewMatrix();
 
-	void SetRay(int mouseX, int mouseY);
+	void SetRay(float mouseX, float mouseY, float W, float H);
 
 private:
 	void CalculateViewMatrix();
@@ -40,6 +41,7 @@ public:
 	bool CanMoveCamera = false;
 
 private:
+	Frustum frustum;
 
 	bool canOut = false;
 	BaseGeometry* geo = nullptr;
@@ -50,4 +52,5 @@ private:
 	mat4x4 ViewMatrix, ViewMatrixInverse;
 
 	LineSegment mouse_ray;
+
 };

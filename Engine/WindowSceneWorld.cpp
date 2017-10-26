@@ -40,7 +40,14 @@ void SceneWorld::ShowSceneWorld()
 		//App->camera->SetRay(App->input->GetMouseX(), App->input->GetMouseY());
 		mouse_pos.x = ImGui::GetMousePos().x - ImGui::GetWindowPos().x;
 		mouse_pos.y = ImGui::GetMousePos().y - ImGui::GetWindowPos().y;
-		LOG("MOUSE CLICK (%f, %f).", mouse_pos.x, mouse_pos.y);
+
+		if (mouse_pos.x >= 0 && mouse_pos.y >= 0 &&
+			mouse_pos.x <= ImGui::GetWindowWidth() && mouse_pos.y <= ImGui::GetWindowHeight())
+		{
+			App->camera->SetRay(mouse_pos.x, mouse_pos.y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
+
+			LOG("MOUSE CLICK (%f, %f).", mouse_pos.x, mouse_pos.y);
+		}
 	}
 
 	App->camera->CanMoveCamera = ImGui::IsMouseHoveringWindow(); //TODO ELLIOT CHange to variable in WindowManager.h
