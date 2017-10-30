@@ -58,11 +58,22 @@ update_status ModuleFS::PreUpdate(float dt)
 		//// Loading File
 		//uint size = LoadFile(files[1].c_str(), &buffer);
 		//int x = 0;
-		
+
+		CopyFileToAssets("C:\\Users\\elliotjb\\Desktop\\street\\Street environment_V01.FBX", "C:\\Users\\elliotjb\\Desktop\\3D-Engine\\Street environment_V01.FBX");
 	}
 
 
+
+
 	return UPDATE_CONTINUE;
+}
+
+void ModuleFS::CopyFileToAssets(const char* fileNameFrom, const char* fileNameTo)
+{
+	//assert(fileExists(fileNameFrom));
+	namespace fs = std::experimental::filesystem;
+	fs::copy(fileNameFrom, fileNameTo);
+	//std::filesystem::copy("/dir1", "/dir3", std::filesystem::copy_options::recursive);
 }
 
 std::vector<std::string> ModuleFS::Get_filenames(std::experimental::filesystem::path path)

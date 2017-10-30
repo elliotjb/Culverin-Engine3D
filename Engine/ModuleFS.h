@@ -32,6 +32,7 @@ public:
 	bool Start();
 
 	update_status PreUpdate(float dt);
+	void CopyFileToAssets(const char * fileNameFrom, const char * fileNameTo);
 	//update_status Update(float dt);
 	//update_status PostUpdate(float dt);
 	//update_status UpdateConfig(float dt);
