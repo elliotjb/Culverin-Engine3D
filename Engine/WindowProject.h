@@ -52,8 +52,8 @@ public:
 	void Iterate_files(std::vector<Folders>& folders);
 	TYPE_FILE SetType(std::string name);
 	void ReorderFiles(std::vector<Folders>& folders);
-	void Files_Update(std::vector<Files>& files);
-	std::vector<Files>* Folders_update(std::vector<Folders>& folder);
+	void Files_Update(const std::vector<Files>& files);
+	const std::vector<Files>& Folders_update(std::vector<Folders>& folder);
 
 	void SetAllFolderBool(std::vector<Folders>& folders, bool setBoolean);
 	void ChangefileViwer(std::vector<Folders>& folder, std::string name);

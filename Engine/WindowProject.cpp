@@ -88,11 +88,11 @@ void Project::ShowProject()
 	//Column 1 LEFT ------------------------
 	ImGui::Spacing();
 	// Folders ---------------------
-	std::vector<Files>* filesAvtive = Folders_update(folders);
+	const std::vector<Files> filesAvtive = Folders_update(folders);
 
 	ImGui::NextColumn();
 	ImGui::Separator();
-	Files_Update(*filesAvtive);
+	Files_Update(filesAvtive);
 
 	EndDock();
 }
@@ -192,7 +192,7 @@ void Project::ReorderFiles(std::vector<Folders>& folders)
 	}
 }
 
-void Project::Files_Update(std::vector<Files>& files)
+void Project::Files_Update(const std::vector<Files>& files)
 {
 	static GLuint folder_icon = App->textures->LoadTexture("Images/UI/folder_icon.png");
 	static GLuint icon_png = App->textures->LoadTexture("Images/UI/icon_png.png");
@@ -295,7 +295,7 @@ void Project::Files_Update(std::vector<Files>& files)
 
 }
 
-std::vector<Files>* Project::Folders_update(std::vector<Folders>& folder)
+const std::vector<Files>& Project::Folders_update(std::vector<Folders>& folder)
 {
 
 	ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.335f, 0.337f, 0.357f, 1.00f));
@@ -346,7 +346,7 @@ std::vector<Files>* Project::Folders_update(std::vector<Folders>& folder)
 	{
 		fileViwer = &folder[0].files;
 	}
-	return fileViwer;
+	return *fileViwer;
 }
 
 void Project::SetAllFolderBool(std::vector<Folders>& folders, bool setBoolean)
