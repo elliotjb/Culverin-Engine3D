@@ -2,7 +2,12 @@
 #include "Application.h"
 #include "ModuleCamera3D.h"
 #include "PhysBody3D.h"
-#include "ImGui\imgui.h"
+#include "GameObject.h"
+#include "Component.h"
+#include "CompCamera.h"
+#include "CompTransform.h"
+#include "ImGui/imgui.h"
+#include "Geometry/Frustum.h"
 
 #define ASPECT_RATIO 16/9
 
@@ -20,23 +25,16 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 	Position = vec3(0.0f, 3.0f, 10.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
 
-	// Set frustum variables for Scene Camera -----------
-	//frustum.type = PerspectiveFrustum;
-	//frustum.pos.Set(0, 0, 0);
-	//frustum.front.Set(0, 0, -1);
-	//frustum.up.Set(0, 1, 0);
-	//frustum.nearPlaneDistance = 0.125f;
-	//frustum.farPlaneDistance = 512.0f;
-	//frustum.verticalFov = 60.0f * DEGTORAD;
-	//frustum.horizontalFov = Atan(ASPECT_RATIO*Tan(frustum.verticalFov / 2)) * 2;
-	// -------------------------------------------------------
+	cam = new CompCamera(C_CAMERA, nullptr);
 
 	name = "Camera";
 	haveConfig = true;
 }
 
 ModuleCamera3D::~ModuleCamera3D()
-{}
+{
+	RELEASE(cam);
+}
 
 // -----------------------------------------------------------------
 bool ModuleCamera3D::Start()
@@ -44,10 +42,12 @@ bool ModuleCamera3D::Start()
 	perf_timer.Start();
 
 	LOG("Setting up the camera");
+	
 	bool ret = true;
-	moveWithScroll = 30.0f;
-	speed_camera_move = 1;
 
+	scroll_speed = 30.0f;
+	move_speed = 1.0f;
+	rotate_speed = 1.0f;
 	Start_t = perf_timer.ReadMs();
 
 	return ret;
@@ -62,13 +62,76 @@ bool ModuleCamera3D::CleanUp()
 }
 
 // -----------------------------------------------------------------
+update_status ModuleCamera3D::UpdateNew(float dt)
+{
+	perf_timer.Start();
+
+	ImGuiIO& io = ImGui::GetIO();
+
+	//Check mouse if is out of the Scene Window
+	CheckOut();
+
+	// Only modify camera when it's possible
+	if (io.WantTextInput == false && isMouseOnWindow() || canOut)
+	{
+		/* Keyboard movement */
+		if (/*Keyboard()*/1)
+		{
+			MoveWithKeyboard(dt);
+		}
+
+		/* Mouse movement */
+		if (/*Mouse()*/1)
+		{
+			int motion_x = App->input->GetMouseXMotion();
+			int	motion_y = App->input->GetMouseYMotion();
+
+			if ((motion_x != 0 || motion_y != 0) )
+			{
+				// ORBIT
+				if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT &&
+					App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+				{
+					float dx = (float)-motion_x * rotate_speed * dt;
+					float dy = (float)-motion_y * rotate_speed * dt;
+
+					Orbit(dx, dy);
+				}
+
+				// POINT
+				else if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT &&
+					App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+				{
+					float dx = (float)-motion_x * rotate_speed * dt;
+					float dy = (float)-motion_y * rotate_speed * dt;
+
+					Look(dx, dy);
+
+				}
+			}
+			
+
+		}
+	}
+
+	// Recalculate matrix -------------
+	CalculateViewMatrix();
+
+	Update_t = perf_timer.ReadMs();
+
+	return UPDATE_CONTINUE;
+}
+
+// -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
 	perf_timer.Start();
 
 	ImGuiIO& io = ImGui::GetIO();
+
 	//Check out mouse
 	CheckOut();
+
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 	if (io.WantTextInput == false && isMouseOnWindow() || canOut)
@@ -155,13 +218,13 @@ update_status ModuleCamera3D::Update(float dt)
 		//Camera Zoom ---------------------------
 		if (App->input->GetMouseZ() == 1)
 		{
-			newPos -= Z * (moveWithScroll * dt);
+			newPos -= Z * (scroll_speed * dt);
 			needReajust = true;
 
 		}
 		if (App->input->GetMouseZ() == -1)
 		{
-			newPos += Z * (moveWithScroll * dt);
+			newPos += Z * (scroll_speed * dt);
 			needReajust = true;
 		} 
 		// -------------------------------------
@@ -170,19 +233,19 @@ update_status ModuleCamera3D::Update(float dt)
 		{
 			if (App->input->GetMouseXMotion() > 0)
 			{
-				newPos -= X * (App->input->GetMouseXMotion() * dt) * speed_camera_move;
+				newPos -= X * (App->input->GetMouseXMotion() * dt) * move_speed;
 			}
 			if (App->input->GetMouseXMotion() < 0)
 			{
-				newPos -= X * (App->input->GetMouseXMotion() * dt) * speed_camera_move;
+				newPos -= X * (App->input->GetMouseXMotion() * dt) * move_speed;
 			}
 			if (App->input->GetMouseYMotion() > 0)
 			{
-				newPos += Y * (App->input->GetMouseYMotion() * dt) * speed_camera_move;
+				newPos += Y * (App->input->GetMouseYMotion() * dt) * move_speed;
 			}
 			if (App->input->GetMouseYMotion() < 0)
 			{
-				newPos += Y * (App->input->GetMouseYMotion() * dt) * speed_camera_move;
+				newPos += Y * (App->input->GetMouseYMotion() * dt) * move_speed;
 			}			
 		}
 		// -------------------------------
@@ -244,6 +307,7 @@ update_status ModuleCamera3D::Update(float dt)
 			Rotate(Reference.x, Reference.y);
 		}
 	}
+
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
 
@@ -257,7 +321,7 @@ update_status ModuleCamera3D::UpdateConfig(float dt)
 	ImGui::BulletText("Camera Position"); ImGui::SameLine();
 	ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%.2f, %.2f, %.2f)", Position.x, Position.y, Position.z);
 	ImGui::BulletText("Scroll Speed"); ImGui::SameLine();
-	ImGui::SliderFloat("##speedScroll", &moveWithScroll, 0.0f, 300.0f, "Speed = %.1f");
+	ImGui::SliderFloat("##speedScroll", &scroll_speed, 0.0f, 300.0f, "Speed = %.1f");
 
 	return UPDATE_CONTINUE;
 }
@@ -291,6 +355,72 @@ void ModuleCamera3D::LookAt(const vec3 &Spot)
 	Y = cross(Z, X);
 
 	CalculateViewMatrix();
+}
+
+void ModuleCamera3D::Orbit(float dx, float dy)
+{
+	float3 point_to_look;
+	float3 direction;
+
+	if (focus != nullptr)
+	{
+		CompTransform* transform = (CompTransform*)focus->FindComponentByType(C_TRANSFORM);
+		if (transform != nullptr)
+		{
+			point_to_look = transform->GetPos();
+		}
+		else
+		{
+			point_to_look = cam->frustum.pos + cam->frustum.front * 30.0f;
+		}
+	}
+
+	else
+	{
+		point_to_look = cam->frustum.pos + cam->frustum.front * 30.0f;
+	}
+
+	Quat quat_y(cam->frustum.up, dx);
+	Quat quat_x(cam->frustum.WorldRight(), dy);
+
+	direction = quat_x.Transform(direction);
+	direction = quat_y.Transform(direction);
+
+	cam->frustum.pos = direction + point_to_look;
+
+	LookAt(point_to_look);
+}
+
+void ModuleCamera3D::LookAt(const float3& spot)
+{
+	cam->LookAt(spot);
+}
+
+void ModuleCamera3D::LookAround(float dx, float dy)
+{
+	// ROTATE HORIZONTAL --------------
+	if (dx != 0.0f)
+	{
+		Quat quat;
+		quat.RotateY(dx); // Rotate around Y World Axis.
+		cam->frustum.front = quat.Mul(cam->frustum.front).Normalized();
+		cam->frustum.up = quat.Mul(cam->frustum.up).Normalized();
+	}
+
+	// ROTATE VERTICAL -------------------
+	if (dy != 0.0f)
+	{
+		Quat q;
+		q.RotateAxisAngle(cam->frustum.WorldRight(), dy);
+		float3 up_modified = q.Mul(cam->frustum.up).Normalized();
+
+		if (up_modified.y > 0.0f)
+		{
+			cam->frustum.up = up_modified;
+			cam->frustum.front = q.Mul(cam->frustum.front).Normalized();
+		}
+	}
+
 }
 
 void ModuleCamera3D::Rotate(float dx, float dy)
@@ -437,21 +567,61 @@ void ModuleCamera3D::MoveAt(const vec3 &Movement)
 	CalculateViewMatrix();
 }
 
+void ModuleCamera3D::MoveWithKeyboard(float dt)
+{
+	float final_speed = move_speed;
+	cam_move.Set(0, 0, 0);
+
+	// Increase cam velocity by pressing L-Shift
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+	{
+		final_speed *= 5.0f;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	{
+		cam_move += cam->frustum.front;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		cam_move -= cam->frustum.WorldRight();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	{
+		cam_move -= cam->frustum.front;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		cam_move += cam->frustum.WorldRight();
+	}
+
+	// If there is movement
+	if (cam_move.LengthSq() > 0.0f)
+	{
+		cam->frustum.Translate(cam_move * final_speed * dt);
+	}
+}
+
+void ModuleCamera3D::MoveWithMouse(float dt)
+{
+
+}
+
 // -----------------------------------------------------------------
 float* ModuleCamera3D::GetViewMatrix()
 {
 	return &ViewMatrix;
 }
 
-void ModuleCamera3D::SetRay(float mouseX, float mouseY, float screenW, float screenH)
-{
-	// Convert x, y from screen to normalized device coordinates [-1:1]
-	float x = (2.0f * mouseX) / screenW - 1.0f;
-	float y = 1.0f - (2.0f * mouseY) / screenH;
-
-	vec3 ray;
-	ray.Set(x, y, -1.0f);
-}
+//void ModuleCamera3D::SetRay(float mouseX, float mouseY, float screenW, float screenH)
+//{
+//	// Convert x, y from screen to normalized device coordinates [-1:1]
+//	float x = (2.0f * mouseX) / screenW - 1.0f;
+//	float y = 1.0f - (2.0f * mouseY) / screenH;
+//
+//	vec3 ray;
+//	ray.Set(x, y, -1.0f);
+//}
 
 // -----------------------------------------------------------------
 void ModuleCamera3D::CalculateViewMatrix()

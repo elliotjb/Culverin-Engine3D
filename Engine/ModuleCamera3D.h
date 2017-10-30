@@ -4,8 +4,9 @@
 #include "glmath.h"
 #include "_Model.h"
 #include "BaseGeometry.h"
-#include "Bullet/include/btBulletDynamicsCommon.h"
-#include "Geometry\Frustum.h"
+
+class GameObject;
+class CompCamera;
 
 class ModuleCamera3D : public Module
 {
@@ -15,20 +16,34 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
+	update_status UpdateNew(float dt);
 	update_status UpdateConfig(float dt);
 	bool CleanUp();
 
+	// REMOVE THIS ------------------------------
 	void Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const vec3 &Spot);
-	void Rotate(float dx, float dy);
 	void LookObject(const vec3 &Spot);
 	void LookAndMoveToObject();
-	bool isMouseOnWindow();
+	
 	void Move(const vec3 &Movement);
 	void MoveAt(const vec3 &Movement);
+	void Rotate(float dx, float dy);
+	// ----------------------------------------
+
+	void MoveWithKeyboard(float dt);
+	void MoveWithMouse(float dt);
+
+	void Orbit(float dx, float dy);
+
+	void LookAt(const float3& spot);
+	void LookAround(float dx, float dy);
+	
+	bool isMouseOnWindow();
+
 	float* GetViewMatrix();
 
-	void SetRay(float mouseX, float mouseY, float W, float H);
+	//void SetRay(float mouseX, float mouseY, float W, float H);
 
 private:
 	void CalculateViewMatrix();
@@ -41,16 +56,21 @@ public:
 	bool CanMoveCamera = false;
 
 private:
-	Frustum frustum;
+	CompCamera* cam = nullptr;
 
-	bool canOut = false;
+	GameObject* focus = nullptr;
 	BaseGeometry* geo = nullptr;
-	//AABB* box = nullptr;
-	bool needReajust = false;
-	float moveWithScroll = 1;
-	int speed_camera_move = 1;
-	mat4x4 ViewMatrix, ViewMatrixInverse;
 
 	LineSegment mouse_ray;
 
+	// Camera Movement ------------
+	float3 cam_move = { 0, 0, 0 };
+	float move_speed = 1.0f;
+	float rotate_speed = 1.0f;
+	float scroll_speed = 1.0f;
+
+	bool canOut = false;
+	bool needReajust = false;
+
+	mat4x4 ViewMatrix, ViewMatrixInverse;
 };

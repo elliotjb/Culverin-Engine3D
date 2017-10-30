@@ -28,6 +28,8 @@ public:
 	void DoCulling();
 	void UnCull();
 
+	void LookAt(const float3& position);
+
 	Culling ContainsAABox(const AABB& refBox) const;
 
 	void SetPos(float3 pos);
@@ -35,15 +37,23 @@ public:
 	void SetFar(float far_p);
 	void SetFov(float vertical);
 
+	float GetNear() const;
+	float GetFar() const;
+	float GetFOV() const;
+	float GetRatio() const;
+
+public:
+	Frustum frustum;
+
 private:
 	bool culling = false;
 
+	// Editor Variables -------------
 	float width = 0.0f;
 	float height = 0.0f;
 	float aspect_ratio = 0.0f;
-
-	Frustum cam_frustum;
 	float near_plane = 0.0f;
 	float far_plane = 0.0f;
 	float vertical_fov = 0.0f;
+	// -------------------------------
 };

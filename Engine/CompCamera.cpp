@@ -21,14 +21,15 @@ CompCamera::CompCamera(Comp_Type t, GameObject* parent) :Component(t, parent)
 	vertical_fov = 60; /* In degrees */
 
 	/* Set frustum vars */
-	cam_frustum.type = PerspectiveFrustum;
-	cam_frustum.front.Set(0, 0, -1);
-	cam_frustum.up.Set(0, 1, 0);
+	frustum.type = PerspectiveFrustum;
+	frustum.pos.Set(0, 0, 0);
+	frustum.front.Set(0, 0, 1);
+	frustum.up.Set(0, 1, 0);
 
-	cam_frustum.nearPlaneDistance = near_plane;
-	cam_frustum.farPlaneDistance = far_plane;
-	cam_frustum.verticalFov = vertical_fov * DEGTORAD;
-	cam_frustum.horizontalFov = Atan(aspect_ratio*Tan(cam_frustum.verticalFov / 2)) * 2;
+	frustum.nearPlaneDistance = near_plane;
+	frustum.farPlaneDistance = far_plane;
+	frustum.verticalFov = vertical_fov * DEGTORAD;
+	frustum.horizontalFov = Atan(aspect_ratio*Tan(frustum.verticalFov / 2)) * 2;
 }
 
 CompCamera::~CompCamera()
@@ -37,7 +38,7 @@ CompCamera::~CompCamera()
 
 void CompCamera::Init(float3 pos)
 {
-	cam_frustum.pos = pos;
+	frustum.pos = pos;
 }
 
 void CompCamera::preUpdate()
@@ -60,12 +61,12 @@ void CompCamera::UpdateFrustum()
 	const CompTransform* transform = (CompTransform*)this->parent->FindComponentByType(C_TRANSFORM);
 
 	//Z axis of the transform
-	cam_frustum.front = transform->GetTransform().Col3(2).Normalized();
+	frustum.front = transform->GetTransform().Col3(2).Normalized();
 
 	//Y axis of the transform
-	cam_frustum.up = transform->GetTransform().Col3(1).Normalized();
+	frustum.up = transform->GetTransform().Col3(1).Normalized();
 
-	cam_frustum.pos = transform->GetPos();
+	frustum.pos = transform->GetPos();
 }
 
 void CompCamera::DebugDraw()
@@ -77,8 +78,8 @@ void CompCamera::DebugDraw()
 
 	for (uint i = 0; i < 12; i++)
 	{
-		glVertex3f(cam_frustum.Edge(i).a.x, cam_frustum.Edge(i).a.y, cam_frustum.Edge(i).a.z);
-		glVertex3f(cam_frustum.Edge(i).b.x, cam_frustum.Edge(i).b.y, cam_frustum.Edge(i).b.z);
+		glVertex3f(frustum.Edge(i).a.x, frustum.Edge(i).a.y, frustum.Edge(i).a.z);
+		glVertex3f(frustum.Edge(i).b.x, frustum.Edge(i).b.y, frustum.Edge(i).b.z);
 	}
 
 	glEnd();
@@ -168,6 +169,15 @@ void CompCamera::UnCull()
 	}
 }
 
+void CompCamera::LookAt(const float3 & position)
+{
+	float3 direction = position - frustum.pos;
+	float3x3 matrix = float3x3::LookAt(frustum.front, direction.Normalized(), frustum.up, float3(0, 1, 0));
+
+	frustum.front = matrix.MulDir(frustum.front).Normalized();
+	frustum.up = matrix.MulDir(frustum.up).Normalized();
+}
+
 Culling CompCamera::ContainsAABox(const AABB& refBox) const
 {
 	float3 corner[8];
@@ -185,7 +195,7 @@ Culling CompCamera::ContainsAABox(const AABB& refBox) const
 		for(uint i = 0; i < 8; i++)
 		{
 			//Test all points against plane[p]
-			if (cam_frustum.GetPlane(p).IsOnPositiveSide(corner[i])) 
+			if (frustum.GetPlane(p).IsOnPositiveSide(corner[i]))
 			{
 				// The point is behind the plane
 				point_In = 0;
@@ -214,21 +224,41 @@ Culling CompCamera::ContainsAABox(const AABB& refBox) const
 
 void CompCamera::SetPos(float3 pos)
 {
-	cam_frustum.pos = pos;
+	frustum.pos = pos;
 }
 
 void CompCamera::SetNear(float near_p)
 {
-	cam_frustum.nearPlaneDistance = near_p;
+	frustum.nearPlaneDistance = near_p;
 }
 
 void CompCamera::SetFar(float far_p)
 {
-	cam_frustum.farPlaneDistance = far_p;
+	frustum.farPlaneDistance = far_p;
 }
 
 void CompCamera::SetFov(float vertical)
 {
-	cam_frustum.verticalFov = vertical * DEGTORAD;
-	cam_frustum.horizontalFov = Atan(aspect_ratio*Tan(cam_frustum.verticalFov / 2)) * 2;
+	frustum.verticalFov = vertical * DEGTORAD;
+	frustum.horizontalFov = Atan(aspect_ratio*Tan(frustum.verticalFov / 2)) * 2;
+}
+
+float CompCamera::GetNear() const
+{
+	return frustum.nearPlaneDistance;
+}
+
+float CompCamera::GetFar() const
+{
+	return frustum.farPlaneDistance;
+}
+
+float CompCamera::GetFOV() const
+{
+	return frustum.verticalFov * RADTODEG;
+}
+
+float CompCamera::GetRatio() const
+{
+	return frustum.AspectRatio();
 }
