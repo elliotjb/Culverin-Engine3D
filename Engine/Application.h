@@ -24,6 +24,7 @@
 #include <gl\GL.h>
 #include <gl\GLU.h>
 #include "ImGui\imgui_dock_v2.h"
+#include "Algorithm\Random\LCG.h"
 
 class Application
 {
@@ -78,6 +79,7 @@ public:
 
 	static void ShowHelpMarker(const char* desc, const char* icon = "(?)");
 
+
 private:
 
 	void AddModule(Module* mod);
@@ -91,8 +93,8 @@ private:
 
 	DockContext* configuration = nullptr;
 
-
 public:
+	LCG* random = nullptr;
 	bool showconfig = false;
 	bool showperformance = false;
 };

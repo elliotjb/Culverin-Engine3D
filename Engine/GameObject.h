@@ -40,4 +40,5 @@ private:
 	GameObject* parent = nullptr;
 
 	bool bb_active = false;
+	uint uid = 0;
 };

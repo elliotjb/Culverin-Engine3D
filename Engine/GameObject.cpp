@@ -11,6 +11,7 @@
 GameObject::GameObject()
 {
 	Enable();
+	uid = App->random->Int();
 }
 
 GameObject::~GameObject()

@@ -59,7 +59,10 @@ update_status ModuleFS::PreUpdate(float dt)
 		//uint size = LoadFile(files[1].c_str(), &buffer);
 		//int x = 0;
 
-		CopyFileToAssets("C:\\Users\\elliotjb\\Desktop\\street\\Street environment_V01.FBX", "C:\\Users\\elliotjb\\Desktop\\3D-Engine\\Street environment_V01.FBX");
+		//CopyFileToAssets("C:\\Users\\elliotjb\\Desktop\\street\\Street environment_V01.FBX", "C:\\Users\\elliotjb\\Desktop\\3D-Engine\\Street environment_V01.FBX");
+
+		//uint temp = App->random->Int();
+		//LOG("%i", temp);
 	}
 
 
