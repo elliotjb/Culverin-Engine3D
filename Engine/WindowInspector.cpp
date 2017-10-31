@@ -58,6 +58,11 @@ void Inspector::LinkObject(GameObject * obj)
 	}
 }
 
+void Inspector::SetLinkObjectNull()
+{
+	selected_object = nullptr;
+}
+
 //void Inspector::SetInfo(_Model* model)
 //{
 //	if (model != nullptr)

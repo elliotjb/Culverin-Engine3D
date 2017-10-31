@@ -21,6 +21,7 @@ public:
 	void ShowInspector();
 
 	void LinkObject(GameObject* obj);
+	void SetLinkObjectNull();
 	
 	//void OpenClose();
 	//bool IsOpen();
