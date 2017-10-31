@@ -18,9 +18,10 @@ ModuleRenderer3D::ModuleRenderer3D(bool start_enabled) : Module(start_enabled)
 	Start_enabled = true;
 	preUpdate_enabled = true;
 	postUpdate_enabled = true;
+	
+	haveConfig = true;
 
 	name = "Renderer";
-	haveConfig = true;
 }
 
 // Destructor
@@ -53,9 +54,6 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		//Initialize Projection Matrix
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-
-
-		glViewport(0, 0, 800, 600);
 
 		//Check for error
 		GLenum error = glGetError();
@@ -131,9 +129,6 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		Awake_t = perf_timer.ReadMs();
 	}
 
-	// Projection matrix for
-	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
 	return ret;
 }
 
@@ -165,15 +160,17 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	perf_timer.Start();
 
+	// Refresh Projection of the camera
+	UpdateProjection();
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
-	//glLoadMatrixf(cam_active->GetViewMatrix());
-	glLoadMatrixf(App->camera->GetViewMatrix());
+	glLoadMatrixf(cam_active->GetViewMatrix());
 
 	// light 0 on cam pos
-	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	lights[0].SetPos(cam_active->frustum.pos.x, cam_active->frustum.pos.y, cam_active->frustum.pos.z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -203,6 +200,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 			lights[0].Active(true);
 		}
 	}
+
 	postUpdate_t = perf_timer.ReadMs();
 
 	return UPDATE_CONTINUE;
@@ -285,9 +283,6 @@ bool ModuleRenderer3D::SaveConfig(JSON_Object * node)
 	return true;
 }
 
-
-
-
 // Called before quitting
 bool ModuleRenderer3D::CleanUp()
 {
@@ -306,15 +301,28 @@ void ModuleRenderer3D::SetActiveCamera(CompCamera * cam)
 	}
 }
 
+void ModuleRenderer3D::UpdateProjection()
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	glLoadMatrixf(cam_active->GetProjectionMatrix());
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+}
+
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
+	float ratio = (float)width / (float)height;
+	cam_active->SetRatio(ratio);
 	glViewport(0, 0, width, height);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf(&ProjectionMatrix);
+	
+	glLoadMatrixf(cam_active->GetProjectionMatrix());
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

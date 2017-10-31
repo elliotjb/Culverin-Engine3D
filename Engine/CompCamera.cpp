@@ -17,7 +17,7 @@ CompCamera::CompCamera(Comp_Type t, GameObject* parent) :Component(t, parent)
 	aspect_ratio = width / height; // We set aspect ratio 16:9 by now
 
 	near_plane = 0.2;
-	far_plane = 10;
+	far_plane = 1000;
 	vertical_fov = 60; /* In degrees */
 
 	/* Set frustum vars */
@@ -169,7 +169,7 @@ void CompCamera::UnCull()
 	}
 }
 
-void CompCamera::LookAt(const float3 & position)
+void CompCamera::LookAt(const float3& position)
 {
 	float3 direction = position - frustum.pos;
 	float3x3 matrix = float3x3::LookAt(frustum.front, direction.Normalized(), frustum.up, float3(0, 1, 0));
@@ -243,6 +243,12 @@ void CompCamera::SetFov(float vertical)
 	frustum.horizontalFov = Atan(aspect_ratio*Tan(frustum.verticalFov / 2)) * 2;
 }
 
+void CompCamera::SetRatio(float ratio)
+{
+	aspect_ratio = ratio;
+	frustum.horizontalFov = Atan(aspect_ratio*Tan(frustum.verticalFov / 2)) * 2;
+}
+
 float CompCamera::GetNear() const
 {
 	return frustum.nearPlaneDistance;
@@ -265,8 +271,17 @@ float CompCamera::GetRatio() const
 
 float* CompCamera::GetViewMatrix()
 {
-	float4x4 matrix;
+	static float4x4 matrix;
 	matrix = frustum.ViewMatrix();
+	matrix.Transpose();
+
+	return (float*)matrix.v;
+}
+
+float * CompCamera::GetProjectionMatrix()
+{
+	static float4x4 matrix;
+	matrix = frustum.ProjectionMatrix();
 	matrix.Transpose();
 
 	return (float*)matrix.v;

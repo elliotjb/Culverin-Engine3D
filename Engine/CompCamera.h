@@ -36,6 +36,7 @@ public:
 	void SetNear(float near_p);
 	void SetFar(float far_p);
 	void SetFov(float vertical);
+	void SetRatio(float ratio);
 
 	float GetNear() const;
 	float GetFar() const;
@@ -43,6 +44,7 @@ public:
 	float GetRatio() const;
 
 	float* GetViewMatrix();
+	float* GetProjectionMatrix();
 
 public:
 	Frustum frustum;

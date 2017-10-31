@@ -55,7 +55,7 @@ update_status ModuleLoader::Update(float dt)
 			LoadMesh(App->input->dropped_filedir);
 
 			//Fix Camera to model ------------------------
-			App->camera->LookAndMoveToObject();
+			App->camera->CenterToObject();
 			// ---------------------------------
 
 			SDL_free(App->input->dropped_filedir);

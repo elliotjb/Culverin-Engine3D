@@ -29,6 +29,7 @@ public:
 	bool CleanUp();
 
 	void SetActiveCamera(CompCamera* cam);
+	void UpdateProjection();
 
 	void OnResize(int width, int height);
 	
@@ -37,9 +38,6 @@ public:
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	CompCamera* cam_active = nullptr;
-	
-	mat3x3 NormalMatrix;
-	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
 	bool depth_test = false;
 	bool cull_face = false;

@@ -147,7 +147,7 @@ update_status ModuleGUI::Update(float dt)
 			//ImGui::Separator();
 			if (ImGui::MenuItem("Look View to Selected", "F"))
 			{
-				App->camera->LookAndMoveToObject();
+				App->camera->CenterToObject();
 			}
 			ImGui::EndMenu();
 		}
