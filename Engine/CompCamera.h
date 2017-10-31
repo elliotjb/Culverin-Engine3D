@@ -42,6 +42,8 @@ public:
 	float GetFOV() const;
 	float GetRatio() const;
 
+	float* GetViewMatrix();
+
 public:
 	Frustum frustum;
 

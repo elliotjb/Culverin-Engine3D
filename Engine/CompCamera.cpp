@@ -262,3 +262,12 @@ float CompCamera::GetRatio() const
 {
 	return frustum.AspectRatio();
 }
+
+float* CompCamera::GetViewMatrix()
+{
+	float4x4 matrix;
+	matrix = frustum.ViewMatrix();
+	matrix.Transpose();
+
+	return (float*)matrix.v;
+}

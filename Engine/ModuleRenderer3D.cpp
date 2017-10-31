@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "CompCamera.h"
 #include "SDL/include/SDL_opengl.h"
 #include "GL3W/include/glew.h"
 #include <gl/GL.h>
@@ -168,6 +169,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
+	//glLoadMatrixf(cam_active->GetViewMatrix());
 	glLoadMatrixf(App->camera->GetViewMatrix());
 
 	// light 0 on cam pos
@@ -294,6 +296,14 @@ bool ModuleRenderer3D::CleanUp()
 	SDL_GL_DeleteContext(context);
 
 	return true;
+}
+
+void ModuleRenderer3D::SetActiveCamera(CompCamera * cam)
+{
+	if (cam != nullptr)
+	{
+		cam_active = cam;
+	}
 }
 
 

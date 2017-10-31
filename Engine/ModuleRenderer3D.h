@@ -9,8 +9,9 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-
 #define MAX_LIGHTS 8
+
+class CompCamera;
 
 class ModuleRenderer3D : public Module
 {
@@ -27,12 +28,16 @@ public:
 
 	bool CleanUp();
 
+	void SetActiveCamera(CompCamera* cam);
+
 	void OnResize(int width, int height);
 	
 public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
+	CompCamera* cam_active = nullptr;
+	
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 

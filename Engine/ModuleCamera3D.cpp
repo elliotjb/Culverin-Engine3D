@@ -16,6 +16,7 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 	Start_enabled = true;
 	Update_enabled = true;
 
+	// REMOVE ------------------------------
 	CalculateViewMatrix();
 
 	X = vec3(1.0f, 0.0f, 0.0f);
@@ -24,11 +25,12 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 
 	Position = vec3(0.0f, 3.0f, 10.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
+	// -------------------------------------
 
 	cam = new CompCamera(C_CAMERA, nullptr);
 
-	name = "Camera";
 	haveConfig = true;
+	name = "Camera";
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -48,6 +50,10 @@ bool ModuleCamera3D::Start()
 	scroll_speed = 30.0f;
 	move_speed = 1.0f;
 	rotate_speed = 1.0f;
+
+	//Send the renderer ehis cam to draw 
+	App->renderer3D->SetActiveCamera(cam);
+
 	Start_t = perf_timer.ReadMs();
 
 	return ret;
@@ -74,48 +80,36 @@ update_status ModuleCamera3D::UpdateNew(float dt)
 	// Only modify camera when it's possible
 	if (io.WantTextInput == false && isMouseOnWindow() || canOut)
 	{
-		/* Keyboard movement */
-		if (/*Keyboard()*/1)
+		/* ------------------- CENTER CAMERA TO OBJECT ----------------- */
+		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 		{
-			MoveWithKeyboard(dt);
+			CenterToObject();
 		}
 
-		/* Mouse movement */
+		/* ------------------- MOUSE MOVEMENT ----------------- */
 		if (/*Mouse()*/1)
 		{
 			int motion_x = App->input->GetMouseXMotion();
 			int	motion_y = App->input->GetMouseYMotion();
 
-			if ((motion_x != 0 || motion_y != 0) )
+			if ((motion_x != 0 || motion_y != 0))
 			{
-				// ORBIT
-				if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT &&
-					App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
-				{
-					float dx = (float)-motion_x * rotate_speed * dt;
-					float dy = (float)-motion_y * rotate_speed * dt;
-
-					Orbit(dx, dy);
-				}
-
-				// POINT
-				else if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT &&
-					App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
-				{
-					float dx = (float)-motion_x * rotate_speed * dt;
-					float dy = (float)-motion_y * rotate_speed * dt;
-
-					Look(dx, dy);
-
-				}
+				MoveWithMouse(motion_x, motion_y, dt);
 			}
-			
 
+			/* ------------------- WHEEL ZOOM ----------------- */
+			if (App->input->GetMouseZ() != 0)
+			{
+				Zoom(App->input->GetMouseZ() * dt);
+			}
+		}
+
+		/* ------------------- KEYBOARD MOVEMENT ----------------- */
+		if (/*Keyboard()*/1)
+		{
+			MoveWithKeyboard(dt);
 		}
 	}
-
-	// Recalculate matrix -------------
-	CalculateViewMatrix();
 
 	Update_t = perf_timer.ReadMs();
 
@@ -228,6 +222,7 @@ update_status ModuleCamera3D::Update(float dt)
 			needReajust = true;
 		} 
 		// -------------------------------------
+
 		//Mouse Middle ------------------------
 		if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
 		{
@@ -423,6 +418,32 @@ void ModuleCamera3D::LookAround(float dx, float dy)
 
 }
 
+void ModuleCamera3D::Zoom(int zoom)
+{
+	cam->frustum.pos += cam->frustum.front * zoom * scroll_speed;
+}
+
+void ModuleCamera3D::CenterToObject()
+{
+	if (focus != nullptr)
+	{
+		AABB* box = focus->bounding_box;
+		float3 center = box->Centroid();
+		float3 size = box->Size();
+		cam->frustum.pos.Set(center.x + size.x, center.y + size.y, center.z + size.z);
+		
+		CompTransform* transform = (CompTransform*)focus->FindComponentByType(C_TRANSFORM);
+		if (transform != nullptr)
+		{
+			point_to_look = transform->GetPos();
+		}
+		else
+		{
+			point_to_look = cam->frustum.pos + cam->frustum.front * 30.0f;
+		}
+	}
+}
+
 void ModuleCamera3D::Rotate(float dx, float dy)
 {
 	float Sensitivity = 0.25f;
@@ -602,9 +623,27 @@ void ModuleCamera3D::MoveWithKeyboard(float dt)
 	}
 }
 
-void ModuleCamera3D::MoveWithMouse(float dt)
+void ModuleCamera3D::MoveWithMouse(float motion_x, float motion_y, float dt)
 {
+	// ORBIT
+	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT &&
+		App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+		float dx = (float)-motion_x * rotate_speed * dt;
+		float dy = (float)-motion_y * rotate_speed * dt;
 
+		Orbit(dx, dy);
+	}
+
+	// POINT
+	else if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT &&
+		App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	{
+		float dx = (float)-motion_x * rotate_speed * dt;
+		float dy = (float)-motion_y * rotate_speed * dt;
+
+		Look(dx, dy);
+	}
 }
 
 // -----------------------------------------------------------------

@@ -32,12 +32,14 @@ public:
 	// ----------------------------------------
 
 	void MoveWithKeyboard(float dt);
-	void MoveWithMouse(float dt);
+	void MoveWithMouse(float dx, float dy, float dt);
 
 	void Orbit(float dx, float dy);
-
 	void LookAt(const float3& spot);
 	void LookAround(float dx, float dy);
+	void Zoom(int zoom);
+	void CenterToObject();
+
 	
 	bool isMouseOnWindow();
 
@@ -59,6 +61,7 @@ private:
 	CompCamera* cam = nullptr;
 
 	GameObject* focus = nullptr;
+	float3 point_to_look = { 0, 0, 0 };
 	BaseGeometry* geo = nullptr;
 
 	LineSegment mouse_ray;
