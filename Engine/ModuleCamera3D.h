@@ -27,6 +27,8 @@ public:
 	void LookAt(const float3& spot);
 	void LookAround(float dx, float dy);
 	void Zoom(float zoom);
+
+	void SetFocus(const GameObject* selected);
 	void CenterToObject();
 
 	bool isMouseOnWindow();
@@ -41,7 +43,7 @@ public:
 
 private:
 	CompCamera* cam = nullptr;
-	GameObject* focus = nullptr;
+	const GameObject* focus = nullptr;
 	float3 point_to_look = { 0, 0, 0 };
 
 	// Camera Movement ------------

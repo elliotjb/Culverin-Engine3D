@@ -183,6 +183,14 @@ void ModuleCamera3D::Zoom(float zoom)
 	LOG("Mouse Zoom (%f)", zoom);
 }
 
+void ModuleCamera3D::SetFocus(const GameObject* selected)
+{
+	if (selected != nullptr)
+	{
+		focus = selected;
+	}
+}
+
 void ModuleCamera3D::CenterToObject()
 {
 	if (focus != nullptr)
