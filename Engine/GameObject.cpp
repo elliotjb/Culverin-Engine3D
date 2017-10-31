@@ -14,8 +14,20 @@ GameObject::GameObject()
 	uid = App->random->Int();
 }
 
+GameObject::GameObject(char* nameGameObject, uint uuid)
+{
+	Enable();
+	uid = uuid;
+	name = nameGameObject;
+}
+
 GameObject::~GameObject()
 {
+	//for (int i = 0; i < childs.size(); i++)
+	//{
+	//	childs[i]->~GameObject();
+	//	delete childs[i];
+	//}
 }
 
 void GameObject::preUpdate()
@@ -109,6 +121,11 @@ void GameObject::SetName(char * name)
 	this->name = name;
 }
 
+const char* GameObject::GetName() const
+{
+	return name;
+}
+
 void GameObject::ShowHierarchy()
 {
 	if (!isVisible())
@@ -139,6 +156,7 @@ void GameObject::ShowHierarchy()
 	{
 		//Set inspector window of this Game Object
 		((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(this);
+		App->camera->SetFocus(this);
 	}
 }
 
@@ -307,6 +325,21 @@ Component* GameObject::AddComponent(Comp_Type type)
 	return nullptr;
 }
 
+uint GameObject::GetNumChilds() const
+{
+	return childs.size();
+}
+
+GameObject* GameObject::GetChildbyIndex(uint pos_inVec) const
+{
+	return childs[pos_inVec];
+}
+
+void GameObject::AddChildGameObject(GameObject* child)
+{
+	this->childs.push_back(child);
+}
+
 void GameObject::DrawBoundingBox()
 {
 	//CompTransform* transform = (CompTransform*)FindComponentByType(C_TRANSFORM);
@@ -333,4 +366,9 @@ void GameObject::DrawBoundingBox()
 	//	glPopMatrix();
 	//}
 
+}
+
+uint GameObject::GetUUID() const
+{
+	return uid;
 }

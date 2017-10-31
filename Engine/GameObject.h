@@ -9,6 +9,7 @@ class GameObject
 {
 public:
 	GameObject();
+	GameObject(char* nameGameObject, uint uuid);
 	~GameObject();
 
 	void preUpdate();
@@ -17,6 +18,7 @@ public:
 	bool Disable();
 
 	void SetName(char* name);
+	const char* GetName() const;
 
 	void ShowHierarchy();
 	void ShowInspectorInfo();
@@ -24,11 +26,19 @@ public:
 	bool isActive() const;
 	bool isVisible() const;
 
+	// Componenets
 	Component* FindComponentByType(Comp_Type type) const;
 	Component* AddComponent(Comp_Type type);
 
+	// Childs
+	uint GetNumChilds() const;
+	GameObject* GetChildbyIndex(uint pos_inVec) const;
+	void AddChildGameObject(GameObject* child);
+
 	AABB* bounding_box = nullptr;
 	void DrawBoundingBox();
+
+	uint GetUUID() const;
 
 private:
 	char* name = "CHANGE THIS";

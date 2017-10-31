@@ -114,11 +114,11 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 		ret = false;
 	}
 
-	/*
+	
 	//// SET MATERIAL DATA -----------------------------------------
 	//if (mesh->mMaterialIndex >= 0)
 	//{
-	//	aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
+	//	aiMaterial* mat = mesh->mMaterials[mesh->mMaterialIndex];
 	//	std::vector<Texture> diffuseMaps = loadMaterialTextures(mat, aiTextureType_DIFFUSE, "texture_diffuse");
 	//	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
@@ -126,7 +126,7 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 	//	std::vector<Texture> specularMaps = loadMaterialTextures(mat, aiTextureType_SPECULAR, "texture_specular");
 	//	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	//}
-	*/
+	
 	//TRANSFORM DATA ---------------------------
 	//aiQuaternion rot_quat;
 	//aiVector3D pos, rot, scal;

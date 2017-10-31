@@ -29,6 +29,11 @@ public:
 	GameObject* CreateSphere();
 	GameObject* CreateMainCamera();
 
+	void SaveScene();
+	void LoadScene();
+
+	void SaveChildGameObject(JSON_Object * config_node, const GameObject& parent, uint uid, std::string name);
+
 
 
 public:

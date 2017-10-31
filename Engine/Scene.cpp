@@ -13,6 +13,7 @@
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_sdl_gl3.h"
 #include <direct.h>
+#include "WindowInspector.h"
 
 #define SPHERE_DEFINITION 1536
 
@@ -65,6 +66,24 @@ update_status Scene::Update(float dt)
 
 	//Draw Plane
 	DrawPlane(size_plane);
+
+	//if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	//{
+	//	gameobjects[0]->AddChildGameObject(gameobjects[1]);
+	//	gameobjects[0]->AddChildGameObject(gameobjects[2]);
+	//	SaveScene();
+	//}
+	//if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+	//{
+	//	for (int i = gameobjects.size() - 1; i >= 0; i--)
+	//	{
+	//		delete gameobjects[i];
+	//		gameobjects.pop_back();
+	//	}
+	//	((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
+	//	LoadScene();
+	//}
+
 
 
 	// Update GameObjects
@@ -150,7 +169,7 @@ GameObject* Scene::CreateGameObject()
 	return obj;
 }
 
-GameObject * Scene::CreateCube()
+GameObject* Scene::CreateCube()
 {
 	GameObject* obj = new GameObject();
 
@@ -200,7 +219,7 @@ GameObject * Scene::CreateCube()
 	return obj;
 }
 
-GameObject * Scene::CreateSphere()
+GameObject* Scene::CreateSphere()
 {
 	GameObject* obj = new GameObject();
 
@@ -248,7 +267,7 @@ GameObject * Scene::CreateSphere()
 	return obj;
 }
 
-GameObject * Scene::CreateMainCamera()
+GameObject* Scene::CreateMainCamera()
 {
 	GameObject* obj = new GameObject();
 
@@ -276,6 +295,145 @@ GameObject * Scene::CreateMainCamera()
 
 	return obj;
 }
+
+void Scene::SaveScene()
+{
+	JSON_Value* config_file;
+	JSON_Object* config;
+	JSON_Object* config_node;
+
+	config_file = json_parse_file("Scene_1.json");
+
+	if (config_file != nullptr)
+	{
+		config = json_value_get_object(config_file);
+		config_node = json_object_get_object(config, "Scene");
+		json_object_clear(config_node);
+		json_object_dotset_number_with_std(config_node, "Info.Number of GameObjects", gameobjects.size());
+
+		// Update GameObjects
+		for (uint i = 0; i < gameobjects.size(); i++)
+		{
+			std::string name = "GameObject" + std::to_string(i);
+			name += ".";
+			// UUID--------
+			json_object_dotset_number_with_std(config_node, name + "UUID", gameobjects[i]->GetUUID());
+			// Parent UUID------------
+			json_object_dotset_number_with_std(config_node, name + "Parent", -1);
+			// Name- --------
+			json_object_dotset_string_with_std(config_node, name + "Name", gameobjects[i]->GetName());
+			// TRANSFORM-----------
+			// Position
+			json_array_dotset_float3(config_node, name + "Position", ((CompTransform*)gameobjects[i]->FindComponentByType(C_TRANSFORM))->GetPos());
+			// Rotation
+			json_array_dotset_float3(config_node, name + "Rotation", ((CompTransform*)gameobjects[i]->FindComponentByType(C_TRANSFORM))->GetRot());
+			// Scale
+			json_array_dotset_float3(config_node, name + "Scale", ((CompTransform*)gameobjects[i]->FindComponentByType(C_TRANSFORM))->GetScale());
+			
+			// Components  ------------
+
+
+			//Save Childs
+			json_object_dotset_number_with_std(config_node, name + "Number of Childs", gameobjects[i]->GetNumChilds());
+			if (gameobjects[i]->GetNumChilds() > 0)
+			{
+				std::string name_Parent = name;
+				name_Parent += "Childs.";
+				for (int j = 0; j < gameobjects[i]->GetNumChilds(); j++)
+				{
+					std::string child_name = name_Parent;
+					child_name += "Child_num " + std::to_string(j);
+					child_name += ".";
+					SaveChildGameObject(config_node, *gameobjects[i]->GetChildbyIndex(j), gameobjects[i]->GetUUID(), child_name);
+				}
+			}
+		}
+	}
+	json_serialize_to_file(config_file, "Scene_1.json");
+}
+
+void Scene::SaveChildGameObject(JSON_Object* config_node, const GameObject& child, uint uid, std::string name)
+{
+	// UUID--------
+	json_object_dotset_number_with_std(config_node, name + "UUID", child.GetUUID());
+	// Parent UUID------------
+	json_object_dotset_number_with_std(config_node, name + "Parent", uid);
+	// Name- --------
+	json_object_dotset_string_with_std(config_node, name + "Name", child.GetName());
+	// TRANSFORM-----------
+	// Position
+	json_array_dotset_float3(config_node, name + "Position", ((CompTransform*)child.FindComponentByType(C_TRANSFORM))->GetPos());
+	// Rotation
+	json_array_dotset_float3(config_node, name + "Rotation", ((CompTransform*)child.FindComponentByType(C_TRANSFORM))->GetRot());
+	// Scale
+	json_array_dotset_float3(config_node, name + "Scale", ((CompTransform*)child.FindComponentByType(C_TRANSFORM))->GetScale());
+
+	// Components  ------------
+
+	//Save Childs
+	if (child.GetNumChilds() > 0)
+	{
+
+		name += "Childs.";
+		for (int i = 0; i < child.GetNumChilds(); i++)
+		{
+			std::string name_Child = name;
+			name_Child += "Child_num " + std::to_string(i);
+			name_Child += ".";
+			SaveChildGameObject(config_node, *child.GetChildbyIndex(i), child.GetUUID(), name_Child);
+		}
+	}
+}
+
+void Scene::LoadScene()
+{
+	JSON_Value* config_file;
+	JSON_Object* config;
+	JSON_Object* config_node;
+
+	config_file = json_parse_file("Scene_1.json");
+	if (config_file != nullptr)
+	{
+		config = json_value_get_object(config_file);
+		config_node = json_object_get_object(config, "Scene");
+		int NUmberGameObjects = json_object_dotget_number(config_node, "Info.Number of GameObjects");
+		if (NUmberGameObjects > 0)
+		{
+			for (int i = 0; i < NUmberGameObjects; i++)
+			{
+				std::string name = "GameObject" + std::to_string(i);
+				name += ".";
+				//dock.label = _strdup(json_object_dotget_string_with_std(config_node, name + "Label"));
+				//dock.pos.x = json_object_dotget_number_with_std(config_node, name + "Position x");
+				char* nameGameObject = App->GetCharfromConstChar(json_object_dotget_string_with_std(config_node, name + "Name"));
+				uint uid = json_object_dotget_number_with_std(config_node, name + "UUID");
+				GameObject* obj = new GameObject(nameGameObject, uid);
+
+				// TRANSFORM COMPONENT --------------
+				CompTransform* transform = (CompTransform*)obj->AddComponent(C_TRANSFORM);
+				float3 position = json_array_dotget_float3_string(config_node, name + "Position");
+				float3 rotation = json_array_dotget_float3_string(config_node, name + "Rotation");
+				float3 scale = json_array_dotget_float3_string(config_node, name + "Scale");
+				transform->Init(position, rotation, scale);
+				transform->Enable();
+
+				//Load Components
+
+				//Load Childs
+				int NumberofChilds = json_object_dotget_number_with_std(config_node, name + "Number of Childs");
+				if (NumberofChilds > 0)
+				{
+					
+				}
+
+				//Add GameObject
+				gameobjects.push_back(obj);
+			}
+		}
+	}
+}
+
+
 
 /*for (int i = 0; i < CHECKERS_HEIGHT; i++)
 {

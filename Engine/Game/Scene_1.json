@@ -1,0 +1,60 @@
+{
+  
+  "Scene": {
+    "Info": { "Number of GameObjects": 4 },
+    "GameObject0": {
+      "UUID": 213434129,
+      "Parent": -1,
+      "Name": "MainCamera",
+      "Position": [ 0, 0, 0 ],
+      "Rotation": [ 0, 0, 0 ],
+      "Scale": [ 1, 1, 1 ],
+      "Number of Childs": 2,
+      "Childs": {
+        "Child_num 0": {
+          "UUID": 1058141516,
+          "Parent": 213434129,
+          "Name": "Cube 0",
+          "Position": [ 0, 0, 0 ],
+          "Rotation": [ 0, 0, 0 ],
+          "Scale": [ 1, 1, 1 ]
+        },
+        "Child_num 1": {
+          "UUID": 1591458748,
+          "Parent": 213434129,
+          "Name": "Sphere 0",
+          "Position": [ 0, 0, 6.5000004768371582 ],
+          "Rotation": [ 0, 0, 0 ],
+          "Scale": [ 1, -4.5, 1 ]
+        }
+      }
+    },
+    "GameObject1": {
+      "UUID": 1058141516,
+      "Parent": -1,
+      "Name": "Cube 0",
+      "Position": [ 0, 0, 0 ],
+      "Rotation": [ 0, 0, 0 ],
+      "Scale": [ 1, 1, 1 ],
+      "Number of Childs": 0
+    },
+    "GameObject2": {
+      "UUID": 1591458748,
+      "Parent": -1,
+      "Name": "Sphere 0",
+      "Position": [ 0, 0, 6.5000004768371582 ],
+      "Rotation": [ 0, 0, 0 ],
+      "Scale": [ 1, -4.5, 1 ],
+      "Number of Childs": 0
+    },
+    "GameObject3": {
+      "UUID": 1678211190,
+      "Parent": -1,
+      "Name": "Cube 1",
+      "Position": [ 6.0000004768371582, 0, 0 ],
+      "Rotation": [ 0, 0, 0 ],
+      "Scale": [ -2, -4, 1 ],
+      "Number of Childs": 0
+    }
+  }
+}
