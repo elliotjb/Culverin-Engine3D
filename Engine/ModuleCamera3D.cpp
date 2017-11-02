@@ -8,6 +8,7 @@
 #include "CompTransform.h"
 #include "ImGui/imgui.h"
 #include "Geometry/Frustum.h"
+#include <map>
 
 #define ASPECT_RATIO 16/9
 
@@ -185,6 +186,8 @@ void ModuleCamera3D::Zoom(float zoom)
 
 void ModuleCamera3D::MousePick(float x, float y, float w, float h)
 {
+	possible_intersections.clear();
+
 	float norm_x = (2.0f * x) / w - 1.0f;
 	float norm_y = 1.0f - (2.0f * y) / h;
 
@@ -193,6 +196,8 @@ void ModuleCamera3D::MousePick(float x, float y, float w, float h)
 
 	// Iterate all AABB of gameobjects
 	bool hit = false;
+	float entry_dist = 0.0f;
+	float exit_dist = ray.Length();
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
 		if (App->scene->gameobjects[i]->isActive())
@@ -200,15 +205,32 @@ void ModuleCamera3D::MousePick(float x, float y, float w, float h)
 			const AABB* box = App->scene->gameobjects[i]->bounding_box;
 			if (box != nullptr)
 			{
-				hit = ray.Intersects(*box);
+				hit = ray.Intersects(*box, entry_dist, exit_dist);
+
 				if (hit)
 				{
-					LOG("HIT %s.", App->scene->gameobjects[i]->GetName());
+					// Set a list of possible intersections (sorted from closest to farthest)
+					possible_intersections.insert(std::pair<float, GameObject*>(entry_dist, App->scene->gameobjects[i]));
 				}
 			}
 		}
 	}
-	//LOG("NORMALIZED POINT: (%.2f, %.2f)", norm_x, norm_y);
+
+	// showing contents:
+	LOG("--------------------");
+	std::map<float, GameObject*>::iterator it;
+	for (it = possible_intersections.begin(); it != possible_intersections.end(); ++it)
+	{
+		LOG("%s %f", it->second->GetName(), it->first);
+	}
+	LOG("--------------------");
+}
+
+float3 ModuleCamera3D::IntersectionPoint(const AABB* box)
+{
+	float3 point = float3::zero;
+
+	return point;
 }
 
 void ModuleCamera3D::SetFocus(const GameObject* selected)

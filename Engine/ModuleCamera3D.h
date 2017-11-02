@@ -4,6 +4,7 @@
 #include "glmath.h"
 #include "_Model.h"
 #include "BaseGeometry.h"
+#include <map>
 
 class GameObject;
 class CompCamera;
@@ -28,6 +29,7 @@ public:
 	void Zoom(float zoom);
 
 	void MousePick(float x, float y, float w, float h);
+	float3 IntersectionPoint(const AABB* box);
 
 	void SetFocus(const GameObject* selected);
 	void CenterToObject();
@@ -48,6 +50,7 @@ private:
 	float3 point_to_look = { 0, 0, 0 };
 
 	LineSegment ray;
+	std::map<float, GameObject*> possible_intersections;
 
 	// Camera Movement ------------
 	float3 cam_move = { 0, 0, 0 };
