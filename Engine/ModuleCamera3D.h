@@ -43,13 +43,13 @@ private:
 public:
 	bool changecam = false;
 	bool CanMoveCamera = false;
+	LineSegment ray;
 
 private:
 	CompCamera* cam = nullptr;
 	const GameObject* focus = nullptr;
 	float3 point_to_look = { 0, 0, 0 };
 
-	LineSegment ray;
 	std::map<float, GameObject*> possible_intersections;
 
 	// Camera Movement ------------

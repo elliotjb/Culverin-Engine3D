@@ -67,6 +67,13 @@ update_status Scene::Update(float dt)
 	//Draw Plane
 	DrawPlane(size_plane);
 
+	glBegin(GL_LINES);
+
+	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+	glVertex3f(App->camera->ray.a.x, App->camera->ray.a.y, App->camera->ray.a.z); glVertex3f(App->camera->ray.b.x, App->camera->ray.b.y, App->camera->ray.b.z);
+
+	glEnd();
+
 	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
 	{
 		gameobjects[0]->AddChildGameObject(gameobjects[1]);
