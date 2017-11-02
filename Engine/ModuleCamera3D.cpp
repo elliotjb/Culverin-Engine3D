@@ -236,7 +236,7 @@ void ModuleCamera3D::MousePick(float x, float y, float w, float h)
 
 				// Transform ray coordinates into local space coordinates of the object
 				float4x4 object_transform = it->second->GetComponentTransform()->GetTransform();
-				ray_local_space.Transform(object_transform.Transposed());
+				ray_local_space.Transform(object_transform.Inverted());
 
 				for (uint i = 0; i < mesh->num_indices; i += 3)
 				{
