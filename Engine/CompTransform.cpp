@@ -241,8 +241,12 @@ void CompTransform::Save(JSON_Object* object, std::string name) const
 
 }
 
-void CompTransform::Load(const JSON_Object * object, std::string name)
+void CompTransform::Load(const JSON_Object* object, std::string name)
 {
-
+	float3 position = json_array_dotget_float3_string(object, name + "Position");
+	float3 rotation = json_array_dotget_float3_string(object, name + "Rotation");
+	float3 scale = json_array_dotget_float3_string(object, name + "Scale");
+	Init(position, rotation, scale);
+	Enable();
 }
 

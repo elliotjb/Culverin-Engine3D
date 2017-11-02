@@ -9,8 +9,9 @@
 #include "GameObject.h"
 #include <vector>
 
-CompMesh::CompMesh(Comp_Type t, GameObject* parent) : Component(t, parent)
+CompMesh::CompMesh(Comp_Type t, GameObject* parent_) : Component(t, parent_)
 {
+	parent = parent_;
 }
 
 CompMesh::~CompMesh()
@@ -276,18 +277,51 @@ const char* CompMesh::GetDirectory()
 void CompMesh::Save(JSON_Object* object, std::string name) const
 {
 	json_object_dotset_number_with_std(object, name + "Type", C_MESH);
-	if (isPrimitive) // 1-> YES  .   0-> NO
+	//json_object_dotset_number_with_std(object, name + "UUID", uid);
+	json_object_dotset_boolean_with_std(object, name + "Primitive", isPrimitive);
+	if (isPrimitive)
 	{
-		json_object_dotset_number_with_std(object, name + "Primitive", 1);
 		json_object_dotset_number_with_std(object, name + "Type primitive", TypePrimitive);
 	}
 	else
 	{
-		json_object_dotset_number_with_std(object, name + "Primitive", 0);
 		json_object_dotset_string_with_std(object, name + "DirectoryMesh", directory_mesh);
 	}
 }
 
 void CompMesh::Load(const JSON_Object* object, std::string name)
 {
+	isPrimitive = json_object_dotget_boolean_with_std(object, name + "Primitive");
+	if (isPrimitive)
+	{
+		TypePrimitive = json_object_dotget_number_with_std(object, name + "Type primitive");
+		if (TypePrimitive == 1 /*TYPE_SPHERE*/)
+		{
+
+		}
+		if (TypePrimitive == 2/*TYPE_CUBE*/)
+		{
+			InitRanges(8, 36, 0); // 0 normals by now.
+
+			OBB* box = new OBB();
+			box->pos = parent->GetComponentTransform()->GetPos();
+			box->r = parent->GetComponentTransform()->GetScale();
+			box->axis[0] = float3(1, 0, 0);
+			box->axis[1] = float3(0, 1, 0);
+			box->axis[2] = float3(0, 0, 1);
+
+			parent->bounding_box = new AABB(*box);
+			float3* vertices_array = new float3[36];
+
+			parent->bounding_box->Triangulate(1, 1, 1, vertices_array, NULL, NULL, false);
+
+			App->scene->Init_IndexVertex(vertices_array, num_indices, this);
+			SetupMesh();
+			Enable();
+		}
+	}
+	else
+	{
+
+	}
 }

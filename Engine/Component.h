@@ -41,6 +41,8 @@ private:
 	Comp_Type type = C_UNKNOWN;
 	bool active = false;
 
+
 protected:
 	GameObject* parent = nullptr;
+	uint uid = 0;
 };

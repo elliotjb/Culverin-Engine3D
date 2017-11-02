@@ -30,10 +30,9 @@ public:
 	GameObject* CreateMainCamera();
 
 	void SaveScene();
+	void SaveChildGameObject(JSON_Object* config_node, const GameObject& parent, uint uid, std::string name);
 	void LoadScene();
-
-	void SaveChildGameObject(JSON_Object * config_node, const GameObject& parent, uint uid, std::string name);
-
+	void LoadChildGameObject(const JSON_Object* config_node, GameObject& parent, const uint uid, const uint numChild, std::string name);
 
 
 public:

@@ -1298,7 +1298,7 @@ JSON_Status json_array_dotset_color(JSON_Object *object, std::string name, float
 
 float3 json_array_dotget_float3(const JSON_Object* object, const char* name)
 {
-	JSON_Array* array = json_object_get_array(object, name);
+	JSON_Array* array = json_object_dotget_array(object, name);
 	float3 transform;
 	transform.x = (float)json_value_get_number(json_array_get_value(array, 0));
 	transform.y = (float)json_value_get_number(json_array_get_value(array, 1));
@@ -1308,7 +1308,7 @@ float3 json_array_dotget_float3(const JSON_Object* object, const char* name)
 }
 float2 json_array_dotget_float2(const JSON_Object* object, const char* name)
 {
-	JSON_Array* array = json_object_get_array(object, name);
+	JSON_Array* array = json_object_dotget_array(object, name);
 	float2 transform;
 	transform.x = (float)json_value_get_number(json_array_get_value(array, 0));
 	transform.y = (float)json_value_get_number(json_array_get_value(array, 1));
@@ -1317,7 +1317,7 @@ float2 json_array_dotget_float2(const JSON_Object* object, const char* name)
 }
 float4 json_array_dotget_color(const JSON_Object* object, const char* name)
 {
-	JSON_Array* array = json_object_get_array(object, name);
+	JSON_Array* array = json_object_dotget_array(object, name);
 	float4 transform;
 	transform.x = (float)json_value_get_number(json_array_get_value(array, 0));
 	transform.y = (float)json_value_get_number(json_array_get_value(array, 1));
@@ -1329,7 +1329,7 @@ float4 json_array_dotget_color(const JSON_Object* object, const char* name)
 
 float3 json_array_dotget_float3_string(const JSON_Object* object, std::string name)
 {
-	JSON_Array* array = json_object_get_array(object, name.c_str());
+	JSON_Array* array = json_object_dotget_array(object, name.c_str());
 	float3 transform;
 	transform.x = (float)json_value_get_number(json_array_get_value(array, 0));
 	transform.y = (float)json_value_get_number(json_array_get_value(array, 1));
@@ -1339,7 +1339,7 @@ float3 json_array_dotget_float3_string(const JSON_Object* object, std::string na
 }
 float2 json_array_dotget_float2_string(const JSON_Object* object, std::string name)
 {
-	JSON_Array* array = json_object_get_array(object, name.c_str());
+	JSON_Array* array = json_object_dotget_array(object, name.c_str());
 	float2 transform;
 	transform.x = (float)json_value_get_number(json_array_get_value(array, 0));
 	transform.y = (float)json_value_get_number(json_array_get_value(array, 1));
@@ -1348,7 +1348,7 @@ float2 json_array_dotget_float2_string(const JSON_Object* object, std::string na
 }
 float4 json_array_dotget_color_string(const JSON_Object* object, std::string name)
 {
-	JSON_Array* array = json_object_get_array(object, name.c_str());
+	JSON_Array* array = json_object_dotget_array(object, name.c_str());
 	float4 transform;
 	transform.x = (float)json_value_get_number(json_array_get_value(array, 0));
 	transform.y = (float)json_value_get_number(json_array_get_value(array, 1));

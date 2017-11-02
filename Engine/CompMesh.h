@@ -20,6 +20,13 @@ struct _Vertex
 	float2 texCoords;
 };
 
+enum Type_Primitive
+{
+	TYPE_NON,
+	TYPE_SPHERE,
+	TYPE_CUBE
+};
+
 
 class CompMesh: public Component
 {
@@ -66,6 +73,7 @@ private:
 	uint vertices_norm_id = 0; /*NORMALS OF VERTICES ID*/
 
 	const char* directory_mesh = nullptr; //Only use in save and load (isPrimitive dont use never!)
+	//GameObject* parent = nullptr;
 
 	CompMaterial* material = nullptr;
 };

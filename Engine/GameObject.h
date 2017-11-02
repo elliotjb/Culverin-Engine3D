@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+class CompTransform;
+
 class GameObject
 {
 public:
@@ -29,9 +31,11 @@ public:
 	// Componenets
 	Component* FindComponentByType(Comp_Type type) const;
 	Component* AddComponent(Comp_Type type);
-	void SaveComponents(JSON_Object* object, std::string name) const;
-	void LoadComponents(JSON_Object * object, std::string name, uint numComponents);
+	void AddComponent_(Comp_Type type);
 	int GetNumComponents() const;
+	CompTransform* GetComponentTransform() const;
+	void SaveComponents(JSON_Object* object, std::string name) const;
+	void LoadComponents(const JSON_Object * object, std::string name, uint numComponents);
 
 	// Childs
 	uint GetNumChilds() const;

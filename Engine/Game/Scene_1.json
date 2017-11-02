@@ -3,7 +3,7 @@
   "Scene": {
     "Info": { "Number of GameObjects": 2 },
     "GameObject0": {
-      "UUID": 1572956082,
+      "UUID": 1961541711,
       "Parent": -1,
       "Name": "MainCamera",
       "Number of Components": 2,
@@ -24,10 +24,33 @@
           "Vertical Pov": 1.0471975803375244
         }
       },
-      "Number of Childs": 0
+      "Number of Childs": 1,
+      "Childs": {
+        "Child_num 0": {
+          "UUID": 1715381507,
+          "Parent": 1961541711,
+          "Name": "Cube 0",
+          "Number of Components": 3,
+          "Components": {
+            "Component 0": {
+              "Type": 0,
+              "Position": [ 0, 0, 0 ],
+              "Rotation": [ 0, 0, 0 ],
+              "Scale": [ 1, 1, 1 ]
+            },
+            "Component 1": {
+              "Type": 1,
+              "Primitive": true,
+              "Type primitive": 2
+            },
+            "Component 2": { "Type": 2 }
+          },
+          "Number of Childs": 0
+        }
+      }
     },
     "GameObject1": {
-      "UUID": 1994289804,
+      "UUID": 1715381507,
       "Parent": -1,
       "Name": "Cube 0",
       "Number of Components": 3,
@@ -39,9 +62,11 @@
           "Scale": [ 1, 1, 1 ]
         },
         "Component 1": {
-          "Primitive": 1,
+          "Type": 1,
+          "Primitive": true,
           "Type primitive": 2
-        }
+        },
+        "Component 2": { "Type": 2 }
       },
       "Number of Childs": 0
     }

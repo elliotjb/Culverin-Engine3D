@@ -325,6 +325,59 @@ Component* GameObject::AddComponent(Comp_Type type)
 	return nullptr;
 }
 
+void GameObject::AddComponent_(Comp_Type type)
+{
+	bool dupe = false;
+	for (uint i = 0; i < components.size(); i++)
+	{
+		if (components[i]->GetType() == type) //We need to check if the component is ACTIVE first?¿
+		{
+			dupe = true;
+			LOG("There's already one component of this type in the Game Object.");
+			break;
+		}
+	}
+
+	if (!dupe)
+	{
+		if (type == C_MESH)
+		{
+			LOG("Adding MESH COMPONENT.");
+			components.push_back(new CompMesh(type, this));
+		}
+
+		else if (type == C_TRANSFORM)
+		{
+			LOG("Adding TRANSFORM COMPONENT.");
+			components.push_back(new CompTransform(type, this));
+		}
+
+		else if (type == C_MATERIAL)
+		{
+			LOG("Adding MATERIAL COMPONENT.");
+			CompMaterial* material = new CompMaterial(type, this);
+			components.push_back(material);
+
+			/* Link Material to the Mesh if exists */
+			CompMesh* mesh_to_link = (CompMesh*)FindComponentByType(C_MESH);
+			if (mesh_to_link != nullptr)
+			{
+				mesh_to_link->LinkMaterial(material);
+			}
+			else
+			{
+				LOG("MATERIAL not linked to any mesh");
+			}
+		}
+
+		else if (type == C_CAMERA)
+		{
+			LOG("Adding CAMERA COMPONENT.");
+			components.push_back(new CompCamera(type, this));
+		}
+	}
+}
+
 void GameObject::SaveComponents(JSON_Object* object, std::string name) const
 {
 	for (int i = 0; i < components.size(); i++)
@@ -334,18 +387,54 @@ void GameObject::SaveComponents(JSON_Object* object, std::string name) const
 	}
 }
 
-void GameObject::LoadComponents(JSON_Object* object, std::string name, uint numComponents)
+void GameObject::LoadComponents(const JSON_Object* object, std::string name, uint numComponents)
 {
+	// Frist Add All components by type
 	for (int i = 0; i < numComponents; i++)
 	{
 		std::string temp = name + "Component " + std::to_string(i) + ".";
-		components[i]->Save(object, temp); 
+		Comp_Type type = (Comp_Type)(int)json_object_dotget_number_with_std(object, temp + "Type");
+		switch (type)
+		{
+		case C_UNKNOWN:
+			break;
+		case C_TRANSFORM:
+			this->AddComponent_(C_TRANSFORM);
+			break;
+		case C_MESH:
+			this->AddComponent_(C_MESH);
+			break;
+		case C_MATERIAL:
+			this->AddComponent_(C_MATERIAL);
+			break;
+		case C_CAMERA:
+			this->AddComponent_(C_CAMERA);
+			break;
+		default:
+			break;
+		}
+	}
+	// Now Iterate All components and Load variables
+	for (int i = 0; i < components.size(); i++)
+	{
+		std::string temp = name + "Component " + std::to_string(i) + ".";
+		components[i]->Load(object, temp);
 	}
 }
 
 int GameObject::GetNumComponents() const
 {
 	return components.size();
+}
+
+CompTransform* GameObject::GetComponentTransform() const
+{
+	if (components[0]->GetType() == C_TRANSFORM)
+	{
+		return (CompTransform*)components[0];
+	}
+	else
+		return nullptr;
 }
 
 uint GameObject::GetNumChilds() const
