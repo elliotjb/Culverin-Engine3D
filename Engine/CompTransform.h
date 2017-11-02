@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "MathGeoLib.h"
 #include <vector>
+#include "Assimp/include/matrix4x4.h"
 
 class GameObject;
 
@@ -25,6 +26,8 @@ public:
 	void SetPos(float3 pos);
 	void SetRot(float3 rot);
 	void SetScale(float3 scale);
+	void SetZero();
+	void SetTransformation(aiMatrix4x4 tranformation);
 
 	void UpdateMatrix();
 

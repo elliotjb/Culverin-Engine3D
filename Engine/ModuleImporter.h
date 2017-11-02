@@ -5,6 +5,9 @@
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/cfileio.h"
 
+class ImportMesh;
+class ImportMaterial;
+
 enum FileTypeImport
 {
 	F_UNKNOWN_i = -1,
@@ -21,7 +24,7 @@ public:
 	bool Init(JSON_Object* node);
 	bool Start();
 	update_status PreUpdate(float dt);
-	void ProcessNode(aiNode * node, const aiScene * scene);
+	void ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	update_status UpdateConfig(float dt);
@@ -33,5 +36,8 @@ public:
 public:
 	char directoryExe[MAX_PATH];
 	FileTypeImport dropped_File_type = F_UNKNOWN_i;
+
+	ImportMesh* iMesh = nullptr;
+	ImportMaterial* iMaterial = nullptr;
 };
 

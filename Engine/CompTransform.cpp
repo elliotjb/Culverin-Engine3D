@@ -193,6 +193,32 @@ void CompTransform::SetScale(float3 scal)
 	UpdateMatrix();
 }
 
+void CompTransform::SetZero()
+{
+	SetPos(float3::zero);
+	SetRot(float3::zero);
+	SetScale(float3(1, 1, 1));
+}
+
+void CompTransform::SetTransformation(aiMatrix4x4 transform)
+{
+	//TRANSFORM DATA ---------------------------
+	aiQuaternion rot_quat;
+	aiVector3D pos, rot, scal;
+	float3 pos_vec, rot_vec, scal_vec;
+
+	transform.Decompose(scal, rot_quat, pos);
+	rot = rot_quat.GetEuler();
+
+	pos_vec.Set(pos.x, pos.y, pos.z);
+	rot_vec.Set(rot.x, rot.y, rot.z);
+	scal_vec.Set(scal.x, scal.y, scal.z);
+	SetPos(pos_vec);
+	SetRot(rot_vec);
+	SetScale(scal_vec);
+	//------------------------------------------
+}
+
 void CompTransform::UpdateMatrix()
 {
 	local_transform = float4x4::FromTRS(position, rot_quat, scale);

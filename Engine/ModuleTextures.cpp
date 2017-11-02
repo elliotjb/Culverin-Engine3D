@@ -55,7 +55,7 @@ bool ModuleTextures::CleanUp()
 	return true;
 }
 
-GLuint ModuleTextures::LoadTexture(const char * filename)
+GLuint ModuleTextures::LoadTexture(const char* filename)
 {
 	ILuint textureID;
 	ILenum error;

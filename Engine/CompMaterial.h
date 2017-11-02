@@ -2,8 +2,9 @@
 #include "Component.h"
 #include "Color.h"
 #include <string>
+#include <vector>
 
-struct Tex
+struct Texture
 {
 	uint id;
 	std::string type;
@@ -20,6 +21,9 @@ public:
 	void SetColor(float r, float g, float b, float a);
 	Color GetColor() const;
 	
+	void SetTexture(std::vector<Texture> textures);
+	void AddTexture(const Texture texture);
+
 	void ShowInspectorInfo();
 
 	void Save(JSON_Object* object, std::string name) const;
@@ -27,5 +31,6 @@ public:
 
 private:
 	Color color;
-	Tex texture;
+	//Texture texture;
+	std::vector<Texture> texture;
 };

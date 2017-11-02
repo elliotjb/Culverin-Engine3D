@@ -55,6 +55,8 @@ public:
 	char* ConverttoChar(std::string name);
 	void CreateFolder(const char* file_name);
 
+	// 
+	bool CheckAssetsIsModify();
 
 	//Dont use at the moment --------- --------------
 	std::string GetAssetsDirecotry();

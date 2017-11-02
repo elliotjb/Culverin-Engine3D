@@ -56,8 +56,8 @@ bool ModuleGUI::Start()
 	winManager[INSPECTOR]->active[0].active = true;
 	winManager[HIERARCHY]->active[0].active = true;
 	winManager[SCENEWORLD]->active[0].active = true;
-	winManager[GAME]->active[0].active = true;
 	winManager[PROJECT]->active[0].active = true;
+	winManager[GAME]->active[0].active = true;
 
 	std::vector<WindowManager*>::iterator window = winManager.begin();
 	for (int i = 0; i < winManager.size(); i++)

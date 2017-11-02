@@ -4,7 +4,7 @@
 #include "Color.h"
 #include <string>
 #include <vector>
-
+#include "CompMaterial.h"
 
 enum Prim_Type
 {
@@ -32,12 +32,12 @@ struct Vertex
 	float2 texCoords;
 };
 
-struct Texture
-{
-	uint id;
-	std::string type;
-	std::string path;
-};
+//struct Texture
+//{
+//	uint id;
+//	std::string type;
+//	std::string path;
+//};
 
 class Mesh
 {

@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ImportMesh.h"
 #include "ImportMaterial.h"
+#include "GameObject.h"
+#include "CompTransform.h"
 
 
 ModuleImporter::ModuleImporter(bool start_enabled) : Module(start_enabled)
@@ -32,6 +34,8 @@ bool ModuleImporter::Init(JSON_Object* node)
 		// When passing NULL to GetModuleHandle, it returns handle of exe itself
 		GetModuleFileName(hModule, directoryExe, (sizeof(directoryExe)));
 	}
+	iMesh = new ImportMesh();
+	iMaterial = new ImportMaterial();
 
 	return true;
 }
@@ -51,13 +55,17 @@ update_status ModuleImporter::PreUpdate(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
 	{
-		ImportMesh* imp = new ImportMesh();
-		imp->Load("Baker_house.rin");
+		//ImportMesh* imp = new ImportMesh();
+		//imp->Load("Baker_house.rin");
 	}
 
 	if (App->input->dropped)
 	{
 		dropped_File_type = CheckFileType(App->input->dropped_filedir);
+
+
+		//App->fs->CopyFileToAssets(App->input->dropped_filedir, ((Project*)App->gui->winManager[PROJECT])->GetFolderSee().c_str());
+		//((Project*)App->gui->winManager[PROJECT])->AddFile(((Project*)App->gui->winManager[PROJECT])->GetFilesSee(), App->input->dropped_filedir);
 
 		switch (dropped_File_type)
 		{
@@ -67,18 +75,20 @@ update_status ModuleImporter::PreUpdate(float dt)
 			std::string file;
 
 			const aiScene* scene = aiImportFile(App->input->dropped_filedir, aiProcessPreset_TargetRealtime_MaxQuality);
-			ProcessNode(scene->mRootNode, scene);
+			GameObject* obj = new GameObject();
+			CompTransform* trans = (CompTransform*)obj->AddComponent(C_TRANSFORM);
+			trans->SetZero();
+			ProcessNode(scene->mRootNode, scene, obj);
 			aiReleaseImport(scene);
-			
+			App->scene->gameobjects.push_back(obj);
+			//Now Save Serialitzate OBJ -> Prefab
+
 			break;
 		}
 		case F_TEXTURE_i:
 		{
 			LOG("IMPORTING TEXTURE, File Path: %s", App->input->dropped_filedir);
-
-			ImportMaterial* importmaterial = new ImportMaterial();
-			importmaterial->Import(App->input->dropped_filedir);
-			delete importmaterial;
+			iMaterial->Import(App->input->dropped_filedir);
 		
 			break;
 		}
@@ -105,21 +115,23 @@ update_status ModuleImporter::PreUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene)
+void ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj)
 {
 	// Process all the Node's MESHES
 	for (uint i = 0; i < node->mNumMeshes; i++)
 	{
+		GameObject* objChild = new GameObject();
+		CompTransform* trans = (CompTransform*)objChild->AddComponent(C_TRANSFORM);
+		trans->SetTransformation(node->mTransformation);
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		ImportMesh* imp = new ImportMesh(); // TODO ELLIOT
-		imp->Import(mesh, node->mName.C_Str());
-		delete imp;
+		iMesh->Import(scene, mesh, objChild, node->mName.C_Str());
+		obj->AddChildGameObject(objChild);
 	}
 
 	// Process children
 	for (uint i = 0; i < node->mNumChildren; i++)
 	{
-		ProcessNode(node->mChildren[i], scene);
+		ProcessNode(node->mChildren[i], scene, obj);
 	}
 }
 

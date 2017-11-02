@@ -30,6 +30,14 @@ bool Project::Start()
 
 update_status Project::Update(float dt)
 {
+	if (App->fs->CheckAssetsIsModify())
+	{
+
+	}
+	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+	{
+		GetFolderSee();
+	}
 	if (active[0].active)
 		ShowProject();
 
@@ -40,6 +48,19 @@ bool Project::CleanUp()
 {
 
 	return true;
+}
+
+std::string Project::GetFolderSee()
+{
+	std::string temp = fileViwer->begin()._Ptr->directory_name;
+	size_t EndName = temp.find_last_of("\\");
+	temp = temp.substr(0, EndName + 1);
+	return temp;
+}
+
+std::vector<Files>* Project::GetFilesSee()
+{
+	return fileViwer;
 }
 
 void Project::ShowProject()
@@ -372,4 +393,14 @@ void Project::ChangefileViwer(std::vector<Folders>& folder, std::string name)
 			fileViwer = &folder[i].files;
 		}
 	}	
+}
+
+void Project::AddFile(std::vector<Files>* folderViwe, std::string nameFile)
+{
+	Files newFile;
+	newFile.directory_name = nameFile;
+	newFile.file_name = App->GetCharfromConstChar(App->fs->FixName_directory(nameFile).c_str());
+	newFile.file_type = SetType(nameFile);
+	newFile.parentFolder = folderViwe->begin()._Ptr->parentFolder;
+	folderViwe->begin()._Ptr->parentFolder->files.push_back(newFile);
 }

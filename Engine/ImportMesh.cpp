@@ -5,6 +5,10 @@
 #include <experimental/filesystem>
 #include <fstream>
 #include "GameObject.h"
+#include "ImportMaterial.h"
+#include "CompMesh.h"
+#include "CompMaterial.h"
+#include "CompTransform.h"
 
 ImportMesh::ImportMesh()
 {
@@ -15,27 +19,26 @@ ImportMesh::~ImportMesh()
 {
 }
 
-bool ImportMesh::Import(aiScene* scene, std::string & output_file)
-{
-
-	if (scene != nullptr && scene->HasMeshes())
-	{
-		scene->mRootNode;
-
-	}
-
-
-	return true;
-}
-
-bool ImportMesh::Load(const char * exported_file, Texture * resource)
+bool ImportMesh::Load(const char* exported_file, Texture* resource)
 {
 	return false;
 }
 
-bool ImportMesh::Import(aiMesh* mesh, const char* name)
+bool ImportMesh::Import(const aiScene* scene, aiMesh* mesh, GameObject* obj, const char* name)
 {
 	bool ret = true;
+	uint num_vertices = 0;
+	uint num_indices = 0;
+	uint num_normals = 0;
+	uint num_textures = 0;
+
+	float3* vertices = nullptr;
+	uint* indices = nullptr;
+	float3* vert_normals = nullptr;
+	float2* tex_coords = nullptr;
+	Texture* texture = nullptr;
+
+	CompMesh* meshComp = (CompMesh*)obj->AddComponent(C_MESH);
 
 	if (mesh != nullptr)
 	{
@@ -115,17 +118,24 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 	}
 
 	
-	//// SET MATERIAL DATA -----------------------------------------
-	//if (mesh->mMaterialIndex >= 0)
-	//{
-	//	aiMaterial* mat = mesh->mMaterials[mesh->mMaterialIndex];
-	//	std::vector<Texture> diffuseMaps = loadMaterialTextures(mat, aiTextureType_DIFFUSE, "texture_diffuse");
-	//	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+	// SET MATERIAL DATA -----------------------------------------
+	if (mesh->mMaterialIndex >= 0)
+	{
+		CompMaterial* materialComp = (CompMaterial*)obj->AddComponent(C_MATERIAL);
+		
+		std::vector<Texture> text_t;
+		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
+		std::vector<Texture> diffuseMaps = LoadMaterialTextures(mat, aiTextureType_DIFFUSE, "texture_diffuse");
+		text_t.insert(text_t.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-	//	// For the moment, we can only see textures on the diffuse channel, but we can load the specular ones
-	//	std::vector<Texture> specularMaps = loadMaterialTextures(mat, aiTextureType_SPECULAR, "texture_specular");
-	//	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-	//}
+		// For the moment, we can only see textures on the diffuse channel, but we can load the specular ones
+		std::vector<Texture> specularMaps = LoadMaterialTextures(mat, aiTextureType_SPECULAR, "texture_specular");
+		text_t.insert(text_t.end(), specularMaps.begin(), specularMaps.end());
+
+		materialComp->SetTexture(text_t);
+		texture = text_t.data();
+		num_textures = text_t.size();
+	}
 	
 	//TRANSFORM DATA ---------------------------
 	//aiQuaternion rot_quat;
@@ -139,7 +149,12 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 	//rot_vec.Set(rot.x, rot.y, rot.z);
 	//scal_vec.Set(scal.x, scal.y, scal.z);
 	//------------------------------------------
-	
+
+	meshComp->InitRanges(num_vertices, num_indices, num_normals);
+	meshComp->Init(vertices, indices, vert_normals, tex_coords);
+	meshComp->SetupMesh();
+	meshComp->Enable();
+	//meshComp->SetDirecotryMesh(file); // In Save no Load
 
 	// ALLOCATING DATA INTO BUFFER ------------------------
 	uint ranges[3] = { num_vertices, num_indices, num_normals }; //,num_tex_coords };
@@ -179,6 +194,7 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 	RELEASE_ARRAY(indices);
 	RELEASE_ARRAY(vert_normals);
 	RELEASE_ARRAY(tex_coords);
+	//RELEASE(texture);
 
 	std::string fileName = name;
 	fileName += ".rin";
@@ -195,9 +211,17 @@ bool ImportMesh::Import(aiMesh* mesh, const char* name)
 
 bool ImportMesh::Load(const char* file)
 {
-
 	char* buffer = nullptr;
+	uint num_vertices = 0;
+	uint num_indices = 0;
+	uint num_normals = 0;
+	//uint num_tex_coords = 0;
 
+	float3* vertices = nullptr;
+	uint* indices = nullptr;
+	float3* vert_normals = nullptr;
+	float2* tex_coords = nullptr;
+	//Texture* texture = nullptr;
 	// Loading File
 	uint size = App->fs->LoadFile(file, &buffer);
 
@@ -247,11 +271,55 @@ bool ImportMesh::Load(const char* file)
 		mesh->Init(vertices, indices, vert_normals, tex_coords);
 		mesh->SetupMesh();
 		mesh->Enable();
-		mesh->SetDirecotryMesh(file);
+		mesh->SetDirecotryMesh(file); // In Save no Load
 
 		App->scene->gameobjects.push_back(gameobject);
 		
 	}
 
 	return true;
+}
+
+std::vector<Texture> ImportMesh::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const char* typeName)
+{
+	std::vector<Texture> textures;
+	std::vector<Texture> l_tex;
+	bool skip = false;
+	for (uint i = 0; i < mat->GetTextureCount(type); i++)
+	{
+		aiString str;
+		mat->GetTexture(type, i, &str);
+
+		for (uint j = 0; j < l_tex.size(); j++)
+		{
+			if (std::strcmp(l_tex[j].path.c_str(), str.C_Str()) == 0)
+			{
+				textures.push_back(l_tex[j]);
+				skip = true;
+				break;
+			}
+		}
+
+		if (skip == false)
+		{
+			Texture tex;
+			tex.id = App->textures->LoadTexture(str.C_Str());
+			tex.type = typeName;
+			tex.path = str.C_Str();
+
+			textures.push_back(tex);
+			l_tex.push_back(tex);
+
+			//Import Material
+			//ImportMaterial* importmaterial = new ImportMaterial();
+			std::string direct = App->input->dropped_filedir;
+			size_t EndName = direct.find_last_of("\\");
+			direct = direct.substr(0, EndName + 1);
+			direct += tex.path.c_str();
+			App->importer->iMaterial->Import(direct.c_str());
+			//delete importmaterial;
+		}
+	}
+
+	return textures;
 }

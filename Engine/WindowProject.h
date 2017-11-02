@@ -58,6 +58,10 @@ public:
 	void SetAllFolderBool(std::vector<Folders>& folders, bool setBoolean);
 	void ChangefileViwer(std::vector<Folders>& folder, std::string name);
 
+	std::string GetFolderSee();
+	std::vector<Files>* GetFilesSee();
+	void AddFile(std::vector<Files>* folderViwe, std::string newFile);
+
 private:
 
 	std::vector<Folders> folders;

@@ -434,7 +434,7 @@ void Scene::LoadScene()
 	}
 }
 
-void Scene::LoadChildGameObject(const JSON_Object* config_node, GameObject& parent, const uint uid, const uint numChild, std::string name)
+void Scene::LoadChildGameObject(const JSON_Object* config_node, GameObject& parent, uint uid, uint numChild, std::string name)
 {
 	uint numCErrors = 0;	
 	uint numCloaded = 0;

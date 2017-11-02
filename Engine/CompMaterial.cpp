@@ -26,6 +26,16 @@ Color CompMaterial::GetColor() const
 	return color;
 }
 
+void CompMaterial::SetTexture(std::vector<Texture> textures)
+{
+	texture = textures;
+}
+
+void CompMaterial::AddTexture(const Texture tex)
+{
+	texture.push_back(tex);
+}
+
 void CompMaterial::ShowInspectorInfo()
 {
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));

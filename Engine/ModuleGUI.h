@@ -20,8 +20,8 @@ enum WindowName
 	INSPECTOR,
 	HIERARCHY,
 	SCENEWORLD,
-	GAME,
-	PROJECT
+	PROJECT,
+	GAME
 };
 
 class ModuleGUI : public Module

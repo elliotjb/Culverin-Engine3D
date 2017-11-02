@@ -8,6 +8,7 @@
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/cfileio.h"
+#include "CompMaterial.h"
 
 #pragma comment(lib, "Assimp/libx86/assimp.lib")
 
@@ -246,7 +247,7 @@ Mesh _Model::ProcessMesh(aiMesh * mesh, const aiScene * scene, float3 * min, flo
 		mesh->HasNormals(), mesh->mNumFaces, name, pos_vec, rot_vec, scal_vec);
 }
 
-std::vector<Texture> _Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type, const char * typeName)
+std::vector<Texture> _Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type, const char* typeName)
 {
 	std::vector<Texture> textures;
 	bool skip = false;

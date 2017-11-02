@@ -24,7 +24,7 @@ ImportMaterial::~ImportMaterial()
 //	return UPDATE_CONTINUE;
 //}
 
-bool ImportMaterial::Import(char* file)
+bool ImportMaterial::Import(const char* file)
 {
 	bool ret = false;
 	char* buffer;
@@ -49,11 +49,6 @@ bool ImportMaterial::Import(char* file)
 
 	//return ret;
 
-	return false;
-}
-
-bool ImportMaterial::Import(const void * buffer, uint size, std::string & output_file)
-{
 	return false;
 }
 
