@@ -10,7 +10,7 @@ ModuleFS::~ModuleFS()
 {
 }
 
-bool ModuleFS::Init(JSON_Object * node)
+bool ModuleFS::Init(JSON_Object* node)
 {
 
 	return true;
@@ -128,6 +128,66 @@ std::vector<Folders> ModuleFS::Get_AllFolders(std::experimental::filesystem::pat
 		}
 	}
 	return filenames;
+}
+
+std::vector<FoldersNew> ModuleFS::GetAllFoldersNew(std::experimental::filesystem::path path, std::string folderActive)
+{
+	namespace stdfs = std::experimental::filesystem;
+
+	std::vector<FoldersNew> filenames;
+
+	const stdfs::directory_iterator end{};
+
+	if (path == "")
+	{
+		path = directory_Game;
+	}
+
+	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
+	{
+		if (stdfs::is_directory(*iter))
+		{
+			FoldersNew folder_temp;
+			folder_temp.directory_name = iter->path().string();
+			folder_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
+			if (folderActive == folder_temp.directory_name)
+			{
+				folder_temp.active = true;
+			}
+			folder_temp.folder_child = GetAllFoldersNew(iter->path().string(), folderActive);
+			filenames.push_back(folder_temp);
+		}
+	}
+	return filenames;
+}
+
+std::vector<FilesNew> ModuleFS::GetAllFilesNew(std::experimental::filesystem::path path)
+{
+	namespace stdfs = std::experimental::filesystem;
+
+	std::vector<FilesNew> files;
+
+	const stdfs::directory_iterator end{};
+
+	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
+	{
+		FilesNew files_temp;
+		files_temp.directory_name = iter->path().string();
+		//if (stdfs::is_directory(*iter))
+		//{
+		//	stdfs::directory_iterator nextiter{ iter->path().string() };
+		//	nextiter++;
+		//	if(stdfs::exists(nextiter->path()))
+		//		files_temp.directory_name_next = nextiter->path().string();
+		//}
+		//else
+		files_temp.directory_name_next = "";
+
+		files_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
+		files_temp.file_type = ((Project*)App->gui->winManager[PROJECT])->SetType(files_temp.file_name);
+		files.push_back(files_temp);
+	}
+	return files;
 }
 
 uint ModuleFS::LoadFile(const char* file, char** buffer)

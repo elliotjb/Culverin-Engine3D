@@ -44,6 +44,9 @@ public:
 
 	std::vector<std::string> Get_filenames(std::experimental::filesystem::path path);
 	std::vector<Folders> Get_AllFolders(std::experimental::filesystem::path path);
+	std::vector<FoldersNew> GetAllFoldersNew(std::experimental::filesystem::path path, std::string folderActive);
+	std::vector<FilesNew> GetAllFilesNew(std::experimental::filesystem::path path);
+
 	bool CheckIsFileExist(const std::string & name);
 
 	std::string GetMainDirectory();
@@ -66,5 +69,6 @@ private:
 	std::vector<std::string> files;
 	char ownPth[MAX_PATH];
 	std::string directory_Game;
+	//std::vector<FoldersNew> filenames;
 };
 
