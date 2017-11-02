@@ -6,6 +6,7 @@
 #include "Component.h"
 #include "CompCamera.h"
 #include "CompTransform.h"
+#include "WindowInspector.h"
 #include "ImGui/imgui.h"
 #include "Geometry/Frustum.h"
 #include <map>
@@ -197,7 +198,9 @@ void ModuleCamera3D::MousePick(float x, float y, float w, float h)
 	// Iterate all AABB of gameobjects
 	bool hit = false;
 	float entry_dist = 0.0f;
+	float3 hit_point = float3::zero;
 	float exit_dist = ray.Length();
+
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
 		if (App->scene->gameobjects[i]->isActive())
@@ -206,7 +209,6 @@ void ModuleCamera3D::MousePick(float x, float y, float w, float h)
 			if (box != nullptr)
 			{
 				hit = ray.Intersects(*box, entry_dist, exit_dist);
-
 				if (hit)
 				{
 					// Set a list of possible intersections (sorted from closest to farthest)
@@ -216,14 +218,56 @@ void ModuleCamera3D::MousePick(float x, float y, float w, float h)
 		}
 	}
 
-	// showing contents:
-	LOG("--------------------");
-	std::map<float, GameObject*>::iterator it;
-	for (it = possible_intersections.begin(); it != possible_intersections.end(); ++it)
+	if (possible_intersections.size() > 0)
 	{
-		LOG("%s %f", it->second->GetName(), it->first);
+		float min_distance = INFINITY;
+		LineSegment ray_local_space = ray;
+		GameObject* best_candidate = nullptr;
+		std::map<float, Triangle> tris_map;
+		std::map<float, GameObject*>::iterator it;
+
+		for (it = possible_intersections.begin(); it != possible_intersections.end(); ++it)
+		{
+			if (it->second->GetComponentTransform() != nullptr && it->second->FindComponentByType(C_MESH))
+			{
+				Triangle tri;
+				const CompTransform* trans = it->second->GetComponentTransform();
+				const CompMesh* mesh = (CompMesh*)it->second->FindComponentByType(C_MESH);
+
+				// Transform ray coordinates into local space coordinates of the object
+				float4x4 object_transform = it->second->GetComponentTransform()->GetTransform();
+				ray_local_space.Transform(object_transform.Transposed());
+
+				for (uint i = 0; i < mesh->num_indices; i += 3)
+				{
+					// Set Triangle vertices
+					tri.a = mesh->vertices[mesh->indices[i]].pos;
+					tri.b = mesh->vertices[mesh->indices[i + 1]].pos;
+					tri.c = mesh->vertices[mesh->indices[i + 2]].pos;
+					hit = ray_local_space.Intersects(tri, &entry_dist, &hit_point);
+
+					if (hit)
+					{
+						tris_map.insert(std::pair<float, Triangle>(entry_dist, tri));
+
+						if (entry_dist < min_distance)
+						{
+							// Set the Game Objet to be picked
+							min_distance = entry_dist;
+							best_candidate = it->second;
+						}
+					}
+				}
+			}
+		}
+
+		if (best_candidate != nullptr)
+		{
+			//Set inspector window of this Game Object
+			((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(best_candidate);
+			App->camera->SetFocus(best_candidate);
+		}
 	}
-	LOG("--------------------");
 }
 
 float3 ModuleCamera3D::IntersectionPoint(const AABB* box)
