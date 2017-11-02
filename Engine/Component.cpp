@@ -48,3 +48,11 @@ bool Component::isActive() const
 {
 	return active;
 }
+
+void Component::Save(JSON_Object * object, std::string name) const
+{
+}
+
+void Component::Load(const JSON_Object * object, std::string name)
+{
+}

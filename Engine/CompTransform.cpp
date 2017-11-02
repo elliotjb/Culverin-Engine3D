@@ -228,3 +228,21 @@ const float* CompTransform::GetMultMatrixForOpenGL() const
 	return local_transform.Transposed().ptr(); //Change Matrix to Global Matrix
 }
 
+void CompTransform::Save(JSON_Object* object, std::string name) const
+{
+	// TRANSFORM-----------
+	json_object_dotset_number_with_std(object, name + "Type", C_TRANSFORM);
+	// Position
+	json_array_dotset_float3(object, name + "Position", GetPos());
+	// Rotation
+	json_array_dotset_float3(object, name + "Rotation", GetRot());
+	// Scale
+	json_array_dotset_float3(object, name + "Scale", GetScale());
+
+}
+
+void CompTransform::Load(const JSON_Object * object, std::string name)
+{
+
+}
+

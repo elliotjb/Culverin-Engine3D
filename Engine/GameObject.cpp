@@ -325,6 +325,29 @@ Component* GameObject::AddComponent(Comp_Type type)
 	return nullptr;
 }
 
+void GameObject::SaveComponents(JSON_Object* object, std::string name) const
+{
+	for (int i = 0; i < components.size(); i++)
+	{
+		std::string temp = name + "Component " + std::to_string(i) + ".";
+		components[i]->Save(object, temp);
+	}
+}
+
+void GameObject::LoadComponents(JSON_Object* object, std::string name, uint numComponents)
+{
+	for (int i = 0; i < numComponents; i++)
+	{
+		std::string temp = name + "Component " + std::to_string(i) + ".";
+		components[i]->Save(object, temp); 
+	}
+}
+
+int GameObject::GetNumComponents() const
+{
+	return components.size();
+}
+
 uint GameObject::GetNumChilds() const
 {
 	return childs.size();

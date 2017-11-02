@@ -262,3 +262,32 @@ void CompMesh::LinkMaterial(CompMaterial * mat)
 		LOG("MATERIAL linked to MESH %s", name);
 	}
 }
+
+void CompMesh::SetDirecotryMesh(const char* name)
+{
+	directory_mesh = name;
+}
+
+const char* CompMesh::GetDirectory()
+{
+	return directory_mesh;
+}
+
+void CompMesh::Save(JSON_Object* object, std::string name) const
+{
+	json_object_dotset_number_with_std(object, name + "Type", C_MESH);
+	if (isPrimitive) // 1-> YES  .   0-> NO
+	{
+		json_object_dotset_number_with_std(object, name + "Primitive", 1);
+		json_object_dotset_number_with_std(object, name + "Type primitive", TypePrimitive);
+	}
+	else
+	{
+		json_object_dotset_number_with_std(object, name + "Primitive", 0);
+		json_object_dotset_string_with_std(object, name + "DirectoryMesh", directory_mesh);
+	}
+}
+
+void CompMesh::Load(const JSON_Object* object, std::string name)
+{
+}

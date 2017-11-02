@@ -46,6 +46,9 @@ public:
 	float* GetViewMatrix();
 	float* GetProjectionMatrix();
 
+	void Save(JSON_Object* object, std::string name) const;
+	void Load(const JSON_Object* object, std::string name);
+
 public:
 	Frustum frustum;
 

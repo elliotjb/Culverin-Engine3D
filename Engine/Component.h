@@ -1,6 +1,11 @@
 #pragma once
 #include "Globals.h"
 #include "ImGui\imgui.h"
+#include <string>
+//#include "parson.c"
+
+struct json_object_t;
+typedef struct json_object_t JSON_Object;
 
 class GameObject;
 
@@ -28,6 +33,9 @@ public:
 
 	Comp_Type GetType() const;
 	bool isActive() const;
+
+	virtual void Save(JSON_Object* object, std::string name) const;
+	virtual void Load(const JSON_Object* object, std::string name);
 
 private:
 	Comp_Type type = C_UNKNOWN;

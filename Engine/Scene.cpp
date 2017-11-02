@@ -69,8 +69,8 @@ update_status Scene::Update(float dt)
 
 	//if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
 	//{
-	//	gameobjects[0]->AddChildGameObject(gameobjects[1]);
-	//	gameobjects[0]->AddChildGameObject(gameobjects[2]);
+	//	//gameobjects[0]->AddChildGameObject(gameobjects[1]);
+	//	//gameobjects[0]->AddChildGameObject(gameobjects[2]);
 	//	SaveScene();
 	//}
 	//if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
@@ -190,6 +190,8 @@ GameObject* Scene::CreateCube()
 
 	//MESH COMPONENT -------------------
 	CompMesh* mesh = (CompMesh*)obj->AddComponent(C_MESH);
+	mesh->isPrimitive = true;
+	mesh->TypePrimitive = 2;
 	mesh->InitRanges(8, 36, 0); // 0 normals by now.
 
 	OBB* box = new OBB();
@@ -240,6 +242,8 @@ GameObject* Scene::CreateSphere()
 
 	// MESH COMPONENT -------------------
 	CompMesh* mesh = (CompMesh*)obj->AddComponent(C_MESH);
+	mesh->isPrimitive = true;
+	mesh->TypePrimitive = 1;
 
 	float3* vertices_array = new float3[SPHERE_DEFINITION];
 
@@ -322,16 +326,15 @@ void Scene::SaveScene()
 			json_object_dotset_number_with_std(config_node, name + "Parent", -1);
 			// Name- --------
 			json_object_dotset_string_with_std(config_node, name + "Name", gameobjects[i]->GetName());
-			// TRANSFORM-----------
-			// Position
-			json_array_dotset_float3(config_node, name + "Position", ((CompTransform*)gameobjects[i]->FindComponentByType(C_TRANSFORM))->GetPos());
-			// Rotation
-			json_array_dotset_float3(config_node, name + "Rotation", ((CompTransform*)gameobjects[i]->FindComponentByType(C_TRANSFORM))->GetRot());
-			// Scale
-			json_array_dotset_float3(config_node, name + "Scale", ((CompTransform*)gameobjects[i]->FindComponentByType(C_TRANSFORM))->GetScale());
-			
-			// Components  ------------
 
+			// Components  ------------
+			std::string components = name;
+			json_object_dotset_number_with_std(config_node, components + "Number of Components", gameobjects[i]->GetNumComponents());
+			if (gameobjects[i]->GetNumComponents() > 0)
+			{
+				components += "Components.";
+				gameobjects[i]->SaveComponents(config_node, components);
+			}
 
 			//Save Childs
 			json_object_dotset_number_with_std(config_node, name + "Number of Childs", gameobjects[i]->GetNumChilds());
@@ -418,6 +421,11 @@ void Scene::LoadScene()
 				transform->Enable();
 
 				//Load Components
+				int NumberofComponents = json_object_dotget_number_with_std(config_node, name + "Number of Components");
+				if (NumberofComponents > 0)
+				{
+					obj->LoadComponents(config_node, name, NumberofComponents);
+				}
 
 				//Load Childs
 				int NumberofChilds = json_object_dotget_number_with_std(config_node, name + "Number of Childs");

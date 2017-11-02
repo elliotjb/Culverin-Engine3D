@@ -2,6 +2,7 @@
 #include "CompMaterial.h"
 #include "Color.h"
 #include "GAmeObject.h"
+#include "parson.h"
 
 CompMaterial::CompMaterial(Comp_Type t, GameObject* parent): Component(t, parent)
 {
@@ -40,4 +41,13 @@ void CompMaterial::ShowInspectorInfo()
 	{
 		ImGui::PopStyleColor();
 	}
+}
+
+void CompMaterial::Save(JSON_Object* object, std::string name) const
+{
+	json_object_dotset_number_with_std(object, name + "Type", C_MATERIAL);
+}
+
+void CompMaterial::Load(const JSON_Object * object, std::string name)
+{
 }

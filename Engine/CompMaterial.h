@@ -22,6 +22,9 @@ public:
 	
 	void ShowInspectorInfo();
 
+	void Save(JSON_Object* object, std::string name) const;
+	void Load(const JSON_Object* object, std::string name);
+
 private:
 	Color color;
 	Tex texture;

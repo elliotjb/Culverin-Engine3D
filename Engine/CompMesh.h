@@ -39,6 +39,12 @@ public:
 
 	void LinkMaterial(CompMaterial* mat);
 
+	void SetDirecotryMesh(const char* name);
+	const char* GetDirectory();
+
+	void Save(JSON_Object* object, std::string name) const;
+	void Load(const JSON_Object* object, std::string name);
+
 public:
 	char* name = "MESH NAME";
 	bool hasNormals = false;
@@ -49,12 +55,17 @@ public:
 	std::vector<float3> vertices_normals;
 	//std::vector<_FaceCenter> face_centers;
 
+	bool isPrimitive = false;
+	int TypePrimitive = 0;//0 nothing / 1-Sphere / 2-Cube / 3-etc...
+
 private:
 	bool render = true;
 	uint VAO = 0; /*Vertex Array Object*/
 	uint vertices_id = 0; /*VERTICES ID*/
 	uint indices_id = 0; /*INDICES ID*/
 	uint vertices_norm_id = 0; /*NORMALS OF VERTICES ID*/
+
+	const char* directory_mesh = nullptr; //Only use in save and load (isPrimitive dont use never!)
 
 	CompMaterial* material = nullptr;
 };

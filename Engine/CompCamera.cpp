@@ -286,3 +286,21 @@ float * CompCamera::GetProjectionMatrix()
 
 	return (float*)matrix.v;
 }
+
+void CompCamera::Save(JSON_Object * object, std::string name) const
+{
+	// TRANSFORM-----------
+	json_object_dotset_number_with_std(object, name + "Type", C_CAMERA);
+	// Position
+	json_array_dotset_float3(object, name + "Position", frustum.pos);
+	json_array_dotset_float3(object, name + "Front", frustum.front);
+	json_array_dotset_float3(object, name + "Up", frustum.up);
+
+	json_object_dotset_number_with_std(object, name + "Near Plane", frustum.nearPlaneDistance);
+	json_object_dotset_number_with_std(object, name + "Far Plane", frustum.farPlaneDistance);
+	json_object_dotset_number_with_std(object, name + "Vertical Pov", frustum.verticalFov);
+}
+
+void CompCamera::Load(const JSON_Object * object, std::string name)
+{
+}

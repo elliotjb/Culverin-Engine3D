@@ -29,6 +29,9 @@ public:
 	// Componenets
 	Component* FindComponentByType(Comp_Type type) const;
 	Component* AddComponent(Comp_Type type);
+	void SaveComponents(JSON_Object* object, std::string name) const;
+	void LoadComponents(JSON_Object * object, std::string name, uint numComponents);
+	int GetNumComponents() const;
 
 	// Childs
 	uint GetNumChilds() const;

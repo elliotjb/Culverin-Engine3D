@@ -35,6 +35,9 @@ public:
 	float4x4 GetInheritedTransform() const;
 	const float* GetMultMatrixForOpenGL() const;
 
+	void Save(JSON_Object* object, std::string name) const;
+	void Load(const JSON_Object* object, std::string name);
+
 private:
 	Axis axis;
 

@@ -247,6 +247,7 @@ bool ImportMesh::Load(const char* file)
 		mesh->Init(vertices, indices, vert_normals, tex_coords);
 		mesh->SetupMesh();
 		mesh->Enable();
+		mesh->SetDirecotryMesh(file);
 
 		App->scene->gameobjects.push_back(gameobject);
 		
