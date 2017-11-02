@@ -44,9 +44,9 @@ void SceneWorld::ShowSceneWorld()
 		if (mouse_pos.x >= 0 && mouse_pos.y >= 0 &&
 			mouse_pos.x <= ImGui::GetWindowWidth() && mouse_pos.y <= ImGui::GetWindowHeight())
 		{
-			//App->camera->SetRay(mouse_pos.x, mouse_pos.y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
+			App->camera->MousePick(mouse_pos.x, mouse_pos.y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
 
-			LOG("MOUSE CLICK (%f, %f).", mouse_pos.x, mouse_pos.y);
+			//LOG("MOUSE CLICK (%f, %f).", mouse_pos.x, mouse_pos.y);
 		}
 	}
 

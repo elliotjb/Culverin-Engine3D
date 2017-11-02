@@ -19,7 +19,6 @@ public:
 	update_status UpdateConfig(float dt);
 	bool CleanUp();
 
-
 	void MoveWithKeyboard(float dt);
 	void MoveWithMouse(int dx, int dy, float dt);
 
@@ -27,6 +26,8 @@ public:
 	void LookAt(const float3& spot);
 	void LookAround(float dx, float dy);
 	void Zoom(float zoom);
+
+	void MousePick(float x, float y, float w, float h);
 
 	void SetFocus(const GameObject* selected);
 	void CenterToObject();
@@ -45,6 +46,8 @@ private:
 	CompCamera* cam = nullptr;
 	const GameObject* focus = nullptr;
 	float3 point_to_look = { 0, 0, 0 };
+
+	LineSegment ray;
 
 	// Camera Movement ------------
 	float3 cam_move = { 0, 0, 0 };

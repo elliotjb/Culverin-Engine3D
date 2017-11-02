@@ -180,7 +180,35 @@ void ModuleCamera3D::LookAround(float dx, float dy)
 void ModuleCamera3D::Zoom(float zoom)
 {
 	cam->frustum.pos += cam->frustum.front * zoom * scroll_speed;
-	LOG("Mouse Zoom (%f)", zoom);
+	//LOG("Mouse Zoom (%f)", zoom);
+}
+
+void ModuleCamera3D::MousePick(float x, float y, float w, float h)
+{
+	float norm_x = (2.0f * x) / w - 1.0f;
+	float norm_y = 1.0f - (2.0f * y) / h;
+
+	// Generate camera ray
+	ray = cam->frustum.UnProjectLineSegment(norm_x, norm_y);
+
+	// Iterate all AABB of gameobjects
+	bool hit = false;
+	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
+	{
+		if (App->scene->gameobjects[i]->isActive())
+		{
+			const AABB* box = App->scene->gameobjects[i]->bounding_box;
+			if (box != nullptr)
+			{
+				hit = ray.Intersects(*box);
+				if (hit)
+				{
+					LOG("HIT %s.", App->scene->gameobjects[i]->GetName());
+				}
+			}
+		}
+	}
+	//LOG("NORMALIZED POINT: (%.2f, %.2f)", norm_x, norm_y);
 }
 
 void ModuleCamera3D::SetFocus(const GameObject* selected)
