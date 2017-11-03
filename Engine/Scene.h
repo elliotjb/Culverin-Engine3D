@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "ModuleFramebuffers.h"
 #include "CompMesh.h"
+#include "Quadtree.h"
 #include <vector>
 
 class GameObject;
@@ -50,5 +51,6 @@ public:
 	std::vector<GameObject*> gameobjects;
 
 private:
+	Quadtree quadtree;
 	int size_plane;
 };

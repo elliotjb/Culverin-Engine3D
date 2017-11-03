@@ -52,6 +52,7 @@ public:
 private:
 	char* name = "CHANGE THIS";
 	bool active = false;
+	bool static_obj = false;
 
 	std::vector<Component*> components;
 	std::vector<GameObject*> childs;

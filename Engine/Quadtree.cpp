@@ -57,6 +57,7 @@ void QuadtreeNode::Insert(GameObject* obj)
 			CreateChilds();
 		}
 		objects.push_back(obj);
+
 		RedistributeChilds();
 	}
 }
@@ -115,6 +116,7 @@ void QuadtreeNode::RedistributeChilds()
 {
 	// We distribute the Game Objects depending on its position respect to the new childs
 	GameObject* object = nullptr;
+
 	std::list<GameObject*>::iterator it;
 	for (it = objects.begin(); it != objects.end();)
 	{
@@ -175,6 +177,7 @@ void Quadtree::Insert(GameObject* obj)
 {
 	if (root_node != nullptr)
 	{
+		// If object is inside the Root Bounding box, insert it in a node
 		if(obj->bounding_box->Intersects(root_node->box))
 		{
 			root_node->Insert(obj);

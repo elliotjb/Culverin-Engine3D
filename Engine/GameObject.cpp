@@ -164,7 +164,7 @@ void GameObject::ShowInspectorInfo()
 {
 	ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, ImVec4(0.211f, 0.211f, 0.211f, 1.00f));
 
-	if (ImGui::BeginChild(ImGui::GetID("Inspector"), ImVec2(ImGui::GetWindowWidth(), 70)))
+	if (ImGui::BeginChild(ImGui::GetID("Inspector"), ImVec2(ImGui::GetWindowWidth(), 90)))
 	{
 		static GLuint icon_GameObject = App->textures->LoadTexture("Images/UI/icon_GameObject.png");
 		ImGui::Spacing();
@@ -183,6 +183,18 @@ void GameObject::ShowInspectorInfo()
 		ImGui::InputText("##nameModel", name, 256, ImGuiInputTextFlags_ReadOnly);
 		ImGui::SameLine(); App->ShowHelpMarker("Hold SHIFT or use mouse to select text.\n" "CTRL+Left/Right to word jump.\n" "CTRL+A or double-click to select all.\n" "CTRL+X,CTRL+C,CTRL+V clipboard.\n" "CTRL+Z,CTRL+Y undo/redo.\n" "ESCAPE to revert.\n");
 		ImGui::PopStyleVar();
+
+		/* STATIC CHECKBOX */
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 8));
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
+		ImGui::Text(""); ImGui::SameLine(8);
+
+		ImGui::Checkbox("##2", &bb_active);
+
+		ImGui::SameLine();
+		ImGui::PopStyleVar();
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "Static");
+		ImGui::PopStyleVar();
 	}
 
 	/* BOUNDING BOX CHECKBOX */
@@ -192,7 +204,7 @@ void GameObject::ShowInspectorInfo()
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
 		ImGui::Text(""); ImGui::SameLine(8);
 
-		ImGui::Checkbox("##2", &bb_active);
+		ImGui::Checkbox("##3", &bb_active);
 
 		ImGui::SameLine();
 		ImGui::PopStyleVar();
@@ -202,8 +214,6 @@ void GameObject::ShowInspectorInfo()
 
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
-
-	ImGui::Separator();
 
 	for (uint i = 0; i < components.size(); i++)
 	{
