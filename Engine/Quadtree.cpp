@@ -191,14 +191,39 @@ void Quadtree::Clear()
 	RELEASE(root_node);
 }
 
+void Quadtree::Bake(const std::vector<GameObject*>& objects)
+{
+	//Clear();
+
+	for (uint i = 0; i < objects.size(); i++)
+	{
+		if (objects[i]->isStatic())
+		{
+			Insert(objects[i]);
+
+			if (objects[i]->GetNumChilds() > 0)
+			{
+				Bake(objects[i]->GetChildsVec());
+			}
+		}
+	}
+}
+
 void Quadtree::Insert(GameObject* obj)
 {
 	if (root_node != nullptr)
 	{
 		// If object is inside the Root Bounding box, insert it in a node
-		if(obj->bounding_box->Intersects(root_node->box))
+		if (obj->bounding_box != nullptr)
 		{
-			root_node->Insert(obj);
+			if (obj->bounding_box->Intersects(root_node->box))
+			{
+				root_node->Insert(obj);
+			}
+		}
+		else
+		{
+			LOG("The Game Object you are trying to Insert hasn't got an AABB.");
 		}
 	}
 }
@@ -215,7 +240,7 @@ void Quadtree::DebugDraw()
 {
 	glBegin(GL_LINES);
 	glLineWidth(3.0f);
-	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
+	glColor4f(1.00f, 0.761f, 0.00f, 1.00f);
 
 	if(root_node != nullptr)
 	{

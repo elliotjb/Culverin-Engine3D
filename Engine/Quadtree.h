@@ -2,7 +2,7 @@
 #include "Geometry/AABB.h"
 #include <list>
 
-#define QUADTREE_MAX_ITEMS 8
+#define QUADTREE_MAX_ITEMS 2
 #define QUADTREE_MIN_SIZE 10.0f
 
 class GameObject;
@@ -41,7 +41,7 @@ public:
 
 	void Boundaries(AABB limits);
 	void Clear();
-
+	void Bake(const std::vector<GameObject*>& objects);
 	void Insert(GameObject* obj);
 	void Remove(GameObject* obj);
 

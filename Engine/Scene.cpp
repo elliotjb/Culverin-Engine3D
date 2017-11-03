@@ -59,11 +59,6 @@ update_status Scene::PreUpdate(float dt)
 		gameobjects[i]->preUpdate();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
-	{
-		quadtree_draw = !quadtree_draw;
-	}
-
 	preUpdate_t = perf_timer.ReadMs();
 
 	return UPDATE_CONTINUE;
@@ -100,8 +95,6 @@ update_status Scene::Update(float dt)
 		LoadScene();
 	}
 
-
-
 	// Update GameObjects
 	for (uint i = 0; i < gameobjects.size(); i++)
 	{
@@ -123,6 +116,28 @@ update_status Scene::UpdateConfig(float dt)
 {
 	ImGui::PushItemWidth(ImGui::GetWindowWidth() / 4);
 	ImGui::SliderInt("Plane Size", &size_plane, 5, 1000);
+
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.00f, 0.761f, 0.00f, 1.00f));
+	if (ImGui::TreeNodeEx("QUADTREE"))
+	{
+		ImGui::PopStyleColor();
+
+		ImGui::Checkbox("##quadtreedraw", &quadtree_draw); ImGui::SameLine();
+		ImGui::Text("Draw Quadtree");
+
+		if(ImGui::Button("UPDATE QUADTREE"))	
+		{ 
+			quadtree.Bake(App->scene->gameobjects);
+		}
+
+		ImGui::TreePop();
+	}
+	else
+	{
+		ImGui::PopStyleColor();
+	}
+
+
 	ImGui::PopItemWidth();
 	return UPDATE_CONTINUE;
 }

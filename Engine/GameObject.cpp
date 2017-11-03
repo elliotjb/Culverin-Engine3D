@@ -187,9 +187,9 @@ void GameObject::ShowInspectorInfo()
 		/* STATIC CHECKBOX */
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 8));
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
+		
 		ImGui::Text(""); ImGui::SameLine(8);
-
-		ImGui::Checkbox("##2", &bb_active);
+		ImGui::Checkbox("##2", &static_obj);
 
 		ImGui::SameLine();
 		ImGui::PopStyleVar();
@@ -202,8 +202,8 @@ void GameObject::ShowInspectorInfo()
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 8));
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
+		
 		ImGui::Text(""); ImGui::SameLine(8);
-
 		ImGui::Checkbox("##3", &bb_active);
 
 		ImGui::SameLine();
@@ -255,6 +255,11 @@ bool GameObject::isVisible() const
 	}
 
 	return ret;
+}
+
+bool GameObject::isStatic() const
+{
+	return static_obj;
 }
 
 Component* GameObject::FindComponentByType(Comp_Type type) const
@@ -455,6 +460,11 @@ uint GameObject::GetNumChilds() const
 GameObject* GameObject::GetChildbyIndex(uint pos_inVec) const
 {
 	return childs[pos_inVec];
+}
+
+std::vector<GameObject*> GameObject::GetChildsVec() const
+{
+	return childs;
 }
 
 void GameObject::AddChildGameObject(GameObject* child)

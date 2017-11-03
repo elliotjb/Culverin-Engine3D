@@ -27,6 +27,7 @@ public:
 
 	bool isActive() const;
 	bool isVisible() const;
+	bool isStatic() const;
 
 	// Componenets
 	Component* FindComponentByType(Comp_Type type) const;
@@ -40,6 +41,7 @@ public:
 	// Childs
 	uint GetNumChilds() const;
 	GameObject* GetChildbyIndex(uint pos_inVec) const;
+	std::vector<GameObject*> GetChildsVec() const;
 	void AddChildGameObject(GameObject* child);
 
 	GameObject* GetParent() const;
