@@ -2,6 +2,9 @@
 #include "Geometry/AABB.h"
 #include <list>
 
+#define QUADTREE_MAX_ITEMS 8
+#define QUADTREE_MIN_SIZE 10.0f
+
 class GameObject;
 
 class QuadtreeNode
@@ -10,9 +13,16 @@ public:
 	QuadtreeNode(const AABB& box);
 	virtual ~QuadtreeNode();
 
+	bool isLeaf() const;
+
+	void Insert(GameObject* obj);
+	void Remove(GameObject* obj);
+
+	void CreateChilds();
+	void RedistributeChilds();
 
 
-private:
+public:
 	AABB box;
 	std::list<GameObject*> objects;
 	QuadtreeNode* parent = nullptr;
@@ -27,8 +37,14 @@ public:
 	Quadtree();
 	virtual ~Quadtree();
 
+	void Boundaries(AABB limits);
+	void Clear();
 
+	void Insert(GameObject* obj);
+	void Remove(GameObject* obj);
 
-private:
-	QuadtreeNode* root = nullptr;
+	//void Intersect(std::vector<GameObject*>& vec, PRIMITIVE);
+
+public:
+	QuadtreeNode* root_node = nullptr;
 };
