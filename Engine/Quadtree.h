@@ -18,6 +18,8 @@ public:
 	void Insert(GameObject* obj);
 	void Remove(GameObject* obj);
 
+	void DebugDraw();
+
 	void CreateChilds();
 	void RedistributeChilds();
 
@@ -43,8 +45,20 @@ public:
 	void Insert(GameObject* obj);
 	void Remove(GameObject* obj);
 
-	//void Intersect(std::vector<GameObject*>& vec, PRIMITIVE);
+	void DebugDraw();
+
+	template<typename TYPE>
+	void CollectIntersections(std::vector<GameObject*>& objects, const TYPE& primitive) const;
 
 public:
 	QuadtreeNode* root_node = nullptr;
 };
+
+template<typename TYPE>
+inline void Quadtree::CollectIntersections(std::vector<GameObject*>& objects, const TYPE& primitive) const
+{
+	if (root_node != nullptr)
+	{
+		root_node->CollectIntersections(objects, primitive);
+	}
+}

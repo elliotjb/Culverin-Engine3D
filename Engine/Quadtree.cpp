@@ -1,6 +1,7 @@
 #include "Quadtree.h"
 #include "GameObject.h"
 #include "Geometry/AABB.h"
+#include "GL3W/include/glew.h"
 // QUADTREE NODE -------------------------
 
 enum QuadTreeChild
@@ -76,6 +77,23 @@ void QuadtreeNode::Remove(GameObject* obj)
 		for (uint i = 0; i < 4; i++)
 		{
 			childs[i]->Remove(obj);
+		}
+	}
+}
+
+void QuadtreeNode::DebugDraw()
+{
+	for (uint i = 0; i < 12; i++)
+	{
+		glVertex3f(box.Edge(i).a.x, box.Edge(i).a.y, box.Edge(i).a.z);
+		glVertex3f(box.Edge(i).b.x, box.Edge(i).b.y, box.Edge(i).b.z);
+	}
+
+	if (childs[0] != nullptr)
+	{
+		for (uint i = 0; i < 4; i++)
+		{
+			childs[i]->DebugDraw();
 		}
 	}
 }
@@ -191,6 +209,21 @@ void Quadtree::Remove(GameObject* obj)
 	{
 		root_node->Remove(obj);
 	}
+}
+
+void Quadtree::DebugDraw()
+{
+	glBegin(GL_LINES);
+	glLineWidth(3.0f);
+	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
+
+	if(root_node != nullptr)
+	{
+		root_node->DebugDraw();
+	}
+
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 // --------------------------------------

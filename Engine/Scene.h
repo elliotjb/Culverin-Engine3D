@@ -52,5 +52,6 @@ public:
 
 private:
 	Quadtree quadtree;
+	bool quadtree_draw = false;
 	int size_plane;
 };

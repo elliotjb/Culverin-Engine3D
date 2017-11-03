@@ -7,13 +7,15 @@
 #include "CompTransform.h"
 #include "CompMesh.h"
 #include "CompMaterial.h"
+#include "WindowInspector.h"
 #include "CompCamera.h"
 #include "MathGeoLib.h"
-#include "Gl3W\include\glew.h"
-#include "ImGui\imgui.h"
-#include "ImGui\imgui_impl_sdl_gl3.h"
+#include "Quadtree.h"
+#include "Gl3W/include/glew.h"
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_sdl_gl3.h"
 #include <direct.h>
-#include "WindowInspector.h"
+
 
 #define SPHERE_DEFINITION 1536
 
@@ -35,7 +37,9 @@ bool Scene::Start()
 {
 	perf_timer.Start();
 
-	size_plane = 7;
+	quadtree.Boundaries(AABB(float3(-50.0f, -50.0f, -50.0f), float3(50.0f, 50.0f, 50.0f)));
+
+	size_plane = 50;
 	CreateMainCamera();
 
 	Start_t = perf_timer.ReadMs();
@@ -53,6 +57,11 @@ update_status Scene::PreUpdate(float dt)
 	for (uint i = 0; i < gameobjects.size(); i++)
 	{
 		gameobjects[i]->preUpdate();
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+	{
+		quadtree_draw = !quadtree_draw;
 	}
 
 	preUpdate_t = perf_timer.ReadMs();
@@ -98,6 +107,12 @@ update_status Scene::Update(float dt)
 	{
 		gameobjects[i]->Update();
 	}
+
+	if (quadtree_draw)
+	{
+		quadtree.DebugDraw();
+	}
+
 	
 	Update_t = perf_timer.ReadMs();
 
