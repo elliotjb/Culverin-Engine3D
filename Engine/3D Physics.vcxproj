@@ -102,6 +102,7 @@
     <ClInclude Include="mmgr\nommgr.h" />
     <ClInclude Include="ModuleFS.h" />
     <ClInclude Include="ModuleFramebuffers.h" />
+    <ClInclude Include="Quadtree.h" />
     <ClInclude Include="WindowHierarchy.h" />
     <ClInclude Include="ModuleImporter.h" />
     <ClInclude Include="WindowProject.h" />
@@ -135,7 +136,6 @@
     <ClInclude Include="Geometry\Plane.h" />
     <ClInclude Include="Geometry\Polygon.h" />
     <ClInclude Include="Geometry\Polyhedron.h" />
-    <ClInclude Include="Geometry\QuadTree.h" />
     <ClInclude Include="Geometry\Ray.h" />
     <ClInclude Include="Geometry\Sphere.h" />
     <ClInclude Include="Geometry\Triangle.h" />
@@ -224,6 +224,7 @@
     <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="ModuleFS.cpp" />
     <ClCompile Include="ModuleFramebuffers.cpp" />
+    <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="WindowHierarchy.cpp" />
     <ClCompile Include="ModuleImporter.cpp" />
     <ClCompile Include="WindowProject.cpp" />
@@ -296,7 +297,6 @@
   <ItemGroup>
     <None Include="Game\config.json" />
     <None Include="Geometry\KDTree.inl" />
-    <None Include="Geometry\QuadTree.inl" />
     <None Include="Math\Matrix.inl" />
   </ItemGroup>
   <ItemGroup>

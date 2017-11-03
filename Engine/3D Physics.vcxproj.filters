@@ -183,9 +183,6 @@
     <ClInclude Include="Geometry\Polyhedron.h">
       <Filter>Engine\MathGeoLib\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry\QuadTree.h">
-      <Filter>Engine\MathGeoLib\Geometry</Filter>
-    </ClInclude>
     <ClInclude Include="Geometry\Ray.h">
       <Filter>Engine\MathGeoLib\Geometry</Filter>
     </ClInclude>
@@ -425,6 +422,9 @@
     </ClInclude>
     <ClInclude Include="WindowSceneWorld.h">
       <Filter>Engine\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Quadtree.h">
+      <Filter>Engine\Containers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -680,12 +680,12 @@
     <ClCompile Include="WindowSceneWorld.cpp">
       <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Quadtree.cpp">
+      <Filter>Engine\Containers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Geometry\KDTree.inl">
-      <Filter>Engine\MathGeoLib\Geometry</Filter>
-    </None>
-    <None Include="Geometry\QuadTree.inl">
       <Filter>Engine\MathGeoLib\Geometry</Filter>
     </None>
     <None Include="Math\Matrix.inl">
