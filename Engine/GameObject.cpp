@@ -449,7 +449,17 @@ GameObject* GameObject::GetChildbyIndex(uint pos_inVec) const
 
 void GameObject::AddChildGameObject(GameObject* child)
 {
-	this->childs.push_back(child);
+	GameObject* temp = new GameObject(*child);
+	temp->uid = App->random->Int();
+	temp->parent = this;
+	this->childs.push_back(temp);
+}
+
+GameObject* GameObject::GetParent() const
+{
+	if(parent != nullptr)
+		return parent;
+	return nullptr;
 }
 
 void GameObject::DrawBoundingBox()

@@ -79,6 +79,7 @@ public:
 	void Files_UpdateNew(const std::vector<FilesNew>& files);
 	void DeleteFiles(std::vector<FilesNew> files);
 	void DeleteFolders(std::vector<FoldersNew> folders);
+
 	void SetAllFolderBoolNew(std::vector<FoldersNew>& folders, bool setBoolean);
 
 	//void SetAllFolderBool(std::vector<Folders>& folders, bool setBoolean);

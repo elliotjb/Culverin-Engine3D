@@ -42,6 +42,8 @@ public:
 	GameObject* GetChildbyIndex(uint pos_inVec) const;
 	void AddChildGameObject(GameObject* child);
 
+	GameObject* GetParent() const;
+
 	AABB* bounding_box = nullptr;
 	void DrawBoundingBox();
 

@@ -31,6 +31,7 @@ public:
 
 	void SaveScene();
 	void SaveChildGameObject(JSON_Object* config_node, const GameObject& parent, uint uid, std::string name);
+	void SaveChildGameObject_New(JSON_Object * config_node, const GameObject & gameObject, uint& count);
 	void LoadScene();
 	void LoadChildGameObject(const JSON_Object* config_node, GameObject& parent, uint uid, uint numChild, std::string name);
 
