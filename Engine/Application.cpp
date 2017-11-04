@@ -204,9 +204,10 @@ update_status Application::Update()
 		item = item->next;
 	}
 
-	//CONFIG WINDOW -------------------------------------
+	//CONFIG WINDOW ----------------------------
 	//Config();
-	//PERFORMANCE WINDOW -----------------------------
+
+	//PERFORMANCE WINDOW -----------------------
 	if (showperformance)
 	{
 		static bool stop_perf = false;

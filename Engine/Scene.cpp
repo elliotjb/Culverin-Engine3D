@@ -101,10 +101,10 @@ update_status Scene::Update(float dt)
 		gameobjects[i]->Update();
 	}
 
-	if (quadtree_draw)
-	{
-		quadtree.DebugDraw();
-	}
+	//if (quadtree_draw)
+	//{
+	//	quadtree.DebugDraw();
+	//}
 
 	
 	Update_t = perf_timer.ReadMs();

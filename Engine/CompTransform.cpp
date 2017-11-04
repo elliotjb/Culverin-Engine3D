@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "ImGui/ImGuizmo.h"
 #include "Application.h"
+#include "ModuleCamera3D.h"
 #include "ModuleRenderer3D.h"
 
 #include <gl/GL.h>
@@ -30,26 +31,14 @@ void CompTransform::Update()
 
 void CompTransform::ShowInspectorInfo()
 {
-	//static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::ROTATE);
-	//static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
-
-	//if (ImGui::IsKeyPressed(90))
-	//	mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-	//if (ImGui::IsKeyPressed(69))
-	//	mCurrentGizmoOperation = ImGuizmo::ROTATE;
-	//if (ImGui::IsKeyPressed(82)) // r Key
-	//	mCurrentGizmoOperation = ImGuizmo::SCALE;
-	//if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
-	//	mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
 	if (ImGui::TreeNodeEx("Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-
 		// Set Size Windows
 		static int width;
 		static int height;
 		SDL_GetWindowSize(App->window->window, &width, &height);
+
 		// Button Reset Values
 		static GLuint icon_options_transform = App->textures->LoadTexture("Images/UI/icon_options_transform.png");
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
@@ -96,42 +85,135 @@ void CompTransform::ShowInspectorInfo()
 			ImGui::EndPopup();
 		}
 		ImGui::PopStyleColor();
+		
 		// Values: Position, Rotation, Scale -------------------------------
 		ImGui::Spacing();
-		int op = ImGui::GetWindowWidth() / 4;
-		ImGui::Text("Position"); ImGui::SameLine(op + 30);
-		bool isMoveMouse = false;
-		if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
+
+		// GIZMO TEST -----------------------------------------------------
+		static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::ROTATE);
+		static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
+
+		if (ImGui::IsKeyPressed(78)) // N Key 
 		{
-			isMoveMouse = true;
-			SetPos(position);
+			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+		}
+		if (ImGui::IsKeyPressed(69)) // E Key
+		{
+			mCurrentGizmoOperation = ImGuizmo::ROTATE;
+		}
+		if (ImGui::IsKeyPressed(82)) // R Key
+		{
+			mCurrentGizmoOperation = ImGuizmo::SCALE;
 		}
 
-		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##rot", &rot[0], 0.5f))
+		if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
 		{
-			isMoveMouse = true;
-			SetRot(rot);
+			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		}
-		ImGui::Text("Scale"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
+		ImGui::SameLine();
+
+		if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
 		{
-			isMoveMouse = true;
-			SetScale(scale);
+			mCurrentGizmoOperation = ImGuizmo::ROTATE;
+		}			
+		ImGui::SameLine();
+
+		if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
+		{
+			mCurrentGizmoOperation = ImGuizmo::SCALE;
 		}
-		if (isMoveMouse)
+
+		float matrixTranslation[3], matrixRotation[3], matrixScale[3];
+		ImGuizmo::DecomposeMatrixToComponents(local_transform.ptr(), matrixTranslation, matrixRotation, matrixScale);
+		ImGui::InputFloat3("Tr", matrixTranslation, 3);
+		ImGui::InputFloat3("Rt", matrixRotation, 3);
+		ImGui::InputFloat3("Sc", matrixScale, 3);
+		ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, local_transform.ptr());
+		
+		if (mCurrentGizmoOperation != ImGuizmo::SCALE)
 		{
-			if (App->input->GetMouseX() <= width &&
-				App->input->GetMouseX() > width - 10)
+			if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
 			{
-				SetCursorPos(30, App->input->GetMouseY());
-			}
-			if (App->input->GetMouseX() >= 0 &&
-				App->input->GetMouseX() < 10)
+				mCurrentGizmoMode = ImGuizmo::LOCAL;
+			}				
+			ImGui::SameLine();
+			if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
 			{
-				SetCursorPos(width - 20, App->input->GetMouseY());
+				mCurrentGizmoMode = ImGuizmo::WORLD;
 			}
 		}
+
+		//static bool useSnap(false);
+
+		//if (ImGui::IsKeyPressed(83)) // S Key
+		//{
+		//	useSnap = !useSnap;
+		//}
+		//ImGui::Checkbox("", &useSnap);
+		//ImGui::SameLine();
+
+		//float4 snap;
+
+		//switch (mCurrentGizmoOperation)
+		//{
+		//case ImGuizmo::TRANSLATE:
+		//	snap = config.mSnapTranslation;
+		//	ImGui::InputFloat3("Snap", &snap.x);
+		//	break;
+		//case ImGuizmo::ROTATE:
+		//	snap = config.mSnapRotation;
+		//	ImGui::InputFloat("Angle Snap", &snap.x);
+		//	break;
+		//case ImGuizmo::SCALE:
+		//	snap = config.mSnapScale;
+		//	ImGui::InputFloat("Scale Snap", &snap.x);
+		//	break;
+		//}
+
+		ImGuiIO& io = ImGui::GetIO();
+		ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+		ImGuizmo::Manipulate(App->camera->GetViewMatrix(), App->camera->GetProjMatrix(), mCurrentGizmoOperation, mCurrentGizmoMode, local_transform.ptr(), NULL, NULL);
+
+		// ----------------------------------------------------------------
+
+		// ORIGINAL -------------------------------------------------------
+		//int op = ImGui::GetWindowWidth() / 4;
+		//ImGui::Text("Position"); ImGui::SameLine(op + 30);
+		//bool isMoveMouse = false;
+		//if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
+		//{
+		//	isMoveMouse = true;
+		//	SetPos(position);
+		//}
+		//ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
+		//if (ImGui::DragFloat3("##rot", &rot[0], 0.5f))
+		//{
+		//	isMoveMouse = true;
+		//	SetRot(rot);
+		//}
+		//ImGui::Text("Scale"); ImGui::SameLine(op + 30);
+		//if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
+		//{
+		//	isMoveMouse = true;
+		//	SetScale(scale);
+		//}
+		// ------------------------------------------------------------------
+
+		// This function let mouse trespassing the screen to enter from the opposite side
+		//if (isMoveMouse)
+		//{
+		//	if (App->input->GetMouseX() <= width &&
+		//		App->input->GetMouseX() > width - 10)
+		//	{
+		//		SetCursorPos(30, App->input->GetMouseY());
+		//	}
+		//	if (App->input->GetMouseX() >= 0 &&
+		//		App->input->GetMouseX() < 10)
+		//	{
+		//		SetCursorPos(width - 20, App->input->GetMouseY());
+		//	}
+		//}
+		// -------------------------------------------------------------------------------
 
 		//static bool useSnap(false);
 		//if (ImGui::IsKeyPressed(83))

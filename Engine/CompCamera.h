@@ -43,8 +43,8 @@ public:
 	float GetFOV() const;
 	float GetRatio() const;
 
-	float* GetViewMatrix();
-	float* GetProjectionMatrix();
+	float* GetViewMatrix() const;
+	float* GetProjectionMatrix() const;
 
 	void Save(JSON_Object* object, std::string name) const;
 	void Load(const JSON_Object* object, std::string name);

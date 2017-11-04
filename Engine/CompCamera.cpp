@@ -269,7 +269,7 @@ float CompCamera::GetRatio() const
 	return frustum.AspectRatio();
 }
 
-float* CompCamera::GetViewMatrix()
+float* CompCamera::GetViewMatrix() const
 {
 	static float4x4 matrix;
 	matrix = frustum.ViewMatrix();
@@ -278,7 +278,7 @@ float* CompCamera::GetViewMatrix()
 	return (float*)matrix.v;
 }
 
-float * CompCamera::GetProjectionMatrix()
+float* CompCamera::GetProjectionMatrix() const
 {
 	static float4x4 matrix;
 	matrix = frustum.ProjectionMatrix();

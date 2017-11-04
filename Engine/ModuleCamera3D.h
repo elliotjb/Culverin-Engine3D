@@ -36,6 +36,9 @@ public:
 
 	bool isMouseOnWindow();
 
+	float* GetViewMatrix() const;
+	float* GetProjMatrix() const;
+
 
 private:
 	void CheckOut();

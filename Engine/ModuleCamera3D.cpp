@@ -313,6 +313,16 @@ bool ModuleCamera3D::isMouseOnWindow()
 	return CanMoveCamera;
 }
 
+float * ModuleCamera3D::GetViewMatrix() const
+{
+	return cam->GetViewMatrix();
+}
+
+float * ModuleCamera3D::GetProjMatrix() const 
+{
+	return cam->GetProjectionMatrix();
+}
+
 void ModuleCamera3D::CheckOut()
 {
 	if ((App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN ||
