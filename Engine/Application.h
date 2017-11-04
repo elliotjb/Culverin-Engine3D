@@ -19,12 +19,13 @@
 #include "parson.h"
 #include <vector>
 #include <string>
-#include "GL3W\include\glew.h"
-#include "SDL\include\SDL_opengl.h"
-#include <gl\GL.h>
-#include <gl\GLU.h>
-#include "ImGui\imgui_dock_v2.h"
-#include "Algorithm\Random\LCG.h"
+#include "GL3W/include/glew.h"
+#include "SDL/include/SDL_opengl.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
+#include "ImGui/imgui_dock_v2.h"
+#include "Algorithm/Random/LCG.h"
+#include "Math/float4.h"
 
 class Application
 {
@@ -81,7 +82,6 @@ public:
 	char* GetCharfromConstChar(const char* name);
 
 private:
-
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
@@ -97,6 +97,7 @@ public:
 	LCG* random = nullptr;
 	bool showconfig = false;
 	bool showperformance = false;
+	float4 SceneDock = { 0, 0, 0, 0 };
 };
 
 extern Application* App;

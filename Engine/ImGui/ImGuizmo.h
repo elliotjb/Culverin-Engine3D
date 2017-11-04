@@ -115,6 +115,9 @@ namespace ImGuizmo
 	// call BeginFrame right after ImGui_XXXX_NewFrame();
 	IMGUI_API void BeginFrame();
 
+	// Gizmo adapted for docking
+	IMGUI_API void BeginFrame(float winX, float winY, float winW, float winH);
+
 	// return true if mouse cursor is over any gizmo control (axis, plan or screen component)
 	IMGUI_API bool IsOver();
 

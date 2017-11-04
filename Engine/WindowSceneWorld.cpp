@@ -1,6 +1,7 @@
 #include "WindowSceneWorld.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ImGui/ImGuizmo.h"
 
 SceneWorld::SceneWorld() : WindowManager()
 {
@@ -21,7 +22,9 @@ bool SceneWorld::Start()
 update_status SceneWorld::Update(float dt)
 {
 	if (active[0].active)
+	{
 		ShowSceneWorld();
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -60,4 +63,12 @@ void SceneWorld::ShowSceneWorld()
 bool SceneWorld::CleanUp()
 {
 	return true;
+}
+
+void SceneWorld::GetWindowParams(float & x, float & y, float & w, float & h) const
+{
+	x = ImGui::GetWindowPos().x;
+	y = ImGui::GetWindowPos().y;
+	w = ImGui::GetWindowWidth();
+	h = ImGui::GetWindowHeight();
 }

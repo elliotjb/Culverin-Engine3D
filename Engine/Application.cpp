@@ -1,11 +1,12 @@
 #include "Application.h"
 #include "parson.h"
 #include "PerfTimer.h"
-#include "ImGui\imgui.h"
-#include "ImGui\imgui_impl_sdl_gl3.h"
-#include "ImGui\ImGuizmo.h"
-#include "SDL\include\SDL.h"
-#include "mmgr\mmgr.h"
+#include "WindowSceneWorld.h"
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_sdl_gl3.h"
+#include "ImGui/ImGuizmo.h"
+#include "SDL/include/SDL.h"
+#include "mmgr/mmgr.h"
 
 static int malloc_count;
 static void *counted_malloc(size_t size);
@@ -179,7 +180,6 @@ void Application::FinishUpdate()
 update_status Application::Update()
 {
 	//IMGUI----------------------------------------------------
-
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 	
@@ -193,7 +193,10 @@ update_status Application::Update()
 	}
 
 	ImGui_ImplSdlGL3_NewFrame(window->window);
-	ImGuizmo::BeginFrame();
+
+	// GIZMO BEGIN FRAME: you have to get the parameters of scene window (x,y,w,h)
+	((SceneWorld*)App->gui->winManager[SCENEWORLD])->GetWindowParams(SceneDock.x, SceneDock.y, SceneDock.z, SceneDock.w);
+	ImGuizmo::BeginFrame(SceneDock.x, SceneDock.y, SceneDock.z, SceneDock.w);
 
 	item = list_modules.getFirst();
 

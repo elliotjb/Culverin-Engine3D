@@ -20,6 +20,8 @@ public:
 	void ShowSceneWorld();
 	bool CleanUp();
 
+	void GetWindowParams(float& x, float& y, float& w, float& h) const;
+	
 	//void OpenClose();
 	//bool IsOpen();
 
