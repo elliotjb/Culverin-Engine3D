@@ -847,28 +847,34 @@ void ModuleGUI::UpdateWindows(float dt)
 	SDL_GetWindowSize(App->window->window, &width, &height);
 	ImGui::SetNextWindowPos(ImVec2(0, 20));
 	ImGui::SetNextWindowSize(ImVec2(width, height - 20));
-	
+
 
 	ImGui::Begin("MasterWindow", &show_scene3, ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing);
+	ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, ImVec4(0.211f, 0.211f, 0.211f, 1.00f));
+	if (ImGui::BeginChild(ImGui::GetID("MasterWindow"), ImVec2(ImGui::GetWindowWidth(), 30), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse))
+	{
+		static GLuint icon_play = App->textures->LoadTexture("Imatges/UI/icon_play.png");
+		static GLuint icon_pause = App->textures->LoadTexture("Imatges/UI/icon_pause.png");
+		static GLuint icon_stop = App->textures->LoadTexture("Imatges/UI/icon_stop.png");
+		//ImTextureID temp = play;
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(150,150,150,0));
+		//ImGui::Image((ImTextureID*)play, ImVec2(300, 60));
+		static ImVec2 pos_icon(20, 20);
+		ImGui::SameLine(width / 2 - 40);
+		ImGui::ImageButton((ImTextureID*)icon_play, pos_icon);
+		ImGui::SameLine(width / 2 - 10);
+		ImGui::ImageButton((ImTextureID*)icon_pause, pos_icon);
+		ImGui::SameLine(width / 2 + 20);
+		ImGui::ImageButton((ImTextureID*)icon_stop, pos_icon);
+		//ImGui::Image((ImTextureID*)icon_stop,pos_icon);
+		ImGui::PopStyleColor(1);
+	}
 
-	//static GLuint icon_play = App->textures->LoadTexture("Imatges/UI/icon_play.png");
-	//static GLuint icon_pause = App->textures->LoadTexture("Imatges/UI/icon_pause.png");
-	//static GLuint icon_stop = App->textures->LoadTexture("Imatges/UI/icon_stop.png");
-	////ImTextureID temp = play;
-	//ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(150,150,150,0));
-	////ImGui::Image((ImTextureID*)play, ImVec2(300, 60));
-	//static ImVec2 pos_icon(20, 20);
-	//ImGui::SameLine(width / 2 - 40);
-	//ImGui::ImageButton((ImTextureID*)icon_play, pos_icon);
-	//ImGui::SameLine(width / 2 - 10);
-	//ImGui::ImageButton((ImTextureID*)icon_pause, pos_icon);
-	//ImGui::SameLine(width / 2 + 20);
-	//ImGui::ImageButton((ImTextureID*)icon_stop, pos_icon);
-	////ImGui::Image((ImTextureID*)icon_stop,pos_icon);
-	//ImGui::PopStyleColor(1);
-	
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
+
 
 	BeginWorkspace();
 
