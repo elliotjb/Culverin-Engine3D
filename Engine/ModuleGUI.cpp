@@ -855,9 +855,9 @@ void ModuleGUI::UpdateWindows(float dt)
 	ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, ImVec4(0.211f, 0.211f, 0.211f, 1.00f));
 	if (ImGui::BeginChild(ImGui::GetID("MasterWindow"), ImVec2(ImGui::GetWindowWidth(), 30), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse))
 	{
-		static GLuint icon_play = App->textures->LoadTexture("Imatges/UI/icon_play.png");
-		static GLuint icon_pause = App->textures->LoadTexture("Imatges/UI/icon_pause.png");
-		static GLuint icon_stop = App->textures->LoadTexture("Imatges/UI/icon_stop.png");
+		static GLuint icon_play = App->textures->LoadTexture("Images/UI/IconPlay.png");
+		static GLuint icon_pause = App->textures->LoadTexture("Images/UI/IconPause.png");
+		static GLuint icon_stop = App->textures->LoadTexture("Images/UI/IconPlayFrame.png");
 		//ImTextureID temp = play;
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(150,150,150,0));
 		//ImGui::Image((ImTextureID*)play, ImVec2(300, 60));
