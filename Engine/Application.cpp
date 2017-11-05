@@ -133,6 +133,18 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	if (want_to_save == true)
+	{
+		App->scene->SaveScene();
+		want_to_save = false;
+	}
+
+	if (want_to_load == true)
+	{
+		App->scene->LoadScene();
+		want_to_load = false;
+	}
+
 	// Framerate calculations ----------------------
 	if (realTime.last_sec_frame_time.Read() > 1000)
 	{
@@ -179,16 +191,41 @@ void Application::FinishUpdate()
 // Call PreUpdate, Update and PostUpdate on all modules
 update_status Application::Update()
 {
-	//IMGUI----------------------------------------------------
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
+
+	// SAVE / LOAD  keys ---------------------------------------
+	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	{
+		want_to_save = true;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+	{
+		want_to_load = true;
+	}
+	// ---------------------------------------------------------
 	
 	p2List_item<Module*>* item = list_modules.getFirst();
-	
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
 		if (item->data->IsEnabled())
-			ret = item->data->PreUpdate(realTime.dt);
+		{
+			if (item->data == camera)
+			{
+				ret = item->data->PreUpdate(realTime.dt); // Camera can't be affected by Game Time Scale (0 dt = 0 movement)
+			}
+			else
+			{
+				if (engineState == EngineState::PLAY || engineState == EngineState::PLAYFRAME)
+				{
+					ret = item->data->PreUpdate(realTime.dt * gameTime.timeScale);
+				}
+				else if (engineState == EngineState::PAUSE || engineState == EngineState::STOP)
+				{
+					ret = item->data->PreUpdate(0);
+				}
+			}
+		}
 		item = item->next;
 	}
 
@@ -203,7 +240,47 @@ update_status Application::Update()
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
 		if (item->data->IsEnabled())
-			ret = item->data->Update(realTime.dt);
+		{
+			if (item->data == camera)
+			{
+				ret = item->data->Update(realTime.dt); // Camera can't be affected by Game Time Scale (0 dt = 0 movement)
+			}
+			else
+			{
+				if (engineState == EngineState::PLAY || engineState == EngineState::PLAYFRAME)
+				{
+					ret = item->data->Update(realTime.dt * gameTime.timeScale);
+				}
+				else if (engineState == EngineState::PAUSE || engineState == EngineState::STOP)
+				{
+					ret = item->data->Update(0);
+				}
+			}
+		}
+		item = item->next;
+	}
+
+	item = list_modules.getFirst();
+	while (item != NULL && ret == UPDATE_CONTINUE)
+	{
+		if (item->data->IsEnabled())
+		{
+			if (item->data == camera)
+			{
+				ret = item->data->PostUpdate(realTime.dt); // Camera can't be affected by Game Time Scale (0 dt = 0 movement)
+			}
+			else
+			{
+				if (engineState == EngineState::PLAY || engineState == EngineState::PLAYFRAME)
+				{
+					ret = item->data->PostUpdate(realTime.dt * gameTime.timeScale);
+				}
+				else if (engineState == EngineState::PAUSE || engineState == EngineState::STOP)
+				{
+					ret = item->data->PostUpdate(0);
+				}
+			}
+		}
 		item = item->next;
 	}
 
@@ -237,17 +314,6 @@ update_status Application::Update()
 		stop_perf = false;
 	}
 	//-----------------------------------------------
-
-	item = list_modules.getFirst();
-
-	while(item != NULL && ret == UPDATE_CONTINUE)
-	{
-		if (item->data->IsEnabled())
-			ret = item->data->PostUpdate(realTime.dt);
-		item = item->next;
-	}
-
-	
 
 	FinishUpdate();
 	return ret;
@@ -379,7 +445,9 @@ bool Application::CleanUp()
 	while(item != NULL && ret == true)
 	{
 		if (item->data->IsEnabled())
+		{
 			ret = item->data->CleanUp();
+		}
 		item = item->prev;
 	}
 	return ret;

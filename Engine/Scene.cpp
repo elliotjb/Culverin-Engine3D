@@ -77,20 +77,20 @@ update_status Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
 	{
-		gameobjects[0]->AddChildGameObject(gameobjects[1]);
+		/*gameobjects[0]->AddChildGameObject(gameobjects[1]);*/
 		//gameobjects[0]->AddChildGameObject(gameobjects[2]);
-		SaveScene();
+		//SaveScene();
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
 	{
-		for (int i = gameobjects.size() - 1; i >= 0; i--)
-		{
-			delete gameobjects[i];
-			gameobjects.pop_back();
-		}
-		((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
-		LoadScene();
+		//for (int i = gameobjects.size() - 1; i >= 0; i--)
+		//{
+		//	delete gameobjects[i];
+		//	gameobjects.pop_back();
+		//}
+		//((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
+		//LoadScene();
 	}
 
 	// Update GameObjects (Only in Game Time) -----------

@@ -130,6 +130,9 @@ private:
 	std::string appName;
 	std::string orgName;
 
+	bool want_to_save = false;
+	bool want_to_load = false;
+
 	DockContext* configuration = nullptr;
 };
 
