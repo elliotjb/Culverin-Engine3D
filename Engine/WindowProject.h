@@ -67,6 +67,7 @@ private:
 	int sizeFiles;
 	std::vector<FoldersNew> folders;
 	std::vector<FilesNew> files;
+	bool updateNow = false;
 
 	uint folder_icon;
 	uint icon_png;

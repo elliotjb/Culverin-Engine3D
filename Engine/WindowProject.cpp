@@ -153,10 +153,10 @@ void Project::ShowProject()
 	//Column 1 LEFT ------------------------
 	ImGui::Spacing();
 	// Folders ---------------------
-	if (timeFolders.ReadSec() > 7)
+	if (timeFolders.ReadSec() > 7 || updateNow)
 	{
 		timeFolders.Start();
-
+		updateNow = false;
 		App->fs->GetAllFolders("", directory_see, folders);
 	}
 
@@ -166,10 +166,10 @@ void Project::ShowProject()
 	ImGui::Separator();
 	//GetAllFiles
 	//files = App->fs->GetAllFilesNew(directory_see);
-	if (timeFiles.ReadSec() > 7)
+	if (timeFiles.ReadSec() > 7 || updateNow)
 	{
 		timeFiles.Start();
-
+		updateNow = false;
 		App->fs->GetAllFiles(directory_see, files);
 	}
 
@@ -208,6 +208,7 @@ void Project::Folders_update(std::vector<FoldersNew>& folders)
 				{
 					SetAllFolderBool(folders, false);
 					folders[i].active = true;
+					updateNow = true;
 					directory_see = App->GetCharfromConstChar(folders[i].directory_name);
 				}
 			}
@@ -277,6 +278,7 @@ void Project::Files_Update(const std::vector<FilesNew>& files)
 				{
 					//ChangefileViwer(files[i].parentFolder->folder_child, files[i].file_name);
 					directory_see = App->GetCharfromConstChar(files[i].directory_name);
+					updateNow = true;
 				}
 			}
 			break;
