@@ -42,10 +42,10 @@ public:
 	//Name of file NOT DIRECTORY!!!
 	bool SaveFile(const char* data, std::string name, uint size, DIRECTORY_IMPORT directory = IMPORT_DEFAULT);
 
-	std::vector<std::string> Get_filenames(std::experimental::filesystem::path path);
-	std::vector<Folders> Get_AllFolders(std::experimental::filesystem::path path);
 	std::vector<FoldersNew> GetAllFoldersNew(std::experimental::filesystem::path path, std::string folderActive);
-	std::vector<FilesNew> GetAllFilesNew(std::experimental::filesystem::path path);
+	void GetAllFiles(std::experimental::filesystem::path path, std::vector<FilesNew>& files);
+
+	void DeleteFiles(std::vector<FilesNew>& files);
 
 	bool CheckIsFileExist(const std::string & name);
 
@@ -56,6 +56,7 @@ public:
 	std::string FixName_directory(std::string files);
 	std::string FixExtension(std::string file, char * newExtension);
 	char* ConverttoChar(std::string name);
+	const char* ConverttoConstChar(std::string name);
 	void CreateFolder(const char* file_name);
 
 	// 

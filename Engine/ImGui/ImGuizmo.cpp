@@ -679,6 +679,12 @@ namespace ImGuizmo
 	   ImGui::End();
    }
 
+
+   void SetDrawlist()
+   {
+	   gContext.mDrawList = ImGui::GetWindowDrawList();
+   }
+
    bool IsUsing()
    {
       return gContext.mbUsing||gContext.mbUsingBounds;

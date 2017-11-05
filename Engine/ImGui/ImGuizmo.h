@@ -118,6 +118,9 @@ namespace ImGuizmo
 	// Gizmo adapted for docking
 	IMGUI_API void BeginFrame(float winX, float winY, float winW, float winH);
 
+	// call inside your own window and before Manipulate() in order to draw gizmo to that window.
+	IMGUI_API void SetDrawlist();
+
 	// return true if mouse cursor is over any gizmo control (axis, plan or screen component)
 	IMGUI_API bool IsOver();
 
