@@ -27,6 +27,37 @@
 #include "Algorithm/Random/LCG.h"
 #include "Math/float4.h"
 
+enum EngineState
+{
+	PLAY = 0,
+	PAUSE,
+	STOP,
+	PLAYFRAME
+};
+
+struct GameClock
+{
+	Timer gameStart_time;
+
+	float timeScale = 1.0f; 
+
+	bool play_frame = false;
+};
+
+struct RealTimeClock
+{
+	Timer engineStart_time;
+	Timer last_sec_frame_time;
+	Timer frame_time;
+	Timer ms_timer;
+
+	uint64 frame_count = 0;
+	uint32 last_sec_frame_count = 0;
+	uint32 prev_last_sec_frame_count = 0;
+	float dt = 0.0f;
+	int capped_ms = -1;
+};
+
 class Application
 {
 public:
@@ -46,19 +77,12 @@ public:
 
 private:
 
-	Timer	ms_timer;
-	uint64	frame_count = 0;
-	Timer	startup_time;
-	Timer	frame_time;
-	Timer	last_sec_frame_time;
-	uint32	last_sec_frame_count = 0;
-	uint32	prev_last_sec_frame_count = 0;
-	float	dt = 0.0f;
-	int		capped_ms = -1;
-
 	p2List<Module*> list_modules;
 
 public:
+	RealTimeClock realTime;
+	GameClock gameTime;
+	EngineState engineState = EngineState::STOP;
 
 	int		frame_index = 0;
 	int		ms_index = 0;

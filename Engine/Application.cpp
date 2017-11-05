@@ -113,8 +113,8 @@ bool Application::Init()
 				ret = item->data->Start();
 			item = item->next;
 		}
-		startup_time.Start();
-		ms_timer.Start();
+		realTime.engineStart_time.Start();
+		realTime.ms_timer.Start();
 
 	}
 	return ret;
@@ -123,33 +123,33 @@ bool Application::Init()
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
-	frame_count++;
-	last_sec_frame_count++;
-	dt = (float)ms_timer.ReadSec();
-	ms_timer.Start();
-	frame_time.Start();
+	realTime.frame_count++;
+	realTime.last_sec_frame_count++;
+	realTime.dt = (float)realTime.ms_timer.ReadSec();
+	realTime.ms_timer.Start();
+	realTime.frame_time.Start();
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
 	// Framerate calculations ----------------------
-	if (last_sec_frame_time.Read() > 1000)
+	if (realTime.last_sec_frame_time.Read() > 1000)
 	{
-		last_sec_frame_time.Start();
-		prev_last_sec_frame_count = last_sec_frame_count;
+		realTime.last_sec_frame_time.Start();
+		realTime.prev_last_sec_frame_count = realTime.last_sec_frame_count;
 
 
-		fps_log[frame_index] = prev_last_sec_frame_count;
+		fps_log[frame_index] = realTime.prev_last_sec_frame_count;
 		frame_index = (frame_index + 1) % IM_ARRAYSIZE(fps_log);
 
-		last_sec_frame_count = 0;
+		realTime.last_sec_frame_count = 0;
 	}
 
-	float avg_fps = float(frame_count) / startup_time.ReadSec();
-	float seconds_since_startup = startup_time.ReadSec();
-	uint32 last_frame_ms = frame_time.Read();
-	uint32 frames_on_last_update = prev_last_sec_frame_count;
+	float avg_fps = float(realTime.frame_count) / realTime.engineStart_time.ReadSec();
+	float seconds_since_startup = realTime.engineStart_time.ReadSec();
+	uint32 last_frame_ms = realTime.frame_time.Read();
+	uint32 frames_on_last_update = realTime.prev_last_sec_frame_count;
 	
 	ms_log[ms_index] = last_frame_ms;
 
@@ -170,9 +170,9 @@ void Application::FinishUpdate()
 	ms_index = (ms_index + 1) % IM_ARRAYSIZE(ms_log); //ms_index works for all the logs (same size)
 
 
-	if (capped_ms > 0 && last_frame_ms < capped_ms)
+	if (realTime.capped_ms > 0 && last_frame_ms < realTime.capped_ms)
 	{
-		SDL_Delay(capped_ms - last_frame_ms);
+		SDL_Delay(realTime.capped_ms - last_frame_ms);
 	}
 }
 
@@ -188,7 +188,7 @@ update_status Application::Update()
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
 		if (item->data->IsEnabled())
-			ret = item->data->PreUpdate(dt);
+			ret = item->data->PreUpdate(realTime.dt);
 		item = item->next;
 	}
 
@@ -203,7 +203,7 @@ update_status Application::Update()
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
 		if (item->data->IsEnabled())
-			ret = item->data->Update(dt);
+			ret = item->data->Update(realTime.dt);
 		item = item->next;
 	}
 
@@ -245,7 +245,7 @@ update_status Application::Update()
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
 		if (item->data->IsEnabled())
-			ret = item->data->PostUpdate(dt);
+			ret = item->data->PostUpdate(realTime.dt);
 		item = item->next;
 	}
 
@@ -350,7 +350,7 @@ void Application::Config()
 					}
 					else
 					{
-						ret = item->data->UpdateConfig(dt);
+						ret = item->data->UpdateConfig(realTime.dt);
 						configuration->_EndDock();
 					}
 				}
@@ -398,11 +398,11 @@ void Application::SetFpsCap(uint fps)
 
 	if (fps > 0)
 	{
-		capped_ms = 1000 / fps;
+		realTime.capped_ms = 1000 / fps;
 	}
 	else
 	{
-		capped_ms = 0;
+		realTime.capped_ms = 0;
 	}
 
 }
