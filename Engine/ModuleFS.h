@@ -42,10 +42,13 @@ public:
 	//Name of file NOT DIRECTORY!!!
 	bool SaveFile(const char* data, std::string name, uint size, DIRECTORY_IMPORT directory = IMPORT_DEFAULT);
 
-	std::vector<FoldersNew> GetAllFoldersNew(std::experimental::filesystem::path path, std::string folderActive);
+	void GetAllFolders(std::experimental::filesystem::path path, std::string folderActive, std::vector<FoldersNew>& folders);
+	void GetAllFoldersChild(std::experimental::filesystem::path path, std::string folderActive, std::vector<FoldersNew>& folders);
+
 	void GetAllFiles(std::experimental::filesystem::path path, std::vector<FilesNew>& files);
 
 	void DeleteFiles(std::vector<FilesNew>& files);
+	void DeleteFolders(std::vector<FoldersNew>& folders);
 
 	bool CheckIsFileExist(const std::string & name);
 
@@ -61,6 +64,8 @@ public:
 
 	// 
 	bool CheckAssetsIsModify();
+
+
 
 	//Dont use at the moment --------- --------------
 	std::string GetAssetsDirecotry();

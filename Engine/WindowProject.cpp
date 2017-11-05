@@ -32,8 +32,9 @@ bool Project::Start()
 	//ReorderFiles(folders);
 	//folders[0].active = true;
 	sizeFiles = 50;
-	time.Start();
-	folders = App->fs->GetAllFoldersNew("", directory_see);
+	timeFolders.Start();
+	timeFiles.Start();
+	App->fs->GetAllFolders("", directory_see, folders);
 	App->fs->GetAllFiles(directory_see, files);
 	return true;
 }
@@ -165,11 +166,11 @@ void Project::ShowProject()
 	//Column 1 LEFT ------------------------
 	ImGui::Spacing();
 	// Folders ---------------------
-	if (time.ReadSec() > 7)
+	if (timeFolders.ReadSec() > 7)
 	{
-		time.Start();
+		timeFolders.Start();
 
-		//folders = App->fs->GetAllFoldersNew("", directory_see);
+		App->fs->GetAllFolders("", directory_see, folders);
 	}
 
 	Folders_update(folders);
@@ -178,7 +179,13 @@ void Project::ShowProject()
 	ImGui::Separator();
 	//GetAllFiles
 	//files = App->fs->GetAllFilesNew(directory_see);
-	App->fs->GetAllFiles(directory_see, files);
+	if (timeFiles.ReadSec() > 7)
+	{
+		timeFiles.Start();
+
+		App->fs->GetAllFiles(directory_see, files);
+	}
+
 	Files_Update(files);
 
 	EndDock();
@@ -214,7 +221,7 @@ void Project::Folders_update(std::vector<FoldersNew> folders)
 				{
 					SetAllFolderBool(folders, false);
 					folders[i].active = true;
-					directory_see = App->GetCharfromConstChar(folders[i].directory_name.c_str());
+					directory_see = App->GetCharfromConstChar(folders[i].directory_name);
 				}
 			}
 			if (folders[i].folder_child.size() > 0)
@@ -324,30 +331,6 @@ void Project::Files_Update(const std::vector<FilesNew>& files)
 		ImGui::PopID();
 	}
 
-}
-
-void Project::DeleteFiles(std::vector<FilesNew> files)
-{
-	for (int i = 0; i < files.size(); i++)
-	{
-		files[i].directory_name = nullptr;
-		files[i].directory_name_next = nullptr;
-		//delete files[i].file_name;
-		files[i].file_name = nullptr;
-	}
-	files.clear();
-}
-
-void Project::DeleteFolders(std::vector<FoldersNew> folders)
-{
-	for (int i = 0; i < folders.size(); i++)
-	{
-		folders[i].directory_name.clear();
-		//RELEASE(folders[i].file_name);
-		folders[i].file_name = nullptr;
-		DeleteFolders(folders[i].folder_child);
-		folders.clear();
-	}
 }
 
 void Project::SetAllFolderBool(std::vector<FoldersNew>& folders, bool setBoolean)

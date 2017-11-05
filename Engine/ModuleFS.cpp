@@ -85,11 +85,11 @@ bool ModuleFS::CheckAssetsIsModify()
 	return true;
 }
 
-std::vector<FoldersNew> ModuleFS::GetAllFoldersNew(std::experimental::filesystem::path path, std::string folderActive)
+void ModuleFS::GetAllFolders(std::experimental::filesystem::path path, std::string folderActive, std::vector<FoldersNew>& folders)
 {
 	namespace stdfs = std::experimental::filesystem;
 
-	std::vector<FoldersNew> filenames;
+	DeleteFolders(folders);
 
 	const stdfs::directory_iterator end{};
 
@@ -103,17 +103,45 @@ std::vector<FoldersNew> ModuleFS::GetAllFoldersNew(std::experimental::filesystem
 		if (stdfs::is_directory(*iter))
 		{
 			FoldersNew folder_temp;
-			folder_temp.directory_name = iter->path().string();
+
+			folder_temp.directory_name = ConverttoConstChar(iter->path().string());
 			folder_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
 			if (folderActive == folder_temp.directory_name)
 			{
 				folder_temp.active = true;
 			}
-			folder_temp.folder_child = GetAllFoldersNew(iter->path().string(), folderActive);
-			filenames.push_back(folder_temp);
+			GetAllFoldersChild(iter->path().string(), folderActive, folder_temp.folder_child);
+			folders.push_back(folder_temp);
 		}
 	}
-	return filenames;
+}
+
+void ModuleFS::GetAllFoldersChild(std::experimental::filesystem::path path, std::string folderActive, std::vector<FoldersNew>& folders)
+{
+	namespace stdfs = std::experimental::filesystem;
+
+	const stdfs::directory_iterator end{};
+
+	if (path == "")
+	{
+		path = directory_Game;
+	}
+
+	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
+	{
+		if (stdfs::is_directory(*iter))
+		{
+			FoldersNew folder_temp;
+			folder_temp.directory_name = ConverttoConstChar(iter->path().string());
+			folder_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
+			if (folderActive == folder_temp.directory_name)
+			{
+				folder_temp.active = true;
+			}
+			GetAllFoldersChild(iter->path().string(), folderActive, folder_temp.folder_child);
+			folders.push_back(folder_temp);
+		}
+	}
 }
 
 void ModuleFS::GetAllFiles(std::experimental::filesystem::path path, std::vector<FilesNew>& files)
@@ -150,6 +178,17 @@ void ModuleFS::DeleteFiles(std::vector<FilesNew>& files)
 		RELEASE_ARRAY(files[i].file_name)
 	}
 	files.clear();
+}
+
+void ModuleFS::DeleteFolders(std::vector<FoldersNew>& folders)
+{
+	for (int i = 0; i < folders.size(); i++)
+	{
+		RELEASE_ARRAY(folders[i].directory_name);
+		RELEASE_ARRAY(folders[i].file_name);
+		DeleteFolders(folders[i].folder_child);
+	}
+	folders.clear();
 }
 
 uint ModuleFS::LoadFile(const char* file, char** buffer)

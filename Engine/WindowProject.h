@@ -49,7 +49,7 @@ struct FilesNew
 
 struct FoldersNew
 {
-	std::string directory_name;
+	const char* directory_name = nullptr;
 	bool active = false;
 	char* file_name = nullptr;
 	std::vector<FoldersNew> folder_child;
@@ -97,5 +97,6 @@ private:
 	uint icon_fbx;
 	uint icon_obj;
 	uint icon_unknown;
-	Timer time;
+	Timer timeFolders;
+	Timer timeFiles;
 };
