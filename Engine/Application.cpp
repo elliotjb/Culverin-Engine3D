@@ -128,11 +128,24 @@ void Application::PrepareUpdate()
 	realTime.dt = (float)realTime.ms_timer.ReadSec();
 	realTime.ms_timer.Start();
 	realTime.frame_time.Start();
+
+	if (gameTime.prepare_frame)
+	{
+		gameTime.play_frame = true;
+		gameTime.prepare_frame = false;
+	}
+
+	if (engineState == EngineState::PLAY || engineState == EngineState::PLAYFRAME)
+	{
+		gameTime.gameStart_time += realTime.dt * gameTime.timeScale;
+		gameTime.frame_count++;
+	}
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	// SAVE & LOAD FUNCTIONS ------------------------
 	if (want_to_save == true)
 	{
 		App->scene->SaveScene();
@@ -144,13 +157,13 @@ void Application::FinishUpdate()
 		App->scene->LoadScene();
 		want_to_load = false;
 	}
+	// ---------------------------------------------
 
 	// Framerate calculations ----------------------
 	if (realTime.last_sec_frame_time.Read() > 1000)
 	{
 		realTime.last_sec_frame_time.Start();
 		realTime.prev_last_sec_frame_count = realTime.last_sec_frame_count;
-
 
 		fps_log[frame_index] = realTime.prev_last_sec_frame_count;
 		frame_index = (frame_index + 1) % IM_ARRAYSIZE(fps_log);
@@ -160,10 +173,10 @@ void Application::FinishUpdate()
 
 	float avg_fps = float(realTime.frame_count) / realTime.engineStart_time.ReadSec();
 	float seconds_since_startup = realTime.engineStart_time.ReadSec();
-	uint32 last_frame_ms = realTime.frame_time.Read();
+	realTime.last_frame_ms = realTime.frame_time.Read();
 	uint32 frames_on_last_update = realTime.prev_last_sec_frame_count;
 	
-	ms_log[ms_index] = last_frame_ms;
+	ms_log[ms_index] = realTime.last_frame_ms;
 
 	//Get all performance data-------------------
 	p2List_item<Module*>* item = list_modules.getFirst();
@@ -182,9 +195,15 @@ void Application::FinishUpdate()
 	ms_index = (ms_index + 1) % IM_ARRAYSIZE(ms_log); //ms_index works for all the logs (same size)
 
 
-	if (realTime.capped_ms > 0 && last_frame_ms < realTime.capped_ms)
+	if (realTime.capped_ms > 0 && realTime.last_frame_ms < realTime.capped_ms)
 	{
-		SDL_Delay(realTime.capped_ms - last_frame_ms);
+		SDL_Delay(realTime.capped_ms - realTime.last_frame_ms);
+	}
+
+	if (gameTime.play_frame)
+	{
+		gameTime.play_frame = false;
+		SetState(EngineState::PAUSE);
 	}
 }
 
@@ -366,6 +385,35 @@ void Application::Config()
 				ImGui::Checkbox("VSYNC", &vsync); ImGui::SameLine();
 				ShowHelpMarker("Restart to apply changes");
 
+				// TIME MANAGEMENT --------------------------------------
+				ImGui::Separator();
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 0.0f, 1.0f));
+				if (ImGui::TreeNodeEx("TIME MANAGEMENT", ImGuiTreeNodeFlags_DefaultOpen))
+				{
+					ImGui::PopStyleColor();
+
+					ImGui::Text("Time Since Startup:"); ImGui::SameLine();
+					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.0f s", realTime.engineStart_time.ReadSec());
+					ImGui::Text("Frames in Last Second:"); ImGui::SameLine();
+					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%u", realTime.prev_last_sec_frame_count);
+					
+					ImGui::Spacing();
+
+					ImGui::TextColored(ImVec4(1.0f,1.0f,0.0f,1.0f), "GAME CLOCK");
+					ImGui::SliderFloat("Time Scale", &gameTime.timeScale, 0.0f, 5.0f);
+					ImGui::Text("Time Since Game Started:"); ImGui::SameLine();
+					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.2f s", gameTime.gameStart_time);
+					ImGui::Text("Total Frames:"); ImGui::SameLine();
+					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%u", gameTime.frame_count);
+
+					ImGui::TreePop();
+				}
+				else
+				{
+					ImGui::PopStyleColor();
+				}
+				// ------------------------------------------------------
+
 				configuration->_EndDock();
 			}
 			sMStats stats = m_getMemoryStatistics();
@@ -544,6 +592,8 @@ void Application::SetState(EngineState state)
 		if (engineState == EngineState::PLAY)
 		{
 			engineState = EngineState::STOP;
+			App->gameTime.gameStart_time = 0.0f;
+			App->gameTime.frame_count = 0.0f;
 		}
 		else
 		{

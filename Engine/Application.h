@@ -37,10 +37,11 @@ enum EngineState
 
 struct GameClock
 {
-	Timer gameStart_time;
-
+	float gameStart_time = 0.0f;
 	float timeScale = 1.0f; 
+	uint64 frame_count = 0;
 
+	bool prepare_frame = false;
 	bool play_frame = false;
 };
 
@@ -54,6 +55,7 @@ struct RealTimeClock
 	uint64 frame_count = 0;
 	uint32 last_sec_frame_count = 0;
 	uint32 prev_last_sec_frame_count = 0;
+	uint32 last_frame_ms = 0;
 	float dt = 0.0f;
 	int capped_ms = -1;
 };

@@ -864,7 +864,7 @@ void ModuleGUI::UpdateWindows(float dt)
 		ImGui::SameLine(width / 2 - 40);
 		if (ImGui::ImageButton((ImTextureID*)icon_play, pos_icon))
 		{
-			App->SetState(EngineState::PLAY);
+			App->SetState(EngineState::PLAY); // OR STOP
 		}
 		ImGui::SameLine(width / 2 - 10);
 		if (ImGui::ImageButton((ImTextureID*)icon_pause, pos_icon))
@@ -875,8 +875,8 @@ void ModuleGUI::UpdateWindows(float dt)
 		if (ImGui::ImageButton((ImTextureID*)icon_playframe, pos_icon))
 		{
 			App->SetState(EngineState::PLAYFRAME);
+			App->gameTime.prepare_frame = true;
 		}
-		//ImGui::Image((ImTextureID*)icon_stop,pos_icon);
 		ImGui::PopStyleColor(1);
 	}
 
