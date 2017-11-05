@@ -335,7 +335,6 @@ void Application::Config()
 				ImGui::Text("- Reported memory:"); ImGui::SameLine();
 				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.08f, 1.0f), "%i", stats.totalReportedMemory);
 
-
 				configuration->_EndDock();
 			}
 
@@ -365,7 +364,6 @@ void Application::Config()
 			configuration->_EndWorkspace();
 		}
 		stop_conf = false;
-		//----------------------------------------------
 	}
 }
 
@@ -469,6 +467,26 @@ char* Application::GetCharfromConstChar(const char* name)
 	strcpy(temp, name);
 	temp[length] = '\0';
 	return temp;
+}
+
+void Application::SetState(EngineState state)
+{
+	if (state == EngineState::PLAY)
+	{
+		if (engineState == EngineState::PLAY)
+		{
+			engineState = EngineState::STOP;
+		}
+		else
+		{
+			engineState = EngineState::PLAY;
+		}
+	}
+	else 
+	{
+		engineState = state;
+	}
+	LOG("Engine State is Now: %i", engineState);
 }
 
 

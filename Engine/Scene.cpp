@@ -66,12 +66,14 @@ update_status Scene::Update(float dt)
 {
 	perf_timer.Start();
 
-	glBegin(GL_LINES);
+	// Draw Ray ----------------------
+	//glBegin(GL_LINES);
 
-	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-	glVertex3f(App->camera->ray.a.x, App->camera->ray.a.y, App->camera->ray.a.z); glVertex3f(App->camera->ray.b.x, App->camera->ray.b.y, App->camera->ray.b.z);
+	//glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+	//glVertex3f(App->camera->ray.a.x, App->camera->ray.a.y, App->camera->ray.a.z); glVertex3f(App->camera->ray.b.x, App->camera->ray.b.y, App->camera->ray.b.z);
 
-	glEnd();
+	//glEnd();
+	// -----------------------------
 
 	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
 	{
@@ -79,6 +81,7 @@ update_status Scene::Update(float dt)
 		//gameobjects[0]->AddChildGameObject(gameobjects[2]);
 		SaveScene();
 	}
+
 	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
 	{
 		for (int i = gameobjects.size() - 1; i >= 0; i--)
@@ -90,11 +93,12 @@ update_status Scene::Update(float dt)
 		LoadScene();
 	}
 
-	// Update GameObjects
+	// Update GameObjects (Only in Game Time) -----------
 	for (uint i = 0; i < gameobjects.size(); i++)
 	{
 		gameobjects[i]->Update();
 	}
+	// -------------------------------------------------
 
 	//if (quadtree_draw)
 	//{

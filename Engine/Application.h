@@ -61,33 +61,6 @@ struct RealTimeClock
 class Application
 {
 public:
-	ModuleWindow* window;
-	ModuleInput* input;
-	ModuleAudio* audio;
-	ModuleRenderer3D* renderer3D;
-	ModuleCamera3D* camera;
-	ModulePhysics3D* physics;
-	ModuleGeometries* geometry_manager;
-	Scene* scene;
-	Console* console;
-	ModuleGUI* gui;
-	ModuleImporter* importer;
-	ModuleFS* fs;
-	ModuleTextures* textures;
-
-private:
-
-	p2List<Module*> list_modules;
-
-public:
-	RealTimeClock realTime;
-	GameClock gameTime;
-	EngineState engineState = EngineState::STOP;
-
-	int		frame_index = 0;
-	int		ms_index = 0;
-	float	fps_log[70] = { 0 };
-	float	ms_log[70] = { 0 };
 
 	Application();
 	~Application();
@@ -105,23 +78,59 @@ public:
 	static void ShowHelpMarker(const char* desc, const char* icon = "(?)");
 	char* GetCharfromConstChar(const char* name);
 
+	void SetState(EngineState state);
+
 private:
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
 
-	std::string appName;
-	std::string orgName;
+	// MODULES --------------------------
+public:
+	ModuleWindow* window;
+	ModuleInput* input;
+	ModuleAudio* audio;
+	ModuleRenderer3D* renderer3D;
+	ModuleCamera3D* camera;
+	ModulePhysics3D* physics;
+	ModuleGeometries* geometry_manager;
+	Scene* scene;
+	Console* console;
+	ModuleGUI* gui;
+	ModuleImporter* importer;
+	ModuleFS* fs;
+	ModuleTextures* textures;
+
+private:
+	p2List<Module*> list_modules;
+	// ----------------------------------
+
+	// TIME -----------------------------
+public:
+	RealTimeClock realTime;
+	GameClock gameTime;
+	EngineState engineState = EngineState::STOP;
+
+	int		frame_index = 0;
+	int		ms_index = 0;
+	float	fps_log[70] = { 0 };
+	float	ms_log[70] = { 0 };
+
 	uint maxFPS = 0;
 	bool vsync = true;
-
-	DockContext* configuration = nullptr;
+	// ----------------------------------
 
 public:
 	LCG* random = nullptr;
 	bool showconfig = false;
 	bool showperformance = false;
 	float4 SceneDock = { 0, 0, 0, 0 };
+
+private:
+	std::string appName;
+	std::string orgName;
+
+	DockContext* configuration = nullptr;
 };
 
 extern Application* App;
