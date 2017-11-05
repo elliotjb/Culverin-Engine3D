@@ -41,7 +41,7 @@ void CompCamera::Init(float3 pos)
 	frustum.pos = pos;
 }
 
-void CompCamera::preUpdate()
+void CompCamera::preUpdate(float dt)
 {
 	if (culling)
 	{
@@ -50,7 +50,7 @@ void CompCamera::preUpdate()
 	}
 }
 
-void CompCamera::Update()
+void CompCamera::Update(float dt)
 {
 	UpdateFrustum();
 }

@@ -14,8 +14,8 @@ public:
 	GameObject(char* nameGameObject, uint uuid);
 	~GameObject();
 
-	void preUpdate();
-	void Update();
+	void preUpdate(float dt);
+	void Update(float dt);
 	void Draw();
 	bool Enable();
 	bool Disable();

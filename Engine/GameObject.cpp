@@ -30,7 +30,7 @@ GameObject::~GameObject()
 	//}
 }
 
-void GameObject::preUpdate()
+void GameObject::preUpdate(float dt)
 {
 	if (active)
 	{
@@ -39,7 +39,7 @@ void GameObject::preUpdate()
 		{
 			if (components[i]->isActive())
 			{
-				components[i]->preUpdate();
+				components[i]->preUpdate(dt);
 			}
 		}
 
@@ -48,13 +48,13 @@ void GameObject::preUpdate()
 		{
 			if (childs[i]->isActive())
 			{
-				childs[i]->preUpdate();
+				childs[i]->preUpdate(dt);
 			}
 		}
 	}
 }
 
-void GameObject::Update()
+void GameObject::Update(float dt)
 {
 	if (active)
 	{
@@ -64,7 +64,7 @@ void GameObject::Update()
 		{
 			if (components[i]->isActive())
 			{
-				components[i]->Update();
+				components[i]->Update(dt);
 			}
 		}
 
@@ -73,7 +73,7 @@ void GameObject::Update()
 		{
 			if (childs[i]->isActive())
 			{
-				childs[i]->Update();
+				childs[i]->Update(dt);
 			}
 		}
 

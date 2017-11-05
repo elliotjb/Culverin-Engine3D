@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "ModuleCamera3D.h"
 #include "ModuleRenderer3D.h"
+#include "CompCamera.h"
 
 #include <gl/GL.h>
 #include <gl/GLU.h>
@@ -26,7 +27,6 @@ void CompTransform::Init(float3 p, float3 r, float3 s)
 
 void CompTransform::Update()
 {
-	//glMultMatrixf((float*)&local_transform.Transposed());
 }
 
 void CompTransform::ShowInspectorInfo()
@@ -90,7 +90,7 @@ void CompTransform::ShowInspectorInfo()
 		ImGui::Spacing();
 
 		// GIZMO TEST -----------------------------------------------------
-		static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::ROTATE);
+		/*static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::ROTATE);
 		static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
 
 		if (ImGui::IsKeyPressed(78)) // N Key 
@@ -173,46 +173,46 @@ void CompTransform::ShowInspectorInfo()
 		ImGuiIO& io = ImGui::GetIO();
 		ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 		ImGuizmo::Manipulate(App->camera->GetViewMatrix(), App->camera->GetProjMatrix(), mCurrentGizmoOperation, mCurrentGizmoMode, local_transform.ptr(), NULL, NULL);
-
+		*/
 		// ----------------------------------------------------------------
 
 		// ORIGINAL -------------------------------------------------------
-		//int op = ImGui::GetWindowWidth() / 4;
-		//ImGui::Text("Position"); ImGui::SameLine(op + 30);
-		//bool isMoveMouse = false;
-		//if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
-		//{
-		//	isMoveMouse = true;
-		//	SetPos(position);
-		//}
-		//ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-		//if (ImGui::DragFloat3("##rot", &rot[0], 0.5f))
-		//{
-		//	isMoveMouse = true;
-		//	SetRot(rot);
-		//}
-		//ImGui::Text("Scale"); ImGui::SameLine(op + 30);
-		//if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
-		//{
-		//	isMoveMouse = true;
-		//	SetScale(scale);
-		//}
+		int op = ImGui::GetWindowWidth() / 4;
+		ImGui::Text("Position"); ImGui::SameLine(op + 30);
+		bool isMoveMouse = false;
+		if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
+		{
+			isMoveMouse = true;
+			SetPos(position);
+		}
+		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
+		if (ImGui::DragFloat3("##rot", &rot[0], 0.5f))
+		{
+			isMoveMouse = true;
+			SetRot(rot);
+		}
+		ImGui::Text("Scale"); ImGui::SameLine(op + 30);
+		if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
+		{
+			isMoveMouse = true;
+			SetScale(scale);
+		}
 		// ------------------------------------------------------------------
 
 		// This function let mouse trespassing the screen to enter from the opposite side
-		//if (isMoveMouse)
-		//{
-		//	if (App->input->GetMouseX() <= width &&
-		//		App->input->GetMouseX() > width - 10)
-		//	{
-		//		SetCursorPos(30, App->input->GetMouseY());
-		//	}
-		//	if (App->input->GetMouseX() >= 0 &&
-		//		App->input->GetMouseX() < 10)
-		//	{
-		//		SetCursorPos(width - 20, App->input->GetMouseY());
-		//	}
-		//}
+		if (isMoveMouse)
+		{
+			if (App->input->GetMouseX() <= width &&
+				App->input->GetMouseX() > width - 10)
+			{
+				SetCursorPos(30, App->input->GetMouseY());
+			}
+			if (App->input->GetMouseX() >= 0 &&
+				App->input->GetMouseX() < 10)
+			{
+				SetCursorPos(width - 20, App->input->GetMouseY());
+			}
+		}
 		// -------------------------------------------------------------------------------
 
 		//static bool useSnap(false);

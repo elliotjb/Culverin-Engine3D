@@ -18,8 +18,8 @@ public:
 	~CompCamera();
 
 	void Init(float3 pos);
-	void preUpdate();
-	void Update();
+	void preUpdate(float dt);
+	void Update(float dt);
 	void UpdateFrustum();
 	void Draw();
 	void DebugDraw();

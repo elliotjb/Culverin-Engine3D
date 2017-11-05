@@ -54,7 +54,7 @@ update_status Scene::PreUpdate(float dt)
 	// PreUpdate GameObjects ------------------------
 	for (uint i = 0; i < gameobjects.size(); i++)
 	{
-		gameobjects[i]->preUpdate();
+		gameobjects[i]->preUpdate(dt);
 	}
 
 	preUpdate_t = perf_timer.ReadMs();
@@ -96,7 +96,7 @@ update_status Scene::Update(float dt)
 	// Update GameObjects (Only in Game Time) -----------
 	for (uint i = 0; i < gameobjects.size(); i++)
 	{
-		gameobjects[i]->Update();
+		gameobjects[i]->Update(dt);
 	}
 	// -------------------------------------------------
 

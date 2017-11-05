@@ -240,7 +240,7 @@ void CompMesh::Draw()
 	}
 }
 
-void CompMesh::Update()
+void CompMesh::Update(float dt)
 {
 }
 

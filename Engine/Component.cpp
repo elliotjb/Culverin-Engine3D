@@ -29,11 +29,11 @@ bool Component::Disable()
 	return active;
 }
 
-void Component::preUpdate()
+void Component::preUpdate(float dt)
 {
 }
 
-void Component::Update()
+void Component::Update(float dt)
 {
 }
 

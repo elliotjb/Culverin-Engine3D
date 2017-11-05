@@ -40,7 +40,7 @@ public:
 	
 	void ShowInspectorInfo();
 	void Draw();
-	void Update();
+	void Update(float dt);
 	void Render(bool render);
 	bool isRendering() const;
 
