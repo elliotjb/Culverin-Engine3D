@@ -26,15 +26,15 @@ public:
 	//OBJECTS CREATION ---------------------
 	void Init_IndexVertex(float3* vertex_triangulate, uint num_index, CompMesh* mesh);
 	GameObject* CreateGameObject();
+	void DeleteAllGameObject(std::vector<GameObject*> gameobjects);
 	GameObject* CreateCube();
 	GameObject* CreateSphere();
 	GameObject* CreateMainCamera();
 
 	void SaveScene();
-	void SaveChildGameObject(JSON_Object* config_node, const GameObject& parent, uint uid, std::string name);
-	void SaveChildGameObject_New(JSON_Object * config_node, const GameObject & gameObject, uint& count);
+	void SaveChildGameObject(JSON_Object * config_node, const GameObject & gameObject, uint& count);
 	void LoadScene();
-	void LoadChildGameObject(const JSON_Object* config_node, GameObject& parent, uint uid, uint numChild, std::string name);
+	void LoadChildsGameObject(GameObject & parent, GameObject & child, uint uuidParent);
 
 
 public:
@@ -54,5 +54,4 @@ private:
 	Quadtree quadtree;
 	bool quadtree_draw = false;
 	int size_plane;
-
 };

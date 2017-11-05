@@ -25,7 +25,6 @@ THE SOFTWARE.
 #define parson_parson_h
 
 #include <string>
-#include "MathGeoLib.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -194,20 +193,6 @@ extern "C"
 	size_t        json_array_get_count(const JSON_Array *array);
 	JSON_Value  * json_array_get_wrapping_value(const JSON_Array *array);
 
-	// Special JSON Array -> float3, float2, Color
-	// float3
-	JSON_Status json_array_dotset_float3(JSON_Object *object, std::string name, float3 transform);
-	// float2
-	JSON_Status json_array_dotset_float2(JSON_Object *object, std::string name, float2 transform);
-	// Color - (r,g,b,w) or (x,y,z,w).
-	JSON_Status json_array_dotset_color(JSON_Object *object, std::string name, float4 transform);
-
-	float3 json_array_dotget_float3(const JSON_Object* object, const char* name);
-	float2 json_array_dotget_float2(const JSON_Object* object, const char* name);
-	float4 json_array_dotget_color(const JSON_Object* object, const char* name);
-	float3 json_array_dotget_float3_string(const JSON_Object* object, std::string name);
-	float2 json_array_dotget_float2_string(const JSON_Object* object, std::string name);
-	float4 json_array_dotget_color_string(const JSON_Object* object, std::string name);
 
 	/* Frees and removes value at given index, does nothing and returns JSONFailure if index doesn't exist.
 	* Order of values in array may change during execution.  */

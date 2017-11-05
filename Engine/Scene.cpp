@@ -77,7 +77,7 @@ update_status Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
 	{
-		/*gameobjects[0]->AddChildGameObject(gameobjects[1]);*/
+		//gameobjects[0]->AddChildGameObject_Copy(gameobjects[1]);
 		//gameobjects[0]->AddChildGameObject(gameobjects[2]);
 		//SaveScene();
 	}
@@ -203,6 +203,26 @@ GameObject* Scene::CreateGameObject()
 	GameObject* obj = new GameObject();
 	gameobjects.push_back(obj);
 	return obj;
+}
+
+void Scene::DeleteAllGameObject(std::vector<GameObject*> gameobjects)
+{
+	for (int i = 0; i < gameobjects.size(); i++)
+	{
+		if (gameobjects[i]->GetNumChilds() > 0)
+		{
+			DeleteAllGameObject(gameobjects[i]->GetChildsVec());
+		}
+		else
+		{
+			// First delete all compoennts
+
+
+			// Now Delete GameObject
+			delete gameobjects[i];
+			gameobjects[i]->GetChildsVec().clear();
+		}
+	}
 }
 
 GameObject* Scene::CreateCube()
@@ -350,7 +370,7 @@ void Scene::SaveScene()
 		config = json_value_get_object(config_file);
 		config_node = json_object_get_object(config, "Scene");
 		json_object_clear(config_node);
-		//json_object_dotset_number_with_std(config_node, "Info.Number of GameObjects", gameobjects.size());
+		json_object_dotset_number_with_std(config_node, "Info.Number of GameObjects", gameobjects.size());
 
 		// Update GameObjects
 		for (uint i = 0; i < gameobjects.size(); i++)
@@ -372,67 +392,20 @@ void Scene::SaveScene()
 				components += "Components.";
 				gameobjects[i]->SaveComponents(config_node, components);
 			}
-
-			//Save Childs
-			//json_object_dotset_number_with_std(config_node, name + "Number of Childs", gameobjects[i]->GetNumChilds());
-			//if (gameobjects[i]->GetNumChilds() > 0)
-			//{
-			//	std::string name_Parent = name;
-			//	name_Parent += "Childs.";
-			//	for (int j = 0; j < gameobjects[i]->GetNumChilds(); j++)
-			//	{
-			//		std::string child_name = name_Parent;
-			//		child_name += "Child_num " + std::to_string(j);
-			//		child_name += ".";
-			//		SaveChildGameObject(config_node, *gameobjects[i]->GetChildbyIndex(j), gameobjects[i]->GetUUID(), child_name);
-			//	}
-			//}
 			if (gameobjects[i]->GetNumChilds() > 0)
 			{
 				for (int j = 0; j < gameobjects[i]->GetNumChilds(); j++)
 				{
-					SaveChildGameObject_New(config_node, *gameobjects[i]->GetChildbyIndex(j), count);
+					SaveChildGameObject(config_node, *gameobjects[i]->GetChildbyIndex(j), count);
 				}
 			}
 		}
 	}
+	json_object_dotset_number_with_std(config_node, "Info.Number of GameObjects", count);
 	json_serialize_to_file(config_file, "Scene_1.json");
 }
 
-void Scene::SaveChildGameObject(JSON_Object* config_node, const GameObject& child, uint uid, std::string name)
-{
-	// UUID--------
-	json_object_dotset_number_with_std(config_node, name + "UUID", child.GetUUID());
-	// Parent UUID------------
-	json_object_dotset_number_with_std(config_node, name + "Parent", uid);
-	// Name- --------
-	json_object_dotset_string_with_std(config_node, name + "Name", child.GetName());
-
-	// Components  ------------
-	std::string components = name;
-	json_object_dotset_number_with_std(config_node, components + "Number of Components", child.GetNumComponents());
-	if (child.GetNumComponents() > 0)
-	{
-		components += "Components.";
-		child.SaveComponents(config_node, components);
-	}
-
-	//Save Childs
-	json_object_dotset_number_with_std(config_node, name + "Number of Childs", child.GetNumChilds());
-	if (child.GetNumChilds() > 0)
-	{
-		name += "Childs.";
-		for (int i = 0; i < child.GetNumChilds(); i++)
-		{
-			std::string name_Child = name;
-			name_Child += "Child_num " + std::to_string(i);
-			name_Child += ".";
-			SaveChildGameObject(config_node, *child.GetChildbyIndex(i), child.GetUUID(), name_Child);
-		}
-	}
-}
-
-void Scene::SaveChildGameObject_New(JSON_Object* config_node, const GameObject& gameObject, uint& count)
+void Scene::SaveChildGameObject(JSON_Object* config_node, const GameObject& gameObject, uint& count)
 {
 	// Update GameObjects
 	std::string name = "GameObject" + std::to_string(count++);
@@ -460,11 +433,10 @@ void Scene::SaveChildGameObject_New(JSON_Object* config_node, const GameObject& 
 	{
 		for (int i = 0; i < gameObject.GetNumChilds(); i++)
 		{
-			SaveChildGameObject_New(config_node, *gameObject.GetChildbyIndex(i), count);
+			SaveChildGameObject(config_node, *gameObject.GetChildbyIndex(i), count);
 		}
 	}
 }
-
 
 void Scene::LoadScene()
 {
@@ -484,8 +456,6 @@ void Scene::LoadScene()
 			{
 				std::string name = "GameObject" + std::to_string(i);
 				name += ".";
-				//dock.label = _strdup(json_object_dotget_string_with_std(config_node, name + "Label"));
-				//dock.pos.x = json_object_dotget_number_with_std(config_node, name + "Position x");
 				char* nameGameObject = App->GetCharfromConstChar(json_object_dotget_string_with_std(config_node, name + "Name"));
 				uint uid = json_object_dotget_number_with_std(config_node, name + "UUID");
 				GameObject* obj = new GameObject(nameGameObject, uid);
@@ -496,70 +466,48 @@ void Scene::LoadScene()
 				{
 					obj->LoadComponents(config_node, name + "Components.", NumberofComponents);
 				}
-
-				//Load Childs
-				int NumberofChilds = json_object_dotget_number_with_std(config_node, name + "Number of Childs");
-				if (NumberofChilds > 0)
-				{
-					std::string childs = name + "Childs.";
-					LoadChildGameObject(config_node, *obj, obj->GetUUID(), NumberofChilds, childs);
-				}
+				uint uuid_parent = json_object_dotget_number_with_std(config_node, name + "Parent");
 
 				//Add GameObject
-				gameobjects.push_back(obj);
+				if (uuid_parent == -1)
+				{
+					gameobjects.push_back(obj);
+				}
+				else
+				{
+					for (int x = 0; x < gameobjects.size(); x++)
+					{
+						LoadChildsGameObject(*gameobjects[x], *obj, uuid_parent);
+					}
+				}
 			}
 		}
 	}
 }
 
-void Scene::LoadChildGameObject(const JSON_Object* config_node, GameObject& parent, uint uid, uint numChild, std::string name)
+void Scene::LoadChildsGameObject(GameObject& parent, GameObject& child, uint uuidParent)
 {
-	uint numCErrors = 0;	
-	uint numCloaded = 0;
-	for (int i = 0; i < numChild; i++)
+	if (parent.GetNumChilds() > 0)
 	{
-		std::string child_n = name + "Child_num " + std::to_string(i) + ".";
-		char* nameGameObject = App->GetCharfromConstChar(json_object_dotget_string_with_std(config_node, child_n + "Name"));
-		uint uuid = json_object_dotget_number_with_std(config_node, child_n + "UUID");
-		uint uuid_parent = json_object_dotget_number_with_std(config_node, child_n + "Parent");
-		if (uuid_parent == uid) //Check same parent
+		for (int i = 0; i < parent.GetNumChilds(); i++)
 		{
-			GameObject* obj = new GameObject(nameGameObject, uuid);
-			//Load Components
-			int NumberofComponents = json_object_dotget_number_with_std(config_node, child_n + "Number of Components");
-			if (NumberofComponents > 0)
+			if (parent.GetUUID() == uuidParent)
 			{
-				obj->LoadComponents(config_node, child_n + "Components.", NumberofComponents);
+				parent.AddChildGameObject_Load(&child);
+				return;
 			}
-			//Load Childs
-			int NumberofChilds = json_object_dotget_number_with_std(config_node, name + "Number of Childs");
-			if (NumberofChilds > 0)
+			else
 			{
-				std::string childs = child_n + "Childs.";
-				LoadChildGameObject(config_node, *obj, obj->GetUUID(), NumberofChilds, childs);
+				LoadChildsGameObject(*parent.GetChildbyIndex(i), child, uuidParent);
 			}
-			parent.AddChildGameObject(obj);
-			numCloaded++;
-		}
-		else
-		{
-			numCErrors++;
 		}
 	}
-	LOG("Childs Loaded -----------  Info: num Childs Loaded = %i, num Errors = %i", numCloaded, numCErrors);
+	else
+	{
+		if (parent.GetUUID() == uuidParent)
+		{
+			parent.AddChildGameObject_Load(&child);
+			return;
+		}
+	}
 }
-
-
-
-
-/*for (int i = 0; i < CHECKERS_HEIGHT; i++)
-{
-for (int j = 0; j < CHECKERS_WIDTH; j++)
-{
-int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
-checkImage[i][j][0] = (GLubyte)c;
-checkImage[i][j][1] = (GLubyte)c;
-checkImage[i][j][2] = (GLubyte)c;
-checkImage[i][j][3] = (GLubyte)255;
-}
-}*/

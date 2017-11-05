@@ -336,3 +336,89 @@ void ModuleFS::CreateFolder(const char* file_name)
 		fs::create_directory(file_name); // create src folder
 	}
 }
+
+// Special JSON Array Float3
+JSON_Status ModuleFS::json_array_dotset_float3(JSON_Object *object, std::string name, float3 transform)
+{
+	JSON_Value* value = json_value_init_array();
+	if (value == NULL) {
+		return JSONFailure;
+	}
+	JSON_Array* arry = json_value_get_array(value);
+	if (json_object_dotset_value(object, name.c_str(), value) == JSONFailure)
+	{
+		json_value_free(value);
+		return JSONFailure;
+	}
+	json_array_append_number(arry, transform.x);
+	json_array_append_number(arry, transform.y);
+	json_array_append_number(arry, transform.z);
+	return JSONSuccess;
+}
+
+JSON_Status ModuleFS::json_array_dotset_float2(JSON_Object *object, std::string name, float2 transform)
+{
+	JSON_Value* value = json_value_init_array();
+	if (value == NULL) {
+		return JSONFailure;
+	}
+	JSON_Array* arry = json_value_get_array(value);
+	if (json_object_dotset_value(object, name.c_str(), value) == JSONFailure)
+	{
+		json_value_free(value);
+		return JSONFailure;
+	}
+	json_array_append_number(arry, transform.x);
+	json_array_append_number(arry, transform.y);
+	return JSONSuccess;
+}
+
+JSON_Status ModuleFS::json_array_dotset_color(JSON_Object *object, std::string name, float4 transform)
+{
+	JSON_Value* value = json_value_init_array();
+	if (value == NULL) {
+		return JSONFailure;
+	}
+	JSON_Array* arry = json_value_get_array(value);
+	if (json_object_dotset_value(object, name.c_str(), value) == JSONFailure)
+	{
+		json_value_free(value);
+		return JSONFailure;
+	}
+	json_array_append_number(arry, transform.x);
+	json_array_append_number(arry, transform.y);
+	json_array_append_number(arry, transform.z);
+	json_array_append_number(arry, transform.w);
+	return JSONSuccess;
+}
+
+float3 ModuleFS::json_array_dotget_float3_string(const JSON_Object* object, std::string name)
+{
+	JSON_Array* array = json_object_dotget_array(object, name.c_str());
+	float3 transform;
+	transform.x = (float)json_value_get_number(json_array_get_value(array, 0));
+	transform.y = (float)json_value_get_number(json_array_get_value(array, 1));
+	transform.z = (float)json_value_get_number(json_array_get_value(array, 2));
+
+	return transform;
+}
+float2 ModuleFS::json_array_dotget_float2_string(const JSON_Object* object, std::string name)
+{
+	JSON_Array* array = json_object_dotget_array(object, name.c_str());
+	float2 transform;
+	transform.x = (float)json_value_get_number(json_array_get_value(array, 0));
+	transform.y = (float)json_value_get_number(json_array_get_value(array, 1));
+
+	return transform;
+}
+float4 ModuleFS::json_array_dotget_color_string(const JSON_Object* object, std::string name)
+{
+	JSON_Array* array = json_object_dotget_array(object, name.c_str());
+	float4 transform;
+	transform.x = (float)json_value_get_number(json_array_get_value(array, 0));
+	transform.y = (float)json_value_get_number(json_array_get_value(array, 1));
+	transform.z = (float)json_value_get_number(json_array_get_value(array, 2));
+	transform.w = (float)json_value_get_number(json_array_get_value(array, 3));
+
+	return transform;
+}

@@ -341,19 +341,19 @@ void CompTransform::Save(JSON_Object* object, std::string name) const
 	// TRANSFORM-----------
 	json_object_dotset_number_with_std(object, name + "Type", C_TRANSFORM);
 	// Position
-	json_array_dotset_float3(object, name + "Position", GetPos());
+	App->fs->json_array_dotset_float3(object, name + "Position", GetPos());
 	// Rotation
-	json_array_dotset_float3(object, name + "Rotation", GetRot());
+	App->fs->json_array_dotset_float3(object, name + "Rotation", GetRot());
 	// Scale
-	json_array_dotset_float3(object, name + "Scale", GetScale());
+	App->fs->json_array_dotset_float3(object, name + "Scale", GetScale());
 
 }
 
 void CompTransform::Load(const JSON_Object* object, std::string name)
 {
-	float3 position = json_array_dotget_float3_string(object, name + "Position");
-	float3 rotation = json_array_dotget_float3_string(object, name + "Rotation");
-	float3 scale = json_array_dotget_float3_string(object, name + "Scale");
+	float3 position = App->fs->json_array_dotget_float3_string(object, name + "Position");
+	float3 rotation = App->fs->json_array_dotget_float3_string(object, name + "Rotation");
+	float3 scale = App->fs->json_array_dotget_float3_string(object, name + "Scale");
 	Init(position, rotation, scale);
 	Enable();
 }

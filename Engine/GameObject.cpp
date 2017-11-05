@@ -488,12 +488,26 @@ std::vector<GameObject*> GameObject::GetChildsVec() const
 	return childs;
 }
 
-void GameObject::AddChildGameObject(GameObject* child)
+void GameObject::AddChildGameObject_Copy(GameObject* child)
 {
 	GameObject* temp = new GameObject(*child);
 	temp->uid = App->random->Int();
 	temp->parent = this;
 	this->childs.push_back(temp);
+}
+
+void GameObject::AddChildGameObject_Load(GameObject* child)
+{
+	child->parent = this;
+	this->childs.push_back(child);
+}
+
+void GameObject::AddChildGameObject_Replace(GameObject* child)
+{
+	//GameObject* temp = new GameObject(*child);
+	//temp->uid = App->random->Int();
+	//temp->parent = this;
+	//this->childs.push_back(temp);
 }
 
 GameObject* GameObject::GetParent() const

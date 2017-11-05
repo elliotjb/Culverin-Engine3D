@@ -65,6 +65,18 @@ public:
 	// 
 	bool CheckAssetsIsModify();
 
+	// Functions Serialitzation 
+	// Special JSON Array -> float3, float2, Color
+	// float3
+	JSON_Status json_array_dotset_float3(JSON_Object *object, std::string name, float3 transform);
+	// float2
+	JSON_Status json_array_dotset_float2(JSON_Object *object, std::string name, float2 transform);
+	// Color - (r,g,b,w) or (x,y,z,w).
+	JSON_Status json_array_dotset_color(JSON_Object *object, std::string name, float4 transform);
+
+	float3 json_array_dotget_float3_string(const JSON_Object* object, std::string name);
+	float2 json_array_dotget_float2_string(const JSON_Object* object, std::string name);
+	float4 json_array_dotget_color_string(const JSON_Object* object, std::string name);
 
 
 	//Dont use at the moment --------- --------------

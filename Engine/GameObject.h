@@ -43,7 +43,9 @@ public:
 	uint GetNumChilds() const;
 	GameObject* GetChildbyIndex(uint pos_inVec) const;
 	std::vector<GameObject*> GetChildsVec() const;
-	void AddChildGameObject(GameObject* child);
+	void AddChildGameObject_Copy(GameObject * child);
+	void AddChildGameObject_Load(GameObject * child);
+	void AddChildGameObject_Replace(GameObject* child);
 
 	GameObject* GetParent() const;
 
