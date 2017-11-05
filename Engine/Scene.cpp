@@ -51,8 +51,6 @@ update_status Scene::PreUpdate(float dt)
 {
 	perf_timer.Start();
 
-	frBuff->Bind();
-
 	// PreUpdate GameObjects ------------------------
 	for (uint i = 0; i < gameobjects.size(); i++)
 	{
@@ -67,9 +65,6 @@ update_status Scene::PreUpdate(float dt)
 update_status Scene::Update(float dt)
 {
 	perf_timer.Start();
-
-	//Draw Plane
-	DrawPlane(size_plane);
 
 	glBegin(GL_LINES);
 
@@ -148,20 +143,20 @@ bool Scene::CleanUp()
 }
 
 
-void Scene::DrawPlane(int size)
+void Scene::DrawPlane()
 {
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 	glBegin(GL_LINES);
-	for (int i = -size; i <= size; i++)
+	for (int i = -size_plane; i <= size_plane; i++)
 	{
-		glVertex3f(-size, 0, i);
-		glVertex3f(size, 0, i);
+		glVertex3f(-size_plane, 0, i);
+		glVertex3f(size_plane, 0, i);
 	}
-	for (int i = -size; i <= size; i++)
+	for (int i = -size_plane; i <= size_plane; i++)
 	{
-		glVertex3f(i, 0, size);
-		glVertex3f(i, 0, -size);
+		glVertex3f(i, 0, size_plane);
+		glVertex3f(i, 0, -size_plane);
 	}
 
 	glEnd();

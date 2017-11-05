@@ -87,14 +87,35 @@ void GameObject::Update()
 				//Resize the Bounding Box
 				//bounding_box->Enclose(mesh->vertices, mesh->num_vertices);
 				bounding_box->SetFromCenterAndSize(transform->GetPos(), transform->GetScale()*2);
-				
-				if (bb_active)
-				{
-					// Draw Bounding Box
-					DrawBoundingBox();
-				}
 			}
 		}
+	}
+}
+
+void GameObject::Draw()
+{
+	//Draw Components --------------------------
+	for (uint i = 0; i < components.size(); i++)
+	{
+		if (components[i]->isActive())
+		{
+			components[i]->Draw();
+		}
+	}
+
+	//Draw child Game Objects -------------------
+	for (uint i = 0; i < childs.size(); i++)
+	{
+		if (childs[i]->isActive())
+		{
+			childs[i]->Draw();
+		}
+	}
+
+	if (bb_active)
+	{
+		// Draw Bounding Box
+		DrawBoundingBox();
 	}
 }
 

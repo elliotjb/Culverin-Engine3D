@@ -16,6 +16,7 @@ public:
 
 	void preUpdate();
 	void Update();
+	void Draw();
 	bool Enable();
 	bool Disable();
 

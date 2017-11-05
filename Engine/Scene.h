@@ -20,7 +20,7 @@ public:
 	update_status UpdateConfig(float dt);
 	bool CleanUp();
 
-	void DrawPlane(int size);
+	void DrawPlane();
 
 
 	//OBJECTS CREATION ---------------------

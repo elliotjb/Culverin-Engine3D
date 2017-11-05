@@ -238,8 +238,6 @@ update_status Application::Update()
 	}
 	//-----------------------------------------------
 
-	ImGui::Render();
-
 	item = list_modules.getFirst();
 
 	while(item != NULL && ret == UPDATE_CONTINUE)
@@ -248,6 +246,8 @@ update_status Application::Update()
 			ret = item->data->PostUpdate(realTime.dt);
 		item = item->next;
 	}
+
+	
 
 	FinishUpdate();
 	return ret;

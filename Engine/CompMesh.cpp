@@ -167,82 +167,81 @@ void CompMesh::ShowInspectorInfo()
 
 void CompMesh::Draw()
 {
-	CompTransform* transform = (CompTransform*)parent->FindComponentByType(C_TRANSFORM);
-	if (transform != nullptr)
+	if (render)
 	{
-		/* Push Matrix to Draw with transform applied, only if it contains a transform component */
-		//glMatrixMode(GL_MODELVIEW);
-		glPushMatrix();
-		glMultMatrixf(transform->GetMultMatrixForOpenGL());
-	}
-
-	if (vertices.size() > 0 && indices.size() > 0)
-	{
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		//Set Wireframe
-		if (App->renderer3D->wireframe)
+		CompTransform* transform = (CompTransform*)parent->FindComponentByType(C_TRANSFORM);
+		if (transform != nullptr)
 		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			/* Push Matrix to Draw with transform applied, only if it contains a transform component */
+			//glMatrixMode(GL_MODELVIEW);
+			glPushMatrix();
+			glMultMatrixf(transform->GetMultMatrixForOpenGL());
 		}
 
-		//Set Color
-		if (material != nullptr)
+		if (vertices.size() > 0 && indices.size() > 0)
 		{
-			glColor4f(material->GetColor().r, material->GetColor().g, material->GetColor().b, material->GetColor().a);
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+			//Set Wireframe
+			if (App->renderer3D->wireframe)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			}
+
+			//Set Color
+			if (material != nullptr)
+			{
+				glColor4f(material->GetColor().r, material->GetColor().g, material->GetColor().b, material->GetColor().a);
+			}
+			else
+			{
+				glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
+			}
+
+			glEnableClientState(GL_VERTEX_ARRAY);
+			glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
+
+			glBindBuffer(GL_ARRAY_BUFFER, vertices_id); //VERTEX ID
+			glVertexPointer(3, GL_FLOAT, sizeof(_Vertex), NULL);
+
+
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id); // INDICES ID
+			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL);
+
+			// NORMALS ----------------------------------
+			if (App->renderer3D->normals && hasNormals)
+			{
+				glBindBuffer(GL_ARRAY_BUFFER, vertices_norm_id);
+				glVertexPointer(3, GL_FLOAT, sizeof(float3), NULL);
+				glDrawArrays(GL_LINES, 0, vertices.size() * 2);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+			}
+
+			glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+			glDisableClientState(GL_VERTEX_ARRAY);
+			glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
+
+			//Disable Wireframe -> only this object will be wireframed
+			if (App->renderer3D->wireframe)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			}
 		}
+
 		else
 		{
-			glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
+			LOG("Cannot draw the mesh");
 		}
 
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
-
-		glBindBuffer(GL_ARRAY_BUFFER, vertices_id); //VERTEX ID
-		glVertexPointer(3, GL_FLOAT, sizeof(_Vertex), NULL);
-
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id); // INDICES ID
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL);
-
-		// NORMALS ----------------------------------
-		if (App->renderer3D->normals && hasNormals)
+		if (transform != nullptr)
 		{
-			glBindBuffer(GL_ARRAY_BUFFER, vertices_norm_id);
-			glVertexPointer(3, GL_FLOAT, sizeof(float3), NULL);
-			glDrawArrays(GL_LINES, 0, vertices.size() * 2);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glPopMatrix();
 		}
-
-		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
-
-		//Disable Wireframe -> only this object will be wireframed
-		if (App->renderer3D->wireframe)
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		}
-	}
-
-	else
-	{
-		LOG("Cannot draw the mesh");
-	}
-
-	if (transform != nullptr)
-	{
-		glPopMatrix();
 	}
 }
 
 void CompMesh::Update()
 {
-	if (render)
-	{
-		Draw();
-	}
 }
 
 void CompMesh::Render(bool render)

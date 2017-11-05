@@ -42,7 +42,6 @@ public:
 	}
 	virtual update_status Update(float dt)
 	{
-
 		return update_status();
 	}
 	virtual bool CleanUp()

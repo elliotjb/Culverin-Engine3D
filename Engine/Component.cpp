@@ -37,6 +37,10 @@ void Component::Update()
 {
 }
 
+void Component::Draw()
+{
+}
+
 void Component::ShowInspectorInfo()
 {
 }

@@ -21,6 +21,7 @@ public:
 	void preUpdate();
 	void Update();
 	void UpdateFrustum();
+	void Draw();
 	void DebugDraw();
 
 	void ShowInspectorInfo();

@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "CompCamera.h"
+#include "Scene.h"
+#include "GameObject.h"
 #include "SDL/include/SDL_opengl.h"
 #include "GL3W/include/glew.h"
 #include <gl/GL.h>
@@ -160,6 +162,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	perf_timer.Start();
 
+	App->scene->frBuff->Bind();
+
 	// Refresh Projection of the camera
 	UpdateProjection();
 
@@ -185,21 +189,20 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	perf_timer.Start();
 
-	SDL_GL_SwapWindow(App->window->window);
+	// Draw Plane
+	App->scene->DrawPlane();
 
-	ImGuiIO& io = ImGui::GetIO();
-
-	if (io.WantTextInput == false)
+	// Draw GameObjects
+	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
-		if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
-		{
-			lights[0].Active(false);
-		}
-		if (App->input->GetKey(SDL_SCANCODE_H) == KEY_UP)
-		{
-			lights[0].Active(true);
-		}
+		App->scene->gameobjects[i]->Draw();
 	}
+
+	App->scene->frBuff->UnBind();
+
+	ImGui::Render();
+
+	SDL_GL_SwapWindow(App->window->window);
 
 	postUpdate_t = perf_timer.ReadMs();
 

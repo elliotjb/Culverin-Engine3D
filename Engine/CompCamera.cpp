@@ -53,7 +53,6 @@ void CompCamera::preUpdate()
 void CompCamera::Update()
 {
 	UpdateFrustum();
-	DebugDraw();
 }
 
 void CompCamera::UpdateFrustum()
@@ -67,6 +66,12 @@ void CompCamera::UpdateFrustum()
 	frustum.up = transform->GetTransform().Col3(1).Normalized();
 
 	frustum.pos = transform->GetPos();
+}
+
+void CompCamera::Draw()
+{
+	// if(parent->selected == true)
+	DebugDraw();
 }
 
 void CompCamera::DebugDraw()

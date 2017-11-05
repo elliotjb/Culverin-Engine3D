@@ -28,6 +28,7 @@ public:
 	virtual bool Disable();
 	virtual void preUpdate();
 	virtual void Update();
+	virtual void Draw();
 
 	virtual void ShowInspectorInfo();
 
