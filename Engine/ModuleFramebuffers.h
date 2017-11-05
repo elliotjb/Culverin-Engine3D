@@ -19,10 +19,10 @@ public:
 
 public:
 
-	uint			frame_id = 0;
-	uint			rbo;
-	uint			texture;
-	uint			depth_id = 0;
+	uint	frame_id = 0;
+	uint	rbo;
+	uint	texture;
+	uint	depth_id = 0;
 
 	int		width;
 	int		height;

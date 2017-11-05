@@ -85,8 +85,9 @@ void GameObject::Update(float dt)
 			if (transform != nullptr)
 			{
 				//Resize the Bounding Box
-				//bounding_box->Enclose(mesh->vertices, mesh->num_vertices);
-				bounding_box->SetFromCenterAndSize(transform->GetPos(), transform->GetScale()*2);
+				//bounding_box->SetFromCenterAndSize(transform->GetPos(), transform->GetScale()*2);
+				box_fixed = *bounding_box;
+				box_fixed.TransformAsAABB(transform->GetTransform());
 			}
 		}
 	}
@@ -532,8 +533,10 @@ void GameObject::DrawBoundingBox()
 
 	for (uint i = 0; i < 12; i++)
 	{
-		glVertex3f(bounding_box->Edge(i).a.x, bounding_box->Edge(i).a.y, bounding_box->Edge(i).a.z);
-		glVertex3f(bounding_box->Edge(i).b.x, bounding_box->Edge(i).b.y, bounding_box->Edge(i).b.z);
+		//glVertex3f(bounding_box->Edge(i).a.x, bounding_box->Edge(i).a.y, bounding_box->Edge(i).a.z);
+		//glVertex3f(bounding_box->Edge(i).b.x, bounding_box->Edge(i).b.y, bounding_box->Edge(i).b.z);
+		glVertex3f(box_fixed.Edge(i).a.x, box_fixed.Edge(i).a.y, box_fixed.Edge(i).a.z);
+		glVertex3f(box_fixed.Edge(i).b.x, box_fixed.Edge(i).b.y, box_fixed.Edge(i).b.z);
 	}
 	glEnd();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);

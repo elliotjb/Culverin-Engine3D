@@ -50,6 +50,7 @@ public:
 	GameObject* GetParent() const;
 
 	AABB* bounding_box = nullptr;
+	AABB  box_fixed;
 	void DrawBoundingBox();
 
 	uint GetUUID() const;
