@@ -47,7 +47,7 @@ update_status Project::Update(float dt)
 	}
 	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 	{
-		GetFolderSee();
+		//GetFolderSee();
 	}
 	if (active[0].active)
 	{
@@ -63,19 +63,6 @@ bool Project::CleanUp()
 {
 
 	return true;
-}
-
-std::string Project::GetFolderSee()
-{
-	std::string temp = fileViwer->begin()._Ptr->directory_name;
-	size_t EndName = temp.find_last_of("\\");
-	temp = temp.substr(0, EndName + 1);
-	return temp;
-}
-
-std::vector<Files>* Project::GetFilesSee()
-{
-	return fileViwer;
 }
 
 TYPE_FILE Project::SetType(std::string name)
@@ -191,7 +178,7 @@ void Project::ShowProject()
 	EndDock();
 }
 
-void Project::Folders_update(std::vector<FoldersNew> folders)
+void Project::Folders_update(std::vector<FoldersNew>& folders)
 {
 	ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.335f, 0.337f, 0.357f, 1.00f));
 	for (int i = 0; i < folders.size(); i++)

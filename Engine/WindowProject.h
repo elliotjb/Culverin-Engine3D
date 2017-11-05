@@ -21,23 +21,6 @@ enum TYPE_FILE
 };
 struct Folders;
 
-struct Files
-{
-	std::string directory_name;
-	char* file_name = nullptr;
-	TYPE_FILE file_type;
-	Folders* parentFolder = nullptr;
-};
-
-struct Folders
-{
-	std::string directory_name;
-	char* file_name = nullptr;
-	std::vector<Folders> folder_child;
-	std::vector<Files> files;
-	bool active = false;
-};
-
 
 struct FilesNew
 {
@@ -70,15 +53,11 @@ public:
 
 	//NEW 
 	void ShowProject();
-	void Folders_update(std::vector<FoldersNew> folders);
+	void Folders_update(std::vector<FoldersNew>& folders);
 
 	void Files_Update(const std::vector<FilesNew>& files);
-	void DeleteFiles(std::vector<FilesNew> files);
-	void DeleteFolders(std::vector<FoldersNew> folders);
 
 	void SetAllFolderBool(std::vector<FoldersNew>& folders, bool setBoolean);
-	std::string GetFolderSee();
-	std::vector<Files>* GetFilesSee();
 	//void AddFile(std::vector<Files>* folderViwe, std::string newFile);
 
 private:
@@ -86,8 +65,6 @@ private:
 	//std::vector<Folders> folders;
 	char* directory_see = nullptr;
 	int sizeFiles;
-	std::vector<Files>* fileViwer = nullptr;
-
 	std::vector<FoldersNew> folders;
 	std::vector<FilesNew> files;
 
