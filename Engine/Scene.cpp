@@ -252,8 +252,8 @@ GameObject* Scene::CreateCube()
 	mesh->InitRanges(8, 36, 0); // 0 normals by now.
 
 	OBB* box = new OBB();
-	box->pos = transform->GetPos();
-	box->r = transform->GetScale();
+	box->pos = float3::zero;
+	box->r = float3::one;
 	box->axis[0] = float3(1, 0, 0);
 	box->axis[1] = float3(0, 1, 0);
 	box->axis[2] = float3(0, 0, 1);
@@ -304,7 +304,7 @@ GameObject* Scene::CreateSphere()
 
 	float3* vertices_array = new float3[SPHERE_DEFINITION];
 
-	Sphere* sphere = new Sphere(transform->GetPos(), 1);
+	Sphere* sphere = new Sphere(float3::zero, 1);
 	sphere->Triangulate(vertices_array, NULL, NULL, SPHERE_DEFINITION, false);
 	
 	Init_IndexVertex(vertices_array, SPHERE_DEFINITION, mesh);

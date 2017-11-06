@@ -307,15 +307,28 @@ void CompMesh::Load(const JSON_Object* object, std::string name)
 		TypePrimitive = json_object_dotget_number_with_std(object, name + "Type primitive");
 		if (TypePrimitive == 1 /*TYPE_SPHERE*/)
 		{
+			float3* vertices_array = new float3[1536];
 
+			Sphere* sphere = new Sphere(float3::zero, 1);
+			sphere->Triangulate(vertices_array, NULL, NULL, 1536, false);
+
+			App->scene->Init_IndexVertex(vertices_array, 1536, this);
+			InitRanges(vertices.size(), indices.size(), 0);
+			SetupMesh();
+			Enable();
+
+			/* Set Bounding Box */
+			parent->bounding_box = new AABB();
+			parent->bounding_box->SetNegativeInfinity();
+			parent->bounding_box->Enclose(vertices, num_vertices);
 		}
 		if (TypePrimitive == 2/*TYPE_CUBE*/)
 		{
 			InitRanges(8, 36, 0); // 0 normals by now.
 
 			OBB* box = new OBB();
-			box->pos = parent->GetComponentTransform()->GetPos();
-			box->r = parent->GetComponentTransform()->GetScale();
+			box->pos = float3::zero;
+			box->r = float3::one;
 			box->axis[0] = float3(1, 0, 0);
 			box->axis[1] = float3(0, 1, 0);
 			box->axis[2] = float3(0, 0, 1);
