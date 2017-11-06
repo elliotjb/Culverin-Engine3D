@@ -29,6 +29,14 @@ update_status SceneWorld::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
+void SceneWorld::Draw()
+{
+	if (active[0].active)
+	{
+		ImGui::Image((void*)App->scene->sceneBuff->GetTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+	}
+}
+
 void SceneWorld::ShowSceneWorld()
 {
 	if (!BeginDock("Scene", NULL, 0))
@@ -55,7 +63,7 @@ void SceneWorld::ShowSceneWorld()
 
 	App->camera->CanMoveCamera = ImGui::IsMouseHoveringWindow(); //TODO ELLIOT CHange to variable in WindowManager.h
 	
-	ImGui::Image((void*)App->scene->frBuff->GetTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::Image((void*)App->scene->sceneBuff->GetTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0)); // Set texture to buffer
 
 	EndDock();
 }

@@ -1243,7 +1243,7 @@ void EndDock()
 	g_dock.end();
 }
 
-float2 GetPositionDock(char* nameWindow)
+float2 GetPositionDock(const char* nameWindow)
 {
 	for (int i = 0; i < g_dock.m_docks.size(); i++)
 	{
@@ -1256,7 +1256,7 @@ float2 GetPositionDock(char* nameWindow)
 	return float2(0,0);
 }
 
-float2 GetSizeDock(char* nameWindow)
+float2 GetSizeDock(const char* nameWindow)
 {
 	for (int i = 0; i < g_dock.m_docks.size(); i++)
 	{

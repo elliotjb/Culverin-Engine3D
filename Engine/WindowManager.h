@@ -27,14 +27,9 @@ struct Active
 class WindowManager
 {
 public:
-	WindowManager()
-	{
-		
-	}
-	virtual ~WindowManager()
-	{
+	WindowManager() {}
 
-	}
+	virtual ~WindowManager() {}
 
 	virtual bool Start()
 	{
@@ -44,20 +39,18 @@ public:
 	{
 		return update_status();
 	}
+	virtual void Draw() {}
+
 	virtual bool CleanUp()
 	{
 		return true;
 	}
 
-	virtual void SpecialFunction(const std::string name)
-	{
+	virtual void SpecialFunction(const std::string name) {}
 
-	}
 
-	float2 GetPos()
-	{
-		
-	}
+	float2 GetPos() {}
+
 	/*virtual void OpenClose()
 	{
 		active = !active;

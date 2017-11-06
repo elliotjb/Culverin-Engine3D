@@ -22,9 +22,16 @@ bool WindowGame::Start()
 update_status WindowGame::Update(float dt)
 {
 	if (active[0].active)
+	{
 		ShowSceneWorld();
+	}
 
 	return UPDATE_CONTINUE;
+}
+
+void WindowGame::SetTexture()
+{
+	ImGui::Image((void*)App->scene->gameBuff->GetTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 }
 
 void WindowGame::ShowSceneWorld()
@@ -35,7 +42,7 @@ void WindowGame::ShowSceneWorld()
 		return;
 	}
 
-	ImGui::Image((void*)App->scene->frBuff->GetTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::Image((void*)App->scene->gameBuff->GetTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0)); // Set texture to buffer
 
 	EndDock();
 }

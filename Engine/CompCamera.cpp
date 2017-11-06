@@ -98,6 +98,11 @@ void CompCamera::ShowInspectorInfo()
 	{
 		ImGui::PopStyleColor();
 
+		if (ImGui::Checkbox("Main Camera", &is_main))
+		{
+			SetMain(is_main);
+		}
+
 		if (ImGui::Checkbox("Culling", &culling))
 		{
 			if (!culling)
@@ -225,6 +230,18 @@ Culling CompCamera::ContainsAABox(const AABB& refBox) const
 	
 
 	return CULL_INTERSECT;
+}
+
+void CompCamera::SetMain(bool isMain)
+{
+	if (isMain)
+	{
+		App->renderer3D->SetGameCamera(this);
+	}
+	else
+	{
+		App->renderer3D->SetGameCamera(nullptr);
+	}
 }
 
 void CompCamera::SetPos(float3 pos)

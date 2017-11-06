@@ -13,6 +13,7 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
+	void SetTexture();
 	void ShowSceneWorld();
 	bool CleanUp();
 };

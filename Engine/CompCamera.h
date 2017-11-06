@@ -33,6 +33,7 @@ public:
 
 	Culling ContainsAABox(const AABB& refBox) const;
 
+	void SetMain(bool isMain);
 	void SetPos(float3 pos);
 	void SetNear(float near_p);
 	void SetFar(float far_p);
@@ -55,6 +56,7 @@ public:
 
 private:
 	bool culling = false;
+	bool is_main = false;
 
 	// Editor Variables -------------
 	float width = 0.0f;

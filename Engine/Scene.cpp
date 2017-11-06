@@ -348,6 +348,7 @@ GameObject* Scene::CreateMainCamera()
 	CompCamera* camera = (CompCamera*)obj->AddComponent(C_CAMERA);
 	camera->Init(transform->GetPos());
 	camera->Enable();
+	camera->SetMain(true);
 
 	App->scene->gameobjects.push_back(obj);
 

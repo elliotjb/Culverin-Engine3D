@@ -61,17 +61,17 @@ bool FrameBuffer::Create(int width, int height)
 	return true;
 }
 
-void FrameBuffer::Bind()
+void FrameBuffer::Bind(const char* window)
 {
-	size = GetSizeDock("Scene");
+	size = GetSizeDock(window);
 	Resize(size.x, size.y);
 	glBindFramebuffer(GL_FRAMEBUFFER, frame_id);
 }
 
-void FrameBuffer::UnBind()
+void FrameBuffer::UnBind(const char* window)
 {
-	size = GetSizeDock("Scene");
-	glViewport(0, 0, size.x, size.y);
+	//size = GetSizeDock(window);
+	//glViewport(0, 0, size.x, size.y);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -79,7 +79,7 @@ void FrameBuffer::Destroy()
 {
 	glDeleteFramebuffers(1, &frame_id);
 	glDeleteTextures(1, &texture);
-	glDeleteTextures(1, &rbo);
+	glDeleteRenderbuffers(1, &rbo);
 }
 
 void FrameBuffer::Resize(int width, int height)

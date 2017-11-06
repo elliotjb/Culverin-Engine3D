@@ -28,8 +28,10 @@ public:
 
 	bool CleanUp();
 
-	void SetActiveCamera(CompCamera* cam);
-	void UpdateProjection();
+	void SetSceneCamera(CompCamera* cam);
+	void SetGameCamera(CompCamera* cam);
+
+	void UpdateProjection(CompCamera* cam);
 
 	void OnResize(int width, int height);
 	
@@ -37,7 +39,8 @@ public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
-	CompCamera* cam_active = nullptr;
+	CompCamera* scene_camera = nullptr;
+	CompCamera* game_camera = nullptr;
 
 	bool depth_test = false;
 	bool cull_face = false;

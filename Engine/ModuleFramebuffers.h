@@ -11,8 +11,8 @@ public:
 	~FrameBuffer();
 
 	bool Create(int, int);
-	void Bind();
-	void UnBind();
+	void Bind(const char* window);
+	void UnBind(const char* window);
 	void Destroy();
 	void Resize(int Width, int Height);
 	unsigned int GetTexture() const;

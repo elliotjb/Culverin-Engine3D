@@ -17,6 +17,7 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
+	void Draw();
 	void ShowSceneWorld();
 	bool CleanUp();
 

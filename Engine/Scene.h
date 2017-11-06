@@ -22,20 +22,21 @@ public:
 
 	void DrawPlane();
 
-
-	//OBJECTS CREATION ---------------------
+	//OBJECTS CREATION / DELETION ---------------------
 	void Init_IndexVertex(float3* vertex_triangulate, uint num_index, CompMesh* mesh);
 	GameObject* CreateGameObject();
-	void DeleteAllGameObject(std::vector<GameObject*> gameobjects);
 	GameObject* CreateCube();
 	GameObject* CreateSphere();
 	GameObject* CreateMainCamera();
+	void DeleteAllGameObject(std::vector<GameObject*> gameobjects);
+	// -------------------------------------
 
+	// SAVE & LOAD --------------------------
 	void SaveScene();
 	void SaveChildGameObject(JSON_Object * config_node, const GameObject & gameObject, uint& count);
 	void LoadScene();
 	void LoadChildsGameObject(GameObject & parent, GameObject & child, uint uuidParent);
-
+	// --------------------------------------
 
 public:
 	//GLubyte checkImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
@@ -44,8 +45,9 @@ public:
 	//GLuint tex;
 	//GLuint Lenna;
 
-	//Drawing Scene inside a Dock
-	FrameBuffer* frBuff = nullptr;
+	//Drawing Scene & Game inside a Dock
+	FrameBuffer* sceneBuff = nullptr;
+	FrameBuffer* gameBuff = nullptr;
 
 	//Container Vector of all Game Objects
 	std::vector<GameObject*> gameobjects;

@@ -4,6 +4,8 @@
 #include "CompCamera.h"
 #include "Scene.h"
 #include "GameObject.h"
+#include "WindowGame.h"
+#include "WindowSceneWorld.h"
 #include "SDL/include/SDL_opengl.h"
 #include "GL3W/include/glew.h"
 #include <gl/GL.h>
@@ -162,19 +164,19 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	perf_timer.Start();
 
-	App->scene->frBuff->Bind();
+	App->scene->sceneBuff->Bind("Scene");
 
 	// Refresh Projection of the camera
-	UpdateProjection();
+	UpdateProjection(scene_camera);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(cam_active->GetViewMatrix());
+	glLoadMatrixf(scene_camera->GetViewMatrix());
 
 	// light 0 on cam pos
-	lights[0].SetPos(cam_active->frustum.pos.x, cam_active->frustum.pos.y, cam_active->frustum.pos.z);
+	lights[0].SetPos(scene_camera->frustum.pos.x, scene_camera->frustum.pos.y, scene_camera->frustum.pos.z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -198,7 +200,35 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		App->scene->gameobjects[i]->Draw();
 	}
 
-	App->scene->frBuff->UnBind();
+	App->scene->sceneBuff->UnBind("Scene");
+
+	//if (game_camera != nullptr)
+	//{
+	//	App->scene->sceneBuff->Bind("Game");
+	//	UpdateProjection(game_camera);
+	//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//	glLoadIdentity();
+	//	glMatrixMode(GL_MODELVIEW);
+	//	glLoadMatrixf(game_camera->GetViewMatrix());
+
+	//	// Render Lights
+	//	for (uint i = 0; i < MAX_LIGHTS; ++i)
+	//		lights[i].Render();
+
+	//	// Draw Plane
+	//	App->scene->DrawPlane();
+
+	//	// Draw GameObjects
+	//	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
+	//	{
+	//		App->scene->gameobjects[i]->Draw();
+	//	}
+
+	//	App->scene->gameBuff->UnBind("Game");
+
+	//	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//	//glLoadIdentity();
+	//}
 
 	ImGui::Render();
 
@@ -296,36 +326,47 @@ bool ModuleRenderer3D::CleanUp()
 	return true;
 }
 
-void ModuleRenderer3D::SetActiveCamera(CompCamera * cam)
+void ModuleRenderer3D::SetSceneCamera(CompCamera* cam)
 {
 	if (cam != nullptr)
 	{
-		cam_active = cam;
+		scene_camera = cam;
 	}
 }
 
-void ModuleRenderer3D::UpdateProjection()
+void ModuleRenderer3D::SetGameCamera(CompCamera* cam)
 {
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+	if (cam != scene_camera)
+	{
+		game_camera = cam;
+	}
+}
 
-	glLoadMatrixf(cam_active->GetProjectionMatrix());
+void ModuleRenderer3D::UpdateProjection(CompCamera* cam)
+{
+	if (cam != nullptr)
+	{
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+		glLoadMatrixf(cam->GetProjectionMatrix());
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+	}
 }
 
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
 	float ratio = (float)width / (float)height;
-	cam_active->SetRatio(ratio);
+	scene_camera->SetRatio(ratio);
 	glViewport(0, 0, width, height);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
-	glLoadMatrixf(cam_active->GetProjectionMatrix());
+	glLoadMatrixf(scene_camera->GetProjectionMatrix());
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

@@ -40,8 +40,11 @@ bool ModuleGUI::Start()
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 	ImGui_ImplSdlGL3_Init(App->window->window);
 
-	App->scene->frBuff = new FrameBuffer();
-	App->scene->frBuff->Create(App->window->GetWidth(), App->window->GetHeight());
+	App->scene->sceneBuff = new FrameBuffer();
+	App->scene->sceneBuff->Create(App->window->GetWidth(), App->window->GetHeight());
+	App->scene->gameBuff = new FrameBuffer();
+	App->scene->gameBuff->Create(App->window->GetWidth(), App->window->GetHeight());
+
 
 	winManager.push_back(new Hardware());   //0---- HARDWARE
 	winManager.push_back(new ModuleObjectsUI()); //1---- WINDOW_OBJECTS
