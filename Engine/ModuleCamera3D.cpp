@@ -90,8 +90,7 @@ update_status ModuleCamera3D::Update(float dt)
 		if (App->input->GetMouseZ() != 0)
 		{
 			int zoom = App->input->GetMouseZ();
-			Zoom(zoom * dt);
-			
+			Zoom(zoom * dt);	
 		}
 
 		/* ------------------- KEYBOARD MOVEMENT ----------------- */
@@ -394,5 +393,17 @@ void ModuleCamera3D::MoveWithMouse(int motion_x, int motion_y, float dt)
 		float dy = (float)-motion_y * rotate_speed * dt;
 
 		LookAround(dx, dy);
+	}
+
+	// TRANSLATE
+	else if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
+	{
+		float dx = (float)-motion_x * move_speed * dt;
+		float dy = (float)motion_y * move_speed * dt;
+		cam_move.Set(0, 0, 0);
+		cam_move += cam->frustum.up * dy; // Move Axis Y of the camera
+		cam_move -= cam->frustum.up.Cross(cam->frustum.front) * dx; // Move Axis X of the camera
+
+		cam->frustum.Translate(cam_move);
 	}
 }

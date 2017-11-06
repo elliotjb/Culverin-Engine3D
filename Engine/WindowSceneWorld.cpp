@@ -46,7 +46,7 @@ void SceneWorld::ShowSceneWorld()
 	}
 
 	// Generate mouse ray ---------------------------
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) != KEY_REPEAT)
 	{
 		//App->camera->SetRay(App->input->GetMouseX(), App->input->GetMouseY());
 		mouse_pos.x = ImGui::GetMousePos().x - ImGui::GetWindowPos().x;
