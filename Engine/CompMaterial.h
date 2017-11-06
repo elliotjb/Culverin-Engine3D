@@ -23,6 +23,7 @@ public:
 	
 	void SetTexture(std::vector<Texture> textures);
 	void AddTexture(const Texture texture);
+	uint GetTexture();
 
 	void ShowInspectorInfo();
 

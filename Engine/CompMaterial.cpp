@@ -36,6 +36,11 @@ void CompMaterial::AddTexture(const Texture tex)
 	texture.push_back(tex);
 }
 
+uint CompMaterial::GetTexture()
+{
+	return texture[0].id;
+}
+
 void CompMaterial::ShowInspectorInfo()
 {
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
