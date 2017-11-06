@@ -4,7 +4,7 @@
 
 Component::Component(Comp_Type t, GameObject* parent) :type(t), parent(parent)
 {
-	//uid = App->random->Int();
+	uid = App->random->Int();
 }
 
 Component::~Component()
@@ -53,6 +53,11 @@ Comp_Type Component::GetType() const
 bool Component::isActive() const
 {
 	return active;
+}
+
+uint Component::GetUUID() const
+{
+	return uid;
 }
 
 void Component::Save(JSON_Object * object, std::string name) const

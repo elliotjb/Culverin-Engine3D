@@ -196,7 +196,7 @@ bool ImportMesh::Import(const aiScene* scene, aiMesh* mesh, GameObject* obj, con
 	RELEASE_ARRAY(tex_coords);
 	//RELEASE(texture);
 
-	std::string fileName = name;
+	std::string fileName = std::to_string(meshComp->GetUUID());
 	fileName += ".rin";
 
 	//Save Mesh

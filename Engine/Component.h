@@ -34,6 +34,7 @@ public:
 
 	Comp_Type GetType() const;
 	bool isActive() const;
+	uint GetUUID() const;
 
 	virtual void Save(JSON_Object* object, std::string name) const;
 	virtual void Load(const JSON_Object* object, std::string name);
