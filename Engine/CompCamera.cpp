@@ -58,14 +58,20 @@ void CompCamera::Update(float dt)
 void CompCamera::UpdateFrustum()
 {
 	const CompTransform* transform = (CompTransform*)this->parent->FindComponentByType(C_TRANSFORM);
+	
+	float4x4 matrix = transform->GetGlobalTransform();
+	frustum.pos = transform->GetPos();
+	frustum.front = matrix.Row3(2);
+	frustum.up = matrix.Row3(1);
+
+	/*frustum.pos = transform->GetPos();
 
 	//Z axis of the transform
 	frustum.front = transform->GetGlobalTransform().Col3(2).Normalized();
 
 	//Y axis of the transform
-	frustum.up = transform->GetGlobalTransform().Col3(1).Normalized();
+	frustum.up = transform->GetGlobalTransform().Col3(1).Normalized();*/
 
-	frustum.pos = transform->GetPos();
 }
 
 void CompCamera::Draw()

@@ -44,6 +44,7 @@ bool ModuleCamera3D::Start()
 
 	//Send the renderer ehis cam to draw 
 	App->renderer3D->SetSceneCamera(cam);
+	App->renderer3D->SetActiveCamera(cam);
 
 	Start_t = perf_timer.ReadMs();
 
@@ -205,7 +206,7 @@ void ModuleCamera3D::MousePick(float x, float y, float w, float h)
 	{
 		if (App->scene->gameobjects[i]->isActive())
 		{
-			const AABB* box = App->scene->gameobjects[i]->bounding_box;
+			const AABB* box = &App->scene->gameobjects[i]->box_fixed;
 			if (box != nullptr)
 			{
 				hit = ray.Intersects(*box, entry_dist, exit_dist);

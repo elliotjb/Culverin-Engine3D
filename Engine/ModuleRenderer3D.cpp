@@ -164,19 +164,26 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	perf_timer.Start();
 
-	App->scene->sceneBuff->Bind("Scene");
+	if (active_camera == scene_camera)
+	{
+		App->scene->sceneBuff->Bind("Scene");
+	}
+	else if (active_camera == game_camera)
+	{
+		App->scene->sceneBuff->Bind("Game");
+	}
 
 	// Refresh Projection of the camera
-	UpdateProjection(scene_camera);
+	UpdateProjection(active_camera);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(scene_camera->GetViewMatrix());
+	glLoadMatrixf(active_camera->GetViewMatrix());
 
 	// light 0 on cam pos
-	lights[0].SetPos(scene_camera->frustum.pos.x, scene_camera->frustum.pos.y, scene_camera->frustum.pos.z);
+	lights[0].SetPos(active_camera->frustum.pos.x, active_camera->frustum.pos.y, active_camera->frustum.pos.z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -200,7 +207,14 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		App->scene->gameobjects[i]->Draw();
 	}
 
-	App->scene->sceneBuff->UnBind("Scene");
+	if (active_camera == scene_camera)
+	{
+		App->scene->sceneBuff->UnBind("Scene");
+	}
+	else if (active_camera == game_camera)
+	{
+		App->scene->sceneBuff->UnBind("Game");
+	}
 
 	//if (game_camera != nullptr)
 	//{
@@ -326,6 +340,14 @@ bool ModuleRenderer3D::CleanUp()
 	return true;
 }
 
+void ModuleRenderer3D::SetActiveCamera(CompCamera* cam)
+{
+	if (cam != nullptr)
+	{
+		active_camera = cam;
+	}
+}
+
 void ModuleRenderer3D::SetSceneCamera(CompCamera* cam)
 {
 	if (cam != nullptr)
@@ -360,13 +382,13 @@ void ModuleRenderer3D::UpdateProjection(CompCamera* cam)
 void ModuleRenderer3D::OnResize(int width, int height)
 {
 	float ratio = (float)width / (float)height;
-	scene_camera->SetRatio(ratio);
+	active_camera->SetRatio(ratio);
 	glViewport(0, 0, width, height);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
-	glLoadMatrixf(scene_camera->GetProjectionMatrix());
+	glLoadMatrixf(active_camera->GetProjectionMatrix());
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

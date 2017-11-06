@@ -28,6 +28,7 @@ public:
 
 	bool CleanUp();
 
+	void SetActiveCamera(CompCamera* cam);
 	void SetSceneCamera(CompCamera* cam);
 	void SetGameCamera(CompCamera* cam);
 
@@ -39,6 +40,7 @@ public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
+	CompCamera* active_camera = nullptr;
 	CompCamera* scene_camera = nullptr;
 	CompCamera* game_camera = nullptr;
 

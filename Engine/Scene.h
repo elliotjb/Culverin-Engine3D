@@ -28,7 +28,7 @@ public:
 	GameObject* CreateCube();
 	GameObject* CreateSphere();
 	GameObject* CreateMainCamera();
-	void DeleteAllGameObject(std::vector<GameObject*> gameobjects);
+	void DeleteGameObjects(std::vector<GameObject*>& gameobjects);
 	// -------------------------------------
 
 	// SAVE & LOAD --------------------------

@@ -82,6 +82,11 @@ public:
 
 	void SetState(EngineState state);
 
+	void WantToSave();
+	void WantToLoad();
+
+	void ChangeCamera(const char* window);
+
 private:
 	void AddModule(Module* mod);
 	void PrepareUpdate();
@@ -134,6 +139,9 @@ private:
 
 	bool want_to_save = false;
 	bool want_to_load = false;
+
+	bool change_to_scene = false;
+	bool change_to_game = false;
 
 	DockContext* configuration = nullptr;
 };

@@ -140,6 +140,17 @@ void Application::PrepareUpdate()
 		gameTime.gameStart_time += realTime.dt * gameTime.timeScale;
 		gameTime.frame_count++;
 	}
+
+	if (change_to_game)
+	{
+		renderer3D->SetActiveCamera(renderer3D->game_camera);
+		change_to_game = false;
+	}
+	else if (change_to_scene)
+	{
+		renderer3D->SetActiveCamera(renderer3D->scene_camera);
+		change_to_scene = false;
+	}
 }
 
 // ---------------------------------------------
@@ -154,7 +165,9 @@ void Application::FinishUpdate()
 
 	if (want_to_load == true)
 	{
+		App->scene->DeleteGameObjects(App->scene->gameobjects);
 		App->scene->LoadScene();
+
 		want_to_load = false;
 	}
 	// ---------------------------------------------
@@ -592,12 +605,16 @@ void Application::SetState(EngineState state)
 		if (engineState == EngineState::PLAY)
 		{
 			engineState = EngineState::STOP;
-			App->gameTime.gameStart_time = 0.0f;
-			App->gameTime.frame_count = 0.0f;
+			gameTime.gameStart_time = 0.0f;
+			gameTime.frame_count = 0.0f;
+			ChangeCamera("Scene");
+			WantToLoad();
 		}
 		else
 		{
 			engineState = EngineState::PLAY;
+			ChangeCamera("Game");
+			WantToSave();
 		}
 	}
 	else 
@@ -605,6 +622,30 @@ void Application::SetState(EngineState state)
 		engineState = state;
 	}
 	LOG("Engine State is Now: %i", engineState);
+}
+
+void Application::WantToSave()
+{
+	want_to_save = true;
+}
+
+void Application::WantToLoad()
+{
+	want_to_load = true;
+}
+
+void Application::ChangeCamera(const char* window)
+{
+	if (window == "Game")
+	{
+		change_to_game = true;
+		change_to_scene = false;
+	}
+	else if (window == "Scene")
+	{
+		change_to_game = false;
+		change_to_scene = true;
+	}
 }
 
 

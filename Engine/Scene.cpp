@@ -205,13 +205,13 @@ GameObject* Scene::CreateGameObject()
 	return obj;
 }
 
-void Scene::DeleteAllGameObject(std::vector<GameObject*> gameobjects)
+void Scene::DeleteGameObjects(std::vector<GameObject*>& gameobjects)
 {
 	for (int i = 0; i < gameobjects.size(); i++)
 	{
 		if (gameobjects[i]->GetNumChilds() > 0)
 		{
-			DeleteAllGameObject(gameobjects[i]->GetChildsVec());
+			DeleteGameObjects(gameobjects[i]->GetChildsVec());
 		}
 		else
 		{
@@ -219,10 +219,11 @@ void Scene::DeleteAllGameObject(std::vector<GameObject*> gameobjects)
 
 
 			// Now Delete GameObject
-			delete gameobjects[i];
+			//delete gameobjects[i];
 			gameobjects[i]->GetChildsVec().clear();
 		}
 	}
+	gameobjects.clear();
 }
 
 GameObject* Scene::CreateCube()
@@ -359,6 +360,8 @@ GameObject* Scene::CreateMainCamera()
 
 void Scene::SaveScene()
 {
+	LOG("SAVING SCENE -----");
+
 	JSON_Value* config_file;
 	JSON_Object* config;
 	JSON_Object* config_node;
@@ -441,6 +444,8 @@ void Scene::SaveChildGameObject(JSON_Object* config_node, const GameObject& game
 
 void Scene::LoadScene()
 {
+	LOG("LOADING SCENE -----");
+
 	JSON_Value* config_file;
 	JSON_Object* config;
 	JSON_Object* config_node;
