@@ -695,7 +695,7 @@ ImGuiStyle::ImGuiStyle()
 	AntiAliasedShapes = true;				// Enable anti-aliasing on filled shapes (rounded rectangles, circles, etc.)
 	CurveTessellationTol = 1.25f;           // Tessellation tolerance. Decrease for highly tessellated curves (higher quality, more polygons), increase to reduce quality.
 
-	Colors[ImGuiCol_Text] = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
+	Colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.00f);
 	Colors[ImGuiCol_TextDisabled] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
 
 	Colors[ImGuiCol_WindowBg] = ImVec4(0.136f, 0.136f, 0.136f, 1.00f);
