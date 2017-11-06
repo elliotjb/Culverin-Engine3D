@@ -275,20 +275,15 @@ void CompMesh::LinkMaterial(CompMaterial * mat)
 	}
 }
 
-void CompMesh::SetDirecotryMesh(const char* name)
+void CompMesh::SetUUIDMesh(uint uuid)
 {
-	directory_mesh = name;
-}
-
-const char* CompMesh::GetDirectory()
-{
-	return directory_mesh;
+	uuid_mesh = uuid;
 }
 
 void CompMesh::Save(JSON_Object* object, std::string name) const
 {
 	json_object_dotset_number_with_std(object, name + "Type", C_MESH);
-	//json_object_dotset_number_with_std(object, name + "UUID", uid);
+	json_object_dotset_number_with_std(object, name + "UUID", uid);
 	json_object_dotset_boolean_with_std(object, name + "Primitive", isPrimitive);
 	if (isPrimitive)
 	{
@@ -296,13 +291,15 @@ void CompMesh::Save(JSON_Object* object, std::string name) const
 	}
 	else
 	{
-		json_object_dotset_string_with_std(object, name + "DirectoryMesh", directory_mesh);
+		//json_object_dotset_string_with_std(object, name + "DirectoryMesh", directory_mesh);
+		json_object_dotset_number_with_std(object, name + "Directory Mesh", uuid_mesh);
 	}
 }
 
 void CompMesh::Load(const JSON_Object* object, std::string name)
 {
 	isPrimitive = json_object_dotget_boolean_with_std(object, name + "Primitive");
+	uid = json_object_dotget_number_with_std(object, name + "UUID");
 	if (isPrimitive)
 	{
 		TypePrimitive = json_object_dotget_number_with_std(object, name + "Type primitive");
@@ -346,6 +343,8 @@ void CompMesh::Load(const JSON_Object* object, std::string name)
 	}
 	else
 	{
-
+		uuid_mesh = json_object_dotget_number_with_std(object, name + "Directory Mesh");
+		//TODO ELLIOT -> LOAD MESH
+		//App->
 	}
 }

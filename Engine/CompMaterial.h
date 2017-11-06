@@ -25,6 +25,8 @@ public:
 	void AddTexture(const Texture texture);
 	uint GetTextureID();
 
+	void SetUUIDMesh(uint uuid);
+
 	void ShowInspectorInfo();
 
 	void Save(JSON_Object* object, std::string name) const;
@@ -34,4 +36,5 @@ private:
 	Color color;
 	//Texture texture;
 	std::vector<Texture> texture;
+	uint uuid_material = 0;
 };

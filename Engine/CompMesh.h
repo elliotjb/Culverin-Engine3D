@@ -45,9 +45,7 @@ public:
 	bool isRendering() const;
 
 	void LinkMaterial(CompMaterial* mat);
-
-	void SetDirecotryMesh(const char* name);
-	const char* GetDirectory();
+	void SetUUIDMesh(uint uuid);
 
 	void Save(JSON_Object* object, std::string name) const;
 	void Load(const JSON_Object* object, std::string name);
@@ -71,6 +69,7 @@ private:
 	uint vertices_id = 0; /*VERTICES ID*/
 	uint indices_id = 0; /*INDICES ID*/
 	uint vertices_norm_id = 0; /*NORMALS OF VERTICES ID*/
+	uint uuid_mesh = 0;
 
 	const char* directory_mesh = nullptr; //Only use in save and load (isPrimitive dont use never!)
 	//GameObject* parent = nullptr;

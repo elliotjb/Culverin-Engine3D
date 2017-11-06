@@ -154,7 +154,6 @@ bool ImportMesh::Import(const aiScene* scene, aiMesh* mesh, GameObject* obj, con
 	meshComp->Init(vertices, indices, vert_normals, tex_coords);
 	meshComp->SetupMesh();
 	meshComp->Enable();
-	//meshComp->SetDirecotryMesh(file); // In Save no Load
 
 	// ALLOCATING DATA INTO BUFFER ------------------------
 	uint ranges[3] = { num_vertices, num_indices, num_normals }; //,num_tex_coords };
@@ -189,16 +188,16 @@ bool ImportMesh::Import(const aiScene* scene, aiMesh* mesh, GameObject* obj, con
 	bytes = sizeof(float2) * num_vertices; //num_tex_coords;
 	memcpy(cursor, tex_coords, bytes);
 
-	//// Release all pointers
+	// Release all pointers
 	RELEASE_ARRAY(vertices);
 	RELEASE_ARRAY(indices);
 	RELEASE_ARRAY(vert_normals);
 	RELEASE_ARRAY(tex_coords);
 	//RELEASE(texture);
 
-	std::string fileName = std::to_string(meshComp->GetUUID());
-	fileName += ".rin";
-
+	uint uid_mesh = App->random->Int();
+	std::string fileName = std::to_string(uid_mesh);
+	meshComp->SetUUIDMesh(uid_mesh);
 	//Save Mesh
 	App->fs->SaveFile(data, fileName, size, IMPORT_DIRECTORY_LIBRARY_MESHES);
 
@@ -271,7 +270,6 @@ bool ImportMesh::Load(const char* file)
 		mesh->Init(vertices, indices, vert_normals, tex_coords);
 		mesh->SetupMesh();
 		mesh->Enable();
-		mesh->SetDirecotryMesh(file); // In Save no Load
 
 		App->scene->gameobjects.push_back(gameobject);
 		
