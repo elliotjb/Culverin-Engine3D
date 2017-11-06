@@ -36,9 +36,10 @@ void CompMaterial::AddTexture(const Texture tex)
 	texture.push_back(tex);
 }
 
-uint CompMaterial::GetTexture()
+uint CompMaterial::GetTextureID()
 {
-	return texture[0].id;
+	if(texture.size() > 0)
+		return texture[0].id;
 }
 
 void CompMaterial::ShowInspectorInfo()

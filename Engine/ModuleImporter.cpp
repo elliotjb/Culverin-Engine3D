@@ -126,7 +126,7 @@ void ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject*
 		trans->SetTransformation(node->mTransformation);
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		iMesh->Import(scene, mesh, objChild, node->mName.C_Str());
-		obj->AddChildGameObject_Copy(objChild);
+		obj->AddChildGameObject_Load(objChild);
 	}
 
 	// Process children

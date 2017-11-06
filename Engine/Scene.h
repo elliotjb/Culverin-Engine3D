@@ -52,8 +52,10 @@ public:
 	//Container Vector of all Game Objects
 	std::vector<GameObject*> gameobjects;
 
-private:
 	Quadtree quadtree;
 	bool quadtree_draw = false;
+
+private:
+
 	int size_plane;
 };

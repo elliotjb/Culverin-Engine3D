@@ -198,6 +198,17 @@ void CompMesh::Draw()
 				glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
 			}
 
+			if (App->renderer3D->texture_2d)
+			{
+				CompMaterial* temp = parent->GetComponentMaterial();
+				glBindTexture(GL_TEXTURE_2D, temp->GetTextureID());
+			}
+
+			//for (uint i = 0; i < textures.size(); i++)
+			//{
+			//	glBindTexture(GL_TEXTURE_2D, textures[i].id);
+			//}
+
 			glEnableClientState(GL_VERTEX_ARRAY);
 			glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
 

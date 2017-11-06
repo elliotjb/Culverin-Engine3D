@@ -207,6 +207,11 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		App->scene->gameobjects[i]->Draw();
 	}
 
+	if (App->scene->quadtree_draw)
+	{
+		App->scene->quadtree.DebugDraw();
+	}
+
 	if (active_camera == scene_camera)
 	{
 		App->scene->sceneBuff->UnBind("Scene");
