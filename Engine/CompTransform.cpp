@@ -301,9 +301,23 @@ void CompTransform::SetTransformation(aiMatrix4x4 transform)
 	//------------------------------------------
 }
 
+void CompTransform::SetLocalTransform()
+{
+	local_transform = float4x4::FromTRS(position, rot_quat, scale);;
+}
+
+void CompTransform::SetGlobalTransform(float4x4 transform)
+{
+	global_transform = transform;
+}
+
 void CompTransform::UpdateMatrix()
 {
+	float4x4 temp = global_transform;
+	global_transform = float4x4::FromTRS(position, rot_quat, scale);
 	local_transform = float4x4::FromTRS(position, rot_quat, scale);
+	temp = temp - global_transform;
+	parent->UpdateMatrixRecursive(temp, false);
 }
 
 float3 CompTransform::GetPos() const
@@ -321,9 +335,14 @@ float3 CompTransform::GetScale() const
 	return scale;
 }
 
-float4x4 CompTransform::GetTransform() const
+float4x4 CompTransform::GetLocalTransform() const
 {
 	return local_transform;
+}
+
+float4x4 CompTransform::GetGlobalTransform() const
+{
+	return global_transform;
 }
 
 float4x4 CompTransform::GetInheritedTransform() const
@@ -333,8 +352,9 @@ float4x4 CompTransform::GetInheritedTransform() const
 
 const float* CompTransform::GetMultMatrixForOpenGL() const
 {
-	return local_transform.Transposed().ptr(); //Change Matrix to Global Matrix
+	return global_transform.Transposed().ptr(); //Change Matrix to Global Matrix
 }
+
 
 void CompTransform::Save(JSON_Object* object, std::string name) const
 {

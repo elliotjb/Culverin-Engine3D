@@ -12,6 +12,7 @@ class GameObject
 public:
 	GameObject();
 	GameObject(char* nameGameObject, uint uuid);
+	GameObject(const GameObject& copy);
 	~GameObject();
 
 	void preUpdate(float dt);
@@ -30,22 +31,28 @@ public:
 	bool isVisible() const;
 	bool isStatic() const;
 
-	// Componenets
+	// Componenets -----------------------------
 	Component* FindComponentByType(Comp_Type type) const;
 	Component* AddComponent(Comp_Type type);
 	void AddComponent_(Comp_Type type);
 	int GetNumComponents() const;
 	CompTransform* GetComponentTransform() const;
+	CompMesh* GetComponentMesh() const;
+	CompMaterial* GetComponentMaterial() const;
+	Component* GetComponentbyIndex(uint i) const;
 	void SaveComponents(JSON_Object* object, std::string name) const;
 	void LoadComponents(const JSON_Object * object, std::string name, uint numComponents);
 
-	// Childs
+	// Childs ----------------------------
 	uint GetNumChilds() const;
 	GameObject* GetChildbyIndex(uint pos_inVec) const;
 	std::vector<GameObject*> GetChildsVec() const;
-	void AddChildGameObject_Copy(GameObject * child);
-	void AddChildGameObject_Load(GameObject * child);
+	void AddChildGameObject_Copy(GameObject* child);
+	void AddChildGameObject_Load(GameObject* child);
 	void AddChildGameObject_Replace(GameObject* child);
+
+	// Tranform Modifications -------------------
+	void UpdateMatrixRecursive(float4x4 transform, bool modificate);
 
 	GameObject* GetParent() const;
 

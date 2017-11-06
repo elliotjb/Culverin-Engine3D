@@ -21,6 +21,22 @@ GameObject::GameObject(char* nameGameObject, uint uuid)
 	name = nameGameObject;
 }
 
+GameObject::GameObject(const GameObject& copy)
+{
+	uid = App->random->Int();
+	name = App->GetCharfromConstChar(copy.GetName());
+	//CompTransform* comp_t = new CompTransform(*copy.GetComponentTransform());
+	//components.push_back(comp_t);
+	//CompMesh* comp_m = new CompMesh(*copy.GetComponentMesh());
+	//components.push_back(comp_m);
+	//CompMaterial* comp_ma = new CompMaterial(*copy.GetComponentMaterial());
+	//components.push_back(comp_ma);
+	for (int i = 0; i < copy.GetNumComponents(); i++)
+	{
+
+	}
+}
+
 GameObject::~GameObject()
 {
 	//for (int i = 0; i < childs.size(); i++)
@@ -87,7 +103,7 @@ void GameObject::Update(float dt)
 				//Resize the Bounding Box
 				//bounding_box->SetFromCenterAndSize(transform->GetPos(), transform->GetScale()*2);
 				box_fixed = *bounding_box;
-				box_fixed.TransformAsAABB(transform->GetTransform());
+				box_fixed.TransformAsAABB(transform->GetGlobalTransform());
 			}
 		}
 	}
@@ -164,7 +180,9 @@ void GameObject::ShowHierarchy()
 		ImGui::PopStyleColor();
 		for (uint i = 0; i < childs.size(); i++)
 		{
+			ImGui::PushID(i);
 			childs[i]->ShowHierarchy();
+			ImGui::PopID();
 		}
 
 		ImGui::TreePop();
@@ -474,6 +492,33 @@ CompTransform* GameObject::GetComponentTransform() const
 		return nullptr;
 }
 
+CompMesh* GameObject::GetComponentMesh() const
+{
+	if (components[1]->GetType() == C_MESH)
+	{
+		return (CompMesh*)components[1];
+	}
+	else
+		return nullptr;
+}
+
+CompMaterial* GameObject::GetComponentMaterial() const
+{
+	if (components[2]->GetType() == C_MATERIAL)
+	{
+		return (CompMaterial*)components[2];
+	}
+	else
+		return nullptr;
+}
+
+Component* GameObject::GetComponentbyIndex(uint i) const
+{
+	if(components.size() > i)
+		return components[i];
+	return nullptr;
+}
+
 uint GameObject::GetNumChilds() const
 {
 	return childs.size();
@@ -493,22 +538,44 @@ void GameObject::AddChildGameObject_Copy(GameObject* child)
 {
 	GameObject* temp = new GameObject(*child);
 	temp->uid = App->random->Int();
+	std::string temp_name = temp->name;
+	temp_name += " (1)";
+	temp->name = App->GetCharfromConstChar(temp_name.c_str());
+	temp_name.clear();
 	temp->parent = this;
-	this->childs.push_back(temp);
+	childs.push_back(temp);
 }
 
 void GameObject::AddChildGameObject_Load(GameObject* child)
 {
 	child->parent = this;
-	this->childs.push_back(child);
+	childs.push_back(child);
 }
 
 void GameObject::AddChildGameObject_Replace(GameObject* child)
 {
-	//GameObject* temp = new GameObject(*child);
-	//temp->uid = App->random->Int();
-	//temp->parent = this;
-	//this->childs.push_back(temp);
+	child->parent = this;
+	childs.push_back(child);
+	App->scene->gameobjects.pop_back();
+}
+
+void GameObject::UpdateMatrixRecursive(float4x4 transform, bool modificate)
+{
+	CompTransform* comp_transform = (CompTransform*)(FindComponentByType(C_TRANSFORM));
+	if (modificate)
+	{
+		comp_transform->SetLocalTransform();
+		float4x4 temp = comp_transform->GetLocalTransform();
+		temp = transform * temp;
+		comp_transform->SetGlobalTransform(temp);
+	}
+	if (GetNumChilds() > 0)
+	{
+		for (int i = 0; i < GetNumChilds(); i++)
+		{
+			GetChildbyIndex(i)->UpdateMatrixRecursive(comp_transform->GetGlobalTransform(), true);
+		}
+	}
 }
 
 GameObject* GameObject::GetParent() const

@@ -28,13 +28,16 @@ public:
 	void SetScale(float3 scale);
 	void SetZero();
 	void SetTransformation(aiMatrix4x4 tranformation);
+	void SetLocalTransform();
+	void SetGlobalTransform(float4x4 transform);
 
 	void UpdateMatrix();
 
 	float3 GetPos() const;
 	float3 GetRot() const;
 	float3 GetScale() const;
-	float4x4 GetTransform() const;
+	float4x4 GetLocalTransform() const;
+	float4x4 GetGlobalTransform() const;
 	float4x4 GetInheritedTransform() const;
 	const float* GetMultMatrixForOpenGL() const;
 
@@ -54,6 +57,7 @@ private:
 	Quat rot_quat = { 1, 0, 0, 0 };
 
 	float4x4 local_transform;
+	float4x4 global_transform;
 
 	float4x4 inherited_transform;
 	float3 inherited_pos = { 0, 0, 0 };
