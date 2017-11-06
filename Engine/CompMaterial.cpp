@@ -44,6 +44,11 @@ uint CompMaterial::GetTextureID()
 		return texture[0].id;
 }
 
+void CompMaterial::SetUUIDMesh(uint uuid)
+{
+	uuid_material = uuid;
+}
+
 void CompMaterial::ShowInspectorInfo()
 {
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
