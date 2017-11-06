@@ -146,24 +146,20 @@ void CompCamera::DoCulling()
 {
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
-		if (App->scene->gameobjects[i]->isActive())
+		if (App->scene->gameobjects[i]->isActive() && App->scene->gameobjects[i] != parent)
 		{
-			// Check if the GameObject has a mesh to draw
-			CompMesh* mesh = (CompMesh*)App->scene->gameobjects[i]->FindComponentByType(C_MESH);
-			if (mesh != nullptr)
+			// Check its bounding box
+			AABB* box = &App->scene->gameobjects[i]->box_fixed;
+			if (box != nullptr)
 			{
-				// Check its bounding box
-				AABB* box = App->scene->gameobjects[i]->bounding_box;
-				if (box != nullptr)
+				// We set visible varialbe True / False to know if the GameObject will be drawn(or not) in renderer PostUpdate
+				if (ContainsAABox(*box) == CULL_OUT)
 				{
-					if (ContainsAABox(*box) == CULL_OUT)
-					{
-						mesh->Render(false);
-					}
-					else
-					{
-						mesh->Render(true);
-					}
+					App->scene->gameobjects[i]->SetVisible(false);
+				}
+				else
+				{
+					App->scene->gameobjects[i]->SetVisible(true);
 				}
 			}
 		}
@@ -176,12 +172,7 @@ void CompCamera::UnCull()
 	{
 		if (App->scene->gameobjects[i]->isActive())
 		{
-			// Check if the GameObject has a mesh to draw
-			CompMesh* mesh = (CompMesh*)App->scene->gameobjects[i]->FindComponentByType(C_MESH);
-			if (mesh != nullptr)
-			{
-				mesh->Render(true);
-			}
+			App->scene->gameobjects[i]->SetVisible(true);
 		}
 	}
 }

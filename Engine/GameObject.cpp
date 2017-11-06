@@ -11,12 +11,14 @@
 GameObject::GameObject()
 {
 	Enable();
+	SetVisible(true);
 	uid = App->random->Int();
 }
 
 GameObject::GameObject(char* nameGameObject, uint uuid)
 {
 	Enable();
+	SetVisible(true);
 	uid = uuid;
 	name = nameGameObject;
 }
@@ -74,7 +76,6 @@ void GameObject::Update(float dt)
 {
 	if (active)
 	{
-
 		//Update Components --------------------------
 		for (uint i = 0; i < components.size(); i++)
 		{
@@ -111,28 +112,31 @@ void GameObject::Update(float dt)
 
 void GameObject::Draw()
 {
-	//Draw Components --------------------------
-	for (uint i = 0; i < components.size(); i++)
+	if (visible)
 	{
-		if (components[i]->isActive())
+		//Draw Components --------------------------
+		for (uint i = 0; i < components.size(); i++)
 		{
-			components[i]->Draw();
+			if (components[i]->isActive())
+			{
+				components[i]->Draw();
+			}
 		}
-	}
 
-	//Draw child Game Objects -------------------
-	for (uint i = 0; i < childs.size(); i++)
-	{
-		if (childs[i]->isActive())
+		//Draw child Game Objects -------------------
+		for (uint i = 0; i < childs.size(); i++)
 		{
-			childs[i]->Draw();
+			if (childs[i]->isActive())
+			{
+				childs[i]->Draw();
+			}
 		}
-	}
 
-	if (bb_active)
-	{
-		// Draw Bounding Box
-		DrawBoundingBox();
+		if (bb_active)
+		{
+			// Draw Bounding Box
+			DrawBoundingBox();
+		}
 	}
 }
 
@@ -142,6 +146,7 @@ bool GameObject::Enable()
 	{
 		active = true;
 	}
+
 	return active;
 }
 
@@ -262,6 +267,11 @@ void GameObject::ShowInspectorInfo()
 	}
 }
 
+void GameObject::SetVisible(bool visible)
+{
+	this->visible = visible;
+}
+
 bool GameObject::isActive() const
 {
 	return active;
@@ -269,32 +279,7 @@ bool GameObject::isActive() const
 
 bool GameObject::isVisible() const
 {
-	bool ret = false;
-
-	CompMesh* mesh = (CompMesh*)FindComponentByType(C_MESH);
-
-	if (mesh != nullptr)
-	{
-		// If the mesh is Drawing
-		if (mesh->isRendering())
-		{
-			ret = true;
-		}
-
-		// If not
-		else
-		{
-			ret = false;
-		}
-	}
-
-	// If the GameObject hasn't got a mesh, it's allways visible (unless you disable it)
-	else
-	{
-		ret = true;
-	}
-
-	return ret;
+	return visible;
 }
 
 bool GameObject::isStatic() const
@@ -308,7 +293,7 @@ Component* GameObject::FindComponentByType(Comp_Type type) const
 
 	for (uint i = 0; i < components.size(); i++)
 	{
-		if (components[i]->GetType() == type) //We need to check if the component is ACTIVE first?¿
+		if (components[i]->GetType() == type) // We need to check if the component is ACTIVE first?¿
 		{
 			comp = components[i];
 			break;
