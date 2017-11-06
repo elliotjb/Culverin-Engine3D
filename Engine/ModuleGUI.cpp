@@ -40,6 +40,10 @@ bool ModuleGUI::Start()
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 	ImGui_ImplSdlGL3_Init(App->window->window);
 
+	ImGui_ImplSdlGL3_Init(App->window->window);
+	ImGuiIO& io{ ImGui::GetIO() };
+	io.Fonts->AddFontFromFileTTF("Fonts\\Ruda-Bold.ttf", 15);
+
 	App->scene->sceneBuff = new FrameBuffer();
 	App->scene->sceneBuff->Create(App->window->GetWidth(), App->window->GetHeight());
 	App->scene->gameBuff = new FrameBuffer();

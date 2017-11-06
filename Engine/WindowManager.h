@@ -1,7 +1,4 @@
 #pragma once
-#ifndef __WINDOWMANAGER_H__
-#define __WINDOWMANAGER_H__
-
 #include "Globals.h"
 #include "ImGui\imgui.h"
 #include <list>
@@ -69,5 +66,3 @@ public:
 	//ModuleObjects* obj = nullptr;
 
 };
-
-#endif // __WINDOWMANAGER_H__ 
