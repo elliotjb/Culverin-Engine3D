@@ -43,7 +43,7 @@ bool ModuleCamera3D::Start()
 	rotate_speed = 1.0f;
 
 	//Send the renderer ehis cam to draw 
-	App->renderer3D->SetActiveCamera(cam);
+	App->renderer3D->SetSceneCamera(cam);
 
 	Start_t = perf_timer.ReadMs();
 

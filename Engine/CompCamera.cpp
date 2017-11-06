@@ -60,10 +60,10 @@ void CompCamera::UpdateFrustum()
 	const CompTransform* transform = (CompTransform*)this->parent->FindComponentByType(C_TRANSFORM);
 
 	//Z axis of the transform
-	frustum.front = transform->GetTransform().Col3(2).Normalized();
+	frustum.front = transform->GetGlobalTransform().Col3(2).Normalized();
 
 	//Y axis of the transform
-	frustum.up = transform->GetTransform().Col3(1).Normalized();
+	frustum.up = transform->GetGlobalTransform().Col3(1).Normalized();
 
 	frustum.pos = transform->GetPos();
 }
