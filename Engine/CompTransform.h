@@ -51,6 +51,7 @@ private:
 	float3 position = { 0, 0, 0 };
 	float3 rotation = { 0, 0, 0 };
 	float3 scale = { 0, 0, 0 };
+	Quat rotation_new;
 	// -------------------------------
 
 	float3 rot_angle = { 0, 0, 0 };

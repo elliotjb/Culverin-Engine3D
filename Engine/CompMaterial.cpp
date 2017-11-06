@@ -3,9 +3,11 @@
 #include "Color.h"
 #include "GAmeObject.h"
 #include "parson.h"
+#include "Application.h"
 
 CompMaterial::CompMaterial(Comp_Type t, GameObject* parent): Component(t, parent)
 {
+	uid = App->random->Int();
 	color = White;
 }
 

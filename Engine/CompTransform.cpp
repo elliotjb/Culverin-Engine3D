@@ -12,6 +12,7 @@
 
 CompTransform::CompTransform(Comp_Type t, GameObject* parent) :Component(t, parent)
 {
+	uid = App->random->Int();
 }
 
 CompTransform::~CompTransform()
@@ -27,6 +28,7 @@ void CompTransform::Init(float3 p, float3 r, float3 s)
 
 void CompTransform::Update()
 {
+
 }
 
 void CompTransform::ShowInspectorInfo()
@@ -256,7 +258,7 @@ void CompTransform::SetPos(float3 pos)
 {
 	position = pos;
 
-	UpdateMatrix();
+	//UpdateMatrix();
 }
 
 void CompTransform::SetRot(float3 rot)
@@ -265,14 +267,14 @@ void CompTransform::SetRot(float3 rot)
 	rot_quat = rot_quat * Quat::FromEulerXYZ(rot_angle.x, rot_angle.y, rot_angle.z);
 	rotation = rot;
 
-	UpdateMatrix();
+	//UpdateMatrix();
 }
 
 void CompTransform::SetScale(float3 scal)
 {
 	scale = scal;
 
-	UpdateMatrix();
+	//UpdateMatrix();
 }
 
 void CompTransform::SetZero()
@@ -285,18 +287,20 @@ void CompTransform::SetZero()
 void CompTransform::SetTransformation(aiMatrix4x4 transform)
 {
 	//TRANSFORM DATA ---------------------------
-	aiQuaternion rot_quat;
-	aiVector3D pos, rot, scal;
+	aiQuaternion rot_quat{ 0,0,0,0 };
+	aiVector3D pos{ 0,0,0}, rot{ 0,0,0 }, scal{ 0,0,0 };
 	float3 pos_vec, rot_vec, scal_vec;
 
 	transform.Decompose(scal, rot_quat, pos);
 	rot = rot_quat.GetEuler();
 
 	pos_vec.Set(pos.x, pos.y, pos.z);
-	rot_vec.Set(rot.x, rot.y, rot.z);
+	//rot_vec.Set(rot.x, rot.y, rot.z);
 	scal_vec.Set(scal.x, scal.y, scal.z);
+	rotation_new = Quat(rot_quat.x, rot_quat.y, rot_quat.z, rot_quat.w);
+	global_transform = float4x4::FromTRS(pos_vec, rotation_new, scal_vec);
 	SetPos(pos_vec);
-	SetRot(rot_vec);
+	SetRot(rotation_new.ToEulerXYZ());
 	SetScale(scal_vec);
 	//------------------------------------------
 }
@@ -313,11 +317,12 @@ void CompTransform::SetGlobalTransform(float4x4 transform)
 
 void CompTransform::UpdateMatrix()
 {
-	float4x4 temp = global_transform;
-	global_transform = float4x4::FromTRS(position, rot_quat, scale);
-	local_transform = float4x4::FromTRS(position, rot_quat, scale);
-	temp = temp - global_transform;
-	parent->UpdateMatrixRecursive(temp, false);
+	global_transform.Decompose(position, rotation_new, scale);
+	//float4x4 temp = global_transform;
+	//global_transform = float4x4::FromTRS(position, rot_quat, scale);
+	//local_transform = float4x4::FromTRS(position, rot_quat, scale);
+	//temp = temp - global_transform;
+	//parent->UpdateMatrixRecursive(global_transform, false);
 }
 
 float3 CompTransform::GetPos() const

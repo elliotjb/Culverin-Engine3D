@@ -123,9 +123,9 @@ void ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject*
 		GameObject* objChild = new GameObject();
 		objChild->SetName(App->GetCharfromConstChar(node->mName.C_Str()));
 		CompTransform* trans = (CompTransform*)objChild->AddComponent(C_TRANSFORM);
-		trans->SetTransformation(node->mTransformation);
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		iMesh->Import(scene, mesh, objChild, node->mName.C_Str());
+		trans->SetTransformation(node->mTransformation);
 		obj->AddChildGameObject_Load(objChild);
 	}
 

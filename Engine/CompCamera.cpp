@@ -9,8 +9,9 @@
 #include "SDL\include\SDL_opengl.h"
 #include <math.h>
 
-CompCamera::CompCamera(Comp_Type t, GameObject* parent) :Component(t, parent)
+CompCamera::CompCamera(Comp_Type t, GameObject* parent) : Component(t, parent)
 {
+	//uid = App->random->Int();
 	/* Set camera vars*/
 	width = 16;
 	height = 9;
