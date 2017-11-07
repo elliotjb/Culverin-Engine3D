@@ -40,10 +40,6 @@ bool ModuleCamera3D::Start()
 	
 	bool ret = true;
 
-	scroll_speed = 30.0f;
-	move_speed = 1.0f;
-	rotate_speed = 1.0f;
-
 	//Send the renderer ehis cam to draw 
 	App->renderer3D->SetSceneCamera(cam);
 	App->renderer3D->SetActiveCamera(cam);
@@ -51,6 +47,16 @@ bool ModuleCamera3D::Start()
 	Start_t = perf_timer.ReadMs();
 
 	return ret;
+}
+
+bool ModuleCamera3D::Init(JSON_Object * node)
+{
+	//Load render config info -------
+	move_speed = json_object_get_number(node, "Movement Speed");
+	rotate_speed = json_object_get_number(node, "Rotation Speed");
+	scroll_speed = json_object_get_number(node, "Zoom Speed");
+
+	return true;
 }
 
 // -----------------------------------------------------------------
@@ -114,10 +120,22 @@ update_status ModuleCamera3D::UpdateConfig(float dt)
 {
 	ImGui::BulletText("Camera Position"); ImGui::SameLine();
 	ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "(%.2f, %.2f, %.2f)", cam->frustum.pos.x, cam->frustum.pos.x, cam->frustum.pos.x);
-	ImGui::BulletText("Scroll Speed"); ImGui::SameLine();
-	ImGui::SliderFloat("##speedScroll", &scroll_speed, 0.0f, 300.0f, "Speed = %.1f");
+	ImGui::BulletText("Movement Speed"); ImGui::SameLine();
+	ImGui::SliderFloat("##speedMove", &move_speed, 1.0f, 300.0f, "Speed = %.1f");
+	ImGui::BulletText("Rotation Speed"); ImGui::SameLine();
+	ImGui::SliderFloat("##speedRotate", &rotate_speed, 1.0f, 5.0f, "Speed = %.1f");
+	ImGui::BulletText("Zoom Speed"); ImGui::SameLine();
+	ImGui::SliderFloat("##speedScroll", &scroll_speed, 1.0f, 300.0f, "Speed = %.1f");
 
 	return UPDATE_CONTINUE;
+}
+
+bool ModuleCamera3D::SaveConfig(JSON_Object * node)
+{
+	json_object_set_number(node, "Movement Speed", move_speed);
+	json_object_set_number(node, "Rotation Speed", rotate_speed);
+	json_object_set_number(node, "Zoom Speed", scroll_speed);
+	return true;
 }
 
 

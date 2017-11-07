@@ -16,8 +16,10 @@ public:
 	~ModuleCamera3D();
 
 	bool Start();
+	bool Init(JSON_Object* node);
 	update_status Update(float dt);
 	update_status UpdateConfig(float dt);
+	bool SaveConfig(JSON_Object* node);
 	bool CleanUp();
 
 	void MoveWithKeyboard(float dt);
