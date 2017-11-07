@@ -301,6 +301,13 @@ std::vector<Texture> ImportMesh::LoadMaterialTextures(aiMaterial* mat, aiTexture
 
 		if (skip == false)
 		{
+			// TODO ELLIOT - Implement a system that check if the texture has been imported.
+			// if so, only put the information (Dont import again).
+
+			//materialImpoted
+
+
+			//if Not imported, just import
 			Texture tex;
 			tex.id = App->textures->LoadTexture(str.C_Str());
 			tex.type = typeName;

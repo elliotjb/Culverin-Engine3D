@@ -292,7 +292,6 @@ void CompMesh::Save(JSON_Object* object, std::string name) const
 	}
 	else
 	{
-		//json_object_dotset_string_with_std(object, name + "DirectoryMesh", directory_mesh);
 		json_object_dotset_number_with_std(object, name + "Directory Mesh", uuid_mesh);
 	}
 }

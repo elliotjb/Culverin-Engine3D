@@ -55,13 +55,9 @@ bool ImportMaterial::Import(const char* file, const char* name_file)
 bool ImportMaterial::Load(const char* file, CompMaterial* materialComp)
 {
 	Texture texture;
-	//Uint where the texture id will be saved
 	ILuint textureID = 0;
-	//Generate gl texture
 	glGenTextures(1, &textureID);
-	//Focus the generated texture
 	glBindTexture(GL_TEXTURE_2D, textureID);
-	//Load the image
 	ILboolean success = ilLoadImage(file);
 
 	//If the image is correctly loaded
@@ -75,7 +71,7 @@ bool ImportMaterial::Load(const char* file, CompMaterial* materialComp)
 		if (!success)
 		{
 			ILenum error = ilGetError();
-			LOG("Error, Loading texture from: %s", file);
+			LOG("Error, Loading texture: %s", file);
 			LOG("Error, %s", iluErrorString(error));
 			ilDeleteImages(1, &textureID);
 			return false;
@@ -87,27 +83,18 @@ bool ImportMaterial::Load(const char* file, CompMaterial* materialComp)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		//Generate the image with the loaded data
-		glTexImage2D(GL_TEXTURE_2D, 		// Type of texture
-			0,								// Pyramid level (for mip-mapping) - 0 is the top level
-			ilGetInteger(IL_IMAGE_FORMAT),	// Internal pixel format to use. Can be a generic type like GL_RGB or GL_RGBA, or a sized type
-			ilGetInteger(IL_IMAGE_WIDTH),	// Image width
-			ilGetInteger(IL_IMAGE_HEIGHT),	// Image height
-			0,								// Border width in pixels (can either be 1 or 0)
-			ilGetInteger(IL_IMAGE_FORMAT),	// Format of image pixel data
-			GL_UNSIGNED_BYTE,				// Image data type
-			ilGetData());					// The actual image data itself
+		glTexImage2D(GL_TEXTURE_2D,	0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH),	ilGetInteger(IL_IMAGE_HEIGHT), 
+			0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 
-		LOG("%i x %i", ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT));
-		LOG("Texture: %s correctly loaded!", file);
+		LOG("Texture, %s loaded!", file);
 	}
 	else
 	{
 		ILenum error = ilGetError();
-		LOG("[error] Loading texture from: %s", file);
-		LOG("[error] %s", iluErrorString(error));
+		LOG("Error, Loading texture: %s", file);
+		LOG("Error, %s", iluErrorString(error));
 		ilDeleteImages(1, &textureID);
 		return false;
 	}
@@ -116,11 +103,11 @@ bool ImportMaterial::Load(const char* file, CompMaterial* materialComp)
 	ilDeleteImages(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	//Texture id and path
+	//Texture id and name, now no need path, because that the texture was imported.
 	texture.id = textureID;
 	texture.name = file;
 
-	//Add the resulting texture to the component
+	//Add the texture to the component
 	if (textureID != 0)
 	{
 		materialComp->AddTexture(texture);
