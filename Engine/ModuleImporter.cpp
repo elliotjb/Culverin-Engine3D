@@ -74,7 +74,7 @@ update_status ModuleImporter::PreUpdate(float dt)
 			std::string file;
 
 			const aiScene* scene = aiImportFile(App->input->dropped_filedir, aiProcessPreset_TargetRealtime_MaxQuality);
-			GameObject* obj = new GameObject();
+			GameObject* obj = new GameObject(nullptr);
 			obj->SetName(App->GetCharfromConstChar(App->fs->FixName_directory(App->input->dropped_filedir).c_str()));
 			CompTransform* trans = (CompTransform*)obj->AddComponent(C_TRANSFORM);
 			trans->SetZero();
@@ -125,13 +125,13 @@ void ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject*
 	// Process all the Node's MESHES
 	for (uint i = 0; i < node->mNumMeshes; i++)
 	{
-		GameObject* objChild = new GameObject();
+		GameObject* objChild = new GameObject(obj);
 		objChild->SetName(App->GetCharfromConstChar(node->mName.C_Str()));
 		CompTransform* trans = (CompTransform*)objChild->AddComponent(C_TRANSFORM);
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		iMesh->Import(scene, mesh, objChild, node->mName.C_Str());
 		trans->SetTransformation(node->mTransformation);
-		obj->AddChildGameObject_Load(objChild);
+		//obj->AddChildGameObject_Load(objChild);
 	}
 
 	// Process children

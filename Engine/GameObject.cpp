@@ -8,11 +8,16 @@
 #include "CompMaterial.h"
 #include "CompCamera.h"
 
-GameObject::GameObject()
+GameObject::GameObject(GameObject* parent) :parent(parent)
 {
 	Enable();
 	SetVisible(true);
 	uid = App->random->Int();
+
+	if (parent != nullptr)
+	{
+		parent->childs.push_back(this);
+	}
 }
 
 GameObject::GameObject(char* nameGameObject, uint uuid)
@@ -183,6 +188,19 @@ void GameObject::ShowHierarchy()
 	if (ImGui::TreeNodeEx(name))
 	{
 		ImGui::PopStyleColor();
+		if (ImGui::BeginPopupContextItem("Create"))
+		{		            
+			//ImGui::OpenPopup("FilePopup");
+			//if (ImGui::BeginPopup("FilePopup"))
+			// {
+			//	ShowGameObjectOptions();
+			//	ImGui::EndMenu();
+			// }
+			ShowGameObjectOptions();
+			ImGui::EndPopup();
+		}
+		ImGui::SameLine(); App->ShowHelpMarker("Right Click to open Options");
+
 		for (uint i = 0; i < childs.size(); i++)
 		{
 			ImGui::PushID(i);
@@ -203,6 +221,23 @@ void GameObject::ShowHierarchy()
 		((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(this);
 		App->camera->SetFocus(this);
 	}
+}
+
+void GameObject::ShowGameObjectOptions()
+{
+	//Create child Game Objects
+	ImGui::MenuItem("CREATE CHILD", NULL, false, false);
+	if (ImGui::MenuItem("Cube"))
+	{
+		GameObject* cube = App->scene->CreateCube(this);
+		((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(cube);
+	}
+	if (ImGui::MenuItem("Sphere"))
+	{
+		GameObject* sphere = App->scene->CreateSphere(this);
+		((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(sphere);
+	}
+
 }
 
 void GameObject::ShowInspectorInfo()
@@ -536,11 +571,15 @@ void GameObject::UpdateMatrixRecursive(float4x4 transform, bool modificate)
 	CompTransform* comp_transform = GetComponentTransform();
 	if (modificate)
 	{
-		comp_transform->SetLocalTransform();
-		float4x4 temp = comp_transform->GetLocalTransform();
-		temp = transform * temp;
-		comp_transform->SetGlobalTransform(temp);
+		if (comp_transform != nullptr)
+		{
+			comp_transform->SetLocalTransform();
+			float4x4 temp = comp_transform->GetLocalTransform();
+			temp = transform * temp;
+			comp_transform->SetGlobalTransform(temp);
+		}
 	}
+
 	if (GetNumChilds() > 0)
 	{
 		for (int i = 0; i < GetNumChilds(); i++)

@@ -10,7 +10,7 @@ class CompTransform;
 class GameObject
 {
 public:
-	GameObject();
+	GameObject(GameObject* parent);
 	GameObject(char* nameGameObject, uint uuid);
 	GameObject(const GameObject& copy);
 	~GameObject();
@@ -25,6 +25,7 @@ public:
 	const char* GetName() const;
 
 	void ShowHierarchy();
+	void ShowGameObjectOptions();
 	void ShowInspectorInfo();
 
 	void SetVisible(bool visible);
@@ -34,14 +35,15 @@ public:
 	bool isStatic() const;
 
 	// Components -----------------------------
-	Component* FindComponentByType(Comp_Type type) const;
 	Component* AddComponent(Comp_Type type);
 	void AddComponent_(Comp_Type type);
 	int GetNumComponents() const;
+	Component* FindComponentByType(Comp_Type type) const;
 	CompTransform* GetComponentTransform() const;
 	CompMesh* GetComponentMesh() const;
 	CompMaterial* GetComponentMaterial() const;
 	Component* GetComponentbyIndex(uint i) const;
+
 	void SaveComponents(JSON_Object* object, std::string name) const;
 	void LoadComponents(const JSON_Object * object, std::string name, uint numComponents);
 
@@ -53,7 +55,7 @@ public:
 	void AddChildGameObject_Load(GameObject* child);
 	void AddChildGameObject_Replace(GameObject* child);
 
-	// Tranform Modifications -----------------
+	// Transform Modifications -----------------
 	void UpdateMatrixRecursive(float4x4 transform, bool modificate);
 
 	GameObject* GetParent() const;
@@ -71,11 +73,10 @@ private:
 	bool visible = false;
 	bool static_obj = false;
 
+	GameObject* parent = nullptr;
 	std::vector<Component*> components;
 	std::vector<GameObject*> childs;
 	
-	GameObject* parent = nullptr;
-
 	bool bb_active = false;
 	uint uid = 0;
 };

@@ -171,9 +171,9 @@ void CompTransform::ShowInspectorInfo()
 		//}
 
 		ImGuiIO& io = ImGui::GetIO();
-		ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-		ImGuizmo::Manipulate(App->camera->GetViewMatrix(), App->camera->GetProjMatrix(), mCurrentGizmoOperation, mCurrentGizmoMode, local_transform.ptr(), NULL, NULL);
-		*/
+		ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);*/
+		//ImGuizmo::Manipulate(App->camera->GetViewMatrix(), App->camera->GetProjMatrix(), mCurrentGizmoOperation, mCurrentGizmoMode, local_transform.ptr(), NULL, NULL);
+		
 		// ----------------------------------------------------------------
 
 		// ORIGINAL -------------------------------------------------------
@@ -317,6 +317,7 @@ void CompTransform::UpdateMatrix()
 	global_transform = float4x4::FromTRS(position, rot_quat, scale);
 	local_transform = float4x4::FromTRS(position, rot_quat, scale);
 	temp = temp - global_transform;
+
 	parent->UpdateMatrixRecursive(temp, false);
 }
 
@@ -343,11 +344,6 @@ float4x4 CompTransform::GetLocalTransform() const
 float4x4 CompTransform::GetGlobalTransform() const
 {
 	return global_transform;
-}
-
-float4x4 CompTransform::GetInheritedTransform() const
-{
-	return inherited_transform;
 }
 
 const float* CompTransform::GetMultMatrixForOpenGL() const

@@ -38,7 +38,6 @@ public:
 	float3 GetScale() const;
 	float4x4 GetLocalTransform() const;
 	float4x4 GetGlobalTransform() const;
-	float4x4 GetInheritedTransform() const;
 	const float* GetMultMatrixForOpenGL() const;
 
 	void Save(JSON_Object* object, std::string name) const;
@@ -51,15 +50,14 @@ private:
 	float3 position = { 0, 0, 0 };
 	float3 rotation = { 0, 0, 0 };
 	float3 scale = { 0, 0, 0 };
-	Quat rotation_new;
+	Quat rotation_new = math::Quat::identity;
 	// -------------------------------
 
 	float3 rot_angle = { 0, 0, 0 };
 	Quat rot_quat = { 1, 0, 0, 0 };
 
-	float4x4 local_transform = math::float4x4::identity;
 	float4x4 global_transform = math::float4x4::identity;
 
-	float4x4 inherited_transform = math::float4x4::identity;
-	float3 inherited_pos = { 0, 0, 0 };
+	float4x4 local_transform = math::float4x4::identity;
+	float3 local_pos = { 0, 0, 0 };
 };

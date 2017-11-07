@@ -328,14 +328,14 @@ update_status ModuleGUI::Update(float dt)
 				if (ImGui::MenuItem("Cube"))
 				{
 					// Link inspector to the GameObject Created to call its Inspector window.
-					GameObject* cube = App->scene->CreateCube();
+					GameObject* cube = App->scene->CreateCube(nullptr);
 					((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(cube);
 					App->camera->SetFocus(cube);
 				}
 				if (ImGui::MenuItem("Sphere"))
 				{
 					// Link inspector to the GameObject ...
-					GameObject* sphere = App->scene->CreateSphere();
+					GameObject* sphere = App->scene->CreateSphere(nullptr);
 					((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(sphere);
 					App->camera->SetFocus(sphere);
 				}

@@ -24,10 +24,10 @@ public:
 
 	//OBJECTS CREATION / DELETION ---------------------
 	void Init_IndexVertex(float3* vertex_triangulate, uint num_index, CompMesh* mesh);
-	GameObject* CreateGameObject();
-	GameObject* CreateCube();
-	GameObject* CreateSphere();
-	GameObject* CreateMainCamera();
+	GameObject* CreateGameObject(GameObject* parent);
+	GameObject* CreateCube(GameObject* parent);
+	GameObject* CreateSphere(GameObject* parent);
+	GameObject* CreateMainCamera(GameObject* parent);
 	void DeleteGameObjects(std::vector<GameObject*>& gameobjects);
 	// -------------------------------------
 

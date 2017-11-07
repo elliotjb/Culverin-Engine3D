@@ -45,7 +45,7 @@ bool Scene::Start()
 
 	size_plane = 50;
 
-	CreateMainCamera();
+	CreateMainCamera(nullptr);
 
 	Start_t = perf_timer.ReadMs();
 
@@ -205,10 +205,13 @@ void Scene::Init_IndexVertex(float3 * vertex_triangulate, uint num_index, CompMe
 	}
 }
 
-GameObject* Scene::CreateGameObject()
+GameObject* Scene::CreateGameObject(GameObject* parent)
 {
-	GameObject* obj = new GameObject();
-	gameobjects.push_back(obj);
+	GameObject* obj = new GameObject(parent);
+	if (parent != nullptr)
+	{
+		gameobjects.push_back(obj);
+	}
 	return obj;
 }
 
@@ -222,7 +225,7 @@ void Scene::DeleteGameObjects(std::vector<GameObject*>& gameobjects)
 		}
 		else
 		{
-			// First delete all compoennts
+			// First delete all components
 
 
 			// Now Delete GameObject
@@ -233,9 +236,9 @@ void Scene::DeleteGameObjects(std::vector<GameObject*>& gameobjects)
 	gameobjects.clear();
 }
 
-GameObject* Scene::CreateCube()
+GameObject* Scene::CreateCube(GameObject* parent)
 {
-	GameObject* obj = new GameObject();
+	GameObject* obj = new GameObject(parent);
 
 	// SET NAME -----------------------------------
 	static uint cube_count = 0;
@@ -278,16 +281,20 @@ GameObject* Scene::CreateCube()
 	CompMaterial* mat = (CompMaterial*)obj->AddComponent(C_MATERIAL);
 	mat->Enable();
 
-	App->scene->gameobjects.push_back(obj);
+	if (parent == nullptr)
+	{
+		// Only add to GameObjects list the Root Game Objects
+		App->scene->gameobjects.push_back(obj);
+	}
 
 	LOG("CUBE Created.");
 
 	return obj;
 }
 
-GameObject* Scene::CreateSphere()
+GameObject* Scene::CreateSphere(GameObject* parent)
 {
-	GameObject* obj = new GameObject();
+	GameObject* obj = new GameObject(parent);
 
 	// SET NAME ----------------------------------
 	static uint sphere_count = 0;
@@ -328,16 +335,20 @@ GameObject* Scene::CreateSphere()
 	CompMaterial* mat = (CompMaterial*)obj->AddComponent(C_MATERIAL);
 	mat->Enable();
 
-	App->scene->gameobjects.push_back(obj);
+	if (parent == nullptr)
+	{
+		// Only add to GameObjects list the Root Game Objects
+		App->scene->gameobjects.push_back(obj);
+	}
 
 	LOG("SPHERE Created.");
 
 	return obj;
 }
 
-GameObject* Scene::CreateMainCamera()
+GameObject* Scene::CreateMainCamera(GameObject* parent)
 {
-	GameObject* obj = new GameObject();
+	GameObject* obj = new GameObject(parent);
 
 	// SET NAME -----------------------------------
 	std::string name = "MainCamera";
@@ -357,7 +368,11 @@ GameObject* Scene::CreateMainCamera()
 	camera->Enable();
 	camera->SetMain(true);
 
-	App->scene->gameobjects.push_back(obj);
+	if (parent == nullptr)
+	{
+		// Only add to GameObjects list the Root Game Objects
+		App->scene->gameobjects.push_back(obj);
+	}
 
 	LOG("MAIN CAMERA Created.");
 
