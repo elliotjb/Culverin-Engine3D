@@ -41,6 +41,7 @@ public:
 	float* GetViewMatrix() const;
 	float* GetProjMatrix() const;
 
+	float3 GetPos() const;
 
 private:
 	void CheckOut();

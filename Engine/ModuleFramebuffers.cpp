@@ -95,5 +95,5 @@ void FrameBuffer::Resize(int width, int height)
 
 unsigned int FrameBuffer::GetTexture() const
 {
-	return frame_id;
+	return texture;
 }

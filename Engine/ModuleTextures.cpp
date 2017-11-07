@@ -116,6 +116,67 @@ GLuint ModuleTextures::LoadTexture(const char* filename)
 	return textureID;
 }
 
+GLuint ModuleTextures::LoadSkyboxTexture(const char * filename)
+{
+	ILuint textureID;
+	ILenum error;
+	ILboolean success;
+
+	// Texture Generation
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+
+	success = ilLoadImage(filename);
+
+	if (success)
+	{
+		ILinfo ImageInfo;
+		iluGetImageInfo(&ImageInfo);
+
+		//Flip the image into the right way
+		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		{
+			iluFlipImage();
+		}
+
+		// Convert the image into a suitable format to work with
+		if (!ilConvertImage(ilGetInteger(IL_IMAGE_FORMAT), IL_UNSIGNED_BYTE))
+		{
+			error = ilGetError();
+			LOG("Image conversion failed - IL reportes error: %i, %s", error, iluErrorString(error));
+			exit(-1);
+		}
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //if the texture is smaller, than the image, we get the avarege of the pixels next to it
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); //same if the image bigger
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);      //we repeat the pixels in the edge of the texture, it will hide that 1px wide line at the edge of the cube, which you have seen in the video
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);      //we do it for vertically and horizontally (previous line)
+
+		glTexImage2D(GL_TEXTURE_2D,
+			0,
+			ilGetInteger(IL_IMAGE_FORMAT),
+			ilGetInteger(IL_IMAGE_WIDTH),
+			ilGetInteger(IL_IMAGE_HEIGHT),
+			0,
+			ilGetInteger(IL_IMAGE_FORMAT),
+			GL_UNSIGNED_BYTE,
+			ilGetData());
+
+		LOG("Texture Application Successful.");
+	}
+
+	else
+	{
+		error = ilGetError();
+		LOG("Image Load failed - IL reportes error: %i, %s", error, iluErrorString(error));
+	}
+
+	//RELEASE MEMORY used by the image
+	ilDeleteImages(1, &textureID);
+
+	return textureID;
+}
+
 //void ModuleTextures::SetTexPath(char * path, BaseObject * obj)
 //{
 //	if (path != nullptr && obj != nullptr)

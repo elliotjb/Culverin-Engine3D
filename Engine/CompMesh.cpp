@@ -7,8 +7,10 @@
 #include "ModuleRenderer3D.h"
 #include "Color.h"
 #include "GameObject.h"
-#include <vector>
 #include "ImportMesh.h"
+
+#include <vector>
+
 
 CompMesh::CompMesh(Comp_Type t, GameObject* parent_) : Component(t, parent_)
 {

@@ -119,7 +119,7 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		//Load render config info -------
 		depth_test = json_object_get_boolean(node, "Depth Test");
 		cull_face = json_object_get_boolean(node, "Cull Face");
-		lightning = json_object_get_boolean(node, "Lightning");
+		lighting = json_object_get_boolean(node, "Lighting");
 		color_material = json_object_get_boolean(node, "Color Material");
 		texture_2d = json_object_get_boolean(node, "Texture 2D");
 		wireframe = json_object_get_boolean(node, "Wireframe");
@@ -143,7 +143,7 @@ bool ModuleRenderer3D::Start()
 	lights[0].Active(true);
 	(depth_test) ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
 	(cull_face) ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
-	(lightning) ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
+	(lighting) ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
 	(color_material) ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
 	(texture_2d) ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
 	(smooth) ? glShadeModel(GL_SMOOTH) : glShadeModel(GL_FLAT);
@@ -197,6 +197,12 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	perf_timer.Start();
+	
+	// Draw Skybox
+	App->scene->DrawSkybox(300, active_camera->frustum.pos);
+
+	//Draw Test Cube
+	App->scene->DrawCube(5);
 
 	// Draw Plane
 	App->scene->DrawPlane();
@@ -278,9 +284,9 @@ update_status ModuleRenderer3D::UpdateConfig(float dt)
 	{
 		(cull_face) ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
 	}
-	if (ImGui::Checkbox("Lightning", &lightning))
+	if (ImGui::Checkbox("Lighting", &lighting))
 	{
-		(lightning) ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
+		(lighting) ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
 	}
 	if (ImGui::Checkbox("Color Material", &color_material))
 	{
@@ -332,7 +338,7 @@ bool ModuleRenderer3D::SaveConfig(JSON_Object * node)
 	//Save render config info -------
 	json_object_set_boolean(node, "Depth Test", depth_test);
 	json_object_set_boolean(node, "Cull Face", cull_face);
-	json_object_set_boolean(node, "Lightning", lightning);
+	json_object_set_boolean(node, "Lighting", lighting);
 	json_object_set_boolean(node, "Color Material", color_material);
 	json_object_set_boolean(node, "Texture 2D", texture_2d);
 	json_object_set_boolean(node, "Wireframe", wireframe);

@@ -17,6 +17,7 @@ public:
 	bool CleanUp();
 
 	GLuint LoadTexture(const char* filename);
+	GLuint LoadSkyboxTexture(const char* filename);
 	void SetTexPath(char* path, BaseObject* obj);
 
 private:

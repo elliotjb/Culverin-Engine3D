@@ -8,6 +8,16 @@
 
 class GameObject;
 
+enum SkyBoxSide
+{
+	SKY_LEFT = 0,
+	SKY_BACK,
+	SKY_RIGHT,
+	SKY_FRONT,
+	SKY_TOP,
+	SKY_BOTTOM
+};
+
 class Scene : public Module
 {
 public:
@@ -21,6 +31,11 @@ public:
 	bool CleanUp();
 
 	void DrawPlane();
+	void DrawCube(float size);
+
+	void InitSkybox();
+	void DrawSkybox(float size, float3 pos);
+	void DeleteSkyboxTex();
 
 	//OBJECTS CREATION / DELETION ---------------------
 	void Init_IndexVertex(float3* vertex_triangulate, uint num_index, CompMesh* mesh);
@@ -51,4 +66,5 @@ public:
 private:
 
 	int size_plane;
+	uint skybox[6];
 };

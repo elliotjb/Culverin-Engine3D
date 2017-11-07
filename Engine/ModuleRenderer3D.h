@@ -46,7 +46,7 @@ public:
 
 	bool depth_test = false;
 	bool cull_face = false;
-	bool lightning = false;
+	bool lighting = false;
 	bool color_material = false;
 	bool texture_2d = false;
 	bool wireframe = false;

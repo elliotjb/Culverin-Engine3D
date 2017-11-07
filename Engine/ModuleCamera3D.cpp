@@ -19,8 +19,8 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 	Update_enabled = true;
 
 	cam = new CompCamera(C_CAMERA, nullptr);
-	//cam->frustum.Translate(float3(10, 10,-10));
-	//LookAt(float3::zero);
+	cam->frustum.Translate(float3(10, 10,-10));
+	LookAt(float3::zero);
 
 	haveConfig = true;
 	name = "Camera";
@@ -311,7 +311,7 @@ void ModuleCamera3D::CenterToObject()
 {
 	if (focus != nullptr)
 	{
-		AABB* box = focus->bounding_box;
+		const AABB* box = &focus->box_fixed;
 		float3 center = box->Centroid();
 		float3 size = box->Size();
 		cam->frustum.pos.Set(center.x + size.x, center.y + size.y, center.z + size.z);
@@ -343,6 +343,11 @@ float * ModuleCamera3D::GetViewMatrix() const
 float * ModuleCamera3D::GetProjMatrix() const 
 {
 	return cam->GetProjectionMatrix();
+}
+
+float3 ModuleCamera3D::GetPos() const
+{
+	return cam->frustum.pos;
 }
 
 void ModuleCamera3D::CheckOut()
