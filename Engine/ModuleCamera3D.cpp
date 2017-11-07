@@ -64,44 +64,46 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	perf_timer.Start();
 
-	ImGuiIO& io = ImGui::GetIO();
-
-	//Check mouse if is out of the Scene Window
-	CheckOut();
-
-	// Only modify camera when it's possible
-	if (io.WantTextInput == false && isMouseOnWindow() || canOut)
+	if (App->engineState == EngineState::STOP) //Block camera movement while game is executing
 	{
-		/* ------------------- CENTER CAMERA TO OBJECT ----------------- */
-		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+		ImGuiIO& io = ImGui::GetIO();
+
+		//Check mouse if is out of the Scene Window
+		CheckOut();
+
+		// Only modify camera when it's possible
+		if (io.WantTextInput == false && isMouseOnWindow() || canOut)
 		{
-			CenterToObject();
+			/* ------------------- CENTER CAMERA TO OBJECT ----------------- */
+			if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+			{
+				CenterToObject();
+			}
+
+			/* ------------------- MOUSE MOVEMENT ----------------- */
+			int motion_x = App->input->GetMouseXMotion();
+			int	motion_y = App->input->GetMouseYMotion();
+			if ((motion_x != 0 || motion_y != 0))
+			{
+				MoveWithMouse(motion_x, motion_y, dt);
+			}
+
+			/* ------------------- WHEEL ZOOM ----------------- */
+			if (App->input->GetMouseZ() != 0)
+			{
+				int zoom = App->input->GetMouseZ();
+				Zoom(zoom * dt);
+			}
+
+			/* ------------------- KEYBOARD MOVEMENT ----------------- */
+			if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+			{
+				MoveWithKeyboard(dt);
+			}
 		}
 
-		/* ------------------- MOUSE MOVEMENT ----------------- */
-		int motion_x = App->input->GetMouseXMotion();
-		int	motion_y = App->input->GetMouseYMotion();
-		if ((motion_x != 0 || motion_y != 0))
-		{
-			MoveWithMouse(motion_x, motion_y, dt);
-		}
-
-		/* ------------------- WHEEL ZOOM ----------------- */
-		if (App->input->GetMouseZ() != 0)
-		{
-			int zoom = App->input->GetMouseZ();
-			Zoom(zoom * dt);	
-		}
-
-		/* ------------------- KEYBOARD MOVEMENT ----------------- */
-		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
-		{
-			MoveWithKeyboard(dt);
-		}		
+		Update_t = perf_timer.ReadMs();
 	}
-
-	Update_t = perf_timer.ReadMs();
-
 	return UPDATE_CONTINUE;
 }
 
