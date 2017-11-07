@@ -208,7 +208,7 @@ bool ImportMesh::Import(const aiScene* scene, aiMesh* mesh, GameObject* obj, con
 }
 
 
-bool ImportMesh::Load(const char* file)
+bool ImportMesh::Load(const char* file, CompMesh* mesh)
 {
 	char* buffer = nullptr;
 	uint num_vertices = 0;
@@ -222,7 +222,7 @@ bool ImportMesh::Load(const char* file)
 	float2* tex_coords = nullptr;
 	//Texture* texture = nullptr;
 	// Loading File
-	uint size = App->fs->LoadFile(file, &buffer);
+	uint size = App->fs->LoadFile(file, &buffer, IMPORT_DIRECTORY_LIBRARY_MESHES);
 
 	if (buffer != nullptr && size > 0)
 	{
@@ -263,18 +263,19 @@ bool ImportMesh::Load(const char* file)
 		tex_coords = new float2[num_vertices];
 		memcpy(tex_coords, cursor, bytes);
 		
-		GameObject* gameobject = new GameObject();
-		CompMesh* mesh = (CompMesh*)gameobject->AddComponent(C_MESH);
+		//GameObject* gameobject = new GameObject();
+		//CompMesh* mesh = (CompMesh*)gameobject->AddComponent(C_MESH);
 		
 		mesh->InitRanges(num_vertices, num_indices, num_normals);
 		mesh->Init(vertices, indices, vert_normals, tex_coords);
 		mesh->SetupMesh();
 		mesh->Enable();
+		
+		LOG("Mesh %s Loaded!", file);
 
-		App->scene->gameobjects.push_back(gameobject);
+		//App->scene->gameobjects.push_back(gameobject);
 		
 	}
-
 	return true;
 }
 

@@ -191,9 +191,38 @@ void ModuleFS::DeleteFolders(std::vector<FoldersNew>& folders)
 	folders.clear();
 }
 
-uint ModuleFS::LoadFile(const char* file, char** buffer)
+uint ModuleFS::LoadFile(const char* file, char** buffer, DIRECTORY_IMPORT directory)
 {
-	std::ifstream is(file, std::ifstream::binary);
+	// First apply direcotry
+	std::string temp = file;
+	switch (directory)
+	{
+	case IMPORT_DEFAULT:
+	{
+		break;
+	}
+	case IMPORT_DIRECTORY_ASSETS:
+	{
+		temp = DIRECTORY_ASSETS + temp;
+		break;
+	}
+	case IMPORT_DIRECTORY_LIBRARY:
+	{
+		temp = DIRECTORY_LIBRARY + temp;
+		break;
+	}
+	case IMPORT_DIRECTORY_LIBRARY_MESHES:
+	{
+		temp = DIRECTORY_LIBRARY_MESHES + temp;
+		break;
+	}
+	case IMPORT_DIRECTORY_LIBRARY_MATERIALS:
+	{
+		temp = DIRECTORY_LIBRARY_MATERIALS + temp;
+		break;
+	}
+	}
+	std::ifstream is(temp, std::ifstream::binary);
 	int length = 0;
 	if (is)
 	{

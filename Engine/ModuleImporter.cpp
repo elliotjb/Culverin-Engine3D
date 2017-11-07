@@ -63,8 +63,8 @@ update_status ModuleImporter::PreUpdate(float dt)
 		dropped_File_type = CheckFileType(App->input->dropped_filedir);
 
 
-		//App->fs->CopyFileToAssets(App->input->dropped_filedir, ((Project*)App->gui->winManager[PROJECT])->GetFolderSee().c_str());
-		//((Project*)App->gui->winManager[PROJECT])->AddFile(((Project*)App->gui->winManager[PROJECT])->GetFilesSee(), App->input->dropped_filedir);
+		App->fs->CopyFileToAssets(App->input->dropped_filedir, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
+		((Project*)App->gui->winManager[WindowName::PROJECT])->UpdateNow();
 
 		switch (dropped_File_type)
 		{

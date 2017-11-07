@@ -17,7 +17,7 @@ public:
 	bool Import(const aiScene * scene, aiMesh* mesh, GameObject* obj, const char * name);
 	std::vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const char* typeName);
 
-	bool Load(const char* name);
+	bool Load(const char* name, CompMesh* mesh);
 
 	//bool Import(aiMesh * mesh);
 

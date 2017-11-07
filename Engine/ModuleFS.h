@@ -37,7 +37,7 @@ public:
 	//update_status PostUpdate(float dt);
 	//update_status UpdateConfig(float dt);
 
-	uint LoadFile(const char* file, char** buffer);
+	uint LoadFile(const char* file, char** buffer, DIRECTORY_IMPORT directory = IMPORT_DEFAULT);
 
 	//Name of file NOT DIRECTORY!!!
 	bool SaveFile(const char* data, std::string name, uint size, DIRECTORY_IMPORT directory = IMPORT_DEFAULT);

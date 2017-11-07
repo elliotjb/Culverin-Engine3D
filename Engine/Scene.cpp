@@ -90,7 +90,8 @@ update_status Scene::Update(float dt)
 		//	gameobjects.pop_back();
 		//}
 		//((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
-		//LoadScene();
+		
+		LoadScene();
 	}
 
 	// Update GameObjects (Only in Game Time) -----------

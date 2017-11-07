@@ -323,6 +323,17 @@ void Project::Files_Update(const std::vector<FilesNew>& files)
 
 }
 
+const char* Project::GetDirectory() const
+{
+	return directory_see;
+}
+
+void Project::UpdateNow()
+{
+	updateFoldersNow = true;
+	updateFilesNow = true;
+}
+
 void Project::SetAllFolderBool(std::vector<FoldersNew>& folders, bool setBoolean)
 {
 	for (int i = 0; i < folders.size(); i++)

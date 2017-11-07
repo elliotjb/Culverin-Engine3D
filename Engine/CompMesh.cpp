@@ -8,6 +8,7 @@
 #include "Color.h"
 #include "GameObject.h"
 #include <vector>
+#include "ImportMesh.h"
 
 CompMesh::CompMesh(Comp_Type t, GameObject* parent_) : Component(t, parent_)
 {
@@ -345,6 +346,7 @@ void CompMesh::Load(const JSON_Object* object, std::string name)
 	{
 		uuid_mesh = json_object_dotget_number_with_std(object, name + "Directory Mesh");
 		//TODO ELLIOT -> LOAD MESH
-		//App->
+		const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
+		App->importer->iMesh->Load(directory, this);
 	}
 }
