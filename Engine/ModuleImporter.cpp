@@ -78,6 +78,9 @@ update_status ModuleImporter::PreUpdate(float dt)
 			obj->SetName(App->GetCharfromConstChar(App->fs->FixName_directory(App->input->dropped_filedir).c_str()));
 			CompTransform* trans = (CompTransform*)obj->AddComponent(C_TRANSFORM);
 			trans->SetZero();
+			//Clear vector of textures, by dont import same textures!
+			iMesh->PrepareToImport();
+
 			ProcessNode(scene->mRootNode, scene, obj);
 			aiReleaseImport(scene);
 			App->scene->gameobjects.push_back(obj);

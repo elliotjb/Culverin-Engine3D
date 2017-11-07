@@ -18,11 +18,11 @@ public:
 	std::vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const char* typeName);
 
 	bool Load(const char* name, CompMesh* mesh);
-
-	//bool Import(aiMesh * mesh);
+	//Call always before ProseceNode();
+	void PrepareToImport();
 
 private:
 
-	std::vector<std::string> materialImpoted;
+	std::vector<Texture> materialImpoted; //Const char* ?
 };
 

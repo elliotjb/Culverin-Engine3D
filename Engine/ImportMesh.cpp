@@ -279,6 +279,17 @@ bool ImportMesh::Load(const char* file, CompMesh* mesh)
 	return true;
 }
 
+void ImportMesh::PrepareToImport()
+{
+	for (int i = 0; i < materialImpoted.size(); i++)
+	{
+		materialImpoted[i].name.clear();
+		materialImpoted[i].path.clear();
+		materialImpoted[i].name.clear();
+	}
+	materialImpoted.clear();
+}
+
 std::vector<Texture> ImportMesh::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const char* typeName)
 {
 	std::vector<Texture> textures;
@@ -301,27 +312,48 @@ std::vector<Texture> ImportMesh::LoadMaterialTextures(aiMaterial* mat, aiTexture
 
 		if (skip == false)
 		{
-			// TODO ELLIOT - Implement a system that check if the texture has been imported.
+			// Check if the texture has been imported.
 			// if so, only put the information (Dont import again).
+			bool noImport = false;
+			int num_texture = -1;
+			if (materialImpoted.size() > 0)
+			{
+				for (int ds = 0; ds < materialImpoted.size(); ds++)
+				{
+					if (materialImpoted[ds].path.compare(str.C_Str()) == 0)
+					{
+						LOG("The texture was already imported!");
+						noImport = true;
+						num_texture = ds;
+					}
+				}
+			}
 
-			//materialImpoted
+			if (noImport == false)
+			{
+				//if Not imported, just import
+				Texture tex;
+				tex.id = App->textures->LoadTexture(str.C_Str());
+				tex.type = typeName;
+				tex.path = str.C_Str();
 
+				uint uid_material = App->random->Int();
+				tex.name = std::to_string(uid_material);
 
-			//if Not imported, just import
-			Texture tex;
-			tex.id = App->textures->LoadTexture(str.C_Str());
-			tex.type = typeName;
-			tex.path = str.C_Str();
+				App->importer->iMaterial->Import(tex.path.c_str(), tex.name.c_str());
+				tex.name += ".dds";
 
-			uint uid_material = App->random->Int();
-			tex.name = std::to_string(uid_material);
+				textures.push_back(tex);
+				l_tex.push_back(tex);
+				//delete importmaterial;
 
-			App->importer->iMaterial->Import(tex.path.c_str(), tex.name.c_str());
-			tex.name += ".dds";
-
-			textures.push_back(tex);
-			l_tex.push_back(tex);
-			//delete importmaterial;
+				materialImpoted.push_back(tex);
+			}
+			else
+			{
+				textures.push_back(materialImpoted[num_texture]);
+				l_tex.push_back(materialImpoted[num_texture]);
+			}
 		}
 	}
 
