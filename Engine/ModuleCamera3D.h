@@ -55,7 +55,7 @@ private:
 
 	std::map<float, GameObject*> possible_intersections;
 
-	// Camera Movement ------------
+	/* Camera Movement */
 	float3 cam_move = { 0, 0, 0 };
 	float move_speed = 1.0f;
 	float rotate_speed = 1.0f;

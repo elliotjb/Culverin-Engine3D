@@ -19,6 +19,8 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 	Update_enabled = true;
 
 	cam = new CompCamera(C_CAMERA, nullptr);
+	//cam->frustum.Translate(float3(10, 10,-10));
+	//LookAt(float3::zero);
 
 	haveConfig = true;
 	name = "Camera";

@@ -37,9 +37,11 @@ bool Scene::Start()
 {
 	perf_timer.Start();
 
+	//Init Quadtree
 	quadtree.Boundaries(AABB(float3(-50.0f, -50.0f, -50.0f), float3(50.0f, 50.0f, 50.0f)));
 
 	size_plane = 50;
+
 	CreateMainCamera();
 
 	Start_t = perf_timer.ReadMs();
@@ -348,7 +350,6 @@ GameObject* Scene::CreateMainCamera()
 
 	// CAMERA COMPONENT -----------------
 	CompCamera* camera = (CompCamera*)obj->AddComponent(C_CAMERA);
-	camera->Init(transform->GetPos());
 	camera->Enable();
 	camera->SetMain(true);
 

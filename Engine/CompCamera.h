@@ -17,7 +17,6 @@ public:
 	CompCamera(Comp_Type t, GameObject* parent);
 	~CompCamera();
 
-	void Init(float3 pos);
 	void preUpdate(float dt);
 	void Update(float dt);
 	void UpdateFrustum();
