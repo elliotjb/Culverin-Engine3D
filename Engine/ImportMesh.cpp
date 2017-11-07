@@ -306,16 +306,14 @@ std::vector<Texture> ImportMesh::LoadMaterialTextures(aiMaterial* mat, aiTexture
 			tex.type = typeName;
 			tex.path = str.C_Str();
 
+			uint uid_material = App->random->Int();
+			tex.name = std::to_string(uid_material);
+
+			App->importer->iMaterial->Import(tex.path.c_str(), tex.name.c_str());
+			tex.name += ".dds";
+
 			textures.push_back(tex);
 			l_tex.push_back(tex);
-
-			//Import Material
-			//ImportMaterial* importmaterial = new ImportMaterial();
-			std::string direct = App->input->dropped_filedir;
-			size_t EndName = direct.find_last_of("\\");
-			direct = direct.substr(0, EndName + 1);
-			direct += tex.path.c_str();
-			App->importer->iMaterial->Import(direct.c_str());
 			//delete importmaterial;
 		}
 	}

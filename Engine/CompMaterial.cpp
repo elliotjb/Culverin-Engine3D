@@ -4,6 +4,7 @@
 #include "GAmeObject.h"
 #include "parson.h"
 #include "Application.h"
+#include "ImportMaterial.h"
 
 CompMaterial::CompMaterial(Comp_Type t, GameObject* parent): Component(t, parent)
 {
@@ -69,8 +70,12 @@ void CompMaterial::ShowInspectorInfo()
 void CompMaterial::Save(JSON_Object* object, std::string name) const
 {
 	json_object_dotset_number_with_std(object, name + "Type", C_MATERIAL);
+	json_object_dotset_string_with_std(object, name + "Directory Material", texture[0].name.c_str());
 }
 
 void CompMaterial::Load(const JSON_Object * object, std::string name)
 {
+	const char* directory = json_object_dotget_string_with_std(object, name + "Directory Material");
+	std::string name3 = App->fs->AddDirectorybyType(directory, IMPORT_DIRECTORY_LIBRARY_MATERIALS);
+	App->importer->iMaterial->Load(name3.c_str(), this);
 }

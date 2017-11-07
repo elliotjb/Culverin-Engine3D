@@ -82,6 +82,8 @@ public:
 	//Dont use at the moment --------- --------------
 	std::string GetAssetsDirecotry();
 
+	std::string AddDirectorybyType(std::string name, DIRECTORY_IMPORT directory);
+
 
 private:
 	std::vector<std::string> files;

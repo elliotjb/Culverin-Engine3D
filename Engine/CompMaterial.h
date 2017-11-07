@@ -7,8 +7,10 @@
 struct Texture
 {
 	uint id;
+	//Const char* ?
 	std::string type;
 	std::string path;
+	std::string name; 
 
 };
 

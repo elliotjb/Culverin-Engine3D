@@ -88,7 +88,7 @@ update_status ModuleImporter::PreUpdate(float dt)
 		case F_TEXTURE_i:
 		{
 			LOG("IMPORTING TEXTURE, File Path: %s", App->input->dropped_filedir);
-			iMaterial->Import(App->input->dropped_filedir);
+			//iMaterial->Import(App->input->dropped_filedir);
 		
 			break;
 		}

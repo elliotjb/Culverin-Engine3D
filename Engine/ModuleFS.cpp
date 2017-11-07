@@ -357,6 +357,39 @@ std::string ModuleFS::GetAssetsDirecotry()
 	return std::string();
 }
 
+std::string ModuleFS::AddDirectorybyType(std::string name, DIRECTORY_IMPORT directory)
+{
+	std::string temp = name;
+	switch (directory)
+	{
+	case IMPORT_DEFAULT:
+	{
+		break;
+	}
+	case IMPORT_DIRECTORY_ASSETS:
+	{
+		temp = DIRECTORY_ASSETS + temp;
+		break;
+	}
+	case IMPORT_DIRECTORY_LIBRARY:
+	{
+		temp = DIRECTORY_LIBRARY + temp;
+		break;
+	}
+	case IMPORT_DIRECTORY_LIBRARY_MESHES:
+	{
+		temp = DIRECTORY_LIBRARY_MESHES + temp;
+		break;
+	}
+	case IMPORT_DIRECTORY_LIBRARY_MATERIALS:
+	{
+		temp = DIRECTORY_LIBRARY_MATERIALS + temp;
+		break;
+	}
+	}
+	return temp;
+}
+
 void ModuleFS::CreateFolder(const char* file_name)
 {
 	namespace fs = std::experimental::filesystem;
