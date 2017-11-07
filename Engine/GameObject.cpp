@@ -469,38 +469,25 @@ int GameObject::GetNumComponents() const
 
 CompTransform* GameObject::GetComponentTransform() const
 {
-	if (components[0]->GetType() == C_TRANSFORM)
-	{
-		return (CompTransform*)components[0];
-	}
-	else
-		return nullptr;
+	return (CompTransform*)FindComponentByType(Comp_Type::C_TRANSFORM);
 }
 
 CompMesh* GameObject::GetComponentMesh() const
 {
-	if (components[1]->GetType() == C_MESH)
-	{
-		return (CompMesh*)components[1];
-	}
-	else
-		return nullptr;
+	return (CompMesh*)FindComponentByType(Comp_Type::C_MESH);
 }
 
 CompMaterial* GameObject::GetComponentMaterial() const
 {
-	if (components[2]->GetType() == C_MATERIAL)
-	{
-		return (CompMaterial*)components[2];
-	}
-	else
-		return nullptr;
+	return (CompMaterial*)FindComponentByType(Comp_Type::C_MATERIAL);
 }
 
 Component* GameObject::GetComponentbyIndex(uint i) const
 {
-	if(components.size() > i)
+	if (i < components.size() && i >= 0)
+	{
 		return components[i];
+	}
 	return nullptr;
 }
 
