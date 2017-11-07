@@ -533,7 +533,7 @@ void GameObject::AddChildGameObject_Replace(GameObject* child)
 
 void GameObject::UpdateMatrixRecursive(float4x4 transform, bool modificate)
 {
-	CompTransform* comp_transform = (CompTransform*)(FindComponentByType(C_TRANSFORM));
+	CompTransform* comp_transform = GetComponentTransform();
 	if (modificate)
 	{
 		comp_transform->SetLocalTransform();

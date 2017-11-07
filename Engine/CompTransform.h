@@ -57,9 +57,9 @@ private:
 	float3 rot_angle = { 0, 0, 0 };
 	Quat rot_quat = { 1, 0, 0, 0 };
 
-	float4x4 local_transform;
-	float4x4 global_transform;
+	float4x4 local_transform = math::float4x4::identity;
+	float4x4 global_transform = math::float4x4::identity;
 
-	float4x4 inherited_transform;
+	float4x4 inherited_transform = math::float4x4::identity;
 	float3 inherited_pos = { 0, 0, 0 };
 };

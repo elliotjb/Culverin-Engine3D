@@ -322,6 +322,16 @@ update_status ModuleRenderer3D::UpdateConfig(float dt)
 		}
 	}
 
+	ImGui::Text("--- Scene Camera ---");
+	ImGui::Text("%.2f %.2f %.2f POS", scene_camera->frustum.pos.x, scene_camera->frustum.pos.y, scene_camera->frustum.pos.z);
+	ImGui::Text("%.2f %.2f %.2f FRONT", scene_camera->frustum.front.x, scene_camera->frustum.front.y, scene_camera->frustum.front.z);
+	ImGui::Text("%.2f %.2f %.2f UP", scene_camera->frustum.up.x, scene_camera->frustum.up.y, scene_camera->frustum.up.z);
+
+	ImGui::Text("--- Game Camera ---");
+	ImGui::Text("%.2f %.2f %.2f POS", game_camera->frustum.pos.x, game_camera->frustum.pos.y, game_camera->frustum.pos.z);
+	ImGui::Text("%.2f %.2f %.2f FRONT", game_camera->frustum.front.x, game_camera->frustum.front.y, game_camera->frustum.front.z);
+	ImGui::Text("%.2f %.2f %.2f UP", game_camera->frustum.up.x, game_camera->frustum.up.y, game_camera->frustum.up.z);
+
 	ImGui::PopStyleVar();
 	return UPDATE_CONTINUE;
 }

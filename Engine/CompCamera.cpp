@@ -37,11 +37,6 @@ CompCamera::~CompCamera()
 {
 }
 
-void CompCamera::Init(float3 pos)
-{
-	frustum.pos = pos;
-}
-
 void CompCamera::preUpdate(float dt)
 {
 	if (culling)
@@ -58,21 +53,13 @@ void CompCamera::Update(float dt)
 
 void CompCamera::UpdateFrustum()
 {
-	const CompTransform* transform = (CompTransform*)this->parent->FindComponentByType(C_TRANSFORM);
+	const CompTransform* transform = parent->GetComponentTransform();
 	
-	float4x4 matrix = transform->GetGlobalTransform();
-	frustum.pos = transform->GetPos();
-	frustum.front = matrix.Row3(2);
-	frustum.up = matrix.Row3(1);
+	float4x4 trans = transform->GetGlobalTransform();
 
-	/*frustum.pos = transform->GetPos();
-
-	//Z axis of the transform
-	frustum.front = transform->GetGlobalTransform().Col3(2).Normalized();
-
-	//Y axis of the transform
-	frustum.up = transform->GetGlobalTransform().Col3(1).Normalized();*/
-
+	frustum.pos = trans.TranslatePart();
+	frustum.front = trans.WorldZ();
+	frustum.up = frustum.front.Cross(-frustum.WorldRight());
 }
 
 void CompCamera::Draw()
