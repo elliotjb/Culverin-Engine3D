@@ -21,6 +21,7 @@ public:
 	void SavePrefab(const GameObject& gameObject, const char* directory);
 	void SaveChildPrefab(JSON_Object* config_node, const GameObject& gameObject, uint& count);
 	void LoadPrefab(const char* prefab);
+	void LoadChildLoadPrefab(GameObject& parent, GameObject& child, int uuidParent);
 	// --------------------------------------
 
 };

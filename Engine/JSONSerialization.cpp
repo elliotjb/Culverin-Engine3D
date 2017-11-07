@@ -271,6 +271,7 @@ void JSONSerialization::LoadPrefab(const char* prefab)
 		int NUmberGameObjects = json_object_dotget_number(config_node, "Info.Number of GameObjects");
 		if (NUmberGameObjects > 0)
 		{
+			GameObject* mianParent = nullptr;
 			for (int i = 0; i < NUmberGameObjects; i++)
 			{
 				std::string name = "GameObject" + std::to_string(i);
@@ -290,16 +291,54 @@ void JSONSerialization::LoadPrefab(const char* prefab)
 				//Add GameObject
 				if (uuid_parent == -1)
 				{
-					App->scene->gameobjects.push_back(obj);
+					//App->scene->gameobjects.push_back(obj);
+					mianParent = obj;
 				}
 				else
 				{
 					for (int x = 0; x < App->scene->gameobjects.size(); x++)
 					{
-						LoadChilds(*App->scene->gameobjects[x], *obj, uuid_parent);
+						LoadChildLoadPrefab(*mianParent, *obj, uuid_parent);
 					}
 				}
 			}
+			// Now Iterate All GameObjects and Components and create a new UUID!
+
+			//TODO Elliot
+
+			// After, check name not repeat.
+
+			// TODO Elliot
+
+			// Finaly, add gameObject in Scene.
+			App->scene->gameobjects.push_back(mianParent);
+		}
+	}
+}
+
+void JSONSerialization::LoadChildLoadPrefab(GameObject& parent, GameObject& child, int uuidParent)
+{
+	if (parent.GetNumChilds() > 0)
+	{
+		for (int i = 0; i < parent.GetNumChilds(); i++)
+		{
+			if (parent.GetUUID() == uuidParent)
+			{
+				parent.AddChildGameObject_Load(&child);
+				return;
+			}
+			else
+			{
+				LoadChildLoadPrefab(*parent.GetChildbyIndex(i), child, uuidParent);
+			}
+		}
+	}
+	else
+	{
+		if (parent.GetUUID() == uuidParent)
+		{
+			parent.AddChildGameObject_Load(&child);
+			return;
 		}
 	}
 }
