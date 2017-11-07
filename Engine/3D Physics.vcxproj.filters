@@ -426,6 +426,9 @@
     <ClInclude Include="Quadtree.h">
       <Filter>Engine\Containers</Filter>
     </ClInclude>
+    <ClInclude Include="JSONSerialization.h">
+      <Filter>Engine\Modules\Importer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -682,6 +685,9 @@
     </ClCompile>
     <ClCompile Include="Quadtree.cpp">
       <Filter>Engine\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="JSONSerialization.cpp">
+      <Filter>Engine\Modules\Importer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

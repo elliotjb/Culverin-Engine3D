@@ -27,6 +27,8 @@
 #include "Algorithm/Random/LCG.h"
 #include "Math/float4.h"
 
+class JSONSerialization;
+
 enum EngineState
 {
 	PLAY = 0,
@@ -132,6 +134,9 @@ public:
 	bool showconfig = false;
 	bool showperformance = false;
 	float4 SceneDock = { 0, 0, 0, 0 };
+
+	//Use for Serialization scene or prefabs 
+	JSONSerialization* Json_seria = nullptr;
 
 private:
 	std::string appName;

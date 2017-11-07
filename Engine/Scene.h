@@ -31,13 +31,6 @@ public:
 	void DeleteGameObjects(std::vector<GameObject*>& gameobjects);
 	// -------------------------------------
 
-	// SAVE & LOAD --------------------------
-	void SaveScene();
-	void SaveChildGameObject(JSON_Object * config_node, const GameObject & gameObject, uint& count);
-	void LoadScene();
-	void LoadChildsGameObject(GameObject & parent, GameObject & child, uint uuidParent);
-	// --------------------------------------
-
 public:
 	//GLubyte checkImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
 	//_Cube* test = nullptr;

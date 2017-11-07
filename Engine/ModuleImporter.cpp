@@ -3,7 +3,7 @@
 #include "ImportMesh.h"
 #include "ImportMaterial.h"
 #include "CompTransform.h"
-
+#include "JSONSerialization.h"
 
 ModuleImporter::ModuleImporter(bool start_enabled) : Module(start_enabled)
 {
@@ -85,6 +85,8 @@ update_status ModuleImporter::PreUpdate(float dt)
 			aiReleaseImport(scene);
 			App->scene->gameobjects.push_back(obj);
 			//Now Save Serialitzate OBJ -> Prefab
+			App->Json_seria->SavePrefab(*obj, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
+
 
 			break;
 		}

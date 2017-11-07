@@ -6,6 +6,7 @@
 #include "ImGui/imgui_impl_sdl_gl3.h"
 #include "ImGui/ImGuizmo.h"
 #include "SDL/include/SDL.h"
+#include "JSONSerialization.h"
 #include "mmgr/mmgr.h"
 
 static int malloc_count;
@@ -29,6 +30,7 @@ Application::Application()
 	textures = new ModuleTextures();
 
 	random = new math::LCG();
+	Json_seria = new JSONSerialization();
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -62,6 +64,7 @@ Application::~Application()
 		item = item->prev;
 	}
 	RELEASE(random);
+	RELEASE(Json_seria);
 }
 
 bool Application::Init()
@@ -159,14 +162,14 @@ void Application::FinishUpdate()
 	// SAVE & LOAD FUNCTIONS ------------------------
 	if (want_to_save == true)
 	{
-		App->scene->SaveScene();
+		Json_seria->SaveScene();
 		want_to_save = false;
 	}
 
 	if (want_to_load == true)
 	{
 		App->scene->DeleteGameObjects(App->scene->gameobjects);
-		App->scene->LoadScene();
+		Json_seria->LoadScene();
 
 		want_to_load = false;
 	}
