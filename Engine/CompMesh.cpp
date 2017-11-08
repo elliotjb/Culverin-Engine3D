@@ -114,12 +114,12 @@ void CompMesh::Init(const float3* vert, const uint* ind, const float3* vert_norm
 
 void CompMesh::SetupMesh()
 {
-	glGenVertexArrays(1, &VAO);
+	//glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &vertices_id);
 	glGenBuffers(1, &indices_id);
 	glGenBuffers(1, &vertices_norm_id);
 
-	glBindVertexArray(VAO);
+	//glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(_Vertex), &vertices[0], GL_STATIC_DRAW);
@@ -133,15 +133,16 @@ void CompMesh::SetupMesh()
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertices_normals.size() * sizeof(float3), &vertices_normals[0], GL_STATIC_DRAW);
 	}
 
-	// Vertex Positions -------------
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(_Vertex), (void*)0);
+	//// Vertex Positions -------------
+	//glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(_Vertex), (void*)0);
 
-	// Vertex Normals ----------------
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(_Vertex), (void*)offsetof(_Vertex, norm));
+	//// Vertex Normals ----------------
+	//glEnableVertexAttribArray(1);
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(_Vertex), (void*)offsetof(_Vertex, norm));
 
-	glBindVertexArray(0);
+	//glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 
@@ -184,7 +185,10 @@ void CompMesh::Draw()
 
 		if (vertices.size() > 0 && indices.size() > 0)
 		{
-			glBindTexture(GL_TEXTURE_2D, 0);
+			glEnableClientState(GL_VERTEX_ARRAY);
+			glEnableClientState(GL_NORMAL_ARRAY);
+			glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 			//Set Wireframe
 			if (App->renderer3D->wireframe)
@@ -208,20 +212,15 @@ void CompMesh::Draw()
 				glBindTexture(GL_TEXTURE_2D, temp->GetTextureID());
 			}
 
-			//for (uint i = 0; i < textures.size(); i++)
-			//{
-			//	glBindTexture(GL_TEXTURE_2D, textures[i].id);
-			//}
-
-			glEnableClientState(GL_VERTEX_ARRAY);
-			glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
-
 			glBindBuffer(GL_ARRAY_BUFFER, vertices_id); //VERTEX ID
 			glVertexPointer(3, GL_FLOAT, sizeof(_Vertex), NULL);
-
+			glNormalPointer(GL_FLOAT, sizeof(_Vertex), (void*)offsetof(_Vertex, norm));
+			glTexCoordPointer(2, GL_FLOAT, sizeof(_Vertex), (void*)offsetof(_Vertex, texCoords));
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id); // INDICES ID
 			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 			// NORMALS ----------------------------------
 			if (App->renderer3D->normals && hasNormals)
@@ -232,15 +231,19 @@ void CompMesh::Draw()
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 			}
 
+			//Reset TextureColor
 			glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-			glDisableClientState(GL_VERTEX_ARRAY);
-			glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
+			glBindTexture(GL_TEXTURE_2D, 0);
 
 			//Disable Wireframe -> only this object will be wireframed
 			if (App->renderer3D->wireframe)
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			}
+			glDisableClientState(GL_VERTEX_ARRAY);
+			glDisableClientState(GL_NORMAL_ARRAY);
+			glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		}
 
 		else

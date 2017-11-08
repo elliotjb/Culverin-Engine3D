@@ -199,7 +199,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	perf_timer.Start();
 	
 	// Draw Skybox
-	App->scene->DrawSkybox(300, active_camera->frustum.pos);
+	App->scene->DrawSkybox(500, active_camera->frustum.pos);
 
 	//Draw Test Cube
 	App->scene->DrawCube(5);

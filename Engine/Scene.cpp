@@ -244,25 +244,25 @@ void Scene::DrawSkybox(float size, float3 pos)
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 
-	//back face
+	//back face GOOD
 	glBindTexture(GL_TEXTURE_2D, skybox[SkyBoxSide::SKY_BACK]);
 	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0); glVertex3f(size / 2 + pos.x, size / 2 + pos.y, size / 2 + pos.z);
 	glTexCoord2f(1, 0); glVertex3f(-size / 2 + pos.x, size / 2 + pos.y, size / 2 + pos.z);
-	glTexCoord2f(1, 1); glVertex3f(-size / 2 + pos.x, -size / 2 + pos.y, size / 2 + pos.z);
+	glTexCoord2f(0, 0); glVertex3f(size / 2 + pos.x, size / 2 + pos.y, size / 2 + pos.z);
 	glTexCoord2f(0, 1); glVertex3f(size / 2 + pos.x, -size / 2 + pos.y, size / 2 + pos.z);
+	glTexCoord2f(1, 1); glVertex3f(-size / 2 + pos.x, -size / 2 + pos.y, size / 2 + pos.z);
 	glEnd();
 
-	//left face
+	//left face GOOD
 	glBindTexture(GL_TEXTURE_2D, skybox[SkyBoxSide::SKY_LEFT]);
 	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0); glVertex3f(-size / 2 + pos.x, size / 2 + pos.y, size / 2 + pos.z);
-	glTexCoord2f(1, 0); glVertex3f(-size / 2 + pos.x, size / 2 + pos.y, -size / 2 + pos.z);
-	glTexCoord2f(1, 1); glVertex3f(-size / 2 + pos.x, -size / 2 + pos.y, -size / 2 + pos.z);
 	glTexCoord2f(0, 1); glVertex3f(-size / 2 + pos.x, -size / 2 + pos.y, size / 2 + pos.z);
+	glTexCoord2f(1, 1); glVertex3f(-size / 2 + pos.x, -size / 2 + pos.y, -size / 2 + pos.z);
+	glTexCoord2f(1, 0); glVertex3f(-size / 2 + pos.x, size / 2 + pos.y, -size / 2 + pos.z);
+	glTexCoord2f(0, 0); glVertex3f(-size / 2 + pos.x, size / 2 + pos.y, size / 2 + pos.z);
 	glEnd();
 
-	//front face
+	//front face GOOD
 	glBindTexture(GL_TEXTURE_2D, skybox[SkyBoxSide::SKY_FRONT]);
 	glBegin(GL_QUADS);
 	glTexCoord2f(1, 0); glVertex3f(size / 2 + pos.x, size / 2 + pos.y, -size / 2 + pos.z);
@@ -274,13 +274,13 @@ void Scene::DrawSkybox(float size, float3 pos)
 	//right face
 	glBindTexture(GL_TEXTURE_2D, skybox[SkyBoxSide::SKY_RIGHT]);
 	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0); glVertex3f(size / 2 + pos.x, size / 2 + pos.y, -size / 2 + pos.z);
-	glTexCoord2f(1, 0); glVertex3f(size / 2 + pos.x, size / 2 + pos.y, size / 2 + pos.z);
-	glTexCoord2f(1, 1); glVertex3f(size / 2 + pos.x, -size / 2 + pos.y, size / 2 + pos.z);
 	glTexCoord2f(0, 1); glVertex3f(size / 2 + pos.x, -size / 2 + pos.y, -size / 2 + pos.z);
+	glTexCoord2f(1, 1); glVertex3f(size / 2 + pos.x, -size / 2 + pos.y, size / 2 + pos.z);
+	glTexCoord2f(1, 0); glVertex3f(size / 2 + pos.x, size / 2 + pos.y, size / 2 + pos.z);
+	glTexCoord2f(0, 0); glVertex3f(size / 2 + pos.x, size / 2 + pos.y, -size / 2 + pos.z);
 	glEnd();
 
-	//top face
+	//top face GOOD
 	glBindTexture(GL_TEXTURE_2D, skybox[SkyBoxSide::SKY_TOP]);
 	glBegin(GL_QUADS);
 	glTexCoord2f(1, 0); glVertex3f(size / 2 + pos.x, size / 2 + pos.y, size / 2 + pos.z);
@@ -289,13 +289,14 @@ void Scene::DrawSkybox(float size, float3 pos)
 	glTexCoord2f(1, 1); glVertex3f(size / 2 + pos.x, size / 2 + pos.y, -size / 2 + pos.z);
 	glEnd();
 
-	//bottom face
+	//bottom face GOOD
 	glBindTexture(GL_TEXTURE_2D, skybox[SkyBoxSide::SKY_BOTTOM]);
 	glBegin(GL_QUADS);
-	glTexCoord2f(1, 1); glVertex3f(size / 2 + pos.x, -size / 2 + pos.y, size / 2 + pos.z);
-	glTexCoord2f(0, 1); glVertex3f(-size / 2 + pos.x, -size / 2 + pos.y, size / 2 + pos.z);
-	glTexCoord2f(0, 0); glVertex3f(-size / 2 + pos.x, -size / 2 + pos.y, -size / 2 + pos.z);
-	glTexCoord2f(1, 0); glVertex3f(size / 2 + pos.x, -size / 2 + pos.y, -size / 2 + pos.z);
+	glTexCoord2f(0, 0); glVertex3f(size / 2 + pos.x, -size / 2 + pos.y, size / 2 + pos.z);
+	glTexCoord2f(0, 1); glVertex3f(size / 2 + pos.x, -size / 2 + pos.y, -size / 2 + pos.z);
+	glTexCoord2f(1, 1); glVertex3f(-size / 2 + pos.x, -size / 2 + pos.y, -size / 2 + pos.z);
+	glTexCoord2f(1, 0); glVertex3f(-size / 2 + pos.x, -size / 2 + pos.y, size / 2 + pos.z);
+
 	glEnd();
 
 	if (App->renderer3D->lighting)
