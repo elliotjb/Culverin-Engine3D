@@ -225,8 +225,13 @@ void GameObject::ShowHierarchy()
 
 void GameObject::ShowGameObjectOptions()
 {
-	//Create child Game Objects
-	ImGui::MenuItem("CREATE CHILD", NULL, false, false);
+	//Create child Game Objects / Components
+	ImGui::MenuItem("CREATE", NULL, false, false);
+	if (ImGui::MenuItem("Empty"))
+	{
+		GameObject* empty = App->scene->CreateGameObject(this);
+		((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(empty);
+	}
 	if (ImGui::MenuItem("Cube"))
 	{
 		GameObject* cube = App->scene->CreateCube(this);
@@ -237,7 +242,19 @@ void GameObject::ShowGameObjectOptions()
 		GameObject* sphere = App->scene->CreateSphere(this);
 		((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(sphere);
 	}
-
+	ImGui::MenuItem("ADD COMPONENT", NULL, false, false);
+	if (ImGui::MenuItem("Transform"))
+	{
+		AddComponent(Comp_Type::C_TRANSFORM);
+	}
+	if (ImGui::MenuItem("Mesh"))
+	{
+		AddComponent(Comp_Type::C_MESH);
+	}
+	if (ImGui::MenuItem("Material"))
+	{
+		AddComponent(Comp_Type::C_MATERIAL);
+	}
 }
 
 void GameObject::ShowInspectorInfo()
@@ -346,7 +363,7 @@ Component* GameObject::AddComponent(Comp_Type type)
 		if (components[i]->GetType() == type) //We need to check if the component is ACTIVE first?¿
 		{
 			dupe = true;
-			LOG("There's already one component of this type in the Game Object.");
+			LOG("There's already one component of this type in '%s'.", name);
 			break;
 		}
 	}

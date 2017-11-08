@@ -202,7 +202,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	App->scene->DrawSkybox(500, active_camera->frustum.pos);
 
 	//Draw Test Cube
-	App->scene->DrawCube(5);
+	//App->scene->DrawCube(5);
 
 	// Draw Plane
 	App->scene->DrawPlane();

@@ -39,9 +39,9 @@ enum EngineState
 
 struct GameClock
 {
-	float gameStart_time = 0.0f;
+	float gameStart_time = 0.0f; 
 	float timeScale = 1.0f; 
-	uint64 frame_count = 0;
+	uint64 frame_count = 0; 
 
 	bool prepare_frame = false;
 	bool play_frame = false;

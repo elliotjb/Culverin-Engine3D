@@ -354,7 +354,22 @@ void Scene::Init_IndexVertex(float3 * vertex_triangulate, uint num_index, CompMe
 GameObject* Scene::CreateGameObject(GameObject* parent)
 {
 	GameObject* obj = new GameObject(parent);
-	if (parent != nullptr)
+	// SET NAME -----------------------------------
+	static uint cube_count = 0;
+	std::string name = "Empty ";
+	name += std::to_string(cube_count++);
+	char* name_str = new char[name.size() + 1];
+	strcpy(name_str, name.c_str());
+	obj->SetName(name_str);
+
+	/* Empty GameObject only has Transform Component */
+
+	//TRANSFORM COMPONENT --------------
+	CompTransform* transform = (CompTransform*)obj->AddComponent(C_TRANSFORM);
+	transform->Init(float3(0, 0, 0), float3(0, 0, 0), float3(1, 1, 1)); // TRANSFORM WILL ACCUMULATE PARENTS TRANSFORMS
+	transform->Enable();
+
+	if (parent == nullptr)
 	{
 		gameobjects.push_back(obj);
 	}
@@ -398,7 +413,7 @@ GameObject* Scene::CreateCube(GameObject* parent)
 
 	//TRANSFORM COMPONENT --------------
 	CompTransform* transform = (CompTransform*)obj->AddComponent(C_TRANSFORM);
-	transform->Init(float3(0, 0, 0), float3(0, 0, 0), float3(1, 1, 1));
+	transform->Init(float3(0, 0, 0), float3(0, 0, 0), float3(1, 1, 1)); // TRANSFORM WILL ACCUMULATE PARENTS TRANSFORMS
 	transform->Enable();
 
 	//MESH COMPONENT -------------------
@@ -450,15 +465,15 @@ GameObject* Scene::CreateSphere(GameObject* parent)
 	strcpy(name_str, name.c_str());
 	obj->SetName(name_str);
 
-	/*Predefined sPHERE has 2 Base components: Transform, Mesh & Material */
+	/*Predefined Sphere has 2 Base components: Transform, Mesh & Material */
 
 	// TRANSFORM COMPONENT --------------
-	CompTransform* transform = (CompTransform*)obj->AddComponent(C_TRANSFORM);
+	CompTransform* transform = (CompTransform*)obj->AddComponent(C_TRANSFORM); // TRANSFORM WILL ACCUMULATE PARENTS TRANSFORMS
 	transform->Init(float3(0, 0, 0), float3(0, 0, 0), float3(1, 1, 1));
 	transform->Enable();
 
 	// MESH COMPONENT -------------------
-	CompMesh* mesh = (CompMesh*)obj->AddComponent(C_MESH);
+	CompMesh* mesh = (CompMesh*)obj->AddComponent(C_MESH); 
 	mesh->isPrimitive = true;
 	mesh->TypePrimitive = 1;
 
