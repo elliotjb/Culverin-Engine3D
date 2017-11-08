@@ -308,7 +308,7 @@ void CompTransform::SetLocalTransform()
 void CompTransform::UpdateMatrix()
 {
 	SetLocalTransform();
-	local_transform.Transpose();
+	//local_transform.Transpose();
 	global_transform = TransformToGlobal();
 
 	parent->UpdateMatrixRecursive();
