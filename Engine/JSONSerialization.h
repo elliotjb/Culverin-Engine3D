@@ -1,7 +1,7 @@
 #pragma once
 #include "parson.h"
 #include "Globals.h"
-
+#include <vector>
 class GameObject;
 
 class JSONSerialization
@@ -24,5 +24,14 @@ public:
 	void LoadChildLoadPrefab(GameObject& parent, GameObject& child, int uuidParent);
 	// --------------------------------------
 
+private:
+	// UUID & Name
+	void ChangeUUIDs(GameObject& gameObject);
+	void CheckChangeName(GameObject& gameObject);
+	// Get All Names form Scene -------
+	void GetAllNames(const std::vector<GameObject*>& gameobjects);
+
+private:
+	std::vector<const char*> namesScene;
 };
 

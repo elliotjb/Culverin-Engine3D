@@ -210,6 +210,7 @@ void JSONSerialization::SavePrefab(const GameObject& gameObject, const char* dir
 			components += "Components.";
 			gameObject.SaveComponents(config_node, components);
 		}
+		// Childs --------------
 		if (gameObject.GetNumChilds() > 0)
 		{
 			for (int j = 0; j < gameObject.GetNumChilds(); j++)
@@ -271,7 +272,17 @@ void JSONSerialization::LoadPrefab(const char* prefab)
 		int NUmberGameObjects = json_object_dotget_number(config_node, "Info.Number of GameObjects");
 		if (NUmberGameObjects > 0)
 		{
-			GameObject* mianParent = nullptr;
+			// First, check name is not repete.
+			// Frist reset Vector Names
+			//for (int i = 0; i < namesScene.size(); i++)
+			//{
+			//	RELEASE_ARRAY(namesScene[i]);
+			//}
+			namesScene.clear();
+			// Now GetAll Names from Scene
+			GetAllNames(App->scene->gameobjects);
+
+			GameObject* mainParent = nullptr;
 			for (int i = 0; i < NUmberGameObjects; i++)
 			{
 				std::string name = "GameObject" + std::to_string(i);
@@ -279,7 +290,8 @@ void JSONSerialization::LoadPrefab(const char* prefab)
 				char* nameGameObject = App->GetCharfromConstChar(json_object_dotget_string_with_std(config_node, name + "Name"));
 				uint uid = json_object_dotget_number_with_std(config_node, name + "UUID");
 				GameObject* obj = new GameObject(nameGameObject, uid);
-
+				// Now Check that the name is not repet
+				CheckChangeName(*obj);
 				//Load Components
 				int NumberofComponents = json_object_dotget_number_with_std(config_node, name + "Number of Components");
 				if (NumberofComponents > 0)
@@ -292,26 +304,24 @@ void JSONSerialization::LoadPrefab(const char* prefab)
 				if (uuid_parent == -1)
 				{
 					//App->scene->gameobjects.push_back(obj);
-					mianParent = obj;
+					mainParent = obj;
 				}
 				else
 				{
 					for (int x = 0; x < App->scene->gameobjects.size(); x++)
 					{
-						LoadChildLoadPrefab(*mianParent, *obj, uuid_parent);
+						LoadChildLoadPrefab(*mainParent, *obj, uuid_parent);
 					}
 				}
 			}
 			// Now Iterate All GameObjects and Components and create a new UUID!
-
-			//TODO Elliot
-
-			// After, check name not repeat.
-
-			// TODO Elliot
-
+			mainParent->SetUUIDRandom();
+			if (mainParent->GetNumChilds() > 0)
+			{
+				ChangeUUIDs(*mainParent);
+			}
 			// Finaly, add gameObject in Scene.
-			App->scene->gameobjects.push_back(mianParent);
+			App->scene->gameobjects.push_back(mainParent);
 		}
 	}
 }
@@ -339,6 +349,64 @@ void JSONSerialization::LoadChildLoadPrefab(GameObject& parent, GameObject& chil
 		{
 			parent.AddChildGameObject_Load(&child);
 			return;
+		}
+	}
+}
+
+void JSONSerialization::ChangeUUIDs(GameObject& gameObject)
+{
+	for (int i = 0; i < gameObject.GetNumChilds(); i++)
+	{
+		gameObject.GetChildbyIndex(i)->SetUUIDRandom();
+
+		if (gameObject.GetChildbyIndex(i)->GetNumChilds() > 0)
+		{
+			ChangeUUIDs(*gameObject.GetChildbyIndex(i));
+		}
+	}
+}
+
+void JSONSerialization::CheckChangeName(GameObject& gameObject)
+{
+	for (int i = 0; i < namesScene.size(); i++)
+	{
+		if (strcmp(namesScene[i], gameObject.GetName()) == 0)
+		{
+			bool stop = false;
+			int it = 0;
+			std::string temp;
+			while (stop == false)
+			{
+				it++;
+				temp = gameObject.GetName();
+				temp += " (" + std::to_string(it) + ")";
+				bool unique = true;
+				for (int ds = 0; ds < namesScene.size(); ds++)
+				{
+					if (strcmp(namesScene[ds], temp.c_str()) == 0)
+					{
+						unique = false;
+						continue;
+					}
+				}
+				if (unique)
+				{
+					gameObject.SetName(App->GetCharfromConstChar(temp.c_str()));
+					stop = true;
+				}
+			}
+		}
+	}
+}
+
+void JSONSerialization::GetAllNames(const std::vector<GameObject*>& gameobjects)
+{
+	for (int i = 0; i < gameobjects.size(); i++)
+	{
+		namesScene.push_back(gameobjects[i]->GetName());
+		if (gameobjects[i]->GetNumChilds() > 0)
+		{
+			GetAllNames(gameobjects[i]->GetChildsVec());
 		}
 	}
 }

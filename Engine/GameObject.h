@@ -66,6 +66,8 @@ public:
 	void DrawBoundingBox();
 
 	uint GetUUID() const;
+	void SetUUID(uint uuid);
+	void SetUUIDRandom();
 
 private:
 	char* name = "CHANGE THIS";

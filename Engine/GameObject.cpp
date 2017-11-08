@@ -647,3 +647,13 @@ uint GameObject::GetUUID() const
 {
 	return uid;
 }
+
+void GameObject::SetUUID(uint uuid)
+{
+	uid = uuid;
+}
+
+void GameObject::SetUUIDRandom()
+{
+	uid = App->random->Int();
+}
