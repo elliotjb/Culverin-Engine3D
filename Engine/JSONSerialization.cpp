@@ -308,10 +308,7 @@ void JSONSerialization::LoadPrefab(const char* prefab)
 				}
 				else
 				{
-					for (int x = 0; x < App->scene->gameobjects.size(); x++)
-					{
-						LoadChildLoadPrefab(*mainParent, *obj, uuid_parent);
-					}
+					LoadChildLoadPrefab(*mainParent, *obj, uuid_parent);
 				}
 			}
 			// Now Iterate All GameObjects and Components and create a new UUID!

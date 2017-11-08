@@ -76,10 +76,13 @@ void ModuleFS::CopyFileToAssets(const char* fileNameFrom, const char* fileNameTo
 {
 	//assert(fileExists(fileNameFrom));
 	namespace fs = std::experimental::filesystem;
-	if (fs::exists(fileNameTo) == false)
+	std::string exits = fileNameTo;
+	exits += "/" + FixName_directory(fileNameFrom);
+	if (fs::exists(exits) == false)
 	{
 		fs::copy(fileNameFrom, fileNameTo);
 	}
+	exits.clear();
 	// Copy Folders
 	//std::filesystem::copy("/dir1", "/dir3", std::filesystem::copy_options::recursive);
 }
