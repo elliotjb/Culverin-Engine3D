@@ -25,6 +25,7 @@ public:
 
 	void SetPos(float3 pos);
 	void SetRot(float3 rot);
+	void SetRot(Quat rot);
 	void SetScale(float3 scale);
 	void SetTransform(float4x4 tranformation);
 	void SetLocalTransform();

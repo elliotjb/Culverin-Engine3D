@@ -45,7 +45,7 @@ bool Scene::Start()
 
 	size_plane = 50;
 
-	CreateMainCamera(nullptr);
+	//CreateMainCamera(nullptr);
 
 	//Init Skybox
 	InitSkybox();

@@ -188,6 +188,14 @@ void GameObject::ShowHierarchy()
 	if (ImGui::TreeNodeEx(name))
 	{
 		ImGui::PopStyleColor();
+
+		if (ImGui::IsItemClicked())
+		{
+			//Set inspector window of this Game Object
+			((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(this);
+			App->camera->SetFocus(this);
+		}
+
 		if (ImGui::BeginPopupContextItem("Create"))
 		{		            
 			//ImGui::OpenPopup("FilePopup");
@@ -213,13 +221,6 @@ void GameObject::ShowHierarchy()
 	else
 	{
 		ImGui::PopStyleColor();
-	}
-
-	if (ImGui::IsItemClicked())
-	{
-		//Set inspector window of this Game Object
-		((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(this);
-		App->camera->SetFocus(this);
 	}
 }
 

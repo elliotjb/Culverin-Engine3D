@@ -48,7 +48,6 @@ void CompTransform::ShowInspectorInfo()
 		static GLuint icon_options_transform = App->textures->LoadTexture("Images/UI/icon_options_transform.png");
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
 		ImGui::SameLine(ImGui::GetWindowWidth() - 26);
-		static float3 rot = rotation_euler;
 		if (ImGui::ImageButton((ImTextureID*)icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
 		{
 			ImGui::OpenPopup("Options");
@@ -76,7 +75,6 @@ void CompTransform::ShowInspectorInfo()
 			{
 				SetRot(math::float3::zero);
 				rotation_euler = float3::zero;
-				rot = rotation_euler;
 				ImGui::CloseCurrentPopup();
 			} ImGui::SameLine(); App->ShowHelpMarker("Doesn't Work!!");
 			if (ImGui::Button("Reset Size"))
@@ -186,12 +184,8 @@ void CompTransform::ShowInspectorInfo()
 			SetPos(position);
 		}
 		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##rot", &rot[0], 0.5f))
+		if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
 		{
-			rotation_euler.x = rot[0];
-			rotation_euler.y = rot[1];
-			rotation_euler.z = rot[2];
-
 			SetRot(rotation_euler);
 		}
 		ImGui::Text("Scale"); ImGui::SameLine(op + 30);
@@ -257,6 +251,13 @@ void CompTransform::ShowInspectorInfo()
 void CompTransform::SetPos(float3 pos)
 {
 	position = pos;
+	toUpdate = true;
+}
+
+void CompTransform::SetRot(Quat rot)
+{
+	rotation_euler = rot.ToEulerXYZ() * RADTODEG;
+	rotation = rot;
 	toUpdate = true;
 }
 
@@ -363,7 +364,7 @@ float4x4 CompTransform::GetParentTransform() const
 
 float4x4 CompTransform::TransformToGlobal()
 {
-	return local_transform * GetParentTransform();
+	return GetParentTransform() * local_transform;
 }
 
 const float* CompTransform::GetMultMatrixForOpenGL() const

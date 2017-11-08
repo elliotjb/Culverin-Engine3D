@@ -77,8 +77,8 @@ update_status ModuleImporter::PreUpdate(float dt)
 			GameObject* obj = new GameObject(nullptr);
 			obj->SetName(App->GetCharfromConstChar(App->fs->FixName_directory(App->input->dropped_filedir).c_str()));
 			CompTransform* trans = (CompTransform*)obj->AddComponent(C_TRANSFORM);
-			trans->ResetMatrix();
-			//Clear vector of textures, by dont import same textures!
+			ProcessTransform(scene->mRootNode, trans);
+			//Clear vector of textures, but dont import same textures!
 			iMesh->PrepareToImport();
 
 			ProcessNode(scene->mRootNode, scene, obj);
@@ -149,12 +149,20 @@ void ModuleImporter::ProcessTransform(aiNode* node, CompTransform * trans)
 	aiVector3D aiPos;
 	aiQuaternion aiRot;
 	aiVector3D aiScale;
+	Quat rot_quat;
 
-	node->mTransformation.Decompose(aiPos, aiRot, aiScale);
+	node->mTransformation.Decompose(aiScale, aiRot, aiPos);
+
+	// From aiQuaternion to math::Quat
+	rot_quat.x = aiRot.x;
+	rot_quat.y = aiRot.y;
+	rot_quat.z = aiRot.z;
+	rot_quat.w = aiRot.w;
 
 	trans->SetPos(float3(aiPos.x, aiPos.y, aiPos.z));
-	trans->SetRot(float3(aiRot.GetEuler().x, aiRot.GetEuler().y, aiRot.GetEuler().z));
+	trans->SetRot(rot_quat);
 	trans->SetScale(float3(aiScale.x, aiScale.y, aiScale.z));
+	trans->Enable();
 }
 
 update_status ModuleImporter::Update(float dt)
