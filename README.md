@@ -90,6 +90,9 @@ To import a model (.fbx/.obj) to the Engine, just drag it inside the window.
 - ASSIMP -> http://assimp.sourceforge.net/
 - DevIL -> http://openil.sourceforge.net/
 
+# ScreenShots
+![](https://i.gyazo.com/4a351d2420d2e0ed7f133a1802fa5a57.jpg)
+
 Authors: 
 - Elliot Jimenez: https://github.com/elliotjb
 - Jordi Oña: https://github.com/Jordior97
