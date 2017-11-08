@@ -77,7 +77,7 @@ update_status ModuleImporter::PreUpdate(float dt)
 			GameObject* obj = new GameObject(nullptr);
 			obj->SetName(App->GetCharfromConstChar(App->fs->FixName_directory(App->input->dropped_filedir).c_str()));
 			CompTransform* trans = (CompTransform*)obj->AddComponent(C_TRANSFORM);
-			trans->SetZero();
+			trans->ResetMatrix();
 			//Clear vector of textures, by dont import same textures!
 			iMesh->PrepareToImport();
 
@@ -127,10 +127,13 @@ void ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject*
 	{
 		GameObject* objChild = new GameObject(obj);
 		objChild->SetName(App->GetCharfromConstChar(node->mName.C_Str()));
+		
 		CompTransform* trans = (CompTransform*)objChild->AddComponent(C_TRANSFORM);
+		ProcessTransform(node, trans);	
+		
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		iMesh->Import(scene, mesh, objChild, node->mName.C_Str());
-		trans->SetTransformation(node->mTransformation);
+		
 		//obj->AddChildGameObject_Load(objChild);
 	}
 
@@ -139,6 +142,19 @@ void ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject*
 	{
 		ProcessNode(node->mChildren[i], scene, obj);
 	}
+}
+
+void ModuleImporter::ProcessTransform(aiNode* node, CompTransform * trans)
+{
+	aiVector3D aiPos;
+	aiQuaternion aiRot;
+	aiVector3D aiScale;
+
+	node->mTransformation.Decompose(aiPos, aiRot, aiScale);
+
+	trans->SetPos(float3(aiPos.x, aiPos.y, aiPos.z));
+	trans->SetRot(float3(aiRot.GetEuler().x, aiRot.GetEuler().y, aiRot.GetEuler().z));
+	trans->SetScale(float3(aiScale.x, aiScale.y, aiScale.z));
 }
 
 update_status ModuleImporter::Update(float dt)

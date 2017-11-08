@@ -312,6 +312,7 @@ void GameObject::ShowInspectorInfo()
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
 
+	// UPDATE EDITOR WINDOWS OF EACH COMPONENT
 	for (uint i = 0; i < components.size(); i++)
 	{
 		components[i]->ShowInspectorInfo();
@@ -583,34 +584,17 @@ void GameObject::AddChildGameObject_Replace(GameObject* child)
 	App->scene->gameobjects.pop_back();
 }
 
-void GameObject::UpdateMatrixRecursive(float4x4 transform, bool modificate)
+void GameObject::UpdateMatrixRecursive()
 {
-	CompTransform* comp_transform = GetComponentTransform();
-	if (modificate)
+	for (uint i = 0; i < childs.size(); i++)
 	{
-		if (comp_transform != nullptr)
-		{
-			comp_transform->SetLocalTransform();
-			float4x4 temp = comp_transform->GetLocalTransform();
-			temp = transform * temp;
-			comp_transform->SetGlobalTransform(temp);
-		}
-	}
-
-	if (GetNumChilds() > 0)
-	{
-		for (int i = 0; i < GetNumChilds(); i++)
-		{
-			GetChildbyIndex(i)->UpdateMatrixRecursive(comp_transform->GetGlobalTransform(), true);
-		}
+		childs[i]->GetComponentTransform()->UpdateMatrix();
 	}
 }
 
 GameObject* GameObject::GetParent() const
 {
-	if(parent != nullptr)
-		return parent;
-	return nullptr;
+	return parent;
 }
 
 void GameObject::DrawBoundingBox()

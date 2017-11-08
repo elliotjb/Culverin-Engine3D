@@ -24,9 +24,11 @@ public:
 	void SetName(char* name);
 	const char* GetName() const;
 
+	// EDITOR METHODS ------------------
 	void ShowHierarchy();
 	void ShowGameObjectOptions();
 	void ShowInspectorInfo();
+	// ----------------------------------
 
 	void SetVisible(bool visible);
 
@@ -56,7 +58,7 @@ public:
 	void AddChildGameObject_Replace(GameObject* child);
 
 	// Transform Modifications -----------------
-	void UpdateMatrixRecursive(float4x4 transform, bool modificate);
+	void UpdateMatrixRecursive();
 
 	GameObject* GetParent() const;
 

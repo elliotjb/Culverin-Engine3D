@@ -20,24 +20,25 @@ public:
 	~CompTransform();
 
 	void Init(float3 p, float3 r, float3 s);
-	void Update();
+	void Update(float dt);
 	void ShowInspectorInfo();
 
 	void SetPos(float3 pos);
 	void SetRot(float3 rot);
 	void SetScale(float3 scale);
-	void SetZero();
-	void SetTransformation(aiMatrix4x4 tranformation);
+	void SetTransform(float4x4 tranformation);
 	void SetLocalTransform();
-	void SetGlobalTransform(float4x4 transform);
 
+	void ResetMatrix();
 	void UpdateMatrix();
 
 	float3 GetPos() const;
-	float3 GetRot() const;
+	Quat GetRot() const;
 	float3 GetScale() const;
 	float4x4 GetLocalTransform() const;
 	float4x4 GetGlobalTransform() const;
+	float4x4 GetParentTransform() const;
+	float4x4 TransformToGlobal();
 	const float* GetMultMatrixForOpenGL() const;
 
 	void Save(JSON_Object* object, std::string name) const;
@@ -45,19 +46,15 @@ public:
 
 private:
 	Axis axis;
+	bool toUpdate = false;
 
-	// Output Values -----------------
+	// Output Values ----------------------
 	float3 position = { 0, 0, 0 };
-	float3 rotation = { 0, 0, 0 };
+	float3 rotation_euler = { 0, 0, 0 };
 	float3 scale = { 0, 0, 0 };
-	Quat rotation_new = math::Quat::identity;
-	// -------------------------------
-
-	float3 rot_angle = { 0, 0, 0 };
-	Quat rot_quat = { 1, 0, 0, 0 };
+	// ------------------------------------
+	Quat rotation = math::Quat::identity;
 
 	float4x4 global_transform = math::float4x4::identity;
-
 	float4x4 local_transform = math::float4x4::identity;
-	float3 local_pos = { 0, 0, 0 };
 };

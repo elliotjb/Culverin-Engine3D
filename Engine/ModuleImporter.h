@@ -8,6 +8,7 @@
 
 class ImportMesh;
 class ImportMaterial;
+class CompTransform;
 
 enum FileTypeImport
 {
@@ -26,6 +27,7 @@ public:
 	bool Start();
 	update_status PreUpdate(float dt);
 	void ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj);
+	void ProcessTransform(aiNode* node, CompTransform* transform);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	update_status UpdateConfig(float dt);

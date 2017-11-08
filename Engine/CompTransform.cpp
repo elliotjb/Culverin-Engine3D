@@ -25,8 +25,13 @@ void CompTransform::Init(float3 p, float3 r, float3 s)
 	SetScale(s);
 }
 
-void CompTransform::Update()
+void CompTransform::Update(float dt)
 {
+	if (toUpdate)
+	{
+		UpdateMatrix();
+		toUpdate = false;
+	}
 }
 
 void CompTransform::ShowInspectorInfo()
@@ -43,7 +48,7 @@ void CompTransform::ShowInspectorInfo()
 		static GLuint icon_options_transform = App->textures->LoadTexture("Images/UI/icon_options_transform.png");
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
 		ImGui::SameLine(ImGui::GetWindowWidth() - 26);
-		static float3 rot = rotation;
+		static float3 rot = rotation_euler;
 		if (ImGui::ImageButton((ImTextureID*)icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
 		{
 			ImGui::OpenPopup("Options");
@@ -58,27 +63,25 @@ void CompTransform::ShowInspectorInfo()
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 2));
 			if (ImGui::Button("Reset Values"))
 			{
-				position = math::float3(0, 0, 0);
-				//SetRot(math::float3(-rot.x/2, -rot.y/2, -rot.z/2));
-				//rot = math::float3(0, 0, 0);
-				scale = math::float3(1, 1, 1);
+				ResetMatrix();
 				ImGui::CloseCurrentPopup();
 			}
 			ImGui::Separator();
 			if (ImGui::Button("Reset Position"))
 			{
-				position = math::float3(0, 0, 0);
+				SetPos(float3::zero);
 				ImGui::CloseCurrentPopup();
 			}
 			if (ImGui::Button("Reset Rotation"))
 			{
-				//SetRot(math::float3(-rot.x/2, -rot.y/2, -rot.z/2));
-				//rot = math::float3(0, 0, 0);
+				SetRot(math::float3::zero);
+				rotation_euler = float3::zero;
+				rot = rotation_euler;
 				ImGui::CloseCurrentPopup();
 			} ImGui::SameLine(); App->ShowHelpMarker("Doesn't Work!!");
 			if (ImGui::Button("Reset Size"))
 			{
-				scale = math::float3(1, 1, 1);
+				SetScale(math::float3(1, 1, 1));
 				ImGui::CloseCurrentPopup();
 			}
 			ImGui::PopStyleVar();
@@ -173,46 +176,45 @@ void CompTransform::ShowInspectorInfo()
 		ImGuiIO& io = ImGui::GetIO();
 		ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);*/
 		//ImGuizmo::Manipulate(App->camera->GetViewMatrix(), App->camera->GetProjMatrix(), mCurrentGizmoOperation, mCurrentGizmoMode, local_transform.ptr(), NULL, NULL);
-		
 		// ----------------------------------------------------------------
 
 		// ORIGINAL -------------------------------------------------------
 		int op = ImGui::GetWindowWidth() / 4;
 		ImGui::Text("Position"); ImGui::SameLine(op + 30);
-		bool isMoveMouse = false;
 		if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
 		{
-			isMoveMouse = true;
 			SetPos(position);
 		}
 		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
 		if (ImGui::DragFloat3("##rot", &rot[0], 0.5f))
 		{
-			isMoveMouse = true;
-			SetRot(rot);
+			rotation_euler.x = rot[0];
+			rotation_euler.y = rot[1];
+			rotation_euler.z = rot[2];
+
+			SetRot(rotation_euler);
 		}
 		ImGui::Text("Scale"); ImGui::SameLine(op + 30);
 		if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
 		{
-			isMoveMouse = true;
 			SetScale(scale);
 		}
 		// ------------------------------------------------------------------
 
 		// This function let mouse trespassing the screen to enter from the opposite side
-		if (isMoveMouse)
-		{
-			if (App->input->GetMouseX() <= width &&
-				App->input->GetMouseX() > width - 10)
-			{
-				SetCursorPos(30, App->input->GetMouseY());
-			}
-			if (App->input->GetMouseX() >= 0 &&
-				App->input->GetMouseX() < 10)
-			{
-				SetCursorPos(width - 20, App->input->GetMouseY());
-			}
-		}
+		//if (isMoveMouse)
+		//{
+		//	if (App->input->GetMouseX() <= width &&
+		//		App->input->GetMouseX() > width - 10)
+		//	{
+		//		SetCursorPos(30, App->input->GetMouseY());
+		//	}
+		//	if (App->input->GetMouseX() >= 0 &&
+		//		App->input->GetMouseX() < 10)
+		//	{
+		//		SetCursorPos(width - 20, App->input->GetMouseY());
+		//	}
+		//}
 		// -------------------------------------------------------------------------------
 
 		//static bool useSnap(false);
@@ -255,42 +257,39 @@ void CompTransform::ShowInspectorInfo()
 void CompTransform::SetPos(float3 pos)
 {
 	position = pos;
-
-	UpdateMatrix();
+	toUpdate = true;
 }
 
 void CompTransform::SetRot(float3 rot)
 {
-	rot_angle = (rot - rotation) * DEGTORAD;
-	rot_quat = rot_quat * Quat::FromEulerXYZ(rot_angle.x, rot_angle.y, rot_angle.z);
-	rotation = rot;
-
-	UpdateMatrix();
+	rotation = Quat::FromEulerXYZ(rot[0] * DEGTORAD, rot[1] * DEGTORAD, rot[2] * DEGTORAD);
+	toUpdate = true;
 }
 
 void CompTransform::SetScale(float3 scal)
 {
 	scale = scal;
-
-	UpdateMatrix();
+	toUpdate = true;
 }
 
-void CompTransform::SetZero()
+void CompTransform::ResetMatrix()
 {
 	SetPos(float3::zero);
 	SetRot(float3::zero);
+	rotation_euler = float3::zero;
 	SetScale(float3(1, 1, 1));
+	toUpdate = true;
 }
 
-void CompTransform::SetTransformation(aiMatrix4x4 transform)
+void CompTransform::SetTransform(float4x4 transform)
 {
 	//TRANSFORM DATA ---------------------------
-	aiQuaternion rot_quat;
-	aiVector3D pos, rot, scal;
+	Quat rot_quat;
+	float3 pos, rot, scal;
 	float3 pos_vec, rot_vec, scal_vec;
 
 	transform.Decompose(scal, rot_quat, pos);
-	rot = rot_quat.GetEuler();
+	rot = rot_quat.ToEulerXYZ();
 
 	pos_vec.Set(pos.x, pos.y, pos.z);
 	rot_vec.Set(rot.x, rot.y, rot.z);
@@ -303,22 +302,16 @@ void CompTransform::SetTransformation(aiMatrix4x4 transform)
 
 void CompTransform::SetLocalTransform()
 {
-	local_transform = float4x4::FromTRS(position, rot_quat, scale);;
-}
-
-void CompTransform::SetGlobalTransform(float4x4 transform)
-{
-	global_transform = transform;
+	local_transform = float4x4::FromTRS(position, rotation, scale);;
 }
 
 void CompTransform::UpdateMatrix()
 {
-	float4x4 temp = global_transform;
-	global_transform = float4x4::FromTRS(position, rot_quat, scale);
-	local_transform = float4x4::FromTRS(position, rot_quat, scale);
-	temp = temp - global_transform;
+	SetLocalTransform();
+	local_transform.Transpose();
+	global_transform = TransformToGlobal();
 
-	parent->UpdateMatrixRecursive(temp, false);
+	parent->UpdateMatrixRecursive();
 }
 
 float3 CompTransform::GetPos() const
@@ -326,7 +319,7 @@ float3 CompTransform::GetPos() const
 	return position;
 }
 
-float3 CompTransform::GetRot() const
+Quat CompTransform::GetRot() const
 {
 	return rotation;
 }
@@ -346,6 +339,34 @@ float4x4 CompTransform::GetGlobalTransform() const
 	return global_transform;
 }
 
+float4x4 CompTransform::GetParentTransform() const
+{
+	if (parent != nullptr)
+	{
+		// Access to Parent Object
+		GameObject* parent_object = parent->GetParent();
+		if (parent_object != nullptr)
+		{
+			// Access to Parent Object Transform
+			CompTransform* transform = parent_object->GetComponentTransform();
+			if (transform != nullptr)
+			{
+				return transform->GetGlobalTransform();
+			}
+		}
+		else
+		{
+			// It hasn't got parent, so return identity
+			return float4x4::identity;
+		}
+	}
+}
+
+float4x4 CompTransform::TransformToGlobal()
+{
+	return local_transform * GetParentTransform();
+}
+
 const float* CompTransform::GetMultMatrixForOpenGL() const
 {
 	return global_transform.Transposed().ptr(); //Change Matrix to Global Matrix
@@ -359,7 +380,7 @@ void CompTransform::Save(JSON_Object* object, std::string name) const
 	// Position
 	App->fs->json_array_dotset_float3(object, name + "Position", GetPos());
 	// Rotation
-	App->fs->json_array_dotset_float3(object, name + "Rotation", GetRot());
+	App->fs->json_array_dotset_float3(object, name + "Rotation", GetRot().ToEulerXYZ());
 	// Scale
 	App->fs->json_array_dotset_float3(object, name + "Scale", GetScale());
 
