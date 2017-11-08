@@ -28,6 +28,7 @@ Application::Application()
 	importer = new ModuleImporter();
 	fs = new ModuleFS();
 	textures = new ModuleTextures();
+	resource_manager = new ModuleResourceManager();
 
 	random = new math::LCG();
 	Json_seria = new JSONSerialization();
@@ -40,6 +41,7 @@ Application::Application()
 	AddModule(window);
 	AddModule(fs);
 	AddModule(camera);
+	AddModule(resource_manager);
 	AddModule(input);
 	AddModule(audio);
 	AddModule(physics);

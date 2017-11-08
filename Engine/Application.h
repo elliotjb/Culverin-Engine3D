@@ -16,16 +16,18 @@
 #include "ModuleImporter.h"
 #include "ModuleTextures.h"
 #include "ModuleFS.h"
+#include "ModuleResourceManager.h"
 #include "parson.h"
-#include <vector>
-#include <string>
 #include "GL3W/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
-#include <gl/GL.h>
-#include <gl/GLU.h>
 #include "ImGui/imgui_dock_v2.h"
 #include "Algorithm/Random/LCG.h"
 #include "Math/float4.h"
+#include <vector>
+#include <string>
+#include <gl/GL.h>
+#include <gl/GLU.h>
+
 
 class JSONSerialization;
 
@@ -109,6 +111,7 @@ public:
 	ModuleImporter* importer;
 	ModuleFS* fs;
 	ModuleTextures* textures;
+	ModuleResourceManager* resource_manager;
 
 private:
 	p2List<Module*> list_modules;

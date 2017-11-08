@@ -102,6 +102,7 @@
     <ClInclude Include="mmgr\nommgr.h" />
     <ClInclude Include="ModuleFS.h" />
     <ClInclude Include="ModuleFramebuffers.h" />
+    <ClInclude Include="ModuleResourceManager.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="JSONSerialization.h" />
     <ClInclude Include="WindowHierarchy.h" />
@@ -225,6 +226,7 @@
     <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="ModuleFS.cpp" />
     <ClCompile Include="ModuleFramebuffers.cpp" />
+    <ClCompile Include="ModuleResourceManager.cpp" />
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="JSONSerialization.cpp" />
     <ClCompile Include="WindowHierarchy.cpp" />

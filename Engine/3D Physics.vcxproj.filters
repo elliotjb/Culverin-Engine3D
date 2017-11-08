@@ -429,6 +429,9 @@
     <ClInclude Include="JSONSerialization.h">
       <Filter>Engine\Modules\Importer</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleResourceManager.h">
+      <Filter>Engine\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -688,6 +691,9 @@
     </ClCompile>
     <ClCompile Include="JSONSerialization.cpp">
       <Filter>Engine\Modules\Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleResourceManager.cpp">
+      <Filter>Engine\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

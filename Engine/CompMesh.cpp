@@ -178,7 +178,7 @@ void CompMesh::Draw()
 		if (transform != nullptr)
 		{
 			/* Push Matrix to Draw with transform applied, only if it contains a transform component */
-			//glMatrixMode(GL_MODELVIEW);
+			glMatrixMode(GL_MODELVIEW);
 			glPushMatrix();
 			glMultMatrixf(transform->GetMultMatrixForOpenGL());
 		}

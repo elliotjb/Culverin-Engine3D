@@ -27,7 +27,7 @@ void CompTransform::Init(float3 p, float3 r, float3 s)
 
 void CompTransform::Update(float dt)
 {
-	if (toUpdate)
+	if (/*toUpdate*/1)
 	{
 		UpdateMatrix();
 		toUpdate = false;
@@ -308,7 +308,6 @@ void CompTransform::SetLocalTransform()
 void CompTransform::UpdateMatrix()
 {
 	SetLocalTransform();
-	//local_transform.Transpose();
 	global_transform = TransformToGlobal();
 
 	parent->UpdateMatrixRecursive();
@@ -369,7 +368,7 @@ float4x4 CompTransform::TransformToGlobal()
 
 const float* CompTransform::GetMultMatrixForOpenGL() const
 {
-	return global_transform.Transposed().ptr(); //Change Matrix to Global Matrix
+	return global_transform.Transposed().ptr();
 }
 
 
