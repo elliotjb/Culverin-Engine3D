@@ -61,6 +61,9 @@
     <Filter Include="Engine\Modules\Scene\GameObjects">
       <UniqueIdentifier>{3e5dc33e-7212-40b1-92c9-9ed45dbfb6a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Modules\Resources">
+      <UniqueIdentifier>{f609da17-e50f-4057-aa5d-4e5cdf0fb1c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -430,7 +433,19 @@
       <Filter>Engine\Modules\Importer</Filter>
     </ClInclude>
     <ClInclude Include="ModuleResourceManager.h">
-      <Filter>Engine\Modules</Filter>
+      <Filter>Engine\Modules\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource_.h">
+      <Filter>Engine\Modules\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceMaterial.h">
+      <Filter>Engine\Modules\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceMesh.h">
+      <Filter>Engine\Modules\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcePrefab.h">
+      <Filter>Engine\Modules\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -693,7 +708,19 @@
       <Filter>Engine\Modules\Importer</Filter>
     </ClCompile>
     <ClCompile Include="ModuleResourceManager.cpp">
-      <Filter>Engine\Modules</Filter>
+      <Filter>Engine\Modules\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource_.cpp">
+      <Filter>Engine\Modules\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceMaterial.cpp">
+      <Filter>Engine\Modules\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceMesh.cpp">
+      <Filter>Engine\Modules\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcePrefab.cpp">
+      <Filter>Engine\Modules\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
