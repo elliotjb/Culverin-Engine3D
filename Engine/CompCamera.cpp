@@ -306,6 +306,8 @@ void CompCamera::Save(JSON_Object * object, std::string name) const
 	json_object_dotset_number_with_std(object, name + "Near Plane", frustum.nearPlaneDistance);
 	json_object_dotset_number_with_std(object, name + "Far Plane", frustum.farPlaneDistance);
 	json_object_dotset_number_with_std(object, name + "Vertical Pov", frustum.verticalFov);
+
+	json_object_dotset_boolean_with_std(object, name + "Main Camera", is_main);
 }
 
 void CompCamera::Load(const JSON_Object * object, std::string name)
@@ -320,6 +322,9 @@ void CompCamera::Load(const JSON_Object * object, std::string name)
 	near_plane = frustum.nearPlaneDistance;
 	far_plane = frustum.farPlaneDistance;
 	vertical_fov = frustum.verticalFov;
+
+	is_main = json_object_dotget_boolean_with_std(object, name + "Main Camera");
+	SetMain(is_main);
 
 	Enable();
 }
