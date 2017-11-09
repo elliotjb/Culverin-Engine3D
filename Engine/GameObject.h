@@ -6,6 +6,8 @@
 #include <vector>
 
 class CompTransform;
+class CompMesh;
+class CompMaterial;
 
 class GameObject
 {

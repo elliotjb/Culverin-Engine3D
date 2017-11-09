@@ -47,14 +47,6 @@ void Hierarchy::ShowHierarchy()
 	EndDock();
 }
 
-void Hierarchy::SetName(_Model* model)
-{
-	if (model != nullptr)
-	{
-		haveModel = true;
-		model_name = model->base_info.name;
-	}
-}
 
 bool Hierarchy::CleanUp()
 {

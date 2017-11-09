@@ -1,14 +1,17 @@
+#include "ModuleImporter.h"
 #include "ImportMesh.h"
 #include "ModuleFS.h"
+#include "GameObject.h"
+#include "ImportMaterial.h"
+#include "CompMesh.h"
+#include "ResourceMesh.h"
+#include "CompMaterial.h"
+#include "CompTransform.h"
+
 #include <filesystem>
 #include <iostream>
 #include <experimental/filesystem>
 #include <fstream>
-#include "GameObject.h"
-#include "ImportMaterial.h"
-#include "CompMesh.h"
-#include "CompMaterial.h"
-#include "CompTransform.h"
 
 ImportMesh::ImportMesh()
 {

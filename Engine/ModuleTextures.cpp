@@ -1,5 +1,4 @@
 #include "Globals.h"
-#include "BaseGeometry.h"
 #include "ModuleTextures.h"
 #include "Devil/include/il.h"
 #include "Devil/include/ilu.h"

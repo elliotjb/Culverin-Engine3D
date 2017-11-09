@@ -28,7 +28,7 @@ public:
 	std::vector<Vertex> vertices;
 	std::vector<uint> indices;
 	std::vector<float3> vertices_normals;
-	//std::vector<_FaceCenter> face_centers;
+	//std::vector<FaceCenter> face_centers;
 
 	bool isPrimitive = false;
 	int TypePrimitive = 0;//0 nothing / 1-Sphere / 2-Cube / 3-etc...

@@ -87,7 +87,6 @@
   <ItemGroup>
     <ClInclude Include="Algorithm\Random\LCG.h" />
     <ClInclude Include="Application.h" />
-    <ClInclude Include="BaseGeometry.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CompCamera.h" />
     <ClInclude Include="CompMaterial.h" />
@@ -116,8 +115,6 @@
     <ClInclude Include="ModuleTextures.h" />
     <ClInclude Include="CompTransform.h" />
     <ClInclude Include="WindowGame.h" />
-    <ClInclude Include="_Cube.h" />
-    <ClInclude Include="_Cylinder.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
     <ClInclude Include="ImGui\imgui_impl_sdl_gl3.h" />
@@ -146,7 +143,6 @@
     <ClInclude Include="Geometry\Sphere.h" />
     <ClInclude Include="Geometry\Triangle.h" />
     <ClInclude Include="Geometry\TriangleMesh.h" />
-    <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="MathBuildConfig.h" />
@@ -185,38 +181,25 @@
     <ClInclude Include="Math\sse_mathfun.h" />
     <ClInclude Include="Math\TransformOps.h" />
     <ClInclude Include="ModuleCamera3D.h" />
-    <ClInclude Include="ModuleLoader.h" />
     <ClInclude Include="ModuleGUI.h" />
     <ClInclude Include="WindowHardware.h" />
     <ClInclude Include="WindowInspector.h" />
-    <ClInclude Include="WindowObjectsUI.h" />
-    <ClInclude Include="ModulePhysics3D.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
-    <ClInclude Include="p2List.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleWindow.h" />
-    <ClInclude Include="p2DynArray.h" />
-    <ClInclude Include="p2Point.h" />
     <ClInclude Include="parson.h" />
     <ClInclude Include="PerfTimer.h" />
-    <ClInclude Include="PhysBody3D.h" />
-    <ClInclude Include="PhysVehicle3D.h" />
-    <ClInclude Include="Primitive.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Time\Clock.h" />
     <ClInclude Include="WindowManager.h" />
-    <ClInclude Include="ModuleGeometries.h" />
-    <ClInclude Include="_Model.h" />
-    <ClInclude Include="_Sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Algorithm\Random\LCG.cpp" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="BaseGeometry.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="CompCamera.cpp" />
     <ClCompile Include="CompMaterial.cpp" />
@@ -244,8 +227,6 @@
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="CompTransform.cpp" />
     <ClCompile Include="WindowGame.cpp" />
-    <ClCompile Include="_Cube.cpp" />
-    <ClCompile Include="_Cylinder.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
@@ -265,7 +246,6 @@
     <ClCompile Include="Geometry\Sphere.cpp" />
     <ClCompile Include="Geometry\Triangle.cpp" />
     <ClCompile Include="Geometry\TriangleMesh.cpp" />
-    <ClCompile Include="glmath.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -285,26 +265,17 @@
     <ClCompile Include="Math\TransformOps.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
-    <ClCompile Include="ModuleLoader.cpp" />
     <ClCompile Include="ModuleGUI.cpp" />
     <ClCompile Include="WindowHardware.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="WindowInspector.cpp" />
-    <ClCompile Include="WindowObjectsUI.cpp" />
-    <ClCompile Include="ModulePhysics3D.cpp" />
     <ClCompile Include="ModuleRenderer3D.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="parson.cpp" />
     <ClCompile Include="PerfTimer.cpp" />
-    <ClCompile Include="PhysBody3D.cpp" />
-    <ClCompile Include="PhysVehicle3D.cpp" />
-    <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Time\Clock.cpp" />
-    <ClCompile Include="ModuleGeometries.cpp" />
-    <ClCompile Include="_Model.cpp" />
-    <ClCompile Include="_Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\config.json" />

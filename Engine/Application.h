@@ -1,5 +1,4 @@
 #pragma once
-#include "p2List.h"
 #include "Globals.h"
 #include "Timer.h"
 #include "Module.h"
@@ -8,11 +7,9 @@
 #include "ModuleAudio.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
-#include "ModulePhysics3D.h"
 #include "Scene.h"
 #include "ModuleConsole.h"
-#include "ModuleGUI.h"
-#include "ModuleGeometries.h" //TODO JORDI OÑA AND ELLIOT forward declaration
+#include "ModuleGUI.h"			//TODO JORDI OÑA AND ELLIOT forward declaration
 #include "ModuleImporter.h"
 #include "ModuleTextures.h"
 #include "ModuleFS.h"
@@ -103,8 +100,6 @@ public:
 	ModuleAudio* audio;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
-	ModulePhysics3D* physics;
-	ModuleGeometries* geometry_manager;
 	Scene* scene;
 	Console* console;
 	ModuleGUI* gui;
@@ -114,7 +109,7 @@ public:
 	ModuleResourceManager* resource_manager;
 
 private:
-	p2List<Module*> list_modules;
+	std::list<Module*> list_modules;
 	// ----------------------------------
 
 	// TIME -----------------------------

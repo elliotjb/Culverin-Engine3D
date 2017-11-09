@@ -1,11 +1,11 @@
 #include "Globals.h"
 #include "Application.h"
 #include "Scene.h"
-#include "Primitive.h"
 #include "GameObject.h"
 #include "Component.h"
 #include "CompTransform.h"
 #include "CompMesh.h"
+#include "ResourceMesh.h"
 #include "CompMaterial.h"
 #include "WindowInspector.h"
 #include "CompCamera.h"
@@ -342,7 +342,7 @@ void Scene::Init_IndexVertex(float3 * vertex_triangulate, uint num_index, CompMe
 
 		if (temp == false)
 		{
-			_Vertex vertex;
+			Vertex vertex;
 			all_index.push_back(vertex_triangulate[i]);
 			mesh->indices.push_back(all_index.size() - 1);
 			vertex.pos = vertex_triangulate[i];

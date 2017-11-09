@@ -5,9 +5,10 @@
 #include "CompMaterial.h"
 #include "CompTransform.h"
 #include "ModuleRenderer3D.h"
-#include "Color.h"
 #include "GameObject.h"
 #include "ImportMesh.h"
+#include "ResourceMesh.h"
+#include "Color.h"
 
 #include <vector>
 
@@ -52,7 +53,7 @@ void CompMesh::Init(const float3* vert, const uint* ind, const float3* vert_norm
 	// SET VERTEX DATA -------------------------------
 	for (uint i = 0; i < num_vertices; i++)
 	{
-		_Vertex ver;
+		Vertex ver;
 		// Vertex Positions ------------------
 		ver.pos = vert[i];
 
@@ -122,7 +123,7 @@ void CompMesh::SetupMesh()
 	//glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(_Vertex), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint), &indices[0], GL_STATIC_DRAW);
@@ -135,11 +136,11 @@ void CompMesh::SetupMesh()
 
 	//// Vertex Positions -------------
 	//glEnableVertexAttribArray(0);
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(_Vertex), (void*)0);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 
 	//// Vertex Normals ----------------
 	//glEnableVertexAttribArray(1);
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(_Vertex), (void*)offsetof(_Vertex, norm));
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, norm));
 
 	//glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -213,9 +214,9 @@ void CompMesh::Draw()
 			}
 
 			glBindBuffer(GL_ARRAY_BUFFER, vertices_id); //VERTEX ID
-			glVertexPointer(3, GL_FLOAT, sizeof(_Vertex), NULL);
-			glNormalPointer(GL_FLOAT, sizeof(_Vertex), (void*)offsetof(_Vertex, norm));
-			glTexCoordPointer(2, GL_FLOAT, sizeof(_Vertex), (void*)offsetof(_Vertex, texCoords));
+			glVertexPointer(3, GL_FLOAT, sizeof(Vertex), NULL);
+			glNormalPointer(GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, norm));
+			glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id); // INDICES ID

@@ -7,18 +7,12 @@
 class ResourceMesh;
 class GameObject;
 class CompMaterial;
+struct Vertex;
 
-struct _FaceCenter
+struct FaceCenter
 {
 	float3 pos;
 	float3 norm;
-};
-
-struct _Vertex
-{
-	float3 pos;
-	float3 norm;
-	float2 texCoords;
 };
 
 enum Type_Primitive
@@ -56,10 +50,10 @@ public:
 	bool hasNormals = false;
 	uint num_vertices = 0;
 	uint num_indices = 0;
-	std::vector<_Vertex> vertices;
+	std::vector<Vertex> vertices;
 	std::vector<uint> indices;
 	std::vector<float3> vertices_normals;
-	//std::vector<_FaceCenter> face_centers;
+	//std::vector<FaceCenter> face_centers;
 
 	bool isPrimitive = false;
 	int TypePrimitive = 0;//0 nothing / 1-Sphere / 2-Cube / 3-etc...

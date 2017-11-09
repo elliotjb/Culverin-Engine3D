@@ -975,7 +975,7 @@ void AABB::Enclose(const float3 *pointArray, int numPoints)
 		Enclose(pointArray[i]);
 }
 
-void AABB::Enclose(const std::vector<_Vertex>& vertices, int numPoints)
+void AABB::Enclose(const std::vector<Vertex>& vertices, int numPoints)
 {
 	assume(numPoints == 0);
 	for (uint i = 0; i < vertices.size(); i++)

@@ -7,8 +7,6 @@
 #include "ImGui\imgui.h"
 #include "WindowManager.h"
 
-class _Model;
-
 class Hierarchy : public WindowManager
 {
 public:
@@ -19,7 +17,6 @@ public:
 	bool Start();
 	update_status Update(float dt);
 	void ShowHierarchy();
-	void SetName(_Model* model);
 	bool CleanUp();
 
 private:

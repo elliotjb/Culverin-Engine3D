@@ -6,11 +6,11 @@
 #include "GameObject.h"
 #include "WindowGame.h"
 #include "WindowSceneWorld.h"
+#include "parson.h"
 #include "SDL/include/SDL_opengl.h"
 #include "GL3W/include/glew.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
-#include "parson.h"
 
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */

@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ImportMesh.h"
 #include "ImportMaterial.h"
+#include "CompMaterial.h"
 #include "CompTransform.h"
 #include "JSONSerialization.h"
 

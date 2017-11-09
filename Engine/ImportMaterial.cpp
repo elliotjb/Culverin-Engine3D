@@ -1,4 +1,5 @@
 #include "ImportMaterial.h"
+#include "CompMaterial.h"
 #include "Devil/include/il.h"
 #include "Devil/include/ilu.h"
 #include "Devil/include/ilut.h"

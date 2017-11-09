@@ -20,8 +20,6 @@ Application::Application()
 	audio = new ModuleAudio(true);
 	renderer3D = new ModuleRenderer3D();
 	camera = new ModuleCamera3D();
-	physics = new ModulePhysics3D();
-	geometry_manager = new ModuleGeometries();
 	scene = new Scene();
 	console = new Console();
 	gui = new ModuleGUI();
@@ -44,8 +42,6 @@ Application::Application()
 	AddModule(resource_manager);
 	AddModule(input);
 	AddModule(audio);
-	AddModule(physics);
-	AddModule(geometry_manager);
 	AddModule(console);
 	AddModule(scene);
 	AddModule(gui);
@@ -58,13 +54,14 @@ Application::Application()
 
 Application::~Application()
 {
-	p2List_item<Module*>* item = list_modules.getLast();
+	std::list<Module*>::iterator item = list_modules.begin();
 
-	while(item != NULL)
+	while(item != list_modules.end())
 	{
-		delete item->data;
-		item = item->prev;
+		delete item._Ptr->_Myval;
+		item++;
 	}
+
 	RELEASE(random);
 	RELEASE(Json_seria);
 }
@@ -96,31 +93,32 @@ bool Application::Init()
 		//------------------------------------
 
 		// Call Init() in all modules
-		p2List_item<Module*>* item = list_modules.getFirst();
+		std::list<Module*>::iterator item = list_modules.begin();
 
-		while (item != NULL && ret == true)
+		while (item != list_modules.end() && ret == true)
 		{
-			if (item->data->IsEnabled())
+			if (item._Ptr->_Myval->IsEnabled())
 			{
-				config_node = json_object_get_object(config, item->data->name.c_str());
-				ret = item->data->Init(config_node);
+				config_node = json_object_get_object(config, item._Ptr->_Myval->name.c_str());
+				ret = item._Ptr->_Myval->Init(config_node);
 			}
-			item = item->next;
+			item++;
 		}
 
 		// After all Init calls we call Start() in all modules
 		LOG("Application Start --------------");
-		item = list_modules.getFirst();
+		item = list_modules.begin();
 
-		while (item != NULL && ret == true)
+		while (item != list_modules.end() && ret == true)
 		{
-			if (item->data->IsEnabled())
-				ret = item->data->Start();
-			item = item->next;
+			if (item._Ptr->_Myval->IsEnabled())
+			{
+				ret = item._Ptr->_Myval->Start();
+			}
+			item++;
 		}
 		realTime.engineStart_time.Start();
 		realTime.ms_timer.Start();
-
 	}
 	return ret;
 }
@@ -197,17 +195,17 @@ void Application::FinishUpdate()
 	ms_log[ms_index] = realTime.last_frame_ms;
 
 	//Get all performance data-------------------
-	p2List_item<Module*>* item = list_modules.getFirst();
+	std::list<Module*>::iterator item = list_modules.begin();
 
-	while (item != NULL)
+	while (item != list_modules.end())
 	{
-		if (item->data->IsEnabled())
+		if (item._Ptr->_Myval->IsEnabled())
 		{
-			item->data->pre_log[ms_index] = item->data->preUpdate_t;
-			item->data->up_log[ms_index] = item->data->Update_t;
-			item->data->post_log[ms_index] = item->data->postUpdate_t;
+			item._Ptr->_Myval->pre_log[ms_index] = item._Ptr->_Myval->preUpdate_t;
+			item._Ptr->_Myval->up_log[ms_index] = item._Ptr->_Myval->Update_t;
+			item._Ptr->_Myval->post_log[ms_index] = item._Ptr->_Myval->postUpdate_t;
 		}
-		item = item->next;
+		item++;
 	}
 
 	ms_index = (ms_index + 1) % IM_ARRAYSIZE(ms_log); //ms_index works for all the logs (same size)
@@ -242,28 +240,28 @@ update_status Application::Update()
 	}
 	// ---------------------------------------------------------
 	
-	p2List_item<Module*>* item = list_modules.getFirst();
-	while(item != NULL && ret == UPDATE_CONTINUE)
+	std::list<Module*>::iterator item = list_modules.begin();
+	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
-		if (item->data->IsEnabled())
+		if (item._Ptr->_Myval->IsEnabled())
 		{
-			if (item->data == camera)
+			if (item._Ptr->_Myval == camera)
 			{
-				ret = item->data->PreUpdate(realTime.dt); // Camera can't be affected by Game Time Scale (0 dt = 0 movement)
+				ret = item._Ptr->_Myval->PreUpdate(realTime.dt); // Camera can't be affected by Game Time Scale (0 dt = 0 movement)
 			}
 			else
 			{
 				if (engineState == EngineState::PLAY || engineState == EngineState::PLAYFRAME)
 				{
-					ret = item->data->PreUpdate(realTime.dt * gameTime.timeScale);
+					ret = item._Ptr->_Myval->PreUpdate(realTime.dt * gameTime.timeScale);
 				}
 				else if (engineState == EngineState::PAUSE || engineState == EngineState::STOP)
 				{
-					ret = item->data->PreUpdate(0);
+					ret = item._Ptr->_Myval->PreUpdate(0);
 				}
 			}
 		}
-		item = item->next;
+		item++;
 	}
 
 	ImGui_ImplSdlGL3_NewFrame(window->window);
@@ -272,53 +270,53 @@ update_status Application::Update()
 	((SceneWorld*)App->gui->winManager[SCENEWORLD])->GetWindowParams(SceneDock.x, SceneDock.y, SceneDock.z, SceneDock.w);
 	ImGuizmo::BeginFrame(SceneDock.x, SceneDock.y, SceneDock.z, SceneDock.w);
 
-	item = list_modules.getFirst();
+	item = list_modules.begin();
 
-	while(item != NULL && ret == UPDATE_CONTINUE)
+	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
-		if (item->data->IsEnabled())
+		if (item._Ptr->_Myval->IsEnabled())
 		{
-			if (item->data == camera)
+			if (item._Ptr->_Myval == camera)
 			{
-				ret = item->data->Update(realTime.dt); // Camera can't be affected by Game Time Scale (0 dt = 0 movement)
+				ret = item._Ptr->_Myval->Update(realTime.dt); // Camera can't be affected by Game Time Scale (0 dt = 0 movement)
 			}
 			else
 			{
 				if (engineState == EngineState::PLAY || engineState == EngineState::PLAYFRAME)
 				{
-					ret = item->data->Update(realTime.dt * gameTime.timeScale);
+					ret = item._Ptr->_Myval->Update(realTime.dt * gameTime.timeScale);
 				}
 				else if (engineState == EngineState::PAUSE || engineState == EngineState::STOP)
 				{
-					ret = item->data->Update(0);
+					ret = item._Ptr->_Myval->Update(0);
 				}
 			}
 		}
-		item = item->next;
+		item++;
 	}
 
-	item = list_modules.getFirst();
-	while (item != NULL && ret == UPDATE_CONTINUE)
+	item = list_modules.begin();
+	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
-		if (item->data->IsEnabled())
+		if (item._Ptr->_Myval->IsEnabled())
 		{
-			if (item->data == camera)
+			if (item._Ptr->_Myval == camera)
 			{
-				ret = item->data->PostUpdate(realTime.dt); // Camera can't be affected by Game Time Scale (0 dt = 0 movement)
+				ret = item._Ptr->_Myval->PostUpdate(realTime.dt); // Camera can't be affected by Game Time Scale (0 dt = 0 movement)
 			}
 			else
 			{
 				if (engineState == EngineState::PLAY || engineState == EngineState::PLAYFRAME)
 				{
-					ret = item->data->PostUpdate(realTime.dt * gameTime.timeScale);
+					ret = item._Ptr->_Myval->PostUpdate(realTime.dt * gameTime.timeScale);
 				}
 				else if (engineState == EngineState::PAUSE || engineState == EngineState::STOP)
 				{
-					ret = item->data->PostUpdate(0);
+					ret = item._Ptr->_Myval->PostUpdate(0);
 				}
 			}
 		}
-		item = item->next;
+		item++;
 	}
 
 	//CONFIG WINDOW ----------------------------
@@ -328,7 +326,7 @@ update_status Application::Update()
 	if (showperformance)
 	{
 		static bool stop_perf = false;
-		item = list_modules.getFirst();
+		item = list_modules.begin();
 
 		if (!ImGui::Begin("PERFORMANCE", &showperformance, ImGuiWindowFlags_ShowBorders | ImGuiWindowFlags_NoCollapse))
 		{
@@ -338,13 +336,13 @@ update_status Application::Update()
 		else if (stop_perf == false)
 		{
 			ImGui::Spacing();
-			while (item != NULL)
+			while (item != list_modules.end())
 			{
-				if (item->data->IsEnabled())
+				if (item._Ptr->_Myval->IsEnabled())
 				{
-					item->data->ShowPerformance(ms_index);
+					item._Ptr->_Myval->ShowPerformance(ms_index);
 				}
-				item = item->next;
+				item++;
 			}
 			ImGui::End();
 		}
@@ -360,10 +358,10 @@ void Application::Config()
 {
 	if (showconfig)
 	{
-		p2List_item<Module*>* item = list_modules.getFirst();
 		static bool stop_conf = false;
 		bool ret = true;
-		item = list_modules.getFirst();
+		std::list<Module*>::iterator item = list_modules.begin();
+		item = list_modules.begin();
 
 		if (!BeginDock("CONFIGURATION", &showconfig, 0))
 		{
@@ -470,23 +468,22 @@ void Application::Config()
 				configuration->_EndDock();
 			}
 
-			while (item != NULL && ret == UPDATE_CONTINUE)
+			while (item != list_modules.end() && ret == UPDATE_CONTINUE)
 			{
-				if (item->data->IsEnabled() && item->data->haveConfig)
+				if (item._Ptr->_Myval->IsEnabled() && item._Ptr->_Myval->haveConfig)
 				{
 					static bool* closeButton = NULL;
-					if (!configuration->_BeginDock(item->data->name.c_str(), closeButton, ImGuiWindowFlags_NoCollapse))
+					if (!configuration->_BeginDock(item._Ptr->_Myval->name.c_str(), closeButton, ImGuiWindowFlags_NoCollapse))
 					{
 						configuration->_EndDock();
 					}
 					else
 					{
-						ret = item->data->UpdateConfig(realTime.dt);
+						ret = item._Ptr->_Myval->UpdateConfig(realTime.dt);
 						configuration->_EndDock();
 					}
 				}
-
-				item = item->next;
+				item++;
 			}
 			configuration->_EndWorkspace();
 			EndDock();
@@ -506,15 +503,15 @@ bool Application::CleanUp()
 	//Before Cleaning, save data to config file
 	SaveConfig();
 
-	p2List_item<Module*>* item = list_modules.getLast();
+	std::list<Module*>::iterator item = list_modules.end();
 
-	while(item != NULL && ret == true)
+	while (item != list_modules.begin() && ret == true)
 	{
-		if (item->data->IsEnabled())
+		if (item._Ptr->_Myval->IsEnabled())
 		{
-			ret = item->data->CleanUp();
+			item--;
+			ret = item._Ptr->_Myval->CleanUp();
 		}
-		item = item->prev;
 	}
 	return ret;
 }
@@ -565,13 +562,13 @@ bool Application::SaveConfig()
 
 
 		//Iterate all modules to save each respective info
-		p2List_item<Module*>* item = list_modules.getFirst();
+		std::list<Module*>::iterator item = list_modules.end();
 
-		while (item != NULL && ret == true)
+		while (item != list_modules.begin() && ret == true)
 		{
-			config_node = json_object_get_object(config, item->data->name.c_str());
-			ret = item->data->SaveConfig(config_node);
-			item = item->next;
+			config_node = json_object_get_object(config, item._Ptr->_Myval->name.c_str());
+			ret = item._Ptr->_Myval->SaveConfig(config_node);
+			item++;
 		}
 
 		json_serialize_to_file(config_file, "config.json");
@@ -657,7 +654,7 @@ void Application::ChangeCamera(const char* window)
 
 void Application::AddModule(Module* mod)
 {
-	list_modules.add(mod);
+	list_modules.push_back(mod);
 }
 
 static void *counted_malloc(size_t size) {

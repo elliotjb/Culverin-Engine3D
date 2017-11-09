@@ -1,9 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-#include "glmath.h"
-#include "_Model.h"
-#include "BaseGeometry.h"
+#include "Geometry/LineSegment.h"
 #include <map>
 
 class GameObject;

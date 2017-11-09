@@ -43,9 +43,6 @@
     <Filter Include="Engine\Parson">
       <UniqueIdentifier>{b19f9a02-ebed-4122-83b4-caf0bb4431ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Modules\Geometries">
-      <UniqueIdentifier>{15bcc5f3-901e-4481-a9ee-7f498dc4f2d5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{4ae33826-973f-492a-b2c3-1b1685d9677e}</UniqueIdentifier>
     </Filter>
@@ -84,26 +81,11 @@
     <ClInclude Include="ModuleWindow.h">
       <Filter>Engine\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="p2DynArray.h">
-      <Filter>Engine\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="p2List.h">
-      <Filter>Engine\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Point.h">
-      <Filter>Engine\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="glmath.h">
-      <Filter>Engine\Containers</Filter>
-    </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Globals.h">
       <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Primitive.h">
-      <Filter>Engine\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Engine\Containers</Filter>
@@ -113,15 +95,6 @@
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Engine\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="ModulePhysics3D.h">
-      <Filter>Engine\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysBody3D.h">
-      <Filter>Engine\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysVehicle3D.h">
-      <Filter>Engine\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Engine\Modules\Scene</Filter>
@@ -336,29 +309,11 @@
     <ClInclude Include="resource.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="_Cylinder.h">
-      <Filter>Engine\Modules\Geometries</Filter>
-    </ClInclude>
-    <ClInclude Include="_Cube.h">
-      <Filter>Engine\Modules\Geometries</Filter>
-    </ClInclude>
-    <ClInclude Include="_Sphere.h">
-      <Filter>Engine\Modules\Geometries</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleTextures.h">
       <Filter>Engine\Modules</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_dock_v2.h">
       <Filter>Engine\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="_Model.h">
-      <Filter>Engine\Modules\Geometries</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseGeometry.h">
-      <Filter>Engine\Modules\Geometries</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleGeometries.h">
-      <Filter>Engine\Modules\Geometries</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Engine\Modules\Scene\Components</Filter>
@@ -371,9 +326,6 @@
     </ClInclude>
     <ClInclude Include="mmgr\nommgr.h">
       <Filter>Engine\mmgr</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleLoader.h">
-      <Filter>Engine\Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleImporter.h">
       <Filter>Engine\Modules\Importer</Filter>
@@ -415,9 +367,6 @@
       <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
     <ClInclude Include="WindowInspector.h">
-      <Filter>Engine\Modules\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowObjectsUI.h">
       <Filter>Engine\Modules\UI</Filter>
     </ClInclude>
     <ClInclude Include="WindowProject.h">
@@ -476,25 +425,10 @@
     <ClCompile Include="Main.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="glmath.cpp">
-      <Filter>Engine\Containers</Filter>
-    </ClCompile>
-    <ClCompile Include="Primitive.cpp">
-      <Filter>Engine\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="Color.cpp">
       <Filter>Engine\Containers</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
-      <Filter>Engine\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="ModulePhysics3D.cpp">
-      <Filter>Engine\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysBody3D.cpp">
-      <Filter>Engine\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysVehicle3D.cpp">
       <Filter>Engine\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
@@ -614,29 +548,11 @@
     <ClCompile Include="ImGui\imgui_impl_sdl_gl3.cpp">
       <Filter>Engine\ImGUI</Filter>
     </ClCompile>
-    <ClCompile Include="_Cylinder.cpp">
-      <Filter>Engine\Modules\Geometries</Filter>
-    </ClCompile>
-    <ClCompile Include="_Cube.cpp">
-      <Filter>Engine\Modules\Geometries</Filter>
-    </ClCompile>
-    <ClCompile Include="_Sphere.cpp">
-      <Filter>Engine\Modules\Geometries</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleTextures.cpp">
       <Filter>Engine\Modules</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_dock_v2.cpp">
       <Filter>Engine\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="_Model.cpp">
-      <Filter>Engine\Modules\Geometries</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseGeometry.cpp">
-      <Filter>Engine\Modules\Geometries</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleGeometries.cpp">
-      <Filter>Engine\Modules\Geometries</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Engine\Modules\Scene\Components</Filter>
@@ -646,9 +562,6 @@
     </ClCompile>
     <ClCompile Include="mmgr\mmgr.cpp">
       <Filter>Engine\mmgr</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleLoader.cpp">
-      <Filter>Engine\Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleImporter.cpp">
       <Filter>Engine\Modules\Importer</Filter>
@@ -690,9 +603,6 @@
       <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
     <ClCompile Include="WindowInspector.cpp">
-      <Filter>Engine\Modules\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowObjectsUI.cpp">
       <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
     <ClCompile Include="WindowProject.cpp">

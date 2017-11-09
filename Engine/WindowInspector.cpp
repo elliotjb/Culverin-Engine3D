@@ -1,6 +1,5 @@
-#include "WindowInspector.h"
-#include "_Model.h"
 #include "Application.h"
+#include "WindowInspector.h"
 #include "GameObject.h"
 
 Inspector::Inspector() : WindowManager()

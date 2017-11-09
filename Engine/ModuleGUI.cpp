@@ -3,7 +3,6 @@
 #include "Application.h"
 #include "ModuleConsole.h"
 #include "WindowHardware.h"
-#include "ModuleGeometries.h"
 #include "WindowInspector.h"
 #include "WindowHierarchy.h"
 #include "WindowSceneWorld.h"
@@ -15,7 +14,6 @@
 #include "Gl3W\include\glew.h"
 #include "Algorithm\Random\LCG.h"
 #include "SDL\include\SDL.h"
-#include "WindowObjectsUI.h"
 
 ModuleGUI::ModuleGUI(bool start_enabled): Module(start_enabled)
 {
@@ -50,13 +48,12 @@ bool ModuleGUI::Start()
 	App->scene->gameBuff->Create(App->window->GetWidth(), App->window->GetHeight());
 
 
-	winManager.push_back(new Hardware());   //0---- HARDWARE
-	winManager.push_back(new ModuleObjectsUI()); //1---- WINDOW_OBJECTS
-	winManager.push_back(new Inspector()); //2---- INSPECTOR
-	winManager.push_back(new Hierarchy()); //3---- Hierarchy
-	winManager.push_back(new SceneWorld()); //4---- SceneWorld
-	winManager.push_back(new Project()); //5---- Project
-	winManager.push_back(new WindowGame()); //6----- WindowGame
+	winManager.push_back(new Hardware());		//0---- HARDWARE
+	winManager.push_back(new Inspector());		//1---- INSPECTOR
+	winManager.push_back(new Hierarchy());		//2---- Hierarchy
+	winManager.push_back(new SceneWorld());		//3---- SceneWorld
+	winManager.push_back(new Project());		//4---- Project
+	winManager.push_back(new WindowGame());		//5----- WindowGame
 
 	
 	//TODO ELLIOT NEED ACTIVE bye JSON, Also Console
