@@ -478,12 +478,18 @@ GameObject* Scene::CreateSphere(GameObject* parent)
 	mesh->TypePrimitive = 1;
 
 	float3* vertices_array = new float3[SPHERE_DEFINITION];
+	float3* normals = new float3[SPHERE_DEFINITION];
 
 	Sphere* sphere = new Sphere(float3::zero, 1);
-	sphere->Triangulate(vertices_array, NULL, NULL, SPHERE_DEFINITION, false);
+	sphere->Triangulate(vertices_array, normals, NULL, SPHERE_DEFINITION, false);
 	
 	Init_IndexVertex(vertices_array, SPHERE_DEFINITION, mesh);
 	mesh->InitRanges(mesh->vertices.size(), mesh->indices.size(), 0);
+	for (int i = 0; i < SPHERE_DEFINITION; i++)
+	{
+		mesh->vertices_normals.push_back(normals[i]);
+	}
+	mesh->hasNormals = true;
 	mesh->SetupMesh();
 	mesh->Enable();
 

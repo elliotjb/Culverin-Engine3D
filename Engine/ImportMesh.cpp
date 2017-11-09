@@ -39,6 +39,7 @@ bool ImportMesh::Import(const aiScene* scene, aiMesh* mesh, GameObject* obj, con
 	Texture* texture = nullptr;
 
 	CompMesh* meshComp = (CompMesh*)obj->AddComponent(C_MESH);
+	//ResourceMesh* resourceMesh = App->resource_manager->CreateNewResource(Resource::Type::MESH);
 
 	if (mesh != nullptr)
 	{

@@ -185,15 +185,29 @@ void GameObject::ShowHierarchy()
 		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.00f, 1.00f, 1.00f, 1.00f));
 	}
 
-	if (ImGui::TreeNodeEx(name))
+	if (ImGui::TreeNodeEx(name, 0))
 	{
 		ImGui::PopStyleColor();
+
+		if (App->scene->drag != nullptr)
+		{
+			if (ImGui::IsItemHoveredRect())
+			{
+				if (App->scene->drag != this)
+				{
+					ImGui::BeginTooltip();
+					ImGui::Text("Move %s to %s", App->scene->drag->GetName(), this->GetName());
+					ImGui::EndTooltip();
+				}
+			}
+		}
 
 		if (ImGui::IsItemClicked())
 		{
 			//Set inspector window of this Game Object
 			((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(this);
 			App->camera->SetFocus(this);
+			App->scene->drag = this;
 		}
 
 		if (ImGui::BeginPopupContextItem("Create"))

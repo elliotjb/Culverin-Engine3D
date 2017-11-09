@@ -25,7 +25,7 @@ struct FaceCenter
 	float3 norm;
 };
 
-struct Vertex
+struct VertexOld
 {
 	float3 pos;
 	float3 norm;
@@ -43,7 +43,7 @@ class Mesh
 {
 public:
 	Mesh();
-	Mesh(std::vector<Vertex> vertices, std::vector<uint> indices, std::vector<Texture> textures, bool normals, uint faces, const char* name, float3 pos, float3 rot, float3 scale);
+	Mesh(std::vector<VertexOld> vertices, std::vector<uint> indices, std::vector<Texture> textures, bool normals, uint faces, const char* name, float3 pos, float3 rot, float3 scale);
 	~Mesh();
 
 	void Clear();
@@ -62,7 +62,7 @@ public:
 	Color color = White;
 
 	std::string name;
-	std::vector<Vertex> vertices;
+	std::vector<VertexOld> vertices;
 	std::vector<uint> indices;
 	std::vector<Texture> textures;
 	std::vector<FaceCenter> face_centers;

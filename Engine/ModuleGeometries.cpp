@@ -80,7 +80,7 @@ bool ModuleGeometries::Index_vert(float3* vertex_triangulate, uint num_vertex, M
 		}
 		if (temp == false)
 		{
-			Vertex vertex;
+			VertexOld vertex;
 			all_index.push_back(vertex_triangulate[i]);
 			mesh->indices.push_back(all_index.size() - 1);
 			vertex.pos = vertex_triangulate[i];

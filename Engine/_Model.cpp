@@ -159,7 +159,7 @@ void _Model::ProcessNode(aiNode* node, const aiScene* scene, float3* min, float3
 
 Mesh _Model::ProcessMesh(aiMesh * mesh, const aiScene * scene, float3 * min, float3 * max, aiMatrix4x4 transform, const char* name)
 {
-	std::vector<Vertex> vertices;
+	std::vector<VertexOld> vertices;
 	std::vector<uint> indices;
 	std::vector<Texture> textures;
 	float3 vec;
@@ -168,7 +168,7 @@ Mesh _Model::ProcessMesh(aiMesh * mesh, const aiScene * scene, float3 * min, flo
 	// SET VERTEX DATA -------------------------------
 	for (uint i = 0; i < mesh->mNumVertices; i++)
 	{
-		Vertex vertex;
+		VertexOld vertex;
 
 		// Vertex Positions ------------------
 		vec.x = mesh->mVertices[i].x;

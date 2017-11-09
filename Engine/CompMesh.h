@@ -4,6 +4,7 @@
 #include "Math/float2.h"
 #include <vector>
 
+class ResourceMesh;
 class GameObject;
 class CompMaterial;
 
@@ -75,4 +76,5 @@ private:
 	//GameObject* parent = nullptr;
 
 	CompMaterial* material = nullptr;
+	ResourceMesh* resourceMesh = nullptr;
 };

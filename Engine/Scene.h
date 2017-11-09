@@ -62,8 +62,9 @@ public:
 
 	Quadtree quadtree;
 	bool quadtree_draw = false;
-
+	GameObject* drag = nullptr;
 private:
+
 
 	int size_plane;
 	uint skybox[6];

@@ -41,6 +41,9 @@ void Hierarchy::ShowHierarchy()
 		App->scene->gameobjects[i]->ShowHierarchy();
 	}
 
+	if (App->scene->drag && ImGui::IsMouseReleased(0))
+		App->scene->drag = nullptr;
+
 	EndDock();
 }
 

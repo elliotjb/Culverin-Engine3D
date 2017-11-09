@@ -144,7 +144,7 @@ Mesh::Mesh()
 {
 }
 
-Mesh::Mesh(std::vector<Vertex> vert, std::vector<uint> ids, std::vector<Texture> tex, bool normals, uint faces, const char* name, float3 pos, float3 rot, float3 scale)
+Mesh::Mesh(std::vector<VertexOld> vert, std::vector<uint> ids, std::vector<Texture> tex, bool normals, uint faces, const char* name, float3 pos, float3 rot, float3 scale)
 {
 	this->name = name;
 	this->pos = pos;
@@ -250,8 +250,8 @@ void Mesh::Draw()
 		glColor4f(color.r, color.g, color.b, color.a);
 
 		glBindBuffer(GL_ARRAY_BUFFER, vertices_id); //VERTEX ID
-		glVertexPointer(3, GL_FLOAT, sizeof(Vertex), NULL);
-		glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
+		glVertexPointer(3, GL_FLOAT, sizeof(VertexOld), NULL);
+		glTexCoordPointer(2, GL_FLOAT, sizeof(VertexOld), (void*)offsetof(VertexOld, texCoords));
 		
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id); // INDICES ID
@@ -308,7 +308,7 @@ void Mesh::SetupMesh()
 	glBindVertexArray(VAO);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(VertexOld), &vertices[0], GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint), &indices[0], GL_STATIC_DRAW);
@@ -321,15 +321,15 @@ void Mesh::SetupMesh()
 
 	// Vertex Positions -------------
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexOld), (void*)0);
 
 	// Vertex Normals ----------------
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, norm));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexOld), (void*)offsetof(VertexOld, norm));
 
 	// Vertex texture coords -----------
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(VertexOld), (void*)offsetof(VertexOld, texCoords));
 
 	glBindVertexArray(0);
 }
