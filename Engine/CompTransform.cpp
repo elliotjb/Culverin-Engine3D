@@ -6,7 +6,6 @@
 #include "ModuleCamera3D.h"
 #include "ModuleRenderer3D.h"
 #include "CompCamera.h"
-
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
@@ -27,7 +26,7 @@ void CompTransform::Init(float3 p, float3 r, float3 s)
 
 void CompTransform::Update(float dt)
 {
-	if (/*toUpdate*/1)
+	if (toUpdate)
 	{
 		UpdateMatrix();
 		toUpdate = false;
@@ -282,23 +281,9 @@ void CompTransform::ResetMatrix()
 	toUpdate = true;
 }
 
-void CompTransform::SetTransform(float4x4 transform)
+void CompTransform::SetGlobalTransform(float4x4 transform)
 {
-	//TRANSFORM DATA ---------------------------
-	Quat rot_quat;
-	float3 pos, rot, scal;
-	float3 pos_vec, rot_vec, scal_vec;
-
-	transform.Decompose(scal, rot_quat, pos);
-	rot = rot_quat.ToEulerXYZ();
-
-	pos_vec.Set(pos.x, pos.y, pos.z);
-	rot_vec.Set(rot.x, rot.y, rot.z);
-	scal_vec.Set(scal.x, scal.y, scal.z);
-	SetPos(pos_vec);
-	SetRot(rot_vec);
-	SetScale(scal_vec);
-	//------------------------------------------
+	global_transform = transform;
 }
 
 void CompTransform::SetLocalTransform()
@@ -312,6 +297,11 @@ void CompTransform::UpdateMatrix()
 	global_transform = TransformToGlobal();
 
 	parent->UpdateMatrixRecursive();
+}
+
+void CompTransform::MultMatrix(float4x4 matrix)
+{
+	global_transform = matrix * global_transform;
 }
 
 float3 CompTransform::GetPos() const
@@ -364,7 +354,7 @@ float4x4 CompTransform::GetParentTransform() const
 
 float4x4 CompTransform::TransformToGlobal()
 {
-	return GetParentTransform() * local_transform;
+	return GetParentTransform().Inverted() * local_transform;
 }
 
 const float* CompTransform::GetMultMatrixForOpenGL() const

@@ -507,11 +507,8 @@ bool Application::CleanUp()
 
 	while (item != list_modules.begin() && ret == true)
 	{
-		//if (item._Ptr->_Myval->IsEnabled())
-		//{
-			item--;
-			ret = item._Ptr->_Myval->CleanUp();
-		//}
+		item--;
+		ret = item._Ptr->_Myval->CleanUp();
 	}
 	return ret;
 }

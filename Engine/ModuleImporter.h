@@ -29,8 +29,8 @@ public:
 	bool Init(JSON_Object* node);
 	bool Start();
 	update_status PreUpdate(float dt);
-	void ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj);
-	void ProcessTransform(aiNode* node, CompTransform* transform);
+	void ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj, const aiMatrix4x4& parent_transform);
+	void ProcessTransform(aiNode* node, CompTransform* transform, const aiMatrix4x4& parent_transform);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	update_status UpdateConfig(float dt);
