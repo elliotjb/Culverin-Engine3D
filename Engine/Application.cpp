@@ -507,11 +507,11 @@ bool Application::CleanUp()
 
 	while (item != list_modules.begin() && ret == true)
 	{
-		if (item._Ptr->_Myval->IsEnabled())
-		{
+		//if (item._Ptr->_Myval->IsEnabled())
+		//{
 			item--;
 			ret = item._Ptr->_Myval->CleanUp();
-		}
+		//}
 	}
 	return ret;
 }
@@ -562,9 +562,9 @@ bool Application::SaveConfig()
 
 
 		//Iterate all modules to save each respective info
-		std::list<Module*>::iterator item = list_modules.end();
+		std::list<Module*>::iterator item = list_modules.begin();
 
-		while (item != list_modules.begin() && ret == true)
+		while (item != list_modules.end() && ret == true)
 		{
 			config_node = json_object_get_object(config, item._Ptr->_Myval->name.c_str());
 			ret = item._Ptr->_Myval->SaveConfig(config_node);
