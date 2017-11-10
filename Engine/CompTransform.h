@@ -33,15 +33,15 @@ public:
 
 	void ResetMatrix();
 	void UpdateMatrix();
-	void MultMatrix(float4x4 matrix);
+	//void MultMatrix(float4x4 matrix);
 
 	float3 GetPos() const;
 	Quat GetRot() const;
 	float3 GetScale() const;
 	float4x4 GetLocalTransform() const;
 	float4x4 GetGlobalTransform() const;
-	float4x4 GetParentTransform() const;
-	float4x4 TransformToGlobal();
+	//float4x4 GetParentTransform() const;
+	//float4x4 TransformToGlobal();
 	const float* GetMultMatrixForOpenGL() const;
 
 	void Save(JSON_Object* object, std::string name) const;

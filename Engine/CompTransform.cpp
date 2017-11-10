@@ -325,10 +325,10 @@ void CompTransform::UpdateMatrix()
 	parent->UpdateChildsMatrices();
 }
 
-void CompTransform::MultMatrix(float4x4 matrix)
-{
-	global_transform = matrix * global_transform;
-}
+//void CompTransform::MultMatrix(float4x4 matrix)
+//{
+//	global_transform = matrix * global_transform;
+//}
 
 float3 CompTransform::GetPos() const
 {
@@ -355,33 +355,33 @@ float4x4 CompTransform::GetGlobalTransform() const
 	return global_transform;
 }
 
-float4x4 CompTransform::GetParentTransform() const
-{
-	if (parent != nullptr)
-	{
-		// Access to Parent Object
-		GameObject* parent_object = parent->GetParent();
-		if (parent_object != nullptr)
-		{
-			// Access to Parent Object Transform
-			CompTransform* transform = parent_object->GetComponentTransform();
-			if (transform != nullptr)
-			{
-				return transform->GetGlobalTransform();
-			}
-		}
-		else
-		{
-			// It hasn't got parent, so return identity
-			return float4x4::identity;
-		}
-	}
-}
+//float4x4 CompTransform::GetParentTransform() const
+//{
+//	if (parent != nullptr)
+//	{
+//		// Access to Parent Object
+//		GameObject* parent_object = parent->GetParent();
+//		if (parent_object != nullptr)
+//		{
+//			// Access to Parent Object Transform
+//			CompTransform* transform = parent_object->GetComponentTransform();
+//			if (transform != nullptr)
+//			{
+//				return transform->GetGlobalTransform();
+//			}
+//		}
+//		else
+//		{
+//			// It hasn't got parent, so return identity
+//			return float4x4::identity;
+//		}
+//	}
+//}
 
-float4x4 CompTransform::TransformToGlobal()
-{
-	return GetParentTransform().Inverted() * local_transform;
-}
+//float4x4 CompTransform::TransformToGlobal()
+//{
+//	return GetParentTransform().Inverted() * local_transform;
+//}
 
 const float* CompTransform::GetMultMatrixForOpenGL() const
 {

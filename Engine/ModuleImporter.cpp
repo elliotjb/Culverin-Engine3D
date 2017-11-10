@@ -74,16 +74,14 @@ update_status ModuleImporter::PreUpdate(float dt)
 			LOG("IMPORTING MODEL, File Path: %s", App->input->dropped_filedir);
 			std::string file;
 
-			const aiScene* scene = aiImportFile(App->input->dropped_filedir, aiProcessPreset_TargetRealtime_MaxQuality);
-			GameObject* obj = new GameObject(nullptr);
-			obj->SetName(App->GetCharfromConstChar(App->fs->FixName_directory(App->input->dropped_filedir).c_str()));
-			CompTransform* trans = (CompTransform*)obj->AddComponent(C_TRANSFORM);
-			ProcessTransform(scene->mRootNode, trans);
-			
 			//Clear vector of textures, but dont import same textures!
 			iMesh->PrepareToImport();
-			ProcessNode(scene->mRootNode, scene, obj);
+
+			const aiScene* scene = aiImportFile(App->input->dropped_filedir, aiProcessPreset_TargetRealtime_MaxQuality);
+			GameObject* obj = ProcessNode(scene->mRootNode, scene, nullptr);
+			
 			aiReleaseImport(scene);
+
 			App->scene->gameobjects.push_back(obj);
 			
 			//Now Save Serialitzate OBJ -> Prefab
@@ -120,10 +118,12 @@ update_status ModuleImporter::PreUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj)
-{
+GameObject* ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj)
+{	
+	static int count = 0;
 	GameObject* objChild = new GameObject(obj);
-	objChild->SetName(App->GetCharfromConstChar(node->mName.C_Str()));
+	std::string Name = "GameObject" + std::to_string(count++);
+	objChild->SetName(App->GetCharfromConstChar(Name.c_str()));
 
 	CompTransform* trans = (CompTransform*)objChild->AddComponent(C_TRANSFORM);
 	ProcessTransform(node, trans);
@@ -131,11 +131,23 @@ void ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject*
 	// Process all the Node's MESHES
 	for (uint i = 0; i < node->mNumMeshes; i++)
 	{
-		GameObject* newObj = new GameObject(obj);
-		newObj->SetName(App->GetCharfromConstChar(node->mName.C_Str()));
+		GameObject* newObj = nullptr;
 
-		CompTransform* newTrans = (CompTransform*)newObj->AddComponent(C_TRANSFORM);
-		ProcessTransform(node, newTrans);
+		if (node->mNumMeshes > 1)
+		{
+			newObj = new GameObject(obj);
+			std::string newName = "Submesh" + std::to_string(i);
+			newObj->SetName(App->GetCharfromConstChar(newName.c_str()));
+			CompTransform* newTrans = (CompTransform*)newObj->AddComponent(C_TRANSFORM);
+			ProcessTransform(node, newTrans);
+		}
+
+		else
+		{
+			newObj = objChild;
+			Name += "WITH_MESH";
+			newObj->SetName(App->GetCharfromConstChar(Name.c_str()));
+		}
 
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		iMesh->Import(scene, mesh, newObj, node->mName.C_Str());
@@ -146,6 +158,8 @@ void ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject*
 	{
 		ProcessNode(node->mChildren[i], scene, objChild);
 	}
+
+	return objChild;
 }
 
 void ModuleImporter::ProcessTransform(aiNode* node, CompTransform* trans)
@@ -164,6 +178,13 @@ void ModuleImporter::ProcessTransform(aiNode* node, CompTransform* trans)
 	trans->SetRot(Quat(aiRot.x, aiRot.y, aiRot.z, aiRot.w));
 	trans->SetScale(float3(aiScale.x, aiScale.y, aiScale.z));
 
+	trans->Enable();
+}
+
+void ModuleImporter::ProcessTransform(CompTransform* trans)
+{
+	//Set all variables to zero/identity
+	trans->ResetMatrix();
 	trans->Enable();
 }
 
