@@ -281,22 +281,48 @@ void CompTransform::ResetMatrix()
 	toUpdate = true;
 }
 
-void CompTransform::SetGlobalTransform(float4x4 transform)
-{
-	global_transform = transform;
-}
+//void CompTransform::SetGlobalTransform(float4x4 transform)
+//{
+//	global_transform = transform;
+//}
 
 void CompTransform::SetLocalTransform()
 {
-	local_transform = float4x4::FromTRS(position, rotation, scale);;
+	local_transform = float4x4::FromTRS(position, rotation, scale);
+}
+
+void CompTransform::SetGlobalTransform()
+{
+	global_transform = float4x4::identity;
+	std::list<const GameObject*> parents;
+	const GameObject* parent_object = parent;
+
+	// Put all parents of the game object to pass from local to global matrix
+	while (parent_object != nullptr)
+	{
+		parents.push_back(parent_object);
+		parent_object = parent_object->GetParent();
+	}
+
+	std::list<const GameObject*>::reverse_iterator item = parents.rbegin();
+	
+	// Multiply parents local transforms to get the Global transform of this game object
+	while (item !=  parents.crend())
+	{
+		float4x4 matrix = (*item)->GetComponentTransform()->GetLocalTransform();
+		global_transform = global_transform * matrix;
+		item++;
+	}
 }
 
 void CompTransform::UpdateMatrix()
 {
+	// Update Local/Global matrices of this Game Object
 	SetLocalTransform();
-	global_transform = TransformToGlobal();
+	SetGlobalTransform();
 
-	parent->UpdateMatrixRecursive();
+	// Update Global matrices of all children
+	parent->UpdateChildsMatrices();
 }
 
 void CompTransform::MultMatrix(float4x4 matrix)

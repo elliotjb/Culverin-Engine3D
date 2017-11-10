@@ -24,11 +24,12 @@ public:
 	void ShowInspectorInfo();
 
 	void SetPos(float3 pos);
-	void SetRot(float3 rot);
-	void SetRot(Quat rot);
+	void SetRot(float3 rot); //"rot" is "rotation_euler" updated, so we don't need to update it inside this method
+	void SetRot(Quat rot); //"rot" is the quaternion we want to set to our rotation quaternion
 	void SetScale(float3 scale);
-	void SetGlobalTransform(float4x4 tranformation);
 	void SetLocalTransform();
+	void SetGlobalTransform();
+	//void SetGlobalTransform(float4x4 tranformation);
 
 	void ResetMatrix();
 	void UpdateMatrix();

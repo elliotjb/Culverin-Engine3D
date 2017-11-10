@@ -78,11 +78,11 @@ update_status ModuleImporter::PreUpdate(float dt)
 			GameObject* obj = new GameObject(nullptr);
 			obj->SetName(App->GetCharfromConstChar(App->fs->FixName_directory(App->input->dropped_filedir).c_str()));
 			CompTransform* trans = (CompTransform*)obj->AddComponent(C_TRANSFORM);
-			ProcessTransform(scene->mRootNode, trans, aiMatrix4x4());
+			ProcessTransform(scene->mRootNode, trans);
 			
 			//Clear vector of textures, but dont import same textures!
 			iMesh->PrepareToImport();
-			ProcessNode(scene->mRootNode, scene, obj, aiMatrix4x4());
+			ProcessNode(scene->mRootNode, scene, obj);
 			aiReleaseImport(scene);
 			App->scene->gameobjects.push_back(obj);
 			
@@ -120,33 +120,35 @@ update_status ModuleImporter::PreUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj, const aiMatrix4x4& parent_transform)
+void ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj)
 {
+	GameObject* objChild = new GameObject(obj);
+	objChild->SetName(App->GetCharfromConstChar(node->mName.C_Str()));
+
+	CompTransform* trans = (CompTransform*)objChild->AddComponent(C_TRANSFORM);
+	ProcessTransform(node, trans);
+
 	// Process all the Node's MESHES
 	for (uint i = 0; i < node->mNumMeshes; i++)
 	{
-		//aiMatrix4x4 parent = parent_transform;
-		GameObject* objChild = new GameObject(obj);
-		objChild->SetName(App->GetCharfromConstChar(node->mName.C_Str()));
-		
-		CompTransform* trans = (CompTransform*)objChild->AddComponent(C_TRANSFORM);
-		ProcessTransform(node, trans, parent_transform * node->mTransformation);
-		
+		GameObject* newObj = new GameObject(obj);
+		newObj->SetName(App->GetCharfromConstChar(node->mName.C_Str()));
+
+		CompTransform* newTrans = (CompTransform*)newObj->AddComponent(C_TRANSFORM);
+		ProcessTransform(node, newTrans);
+
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		iMesh->Import(scene, mesh, objChild, node->mName.C_Str());
-		
-		//obj->AddChildGameObject_Load(objChild);
-						
+		iMesh->Import(scene, mesh, newObj, node->mName.C_Str());
 	}
 
 	// Process children
 	for (uint i = 0; i < node->mNumChildren; i++)
 	{
-		ProcessNode(node->mChildren[i], scene, obj, parent_transform * node->mTransformation);
+		ProcessNode(node->mChildren[i], scene, objChild);
 	}
 }
 
-void ModuleImporter::ProcessTransform(aiNode* node, CompTransform* trans, const aiMatrix4x4& p)
+void ModuleImporter::ProcessTransform(aiNode* node, CompTransform* trans)
 {
 	aiVector3D aiPos;
 	aiQuaternion aiRot;
@@ -154,19 +156,13 @@ void ModuleImporter::ProcessTransform(aiNode* node, CompTransform* trans, const 
 	aiMatrix4x4 aiMatrix;
 	float4x4 matrix;
 
-	aiMatrix = node->mTransformation.Inverse();
+	aiMatrix = node->mTransformation;
 
 	node->mTransformation.Decompose(aiScale, aiRot, aiPos);
-
-	matrix.Set(	p.a1, p.a2, p.a3, p.a4, 
-				p.b1, p.b2, p.b3, p.b4,
-				p.c1, p.c2, p.c3, p.c4, 
-				p.d1, p.d2, p.d3, p.d4 );
 
 	trans->SetPos(float3(aiPos.x, aiPos.y, aiPos.z));
 	trans->SetRot(Quat(aiRot.x, aiRot.y, aiRot.z, aiRot.w));
 	trans->SetScale(float3(aiScale.x, aiScale.y, aiScale.z));
-	trans->SetGlobalTransform(matrix);
 
 	trans->Enable();
 }

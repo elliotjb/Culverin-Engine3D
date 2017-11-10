@@ -599,11 +599,11 @@ void GameObject::AddChildGameObject_Replace(GameObject* child)
 	App->scene->gameobjects.pop_back();
 }
 
-void GameObject::UpdateMatrixRecursive()
+void GameObject::UpdateChildsMatrices()
 {
 	for (uint i = 0; i < childs.size(); i++)
 	{
-		childs[i]->GetComponentTransform()->UpdateMatrix();
+		childs[i]->GetComponentTransform()->SetGlobalTransform();
 	}
 }
 

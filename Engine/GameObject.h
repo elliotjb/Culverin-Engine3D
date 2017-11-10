@@ -60,7 +60,7 @@ public:
 	void AddChildGameObject_Replace(GameObject* child);
 
 	// Transform Modifications -----------------
-	void UpdateMatrixRecursive();
+	void UpdateChildsMatrices();
 
 	GameObject* GetParent() const;
 
