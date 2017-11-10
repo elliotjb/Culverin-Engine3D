@@ -27,7 +27,7 @@ bool ImportMesh::Load(const char* exported_file, Texture* resource)
 	return false;
 }
 
-bool ImportMesh::Import(const aiScene* scene, aiMesh* mesh, GameObject* obj, const char* name)
+bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* obj, const char* name)
 {
 	bool ret = true;
 	uint num_vertices = 0;
