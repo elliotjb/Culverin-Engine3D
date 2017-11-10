@@ -603,7 +603,7 @@ void GameObject::UpdateChildsMatrices()
 {
 	for (uint i = 0; i < childs.size(); i++)
 	{
-		childs[i]->GetComponentTransform()->SetGlobalTransform();
+		childs[i]->GetComponentTransform()->UpdateMatrix();
 	}
 }
 

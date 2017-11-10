@@ -122,8 +122,7 @@ GameObject* ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, Game
 {	
 	static int count = 0;
 	GameObject* objChild = new GameObject(obj);
-	std::string Name = "GameObject" + std::to_string(count++);
-	objChild->SetName(App->GetCharfromConstChar(Name.c_str()));
+	objChild->SetName(App->GetCharfromConstChar(node->mName.C_Str()));
 
 	CompTransform* trans = (CompTransform*)objChild->AddComponent(C_TRANSFORM);
 	ProcessTransform(node, trans);
@@ -145,8 +144,6 @@ GameObject* ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, Game
 		else
 		{
 			newObj = objChild;
-			Name += "WITH_MESH";
-			newObj->SetName(App->GetCharfromConstChar(Name.c_str()));
 		}
 
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
