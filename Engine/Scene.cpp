@@ -335,7 +335,7 @@ void Scene::Init_IndexVertex(float3 * vertex_triangulate, uint num_index, CompMe
 		{
 			if (all_index[j] == vertex_triangulate[i])
 			{
-				mesh->indices.push_back(j);
+				//mesh->indices.push_back(j);
 				temp = true;
 			}
 		}
@@ -344,9 +344,9 @@ void Scene::Init_IndexVertex(float3 * vertex_triangulate, uint num_index, CompMe
 		{
 			Vertex vertex;
 			all_index.push_back(vertex_triangulate[i]);
-			mesh->indices.push_back(all_index.size() - 1);
+			//mesh->indices.push_back(all_index.size() - 1);
 			vertex.pos = vertex_triangulate[i];
-			mesh->vertices.push_back(vertex);
+			//mesh->vertices.push_back(vertex);
 		}
 	}
 }
@@ -417,26 +417,26 @@ GameObject* Scene::CreateCube(GameObject* parent)
 	transform->Enable();
 
 	//MESH COMPONENT -------------------
-	CompMesh* mesh = (CompMesh*)obj->AddComponent(C_MESH);
-	mesh->isPrimitive = true;
-	mesh->TypePrimitive = 2;
-	mesh->InitRanges(8, 36, 0); // 0 normals by now.
+	//CompMesh* mesh = (CompMesh*)obj->AddComponent(C_MESH);
+	//mesh->isPrimitive = true;
+	//mesh->TypePrimitive = 2;
+	//mesh->InitRanges(8, 36, 0); // 0 normals by now.
 
-	OBB* box = new OBB();
-	box->pos = float3::zero;
-	box->r = float3::one;
-	box->axis[0] = float3(1, 0, 0);
-	box->axis[1] = float3(0, 1, 0);
-	box->axis[2] = float3(0, 0, 1);
+	//OBB* box = new OBB();
+	//box->pos = float3::zero;
+	//box->r = float3::one;
+	//box->axis[0] = float3(1, 0, 0);
+	//box->axis[1] = float3(0, 1, 0);
+	//box->axis[2] = float3(0, 0, 1);
 
-	obj->bounding_box = new AABB(*box);
-	float3* vertices_array = new float3[36];
+	//obj->bounding_box = new AABB(*box);
+	//float3* vertices_array = new float3[36];
 
-	obj->bounding_box->Triangulate(1, 1, 1, vertices_array, NULL, NULL, false);
+	//obj->bounding_box->Triangulate(1, 1, 1, vertices_array, NULL, NULL, false);
 
-	Init_IndexVertex(vertices_array, mesh->num_indices, mesh);
-	mesh->SetupMesh();
-	mesh->Enable();
+	//Init_IndexVertex(vertices_array, mesh->num_indices, mesh);
+	//mesh->SetupMesh();
+	//mesh->Enable();
 
 	//MATERIAL COMPONENT -------------------
 	CompMaterial* mat = (CompMaterial*)obj->AddComponent(C_MATERIAL);
@@ -484,19 +484,19 @@ GameObject* Scene::CreateSphere(GameObject* parent)
 	sphere->Triangulate(vertices_array, normals, NULL, SPHERE_DEFINITION, false);
 	
 	Init_IndexVertex(vertices_array, SPHERE_DEFINITION, mesh);
-	mesh->InitRanges(mesh->vertices.size(), mesh->indices.size(), 0);
-	for (int i = 0; i < SPHERE_DEFINITION; i++)
-	{
-		mesh->vertices_normals.push_back(normals[i]);
-	}
-	mesh->hasNormals = true;
-	mesh->SetupMesh();
-	mesh->Enable();
+	//mesh->InitRanges(mesh->vertices.size(), mesh->indices.size(), 0);
+	//for (int i = 0; i < SPHERE_DEFINITION; i++)
+	//{
+	//	mesh->vertices_normals.push_back(normals[i]);
+	//}
+	//mesh->hasNormals = true;
+	//mesh->SetupMesh();
+	//mesh->Enable();
 
-	/* Set Bounding Box */
-	obj->bounding_box = new AABB();
-	obj->bounding_box->SetNegativeInfinity();
-	obj->bounding_box->Enclose(mesh->vertices, mesh->num_vertices);
+	///* Set Bounding Box */
+	//obj->bounding_box = new AABB();
+	//obj->bounding_box->SetNegativeInfinity();
+	//obj->bounding_box->Enclose(mesh->vertices, mesh->num_vertices);
 
 	// MATERIAL COMPONENT -------------------
 	CompMaterial* mat = (CompMaterial*)obj->AddComponent(C_MATERIAL);

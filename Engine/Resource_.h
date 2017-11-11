@@ -1,5 +1,6 @@
 #pragma once
-#include "Globals.h"
+#include "Globals.h"
+
 
 class Resource
 {
@@ -7,8 +8,7 @@ public:
 	enum Type {
 		UNKNOWN,
 		MATERIAL,
-		MESH,
-		PREFAB,
+		MESH
 	};
 
 public:
@@ -18,8 +18,12 @@ public:
 	Resource::Type GetType() const;
 	uint GetUUID() const;
 
+protected:
+	Type type = UNKNOWN;
+	uint uid = 0;
 
 public:
-	Type type = UNKNOWN;	uint uid = 0;
+	char* name = "Name Resource";
+	uint uuid_mesh = 0;
 };
 

@@ -14,8 +14,6 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-#include "resource.h"
-
 
 enum main_states
 {

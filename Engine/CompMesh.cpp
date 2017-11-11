@@ -36,117 +36,6 @@ CompMesh::~CompMesh()
 //	SetupMesh();
 //}
 
-void CompMesh::InitRanges(uint num_vert, uint num_ind, uint num_normals)
-{
-	num_vertices = num_vert;
-	num_indices = num_ind;
-
-	if (num_normals > 0)
-	{
-		hasNormals = true;
-	}
-}
-
-void CompMesh::Init(const float3* vert, const uint* ind, const float3* vert_normals, const float2* texCoord)
-{
-
-	// SET VERTEX DATA -------------------------------
-	for (uint i = 0; i < num_vertices; i++)
-	{
-		Vertex ver;
-		// Vertex Positions ------------------
-		ver.pos = vert[i];
-
-		// Vertex Normals --------------------
-		if (hasNormals)
-		{
-			ver.norm = vert_normals[i];
-		}
-		else
-		{
-			ver.norm.Set(0, 0, 0);
-		}
-
-		// Vertex Tex Coords ------------------
-		ver.texCoords = texCoord[i];
-
-		vertices.push_back(ver);
-	}
-
-	// SET INDEX DATA -----------------------------------------
-	for (uint i = 0; i < num_indices; i++)
-	{
-		indices.push_back(ind[i]);
-	}
-
-	//NORMALS ARRAY ---------
-	for (int i = 0; i < num_vertices; i++)
-	{
-		vertices_normals.push_back(float3(vertices[i].pos.x, vertices[i].pos.y, vertices[i].pos.z));
-		vertices_normals.push_back(float3(vertices[i].pos.x + vertices[i].norm.x, vertices[i].pos.y + vertices[i].norm.y, vertices[i].pos.z + vertices[i].norm.z));
-	}
-
-
-	//// SET MATERIAL DATA -----------------------------------------
-	//if (mesh->mMaterialIndex >= 0)
-	//{
-	//	aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
-	//	std::vector<Texture> diffuseMaps = loadMaterialTextures(mat, aiTextureType_DIFFUSE, "texture_diffuse");
-	//	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-
-	//	// For the moment, we can only see textures on the diffuse channel, but we can load the specular ones
-	//	std::vector<Texture> specularMaps = loadMaterialTextures(mat, aiTextureType_SPECULAR, "texture_specular");
-	//	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-	//}
-
-	////TRANSFORM DATA ---------------------------
-	//aiQuaternion rot_quat;
-	//aiVector3D pos, rot, scal;
-	//float3 pos_vec, rot_vec, scal_vec;
-
-	//transform.Decompose(scal, rot_quat, pos);
-	//rot = rot_quat.GetEuler();
-
-	//pos_vec.Set(pos.x, pos.y, pos.z);
-	//rot_vec.Set(rot.x, rot.y, rot.z);
-	//scal_vec.Set(scal.x, scal.y, scal.z);
-	//------------------------------------------
-}
-
-void CompMesh::SetupMesh()
-{
-	//glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &vertices_id);
-	glGenBuffers(1, &indices_id);
-	glGenBuffers(1, &vertices_norm_id);
-
-	//glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint), &indices[0], GL_STATIC_DRAW);
-
-	if (hasNormals)
-	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertices_norm_id);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertices_normals.size() * sizeof(float3), &vertices_normals[0], GL_STATIC_DRAW);
-	}
-
-	//// Vertex Positions -------------
-	//glEnableVertexAttribArray(0);
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-
-	//// Vertex Normals ----------------
-	//glEnableVertexAttribArray(1);
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, norm));
-
-	//glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-
 void CompMesh::ShowInspectorInfo()
 {
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
@@ -157,9 +46,9 @@ void CompMesh::ShowInspectorInfo()
 		ImGui::Text("Name:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", name);
 		ImGui::Text("Vertices:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", num_vertices);
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", resourceMesh->num_vertices);
 		ImGui::Text("Indices:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", num_indices);
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", resourceMesh->num_indices);
 		
 		ImGui::Checkbox("Render", &render);
 
@@ -184,7 +73,7 @@ void CompMesh::Draw()
 			glMultMatrixf(transform->GetMultMatrixForOpenGL());
 		}
 
-		if (vertices.size() > 0 && indices.size() > 0)
+		if (resourceMesh->vertices.size() > 0 && resourceMesh->indices.size() > 0)
 		{
 			glEnableClientState(GL_VERTEX_ARRAY);
 			glEnableClientState(GL_NORMAL_ARRAY);
@@ -213,22 +102,22 @@ void CompMesh::Draw()
 				glBindTexture(GL_TEXTURE_2D, temp->GetTextureID());
 			}
 
-			glBindBuffer(GL_ARRAY_BUFFER, vertices_id); //VERTEX ID
+			glBindBuffer(GL_ARRAY_BUFFER, resourceMesh->vertices_id); //VERTEX ID
 			glVertexPointer(3, GL_FLOAT, sizeof(Vertex), NULL);
 			glNormalPointer(GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, norm));
 			glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id); // INDICES ID
-			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, resourceMesh->indices_id); // INDICES ID
+			glDrawElements(GL_TRIANGLES, resourceMesh->indices.size(), GL_UNSIGNED_INT, NULL);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 			// NORMALS ----------------------------------
 			if (App->renderer3D->normals && hasNormals)
 			{
-				glBindBuffer(GL_ARRAY_BUFFER, vertices_norm_id);
+				glBindBuffer(GL_ARRAY_BUFFER, resourceMesh->vertices_norm_id);
 				glVertexPointer(3, GL_FLOAT, sizeof(float3), NULL);
-				glDrawArrays(GL_LINES, 0, vertices.size() * 2);
+				glDrawArrays(GL_LINES, 0, resourceMesh->vertices.size() * 2);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 			}
 
@@ -282,9 +171,9 @@ void CompMesh::LinkMaterial(CompMaterial * mat)
 	}
 }
 
-void CompMesh::SetUUIDMesh(uint uuid)
+void CompMesh::SetResource(ResourceMesh* resourse_mesh)
 {
-	uuid_mesh = uuid;
+	resourceMesh = resourse_mesh;
 }
 
 void CompMesh::Save(JSON_Object* object, std::string name) const
@@ -298,7 +187,7 @@ void CompMesh::Save(JSON_Object* object, std::string name) const
 	}
 	else
 	{
-		json_object_dotset_number_with_std(object, name + "Directory Mesh", uuid_mesh);
+		json_object_dotset_number_with_std(object, name + "Resource Mesh ID", resourceMesh->GetUUID());
 	}
 }
 
@@ -311,47 +200,53 @@ void CompMesh::Load(const JSON_Object* object, std::string name)
 		TypePrimitive = json_object_dotget_number_with_std(object, name + "Type primitive");
 		if (TypePrimitive == 1 /*TYPE_SPHERE*/)
 		{
-			float3* vertices_array = new float3[1536];
+			//float3* vertices_array = new float3[1536];
 
-			Sphere* sphere = new Sphere(float3::zero, 1);
-			sphere->Triangulate(vertices_array, NULL, NULL, 1536, false);
+			//Sphere* sphere = new Sphere(float3::zero, 1);
+			//sphere->Triangulate(vertices_array, NULL, NULL, 1536, false);
 
-			App->scene->Init_IndexVertex(vertices_array, 1536, this);
-			InitRanges(vertices.size(), indices.size(), 0);
-			SetupMesh();
-			Enable();
+			//App->scene->Init_IndexVertex(vertices_array, 1536, this);
+			//InitRanges(vertices.size(), indices.size(), 0);
+			//SetupMesh();
+			//Enable();
 
-			/* Set Bounding Box */
-			parent->bounding_box = new AABB();
-			parent->bounding_box->SetNegativeInfinity();
-			parent->bounding_box->Enclose(vertices, num_vertices);
+			///* Set Bounding Box */
+			//parent->bounding_box = new AABB();
+			//parent->bounding_box->SetNegativeInfinity();
+			//parent->bounding_box->Enclose(vertices, num_vertices);
 		}
 		if (TypePrimitive == 2/*TYPE_CUBE*/)
 		{
-			InitRanges(8, 36, 0); // 0 normals by now.
+			//InitRanges(8, 36, 0); // 0 normals by now.
 
-			OBB* box = new OBB();
-			box->pos = float3::zero;
-			box->r = float3::one;
-			box->axis[0] = float3(1, 0, 0);
-			box->axis[1] = float3(0, 1, 0);
-			box->axis[2] = float3(0, 0, 1);
+			//OBB* box = new OBB();
+			//box->pos = float3::zero;
+			//box->r = float3::one;
+			//box->axis[0] = float3(1, 0, 0);
+			//box->axis[1] = float3(0, 1, 0);
+			//box->axis[2] = float3(0, 0, 1);
 
-			parent->bounding_box = new AABB(*box);
-			float3* vertices_array = new float3[36];
+			//parent->bounding_box = new AABB(*box);
+			//float3* vertices_array = new float3[36];
 
-			parent->bounding_box->Triangulate(1, 1, 1, vertices_array, NULL, NULL, false);
+			//parent->bounding_box->Triangulate(1, 1, 1, vertices_array, NULL, NULL, false);
 
-			App->scene->Init_IndexVertex(vertices_array, num_indices, this);
-			SetupMesh();
-			Enable();
+			//App->scene->Init_IndexVertex(vertices_array, num_indices, this);
+			//SetupMesh();
+			//Enable();
 		}
 	}
 	else
 	{
-		uuid_mesh = json_object_dotget_number_with_std(object, name + "Directory Mesh");
+		uint resourceID = json_object_dotget_number_with_std(object, name + "Resource Mesh ID");
+		resourceMesh = (ResourceMesh*)App->resource_manager->GetResource(resourceID);
 		//TODO ELLIOT -> LOAD MESH
-		const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
-		App->importer->iMesh->Load(directory, this);
+		//const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
+		if (resourceMesh->isLoaded == false)
+		{
+			App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);
+		}
+
+		Enable();
 	}
 }

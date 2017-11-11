@@ -43,9 +43,6 @@
     <Filter Include="Engine\Parson">
       <UniqueIdentifier>{b19f9a02-ebed-4122-83b4-caf0bb4431ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource">
-      <UniqueIdentifier>{4ae33826-973f-492a-b2c3-1b1685d9677e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Modules\Scene\Components">
       <UniqueIdentifier>{f93e1b93-4b03-4d39-a9fe-b23aeb1ec2aa}</UniqueIdentifier>
     </Filter>
@@ -306,9 +303,6 @@
     <ClInclude Include="ImGui\stb_truetype.h">
       <Filter>Engine\ImGUI</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleTextures.h">
       <Filter>Engine\Modules</Filter>
     </ClInclude>
@@ -384,16 +378,13 @@
     <ClInclude Include="ModuleResourceManager.h">
       <Filter>Engine\Modules\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Resource_.h">
-      <Filter>Engine\Modules\Resources</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceMaterial.h">
       <Filter>Engine\Modules\Resources</Filter>
     </ClInclude>
     <ClInclude Include="ResourceMesh.h">
       <Filter>Engine\Modules\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="ResourcePrefab.h">
+    <ClInclude Include="Resource_.h">
       <Filter>Engine\Modules\Resources</Filter>
     </ClInclude>
   </ItemGroup>
@@ -629,9 +620,6 @@
     <ClCompile Include="ResourceMesh.cpp">
       <Filter>Engine\Modules\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="ResourcePrefab.cpp">
-      <Filter>Engine\Modules\Resources</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Geometry\KDTree.inl">
@@ -641,10 +629,5 @@
       <Filter>Engine\MathGeoLib\Math</Filter>
     </None>
     <None Include="Game\config.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Resource.rc">
-      <Filter>Resource</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

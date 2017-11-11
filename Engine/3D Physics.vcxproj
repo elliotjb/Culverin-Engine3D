@@ -106,7 +106,6 @@
     <ClInclude Include="JSONSerialization.h" />
     <ClInclude Include="ResourceMaterial.h" />
     <ClInclude Include="ResourceMesh.h" />
-    <ClInclude Include="ResourcePrefab.h" />
     <ClInclude Include="Resource_.h" />
     <ClInclude Include="WindowHierarchy.h" />
     <ClInclude Include="ModuleImporter.h" />
@@ -191,7 +190,6 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="parson.h" />
     <ClInclude Include="PerfTimer.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Time\Clock.h" />
@@ -218,7 +216,6 @@
     <ClCompile Include="JSONSerialization.cpp" />
     <ClCompile Include="ResourceMaterial.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
-    <ClCompile Include="ResourcePrefab.cpp" />
     <ClCompile Include="Resource_.cpp" />
     <ClCompile Include="WindowHierarchy.cpp" />
     <ClCompile Include="ModuleImporter.cpp" />
@@ -281,9 +278,6 @@
     <None Include="Game\config.json" />
     <None Include="Geometry\KDTree.inl" />
     <None Include="Math\Matrix.inl" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

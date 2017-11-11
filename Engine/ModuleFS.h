@@ -57,7 +57,8 @@ public:
 	// Utilities ----------------------------------
 	void FixNames_directories(std::vector<std::string>& files);
 	std::string FixName_directory(std::string files);
-	std::string FixExtension(std::string file, char * newExtension);
+	std::string FixExtension(std::string file, const char* newExtension = nullptr);
+	const char* GetExtension(std::string file);
 	char* ConverttoChar(std::string name);
 	const char* ConverttoConstChar(std::string name);
 	void CreateFolder(const char* file_name);
@@ -72,11 +73,11 @@ public:
 	// float2
 	JSON_Status json_array_dotset_float2(JSON_Object *object, std::string name, float2 transform);
 	// Color - (r,g,b,w) or (x,y,z,w).
-	JSON_Status json_array_dotset_color(JSON_Object *object, std::string name, float4 transform);
+	JSON_Status json_array_dotset_float4(JSON_Object *object, std::string name, float4 transform);
 
 	float3 json_array_dotget_float3_string(const JSON_Object* object, std::string name);
 	float2 json_array_dotget_float2_string(const JSON_Object* object, std::string name);
-	float4 json_array_dotget_color_string(const JSON_Object* object, std::string name);
+	float4 json_array_dotget_float4_string(const JSON_Object* object, std::string name);
 
 
 	//Dont use at the moment --------- --------------

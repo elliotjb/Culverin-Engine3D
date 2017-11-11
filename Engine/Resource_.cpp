@@ -18,3 +18,4 @@ uint Resource::GetUUID() const
 {
 	return uid;
 }
+

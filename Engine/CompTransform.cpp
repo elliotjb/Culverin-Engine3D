@@ -17,6 +17,13 @@ CompTransform::~CompTransform()
 {
 }
 
+void CompTransform::Init(float3 p, float4 r, float3 s)
+{
+	SetPos(p);
+	SetRot(Quat(r.x, r.y, r.z, r.w));
+	SetScale(s);
+}
+
 void CompTransform::Init(float3 p, float3 r, float3 s)
 {
 	SetPos(p);
@@ -396,7 +403,7 @@ void CompTransform::Save(JSON_Object* object, std::string name) const
 	// Position
 	App->fs->json_array_dotset_float3(object, name + "Position", GetPos());
 	// Rotation
-	App->fs->json_array_dotset_float3(object, name + "Rotation", GetRot().ToEulerXYZ());
+	App->fs->json_array_dotset_float4(object, name + "Rotation", float4(GetRot().x, GetRot().y, GetRot().z, GetRot().w));
 	// Scale
 	App->fs->json_array_dotset_float3(object, name + "Scale", GetScale());
 
@@ -405,7 +412,7 @@ void CompTransform::Save(JSON_Object* object, std::string name) const
 void CompTransform::Load(const JSON_Object* object, std::string name)
 {
 	float3 position = App->fs->json_array_dotget_float3_string(object, name + "Position");
-	float3 rotation = App->fs->json_array_dotget_float3_string(object, name + "Rotation");
+	float4 rotation = App->fs->json_array_dotget_float4_string(object, name + "Rotation");
 	float3 scale = App->fs->json_array_dotget_float3_string(object, name + "Scale");
 	Init(position, rotation, scale);
 	Enable();

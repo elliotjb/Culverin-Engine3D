@@ -88,6 +88,10 @@ TYPE_FILE Project::SetType(std::string name)
 		{
 			return FBX;
 		}
+		else if (temp == "FBX")
+		{
+			return FBX;
+		}
 		else if (temp == "obj")
 		{
 			return OBJ;

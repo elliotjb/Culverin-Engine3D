@@ -141,23 +141,16 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 		num_textures = text_t.size();
 	}
 	
-	//TRANSFORM DATA ---------------------------
-	//aiQuaternion rot_quat;
-	//aiVector3D pos, rot, scal;
-	//float3 pos_vec, rot_vec, scal_vec;
 
-	//transform.Decompose(scal, rot_quat, pos);
-	//rot = rot_quat.GetEuler();
-
-	//pos_vec.Set(pos.x, pos.y, pos.z);
-	//rot_vec.Set(rot.x, rot.y, rot.z);
-	//scal_vec.Set(scal.x, scal.y, scal.z);
-	//------------------------------------------
-
-	meshComp->InitRanges(num_vertices, num_indices, num_normals);
-	meshComp->Init(vertices, indices, vert_normals, tex_coords);
-	meshComp->SetupMesh();
+	//meshComp->InitRanges(num_vertices, num_indices, num_normals);
+	//meshComp->Init(vertices, indices, vert_normals, tex_coords);
+	//meshComp->SetupMesh();
 	meshComp->Enable();
+
+	// Create Resource ----------------------
+	ResourceMesh* res_mesh = (ResourceMesh*)App->resource_manager->CreateNewResource(Resource::Type::MESH);
+	meshComp->SetResource(res_mesh);
+
 
 	// ALLOCATING DATA INTO BUFFER ------------------------
 	uint ranges[3] = { num_vertices, num_indices, num_normals }; //,num_tex_coords };
@@ -201,7 +194,10 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 
 	uint uid_mesh = App->random->Int();
 	std::string fileName = std::to_string(uid_mesh);
-	meshComp->SetUUIDMesh(uid_mesh);
+	res_mesh->InitInfo(uid_mesh, name);
+	res_mesh->name = App->GetCharfromConstChar(name);
+	//res_mesh->uuid_directory = fileName.c_str();
+	//meshComp->SetUUIDMesh(uid_mesh);
 	//Save Mesh
 	App->fs->SaveFile(data, fileName, size, IMPORT_DIRECTORY_LIBRARY_MESHES);
 
@@ -211,6 +207,70 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 	return ret;
 }
 
+bool ImportMesh::LoadResource(const char* file, ResourceMesh* resourceMesh)
+{
+	char* buffer = nullptr;
+	uint num_vertices = 0;
+	uint num_indices = 0;
+	uint num_normals = 0;
+	//uint num_tex_coords = 0;
+
+	float3* vertices = nullptr;
+	uint* indices = nullptr;
+	float3* vert_normals = nullptr;
+	float2* tex_coords = nullptr;
+	//Texture* texture = nullptr;
+	// Loading File
+	uint size = App->fs->LoadFile(file, &buffer, IMPORT_DIRECTORY_LIBRARY_MESHES);
+
+	if (buffer != nullptr && size > 0)
+	{
+		char* cursor = buffer;
+
+		// Amount vertices, amount indices, amount normals
+		uint ranges[3];
+		uint bytes = sizeof(ranges);
+		memcpy(ranges, cursor, bytes);
+
+		// Set Amounts
+		num_vertices = ranges[0];
+		num_indices = ranges[1];
+		num_normals = ranges[2];
+		//num_tex_coords = ranges[3];
+
+		//Load Vertices
+		cursor += bytes;
+		bytes = sizeof(float3) * num_vertices;
+		vertices = new float3[num_vertices];
+		memcpy(vertices, cursor, bytes);
+
+		//Load Indices
+		cursor += bytes;
+		bytes = sizeof(uint) * num_indices;
+		indices = new uint[num_indices];
+		memcpy(indices, cursor, bytes);
+
+		//Load Normals
+		cursor += bytes;
+		bytes = sizeof(float3) * num_normals;
+		vert_normals = new float3[num_normals];
+		memcpy(vert_normals, cursor, bytes);
+
+		//Load Tex Coords
+		cursor += bytes;
+		bytes = sizeof(float2) * num_vertices; //num_tex_coords;
+		tex_coords = new float2[num_vertices];
+		memcpy(tex_coords, cursor, bytes);
+
+		resourceMesh->InitRanges(num_vertices, num_indices, num_normals);
+		resourceMesh->Init(vertices, indices, vert_normals, tex_coords);
+		resourceMesh->LoadToMemory();
+		resourceMesh->isLoaded = true;
+
+		LOG("Mesh %s Loaded!", file);
+	}
+	return true;
+}
 
 bool ImportMesh::Load(const char* file, CompMesh* mesh)
 {
@@ -270,9 +330,9 @@ bool ImportMesh::Load(const char* file, CompMesh* mesh)
 		//GameObject* gameobject = new GameObject();
 		//CompMesh* mesh = (CompMesh*)gameobject->AddComponent(C_MESH);
 		
-		mesh->InitRanges(num_vertices, num_indices, num_normals);
-		mesh->Init(vertices, indices, vert_normals, tex_coords);
-		mesh->SetupMesh();
+		//mesh->InitRanges(num_vertices, num_indices, num_normals);
+		//mesh->Init(vertices, indices, vert_normals, tex_coords);
+		//mesh->SetupMesh();
 		mesh->Enable();
 		
 		LOG("Mesh %s Loaded!", file);

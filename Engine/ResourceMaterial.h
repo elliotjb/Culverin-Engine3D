@@ -1,7 +1,7 @@
 #pragma once
 #include "Resource_.h"
 
-class ResourceMaterial : Resource
+class ResourceMaterial : public Resource
 {
 public:
 	ResourceMaterial(uint uid);

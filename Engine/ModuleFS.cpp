@@ -335,12 +335,21 @@ std::string ModuleFS::FixName_directory(std::string file)
 	return file;
 }
 
-std::string ModuleFS::FixExtension(std::string file, char* newExtension)
+// If newExtension == nullptr, only return name not extension
+std::string ModuleFS::FixExtension(std::string file, const char* newExtension)
 {
 	size_t EndName = file.find_last_of(".");
 	file = file.substr(0, EndName);
-	file += newExtension;
+	if(newExtension != nullptr)
+		file += newExtension;
 	return file;
+}
+
+const char* ModuleFS::GetExtension(std::string file)
+{
+	size_t EndName = file.find_last_of(".");
+	file = file.substr(EndName, 0);
+	return file.c_str();
 }
 
 char* ModuleFS::ConverttoChar(std::string name)
@@ -442,7 +451,7 @@ JSON_Status ModuleFS::json_array_dotset_float2(JSON_Object *object, std::string 
 	return JSONSuccess;
 }
 
-JSON_Status ModuleFS::json_array_dotset_color(JSON_Object *object, std::string name, float4 transform)
+JSON_Status ModuleFS::json_array_dotset_float4(JSON_Object *object, std::string name, float4 transform)
 {
 	JSON_Value* value = json_value_init_array();
 	if (value == NULL) {
@@ -480,7 +489,7 @@ float2 ModuleFS::json_array_dotget_float2_string(const JSON_Object* object, std:
 
 	return transform;
 }
-float4 ModuleFS::json_array_dotget_color_string(const JSON_Object* object, std::string name)
+float4 ModuleFS::json_array_dotget_float4_string(const JSON_Object* object, std::string name)
 {
 	JSON_Array* array = json_object_dotget_array(object, name.c_str());
 	float4 transform;

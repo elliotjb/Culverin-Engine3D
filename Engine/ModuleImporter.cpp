@@ -59,58 +59,58 @@ update_status ModuleImporter::PreUpdate(float dt)
 		//imp->Load("Baker_house.rin");
 	}
 
-	if (App->input->dropped)
-	{
-		dropped_File_type = CheckFileType(App->input->dropped_filedir);
+	//if (App->input->dropped)
+	//{
+	//	dropped_File_type = CheckFileType(App->input->dropped_filedir);
 
 
-		App->fs->CopyFileToAssets(App->input->dropped_filedir, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
-		((Project*)App->gui->winManager[WindowName::PROJECT])->UpdateNow();
+	//	App->fs->CopyFileToAssets(App->input->dropped_filedir, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
+	//	((Project*)App->gui->winManager[WindowName::PROJECT])->UpdateNow();
 
-		switch (dropped_File_type)
-		{
-		case F_MODEL_i:
-		{
-			LOG("IMPORTING MODEL, File Path: %s", App->input->dropped_filedir);
-			std::string file;
+	//	switch (dropped_File_type)
+	//	{
+	//	case F_MODEL_i:
+	//	{
+	//		LOG("IMPORTING MODEL, File Path: %s", App->input->dropped_filedir);
+	//		std::string file;
 
-			//Clear vector of textures, but dont import same textures!
-			iMesh->PrepareToImport();
+	//		//Clear vector of textures, but dont import same textures!
+	//		iMesh->PrepareToImport();
 
-			const aiScene* scene = aiImportFile(App->input->dropped_filedir, aiProcessPreset_TargetRealtime_MaxQuality);
-			GameObject* obj = ProcessNode(scene->mRootNode, scene, nullptr);
-			
-			aiReleaseImport(scene);
+	//		const aiScene* scene = aiImportFile(App->input->dropped_filedir, aiProcessPreset_TargetRealtime_MaxQuality);
+	//		GameObject* obj = ProcessNode(scene->mRootNode, scene, nullptr);
+	//		
+	//		aiReleaseImport(scene);
 
-			App->scene->gameobjects.push_back(obj);
-			
-			//Now Save Serialitzate OBJ -> Prefab
-			App->Json_seria->SavePrefab(*obj, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
-			break;
-		}
-		case F_TEXTURE_i:
-		{
-			LOG("IMPORTING TEXTURE, File Path: %s", App->input->dropped_filedir);
-			//iMaterial->Import(App->input->dropped_filedir);
-		
-			break;
-		}
-		case F_UNKNOWN_i:
-		{
-			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "UNKNOWN file type dropped on window",
-				App->input->dropped_filedir, App->window->window);
-			LOG("UNKNOWN FILE TYPE, File Path: %s", App->input->dropped_filedir);
+	//		App->scene->gameobjects.push_back(obj);
+	//		
+	//		//Now Save Serialitzate OBJ -> Prefab
+	//		App->Json_seria->SavePrefab(*obj, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
+	//		break;
+	//	}
+	//	case F_TEXTURE_i:
+	//	{
+	//		LOG("IMPORTING TEXTURE, File Path: %s", App->input->dropped_filedir);
+	//		//iMaterial->Import(App->input->dropped_filedir);
+	//	
+	//		break;
+	//	}
+	//	case F_UNKNOWN_i:
+	//	{
+	//		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "UNKNOWN file type dropped on window",
+	//			App->input->dropped_filedir, App->window->window);
+	//		LOG("UNKNOWN FILE TYPE, File Path: %s", App->input->dropped_filedir);
 
-			break;
-		}
+	//		break;
+	//	}
 
-		default:
-			break;
+	//	default:
+	//		break;
 
-		}
+	//	}
 
-		App->input->dropped = false;
-	}
+	//	App->input->dropped = false;
+	//}
 
 	Update_t = perf_timer.ReadMs();
 
@@ -206,34 +206,47 @@ bool ModuleImporter::CleanUp()
 	return true;
 }
 
-FileTypeImport ModuleImporter::CheckFileType(char * filedir)
+bool ModuleImporter::Import(const char* file, Resource::Type type)
 {
-	if (filedir != nullptr)
-	{
-		std::string file_type;
-		std::string path(filedir);
-
-		size_t extension_pos = path.find_last_of(".");
-
-		file_type = path.substr(extension_pos + 1);
-
-		//Set lowercase the extension to normalize it
-		for (std::string::iterator it = file_type.begin(); it != file_type.end(); it++)
+		switch (type)
 		{
-			*it = tolower(*it);
+		case Resource::Type::MESH:
+		{
+			LOG("IMPORTING MODEL, File Path: %s", file);
+			//Clear vector of textures, but dont import same textures!
+			iMesh->PrepareToImport();
+
+			const aiScene* scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
+			GameObject* obj = ProcessNode(scene->mRootNode, scene, nullptr);
+			obj->SetName(App->GetCharfromConstChar(App->fs->FixName_directory(App->input->dropped_filedir).c_str()));
+			
+			aiReleaseImport(scene);
+
+			//App->scene->gameobjects.push_back(obj);
+			
+			//Now Save Serialitzate OBJ -> Prefab
+			App->Json_seria->SavePrefab(*obj, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
+			break;
+		}
+		case Resource::Type::MATERIAL:
+		{
+			LOG("IMPORTING TEXTURE, File Path: %s", file);
+			//iMaterial->Import(App->input->dropped_filedir);
+		
+			break;
+		}
+		case Resource::Type::UNKNOWN:
+		{
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "UNKNOWN file type dropped on window",
+				file, App->window->window);
+			LOG("UNKNOWN FILE TYPE, File Path: %s", file);
+
+			break;
 		}
 
-		if (file_type == "png" || file_type == "jpg" || file_type == "dds")
-		{
-			return F_TEXTURE_i;
+		default:
+			break;
 		}
-		else if (file_type == "fbx" || file_type == "obj")
-		{
-			return F_MODEL_i;
-		}
-		else
-		{
-			return F_UNKNOWN_i;
-		}
-	}
+
+	return true;
 }

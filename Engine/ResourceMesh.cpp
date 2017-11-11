@@ -11,6 +11,64 @@ ResourceMesh::~ResourceMesh()
 {
 }
 
+void ResourceMesh::Init(const float3* vert, const uint* ind, const float3* vert_normals, const float2* texCoord)
+{
+	// SET VERTEX DATA -------------------------------
+	for (uint i = 0; i < num_vertices; i++)
+	{
+		Vertex ver;
+		// Vertex Positions ------------------
+		ver.pos = vert[i];
+
+		// Vertex Normals --------------------
+		if (hasNormals)
+		{
+			ver.norm = vert_normals[i];
+		}
+		else
+		{
+			ver.norm.Set(0, 0, 0);
+		}
+
+		// Vertex Tex Coords ------------------
+		ver.texCoords = texCoord[i];
+
+		vertices.push_back(ver);
+	}
+
+	// SET INDEX DATA -----------------------------------------
+	for (uint i = 0; i < num_indices; i++)
+	{
+		indices.push_back(ind[i]);
+	}
+
+	//NORMALS ARRAY ---------
+	for (int i = 0; i < num_vertices; i++)
+	{
+		vertices_normals.push_back(float3(vertices[i].pos.x, vertices[i].pos.y, vertices[i].pos.z));
+		vertices_normals.push_back(float3(vertices[i].pos.x + vertices[i].norm.x, vertices[i].pos.y + vertices[i].norm.y, vertices[i].pos.z + vertices[i].norm.z));
+	}
+}
+
+void ResourceMesh::InitRanges(uint num_vert, uint num_ind, uint num_normals)
+{
+	num_vertices = num_vert;
+	num_indices = num_ind;
+
+	if (num_normals > 0)
+	{
+		hasNormals = true;
+	}
+}
+
+void ResourceMesh::InitInfo(uint uuid, const char* nameResource)
+{
+	name = App->GetCharfromConstChar(name);
+	uuid_mesh = uuid;
+}
+
+
+
 bool ResourceMesh::LoadToMemory()
 {
 	//glGenVertexArrays(1, &VAO);

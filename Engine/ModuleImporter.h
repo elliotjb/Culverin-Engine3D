@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "GameObject.h"
+#include "ModuleResourceManager.h"
 
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -13,12 +14,12 @@ class ImportMesh;
 class ImportMaterial;
 class CompTransform;
 
-enum FileTypeImport
-{
-	F_UNKNOWN_i = -1,
-	F_MODEL_i,
-	F_TEXTURE_i
-};
+//enum FileTypeImport
+//{
+//	F_UNKNOWN_i = -1,
+//	F_MODEL_i,
+//	F_TEXTURE_i
+//};
 
 class ModuleImporter : public Module
 {
@@ -37,12 +38,13 @@ public:
 	update_status UpdateConfig(float dt);
 	bool CleanUp();
 
-	FileTypeImport CheckFileType(char* filedir);
+	bool Import(const char* file, Resource::Type type);
+	//FileTypeImport CheckFileType(char* filedir);
 	//bool Import();
 
 public:
 	char directoryExe[MAX_PATH];
-	FileTypeImport dropped_File_type = F_UNKNOWN_i;
+	//FileTypeImport dropped_File_type = F_UNKNOWN_i;
 
 	ImportMesh* iMesh = nullptr;
 	ImportMaterial* iMaterial = nullptr;

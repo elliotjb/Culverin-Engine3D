@@ -280,12 +280,12 @@ void ModuleCamera3D::CheckGeometryIntersection()
 			float4x4 object_transform = it->second->GetComponentTransform()->GetGlobalTransform();
 			ray_local_space.Transform(object_transform.Inverted());
 
-			for (uint i = 0; i < mesh->num_indices; i += 3)
+			for (uint i = 0; i < mesh->resourceMesh->num_indices; i += 3)
 			{
 				// Set Triangle vertices
-				tri.a = mesh->vertices[mesh->indices[i]].pos;
-				tri.b = mesh->vertices[mesh->indices[i + 1]].pos;
-				tri.c = mesh->vertices[mesh->indices[i + 2]].pos;
+				tri.a = mesh->resourceMesh->vertices[mesh->resourceMesh->indices[i]].pos;
+				tri.b = mesh->resourceMesh->vertices[mesh->resourceMesh->indices[i + 1]].pos;
+				tri.c = mesh->resourceMesh->vertices[mesh->resourceMesh->indices[i + 2]].pos;
 				hit = ray_local_space.Intersects(tri, &entry_dist, &hit_point);
 
 				if (hit)
