@@ -332,7 +332,7 @@ void ModuleCamera3D::CenterToObject()
 		CompTransform* transform = (CompTransform*)focus->FindComponentByType(C_TRANSFORM);
 		if (transform != nullptr)
 		{
-			point_to_look = transform->GetPos();
+			point_to_look = center;
 		}
 		else
 		{
