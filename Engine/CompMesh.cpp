@@ -101,8 +101,6 @@ void CompMesh::ShowInspectorInfo()
 				}
 			}
 		}
-
-
 		ImGui::TreePop();
 	}
 	else

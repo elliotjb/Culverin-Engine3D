@@ -22,6 +22,8 @@ public:
 
 	void LinkObject(GameObject* obj);
 	void SetLinkObjectNull();
+
+	GameObject* GetSelected() const;
 	
 	//void OpenClose();
 	//bool IsOpen();

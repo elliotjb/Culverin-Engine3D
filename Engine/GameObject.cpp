@@ -185,9 +185,22 @@ void GameObject::ShowHierarchy()
 		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.00f, 1.00f, 1.00f, 1.00f));
 	}
 	bool treeNod = false;
-	if (ImGui::TreeNodeEx(name, 0))
+	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow;
+	if (((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected() == this)
+	{
+		node_flags |= ImGuiTreeNodeFlags_Selected;
+	}
+	//ImGui::SetNextTreeNodeOpen(true);
+	if (ImGui::TreeNodeEx(name, node_flags))
 	{
 		treeNod = true;
+	}
+	if (ImGui::IsItemClicked())
+	{
+		//Set inspector window of this Game Object
+		((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(this);
+		App->camera->SetFocus(this);
+		App->scene->drag = this;
 	}
 	if (ImGui::BeginPopupContextItem("Create"))
 	{
@@ -216,14 +229,6 @@ void GameObject::ShowHierarchy()
 					ImGui::EndTooltip();
 				}
 			}
-		}
-
-		if (ImGui::IsItemClicked())
-		{
-			//Set inspector window of this Game Object
-			((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(this);
-			App->camera->SetFocus(this);
-			App->scene->drag = this;
 		}
 
 		for (uint i = 0; i < childs.size(); i++)
