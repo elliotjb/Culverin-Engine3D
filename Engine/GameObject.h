@@ -65,6 +65,7 @@ public:
 	GameObject* GetParent() const;
 
 	// Bounding Box -----------------------
+	void Addbounding_box();
 	AABB* bounding_box = nullptr;
 	AABB  box_fixed;
 	void DrawBoundingBox();

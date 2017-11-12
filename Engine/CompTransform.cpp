@@ -51,10 +51,10 @@ void CompTransform::ShowInspectorInfo()
 		SDL_GetWindowSize(App->window->window, &width, &height);
 
 		// Button Reset Values
-		static GLuint icon_options_transform = App->textures->LoadTexture("Images/UI/icon_options_transform.png");
+
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
 		ImGui::SameLine(ImGui::GetWindowWidth() - 26);
-		if (ImGui::ImageButton((ImTextureID*)icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
+		if (ImGui::ImageButton((ImTextureID*)App->scene->icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
 		{
 			ImGui::OpenPopup("Options");
 		}

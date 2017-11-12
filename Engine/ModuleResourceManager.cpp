@@ -151,8 +151,6 @@ void ModuleResourceManager::Init_IndexVertex(float3* vertex_triangulate, uint nu
 
 void ModuleResourceManager::CreateResourceCube()
 {
-
-
 	OBB* box = new OBB();
 	box->pos = float3::zero;
 	box->r = float3::one;
@@ -171,7 +169,34 @@ void ModuleResourceManager::CreateResourceCube()
 	App->importer->iMesh->Import(8, 36, 0, indices, vertices);
 }
 
-
+Resource*  ModuleResourceManager::ShowResources(bool& active)
+{
+	if (!ImGui::Begin("Select Mesh", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders)) //TODO ELLIOT CLOSE Windows example
+	{
+		ImGui::End();
+	}
+	else
+	{
+		ImGui::Text("SDL Version: ");
+		for (int i = 0; i < resources.size(); i++)
+		{
+			ImGui::PushID(i);
+			ImGui::ButtonEx(resources[i]->name);
+			if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
+			{
+				if (ImGui::IsMouseDoubleClicked(0))
+				{
+					ImGui::PopID();
+					ImGui::End();
+					return GetResource(i);
+				}
+			}
+			ImGui::PopID();
+		}
+		ImGui::End();
+	}
+	return nullptr;
+}
 
 void ModuleResourceManager::Save()
 {

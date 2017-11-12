@@ -612,6 +612,18 @@ GameObject* GameObject::GetParent() const
 	return parent;
 }
 
+void GameObject::Addbounding_box()
+{
+	OBB* box = new OBB();
+	box->pos = float3::zero;
+	box->r = float3::one;
+	box->axis[0] = float3(1, 0, 0);
+	box->axis[1] = float3(0, 1, 0);
+	box->axis[2] = float3(0, 0, 1);
+
+	bounding_box = new AABB(*box);
+}
+
 void GameObject::DrawBoundingBox()
 {
 	//CompTransform* transform = (CompTransform*)FindComponentByType(C_TRANSFORM);

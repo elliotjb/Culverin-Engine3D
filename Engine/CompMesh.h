@@ -53,8 +53,7 @@ public:
 
 private:
 	bool render = true;
-	const char* directory_mesh = nullptr; //Need remove (Resource)
-
+	bool SelectMesh = false;
 	CompMaterial* material = nullptr;
 
 };
