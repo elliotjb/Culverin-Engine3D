@@ -45,17 +45,19 @@ void SceneWorld::ShowSceneWorld()
 		return;
 	}
 
+	//Get from dock the parameters of this window to access them externaly
+	GetWindowParams();
+
 	// Generate mouse ray ---------------------------
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) != KEY_REPEAT)
 	{
-		//App->camera->SetRay(App->input->GetMouseX(), App->input->GetMouseY());
-		mouse_pos.x = ImGui::GetMousePos().x - ImGui::GetWindowPos().x;
-		mouse_pos.y = ImGui::GetMousePos().y - ImGui::GetWindowPos().y;
+		mouse_pos.x = ImGui::GetMousePos().x - SceneWindow.x;
+		mouse_pos.y = ImGui::GetMousePos().y - SceneWindow.y;
 
 		if (mouse_pos.x >= 0 && mouse_pos.y >= 0 &&
-			mouse_pos.x <= ImGui::GetWindowWidth() && mouse_pos.y <= ImGui::GetWindowHeight())
+			mouse_pos.x <= SceneWindow.z && mouse_pos.y <= SceneWindow.w)
 		{
-			App->camera->MousePick(mouse_pos.x, mouse_pos.y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
+			App->camera->MousePick(mouse_pos.x, mouse_pos.y, SceneWindow.z, SceneWindow.w);
 			//LOG("MOUSE CLICK (%f, %f).", mouse_pos.x, mouse_pos.y);
 		}
 	}
@@ -72,10 +74,10 @@ bool SceneWorld::CleanUp()
 	return true;
 }
 
-void SceneWorld::GetWindowParams(float & x, float & y, float & w, float & h) const
+void SceneWorld::GetWindowParams() 
 {
-	x = ImGui::GetWindowPos().x;
-	y = ImGui::GetWindowPos().y;
-	w = ImGui::GetWindowWidth();
-	h = ImGui::GetWindowHeight();
+	SceneWindow.x = ImGui::GetWindowPos().x;
+	SceneWindow.y = ImGui::GetWindowPos().y;
+	SceneWindow.z = ImGui::GetWindowWidth();
+	SceneWindow.w = ImGui::GetWindowHeight();
 }

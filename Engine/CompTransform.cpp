@@ -97,18 +97,23 @@ void CompTransform::ShowInspectorInfo()
 		ImGui::Spacing();
 
 		// GIZMO TEST -----------------------------------------------------
-		/*static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::ROTATE);
+		/*ImGuizmo::Enable(true);
+
+		static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
 		static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
 
-		if (ImGui::IsKeyPressed(78)) // N Key 
+		ImGuiIO& io = ImGui::GetIO();
+		ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+
+		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) 
 		{
 			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		}
-		if (ImGui::IsKeyPressed(69)) // E Key
+		else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 		{
 			mCurrentGizmoOperation = ImGuizmo::ROTATE;
 		}
-		if (ImGui::IsKeyPressed(82)) // R Key
+		else if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 		{
 			mCurrentGizmoOperation = ImGuizmo::SCALE;
 		}
@@ -148,7 +153,7 @@ void CompTransform::ShowInspectorInfo()
 			{
 				mCurrentGizmoMode = ImGuizmo::WORLD;
 			}
-		}
+		}*/
 
 		//static bool useSnap(false);
 
@@ -177,8 +182,6 @@ void CompTransform::ShowInspectorInfo()
 		//	break;
 		//}
 
-		ImGuiIO& io = ImGui::GetIO();
-		ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);*/
 		//ImGuizmo::Manipulate(App->camera->GetViewMatrix(), App->camera->GetProjMatrix(), mCurrentGizmoOperation, mCurrentGizmoMode, local_transform.ptr(), NULL, NULL);
 		// ----------------------------------------------------------------
 
@@ -228,30 +231,6 @@ void CompTransform::ShowInspectorInfo()
 	{
 		ImGui::PopStyleColor();
 	}
-
-
-	//ImGuizmo::RecomposeMatrixFromComponents((float*)&position, (float*)&rotation, (float*)&scale,(float*)&local_transform);
-	//float4 snap;
-	//switch (mCurrentGizmoOperation)
-	//{
-	//case ImGuizmo::TRANSLATE:
-	//	snap = config.mSnapTranslation;
-	//	ImGui::InputFloat3("Snap", &snap.x);
-	//	break;
-	//case ImGuizmo::ROTATE:
-	//	snap = config.mSnapRotation;
-	//	ImGui::InputFloat("Angle Snap", &snap.x);
-	//	break;
-	//case ImGuizmo::SCALE:
-	//	snap = config.mSnapScale;
-	//	ImGui::InputFloat("Scale Snap", &snap.x);
-	//	break;
-	//}
-
-	//ImGuiIO& io = ImGui::GetIO();
-	//ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-	//ImGuizmo::Manipulate((float*)&App->renderer3D->ViewMatrix, (float*)&App->renderer3D->ProjectionMatrix, mCurrentGizmoOperation, mCurrentGizmoMode, (float*)&local_transform, NULL /*, useSnap ? &snap.x : NULL*/);
-
 }
 
 void CompTransform::SetPos(float3 pos)

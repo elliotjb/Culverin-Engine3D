@@ -4,7 +4,7 @@
 
 #include "Module.h"
 #include "Globals.h"
-#include "ImGui\imgui.h"
+#include "ImGui/imgui.h"
 #include "WindowManager.h"
 
 
@@ -21,7 +21,7 @@ public:
 	void ShowSceneWorld();
 	bool CleanUp();
 
-	void GetWindowParams(float& x, float& y, float& w, float& h) const;
+	void GetWindowParams();
 	
 	//void OpenClose();
 	//bool IsOpen();
@@ -29,6 +29,7 @@ public:
 
 private:
 	ImVec2 mouse_pos;
+	float4 SceneWindow = float4::zero;
 
 };
 

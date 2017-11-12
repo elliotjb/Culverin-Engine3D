@@ -1269,6 +1269,20 @@ float2 GetSizeDock(const char* nameWindow)
 	return float2(0, 0);
 }
 
+float4 GetDockParams(const char* nameWindow)
+{
+	for (int i = 0; i < g_dock.m_docks.size(); i++)
+	{
+		char* temp = g_dock.m_docks[i]->label;
+		if (strcmp(temp, nameWindow) == 0)
+		{
+			return float4(g_dock.m_docks[i]->pos.x, g_dock.m_docks[i]->pos.y, 
+					g_dock.m_docks[i]->size.x, g_dock.m_docks[i]->size.y);
+		}
+	}
+	return float4(0, 0, 0, 0);
+}
+
 DockContext* getDockContext()
 {
 	return &g_dock;

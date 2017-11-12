@@ -5,7 +5,8 @@
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "../parson.h"
-#include "..\Math\float2.h"
+#include "../Math/float2.h"
+#include "../Math/float4.h"
 
 
 using namespace ImGui;
@@ -33,6 +34,7 @@ extern bool BeginDock(const char* label, bool* opened, ImGuiWindowFlags extra_fl
 extern void EndDock();
 extern float2 GetPositionDock(const char* nameWindow);
 extern float2 GetSizeDock(const char* nameWindow);
+extern float4 GetDockParams(const char* nameWindow);
 extern DockContext* getDockContext();
 
 
