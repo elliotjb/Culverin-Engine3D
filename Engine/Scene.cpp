@@ -6,6 +6,7 @@
 #include "CompTransform.h"
 #include "CompMesh.h"
 #include "ResourceMesh.h"
+#include "ImportMesh.h"
 #include "CompMaterial.h"
 #include "WindowInspector.h"
 #include "CompCamera.h"
@@ -416,6 +417,25 @@ GameObject* Scene::CreateCube(GameObject* parent)
 	transform->Init(float3(0, 0, 0), float3(0, 0, 0), float3(1, 1, 1)); // TRANSFORM WILL ACCUMULATE PARENTS TRANSFORMS
 	transform->Enable();
 
+	CompMesh* mesh = (CompMesh*)obj->AddComponent(C_MESH);
+	mesh->Enable();
+	mesh->resourceMesh = (ResourceMesh*)App->resource_manager->GetResource(0);
+	//TODO ELLIOT -> LOAD MESH
+	//const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
+	if (mesh->resourceMesh->isLoaded == false)
+	{
+		App->importer->iMesh->LoadResource(std::to_string(mesh->resourceMesh->uuid_mesh).c_str(), mesh->resourceMesh);
+	}
+	OBB* box = new OBB();
+	box->pos = float3::zero;
+	box->r = float3::one;
+	box->axis[0] = float3(1, 0, 0);
+	box->axis[1] = float3(0, 1, 0);
+	box->axis[2] = float3(0, 0, 1);
+
+	obj->bounding_box = new AABB(*box);
+
+	/*
 	//MESH COMPONENT -------------------
 	//CompMesh* mesh = (CompMesh*)obj->AddComponent(C_MESH);
 	//mesh->isPrimitive = true;
@@ -437,7 +457,7 @@ GameObject* Scene::CreateCube(GameObject* parent)
 	//Init_IndexVertex(vertices_array, mesh->num_indices, mesh);
 	//mesh->SetupMesh();
 	//mesh->Enable();
-
+	*/
 	//MATERIAL COMPONENT -------------------
 	CompMaterial* mat = (CompMaterial*)obj->AddComponent(C_MATERIAL);
 	mat->Enable();

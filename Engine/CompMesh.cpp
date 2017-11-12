@@ -44,7 +44,7 @@ void CompMesh::ShowInspectorInfo()
 
 		ImGui::PopStyleColor();
 		ImGui::Text("Name:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", name);
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", resourceMesh->name);
 		ImGui::Text("Vertices:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", resourceMesh->num_vertices);
 		ImGui::Text("Indices:"); ImGui::SameLine();

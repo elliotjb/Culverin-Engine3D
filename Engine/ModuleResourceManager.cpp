@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ResourceMaterial.h"
 #include "ResourceMesh.h"
+#include "ImportMesh.h"
 
 
 ModuleResourceManager::ModuleResourceManager(bool start_enabled): Module(start_enabled)
@@ -15,7 +16,9 @@ ModuleResourceManager::~ModuleResourceManager()
 
 bool ModuleResourceManager::Start()
 {
-	Load();
+	CreateResourceCube();
+
+	//Load();
 	return true;
 }
 
@@ -116,6 +119,59 @@ Resource::Type ModuleResourceManager::CheckFileType(const char* filedir)
 		}
 	}
 }
+
+void ModuleResourceManager::Init_IndexVertex(float3* vertex_triangulate, uint num_index, std::vector<uint>& indices, std::vector<float3>& vertices)
+{
+	bool temp = false;
+	std::vector<float3> all_index;
+	uint size = 0;
+
+	for (int i = 0; i < num_index; i++)
+	{
+		temp = false;
+		size = all_index.size();
+
+		for (int j = 0; j < size; j++)
+		{
+			if (all_index[j] == vertex_triangulate[i])
+			{
+				indices.push_back(j);
+				temp = true;
+			}
+		}
+
+		if (temp == false)
+		{
+			all_index.push_back(vertex_triangulate[i]);
+			indices.push_back(all_index.size() - 1);
+			vertices.push_back(vertex_triangulate[i]);
+		}
+	}
+}
+
+void ModuleResourceManager::CreateResourceCube()
+{
+
+
+	OBB* box = new OBB();
+	box->pos = float3::zero;
+	box->r = float3::one;
+	box->axis[0] = float3(1, 0, 0);
+	box->axis[1] = float3(0, 1, 0);
+	box->axis[2] = float3(0, 0, 1);
+
+	AABB* bounding_box;
+	bounding_box = new AABB(*box);
+	float3* vertices_array = new float3[36];
+
+	bounding_box->Triangulate(1, 1, 1, vertices_array, NULL, NULL, false);
+	std::vector<uint> indices;
+	std::vector<float3> vertices;
+	Init_IndexVertex(vertices_array, 36, indices, vertices);
+	App->importer->iMesh->Import(8, 36, 0, indices, vertices);
+}
+
+
 
 void ModuleResourceManager::Save()
 {

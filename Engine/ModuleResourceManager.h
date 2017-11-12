@@ -2,8 +2,12 @@
 #include "Module.h"
 #include "Resource_.h"
 #include <map>
+#include <vector>
+#include "Math\float3.h"
 
 #define PRIMITIVERESERVE 2
+
+struct Vertex;
 
 struct ResourceImport
 {
@@ -27,6 +31,9 @@ public:
 	Resource* CreateNewResource(Resource::Type type);
 	Resource* GetResource(uint id);
 	Resource::Type CheckFileType(const char* filedir);
+
+	void Init_IndexVertex(float3* vertex_triangulate, uint num_index, std::vector<uint>& indices, std::vector<float3>& vertices);
+	void CreateResourceCube();
 
 	void Save();
 	void Load();

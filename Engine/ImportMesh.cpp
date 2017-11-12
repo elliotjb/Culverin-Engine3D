@@ -207,6 +207,70 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 	return ret;
 }
 
+void ImportMesh::Import(uint num_vertices, uint num_indices, uint num_normals, std::vector<uint> indices, std::vector<float3> vertices)
+{
+	// ALLOCATING DATA INTO BUFFER ------------------------
+	uint ranges[3] = { num_vertices, num_indices, num_normals }; //,num_tex_coords };
+
+	uint size = sizeof(ranges) + sizeof(float3) *  num_vertices + sizeof(uint) * num_indices + sizeof(float3) *  num_normals + sizeof(float2) *  num_vertices;
+
+
+	float3* vert_normals = nullptr;
+	// Allocating all data 
+	char* data = new char[size];
+	char* cursor = data;
+
+	// Storing Ranges
+	uint bytes = sizeof(ranges);
+	memcpy(cursor, ranges, bytes);
+
+	// Storing Vertices
+	float3* vertices_ = new float3[num_vertices];
+	memcpy(vertices_, vertices.data(), sizeof(float3) * num_vertices);
+	cursor += bytes;
+	bytes = sizeof(float3) * num_vertices;
+	memcpy(cursor, vertices_, bytes);
+
+	// Storing Indices
+	uint* indices_ = new uint[num_indices];
+	memcpy(indices_, indices.data(), sizeof(uint) * num_indices);
+	cursor += bytes;
+	bytes = sizeof(uint) * num_indices;
+	memcpy(cursor, indices_, bytes);
+
+	// Storing Normals
+	//cursor += bytes;
+	//bytes = sizeof(float3) * num_normals;
+	//memcpy(cursor, vert_normals, bytes);
+
+	//// Storing Tex Coords
+	//cursor += bytes;
+	//bytes = sizeof(float2) * num_vertices; //num_tex_coords;
+	//memcpy(cursor, tex_coords, bytes);
+
+	// Release all pointers
+	RELEASE_ARRAY(vertices_);
+	RELEASE_ARRAY(indices_);
+	RELEASE_ARRAY(vert_normals);
+	indices.clear();
+	vertices.clear();
+	//RELEASE_ARRAY(tex_coords);
+	//RELEASE(texture);
+
+	// Create Resource ----------------------
+	ResourceMesh* res_mesh = (ResourceMesh*)App->resource_manager->CreateNewResource(Resource::Type::MESH);
+
+	uint uid_mesh = App->random->Int();
+	std::string fileName = std::to_string(uid_mesh);
+	res_mesh->InitInfo(uid_mesh, "Cube");
+	res_mesh->name = "Cube";
+
+	//Save Mesh
+	App->fs->SaveFile(data, fileName, size, IMPORT_DIRECTORY_LIBRARY_MESHES);
+
+	RELEASE_ARRAY(data);
+}
+
 bool ImportMesh::LoadResource(const char* file, ResourceMesh* resourceMesh)
 {
 	char* buffer = nullptr;
@@ -251,10 +315,13 @@ bool ImportMesh::LoadResource(const char* file, ResourceMesh* resourceMesh)
 		memcpy(indices, cursor, bytes);
 
 		//Load Normals
-		cursor += bytes;
-		bytes = sizeof(float3) * num_normals;
-		vert_normals = new float3[num_normals];
-		memcpy(vert_normals, cursor, bytes);
+		if (num_normals > 0)
+		{
+			cursor += bytes;
+			bytes = sizeof(float3) * num_normals;
+			vert_normals = new float3[num_normals];
+			memcpy(vert_normals, cursor, bytes);
+		}
 
 		//Load Tex Coords
 		cursor += bytes;
