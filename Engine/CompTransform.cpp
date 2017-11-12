@@ -41,7 +41,6 @@ void CompTransform::Update(float dt)
 		ImGuizmo::Enable(true);
 
 		static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
-		static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
 
 		screen = ((SceneWorld*)App->gui->winManager[SCENEWORLD])->GetWindowParams();
 		ImGuizmo::SetRect(screen.x, screen.y, screen.z, screen.w);
@@ -49,20 +48,20 @@ void CompTransform::Update(float dt)
 		local_transposed = local_transform.Transposed();
 
 		// SET GUIZMO OPERATION ----------------------------------
-		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 		{
 			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 		{
 			mCurrentGizmoOperation = ImGuizmo::ROTATE;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+		else if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
 		{
 			mCurrentGizmoOperation = ImGuizmo::SCALE;
 		}
 
-		ImGuizmo::Manipulate(App->camera->GetViewMatrix(), App->camera->GetProjMatrix(), mCurrentGizmoOperation, mCurrentGizmoMode, local_transposed.ptr(), NULL, NULL);
+		ImGuizmo::Manipulate(App->camera->GetViewMatrix(), App->camera->GetProjMatrix(), mCurrentGizmoOperation, transform_mode, local_transposed.ptr(), NULL, NULL);
 		
 		if (ImGuizmo::IsUsing())
 		{
@@ -73,10 +72,9 @@ void CompTransform::Update(float dt)
 		}
 	}
 
-
 	if (toUpdate)
 	{
-		UpdateMatrix();
+		UpdateMatrix(transform_mode);
 		toUpdate = false;
 	}
 }
@@ -136,16 +134,49 @@ void CompTransform::ShowInspectorInfo()
 		ImGui::Spacing();
 
 		// ORIGINAL -------------------------------------------------------
-		int op = ImGui::GetWindowWidth() / 4;
-		ImGui::Text("Position"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
+		if (ImGui::RadioButton("Local", transform_mode == ImGuizmo::LOCAL))
 		{
-			SetPos(position);
+			transform_mode = ImGuizmo::LOCAL;
+		}		
+		ImGui::SameLine();
+		if (ImGui::RadioButton("World", transform_mode == ImGuizmo::WORLD))
+		{
+			transform_mode = ImGuizmo::WORLD;
 		}
-		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
+		int op = ImGui::GetWindowWidth() / 4;
+
+		switch (transform_mode)
 		{
-			SetRot(rotation_euler);
+		case (ImGuizmo::MODE::LOCAL):
+		{
+			ImGui::Text("Position"); ImGui::SameLine(op + 30);
+			if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
+			{
+				SetPos(position);
+			}
+			ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
+			if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
+			{
+				SetRot(rotation_euler);
+			}
+			break;
+		}
+		case (ImGuizmo::MODE::WORLD):
+		{
+			ImGui::Text("Position"); ImGui::SameLine(op + 30);
+			if (ImGui::DragFloat3("##pos", &position_global[0], 0.5f))
+			{
+				SetPosGlobal(position_global);
+			}
+			ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
+			if (ImGui::DragFloat3("##rot", &rotation_euler_global[0], 0.5f))
+			{
+				SetRotGlobal(rotation_euler_global);
+			}
+			break;
+		}
+		default:
+			break;
 		}
 		ImGui::Text("Scale"); ImGui::SameLine(op + 30);
 		if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
@@ -178,9 +209,21 @@ void CompTransform::ShowInspectorInfo()
 	}
 }
 
-void CompTransform::SetPos(float3 pos)
+void CompTransform::SetPosGlobal(float3 pos)
 {
-	position = pos;
+	position_global = pos;
+	toUpdate = true;
+}
+
+void CompTransform::SetRotGlobal(float3 rot_g)
+{
+	rotation_global = Quat::FromEulerXYZ(rot_g[0] * DEGTORAD, rot_g[1] * DEGTORAD, rot_g[2] * DEGTORAD);
+	toUpdate = true;
+}
+
+void CompTransform::SetPos(float3 pos_g)
+{
+	position = pos_g;
 	toUpdate = true;
 }
 
@@ -212,17 +255,17 @@ void CompTransform::ResetMatrix()
 	toUpdate = true;
 }
 
-//void CompTransform::SetGlobalTransform(float4x4 transform)
-//{
-//	global_transform = transform;
-//}
-
 void CompTransform::SetLocalTransform()
 {
 	local_transform = float4x4::FromTRS(position, rotation, scale);
 }
 
 void CompTransform::SetGlobalTransform()
+{
+	global_transform = float4x4::FromTRS(position_global, rotation_global, scale);
+}
+
+void CompTransform::UpdateGlobalTransform()
 {
 	global_transform = float4x4::identity;
 	std::list<const GameObject*> parents;
@@ -244,22 +287,34 @@ void CompTransform::SetGlobalTransform()
 		global_transform = global_transform * matrix;
 		item++;
 	}
+
+	//Set Output Variables
+	global_transform.Decompose(position_global, rotation_global, scale);
 }
 
-void CompTransform::UpdateMatrix()
+void CompTransform::UpdateMatrix(ImGuizmo::MODE mode)
 {
-	// Update Local/Global matrices of this Game Object
-	SetLocalTransform();
-	SetGlobalTransform();
+	switch (mode)
+	{
+	case (ImGuizmo::MODE::LOCAL):
+	{
+		SetLocalTransform();
+		UpdateGlobalTransform();
+		break;
+	}
+	case (ImGuizmo::MODE::WORLD):
+	{
+		SetGlobalTransform();
+		//UpdateLocalTransform();
+		break;
+	}
+	default:
+		break;
+	}
 
 	// Update Global matrices of all children
 	parent->UpdateChildsMatrices();
 }
-
-//void CompTransform::MultMatrix(float4x4 matrix)
-//{
-//	global_transform = matrix * global_transform;
-//}
 
 float3 CompTransform::GetPos() const
 {
@@ -286,39 +341,15 @@ float4x4 CompTransform::GetGlobalTransform() const
 	return global_transform;
 }
 
-//float4x4 CompTransform::GetParentTransform() const
-//{
-//	if (parent != nullptr)
-//	{
-//		// Access to Parent Object
-//		GameObject* parent_object = parent->GetParent();
-//		if (parent_object != nullptr)
-//		{
-//			// Access to Parent Object Transform
-//			CompTransform* transform = parent_object->GetComponentTransform();
-//			if (transform != nullptr)
-//			{
-//				return transform->GetGlobalTransform();
-//			}
-//		}
-//		else
-//		{
-//			// It hasn't got parent, so return identity
-//			return float4x4::identity;
-//		}
-//	}
-//}
-
-//float4x4 CompTransform::TransformToGlobal()
-//{
-//	return GetParentTransform().Inverted() * local_transform;
-//}
+ImGuizmo::MODE CompTransform::GetMode() const
+{
+	return transform_mode;
+}
 
 const float* CompTransform::GetMultMatrixForOpenGL() const
 {
 	return global_transform.Transposed().ptr();
 }
-
 
 void CompTransform::Save(JSON_Object* object, std::string name) const
 {

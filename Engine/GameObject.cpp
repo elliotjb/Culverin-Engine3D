@@ -611,7 +611,7 @@ void GameObject::UpdateChildsMatrices()
 {
 	for (uint i = 0; i < childs.size(); i++)
 	{
-		childs[i]->GetComponentTransform()->UpdateMatrix();
+		childs[i]->GetComponentTransform()->UpdateMatrix(GetComponentTransform()->GetMode());
 	}
 }
 

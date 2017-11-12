@@ -1,8 +1,10 @@
 #pragma once
 #include "Component.h"
 #include "MathGeoLib.h"
-#include <vector>
 #include "Assimp/include/matrix4x4.h"
+#include "ImGui/ImGuizmo.h"
+#include <vector>
+
 
 class GameObject;
 
@@ -24,16 +26,19 @@ public:
 	void Update(float dt);
 	void ShowInspectorInfo();
 
+	void SetPosGlobal(float3 pos);
+	void SetRotGlobal(float3 rot);
 	void SetPos(float3 pos);
 	void SetRot(float3 rot); //"rot" is "rotation_euler" updated, so we don't need to update it inside this method
 	void SetRot(Quat rot); //"rot" is the quaternion we want to set to our rotation quaternion
 	void SetScale(float3 scale);
 	void SetLocalTransform();
 	void SetGlobalTransform();
-	//void SetGlobalTransform(float4x4 tranformation);
+	//void UpdateLocalTransform();
+	void UpdateGlobalTransform();
 
 	void ResetMatrix();
-	void UpdateMatrix();
+	void UpdateMatrix(ImGuizmo::MODE mode);
 	//void MultMatrix(float4x4 matrix);
 
 	float3 GetPos() const;
@@ -41,8 +46,8 @@ public:
 	float3 GetScale() const;
 	float4x4 GetLocalTransform() const;
 	float4x4 GetGlobalTransform() const;
-	//float4x4 GetParentTransform() const;
-	//float4x4 TransformToGlobal();
+	ImGuizmo::MODE GetMode() const;
+
 	const float* GetMultMatrixForOpenGL() const;
 
 	void Save(JSON_Object* object, std::string name) const;
@@ -55,13 +60,20 @@ private:
 	// Output Values ----------------------
 	float3 position = { 0, 0, 0 };
 	float3 rotation_euler = { 0, 0, 0 };
+	
 	float3 scale = { 0, 0, 0 };
+
+	float3 position_global = { 0, 0, 0 };
+	float3 rotation_euler_global = { 0, 0, 0 };
 	// ------------------------------------
+
 	Quat rotation = math::Quat::identity;
+	Quat rotation_global = math::Quat::identity;
 
 	float4x4 global_transform = math::float4x4::identity;
 	float4x4 local_transform = math::float4x4::identity;
 
 	float4 screen = math::float4::zero;
 	float4x4 local_transposed = float4x4::identity;
+	ImGuizmo::MODE transform_mode = ImGuizmo::LOCAL;
 };
