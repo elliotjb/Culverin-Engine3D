@@ -265,10 +265,9 @@ update_status Application::Update()
 	}
 
 	ImGui_ImplSdlGL3_NewFrame(window->window);
-
-	// GIZMO BEGIN FRAME: you have to get the parameters of scene window (x,y,w,h)
-	((SceneWorld*)App->gui->winManager[SCENEWORLD])->GetWindowParams(SceneDock.x, SceneDock.y, SceneDock.z, SceneDock.w);
-	ImGuizmo::BeginFrame(SceneDock.x, SceneDock.y, SceneDock.z, SceneDock.w);
+	ImGuizmo::BeginFrame();
+	//((SceneWorld*)App->gui->winManager[SCENEWORLD])->GetWindowParams(SceneDock.x, SceneDock.y, SceneDock.z, SceneDock.w);
+	//ImGuizmo::BeginFrame(SceneDock.x, SceneDock.y, SceneDock.z, SceneDock.w);
 
 	item = list_modules.begin();
 
