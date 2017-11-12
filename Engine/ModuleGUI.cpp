@@ -17,8 +17,10 @@
 
 ModuleGUI::ModuleGUI(bool start_enabled): Module(start_enabled)
 {
+	Start_enabled = true;
 	Update_enabled = true;
 	haveConfig = true;
+
 	name = "Gui";
 }
 
@@ -26,18 +28,19 @@ ModuleGUI::~ModuleGUI()
 {
 }
 
-bool ModuleGUI::Init(JSON_Object * node)
-{
-
-
-	return true;
-}
+//bool ModuleGUI::Init(JSON_Object * node)
+//{
+//	perf_timer.Start();
+//
+//	Awake_t = perf_timer.ReadMs();
+//	return true;
+//}
 
 bool ModuleGUI::Start()
 {
+	perf_timer.Start();
+	
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
-	ImGui_ImplSdlGL3_Init(App->window->window);
-
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
 	io.Fonts->AddFontFromFileTTF("Fonts\\Ruda-Bold.ttf", 15);
@@ -47,14 +50,12 @@ bool ModuleGUI::Start()
 	App->scene->gameBuff = new FrameBuffer();
 	App->scene->gameBuff->Create(App->window->GetWidth(), App->window->GetHeight());
 
-
 	winManager.push_back(new Hardware());		//0---- HARDWARE
 	winManager.push_back(new Inspector());		//1---- INSPECTOR
 	winManager.push_back(new Hierarchy());		//2---- Hierarchy
 	winManager.push_back(new SceneWorld());		//3---- SceneWorld
 	winManager.push_back(new Project());		//4---- Project
 	winManager.push_back(new WindowGame());		//5----- WindowGame
-
 	
 	//TODO ELLIOT NEED ACTIVE bye JSON, Also Console
 	winManager[INSPECTOR]->active[0].active = true;
@@ -70,8 +71,18 @@ bool ModuleGUI::Start()
 	}
 
 	LoadDocks();
+
+	Start_t = perf_timer.ReadMs();
 	return true;
 }
+
+//update_status ModuleGUI::PreUpdate(float dt)
+//{
+//	perf_timer.Start();
+//
+//	preUpdate_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
 
 update_status ModuleGUI::Update(float dt)
 {
@@ -555,9 +566,16 @@ update_status ModuleGUI::Update(float dt)
 	UpdateWindows(dt);
 
 	Update_t = perf_timer.ReadMs();
-
 	return UPDATE_CONTINUE;
 }
+
+//update_status ModuleGUI::PostUpdate(float dt)
+//{
+//	perf_timer.Start();
+//
+//	postUpdate_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
 
 //Update Window Configuration -----------------------------
 update_status ModuleGUI::UpdateConfig(float dt)

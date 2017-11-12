@@ -8,6 +8,9 @@
 
 Console::Console(bool start_enabled): Module(start_enabled)
 {
+	console_activated = true;
+	Update_enabled = true;
+
 	ClearLog();
 	memset(InputBuf, 0, sizeof(InputBuf));
 	HistoryPos = -1;
@@ -16,7 +19,7 @@ Console::Console(bool start_enabled): Module(start_enabled)
 	Commands.push_back("CLEAR");
 	Commands.push_back("CLASSIFY");  // "classify" is here to provide an example of "C"+[tab] completing to "CL" and displaying matches.
 	AddLog("Welcome to ImGui!");
-	console_activated = true;
+
 	name = "Console";
 }
 
@@ -27,15 +30,50 @@ Console::~Console()
 		free(History[i]);
 }
 
+//bool Console::Init(JSON_Object * node)
+//{
+//	perf_timer.Start();
+//
+//	Awake_t = perf_timer.ReadMs();
+//	return true;
+//}
+//
+//bool ModuleWindow::Start()
+//{
+//	perf_timer.Start();
+//
+//	Start_t = perf_timer.ReadMs();
+//	return true;
+//}
+//
+//update_status ModuleWindow::PreUpdate(float dt)
+//{
+//	perf_timer.Start();
+//
+//	preUpdate_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
+
 update_status Console::Update(float dt)
 {
+	perf_timer.Start();
+
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_UP)
 	{
 		OpenClose();
 	}
 
+	Update_t = perf_timer.ReadMs();
 	return UPDATE_CONTINUE;
 }
+
+//update_status ModuleWindow::postUpdate(float dt)
+//{
+//	perf_timer.Start();
+//
+//	postUpdate_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
 
 bool Console::CleanUp()
 {

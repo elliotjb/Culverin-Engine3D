@@ -12,8 +12,11 @@ public:
 
 	Console(bool start_enabled = false);
 	virtual ~Console();
-
+	//bool Init(JSON_Object* node);
+	//bool Start();
+	//update_status Predate(float dt);
 	update_status Update(float dt);
+	//update_status Postdate(float dt);
 	bool CleanUp();
 
 	void OpenClose();

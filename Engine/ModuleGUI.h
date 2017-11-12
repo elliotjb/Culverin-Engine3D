@@ -29,9 +29,11 @@ public:
 	ModuleGUI(bool start_enabled = false);
 	virtual ~ModuleGUI();
 
-	bool Init(JSON_Object* node);
+	//bool Init(JSON_Object* node);
 	bool Start();
+	//update_status PreUpdate(float dt);
 	update_status Update(float dt);
+	//update_status PostUpdate(float dt);
 	update_status UpdateConfig(float dt);
 	bool CleanUp();
 

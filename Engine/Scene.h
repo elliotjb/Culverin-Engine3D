@@ -24,9 +24,11 @@ public:
 	Scene(bool start_enabled = false);
 	virtual ~Scene();
 
+	//bool Init(JSON_Object* node);
 	bool Start();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
+	//update_status PostUpdate(float dt);
 	update_status UpdateConfig(float dt);
 	bool CleanUp();
 
@@ -63,9 +65,10 @@ public:
 	Quadtree quadtree;
 	bool quadtree_draw = false;
 	GameObject* drag = nullptr;
+
+	GLuint icon_options_transform;
+
 private:
-
-
 	int size_plane;
 	uint skybox[6];
 };

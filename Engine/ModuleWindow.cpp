@@ -9,11 +9,12 @@
 ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)
 {
 	Awake_enabled = true;
+	haveConfig = true;
 
 	window = NULL;
 	screen_surface = NULL;
+
 	name = "Window";
-	haveConfig = true;
 }
 
 // Destructor
@@ -128,9 +129,40 @@ bool ModuleWindow::Init(JSON_Object* node)
 	}
 
 	Awake_t = perf_timer.ReadMs();
-
 	return ret;
 }
+
+//bool ModuleWindow::Start()
+//{
+//	perf_timer.Start();
+//
+//	Start_t = perf_timer.ReadMs();
+//	return true;
+//}
+//
+//update_status ModuleWindow::PreUpdate(float dt)
+//{
+//	perf_timer.Start();
+//
+//	preUpdate_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
+//
+//update_status ModuleWindow::Update(float dt)
+//{
+//	perf_timer.Start();
+//
+//	Update_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
+//
+//update_status ModuleWindow::postUpdate(float dt)
+//{
+//	perf_timer.Start();
+//
+//	postUpdate_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
 
 // Called before quitting
 bool ModuleWindow::CleanUp()

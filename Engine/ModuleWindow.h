@@ -10,13 +10,14 @@ class Application;
 class ModuleWindow : public Module
 {
 public:
-
 	ModuleWindow(bool start_enabled = true);
-
-	// Destructor
 	virtual ~ModuleWindow();
 
 	bool Init(JSON_Object* node);
+	//bool Start();
+	//update_status PreUpdate(float dt);
+	//update_status Update(float dt);
+	//update_status postUpdate(float dt);
 	bool CleanUp();
 
 	void SetTitle(const char* title);

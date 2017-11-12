@@ -16,12 +16,14 @@ enum KEY_STATE
 class ModuleInput : public Module
 {
 public:
-	
 	ModuleInput(bool start_enabled = true);
 	~ModuleInput();
 
 	bool Init(JSON_Object* node);
+	//bool Start();
 	update_status PreUpdate(float dt);
+	//update_status Update(float dt);
+	//update_status PostUpdate(float dt);
 	update_status UpdateConfig(float dt);
 	bool CleanUp();
 

@@ -11,8 +11,9 @@ ModuleAudio::ModuleAudio(bool start_enabled) : Module(start_enabled), music(NULL
 {
 	Awake_enabled = true;
 
-	volume = 10;
 	haveConfig = true;
+
+	volume = 10;
 	name = "Audio";
 }
 
@@ -57,9 +58,40 @@ bool ModuleAudio::Init(JSON_Object* node)
 	mute = json_object_get_boolean(node, "Mute");
 
 	Awake_t = perf_timer.ReadMs();
-
 	return ret;
 }
+
+//bool ModuleWindow::Start()
+//{
+//	perf_timer.Start();
+//
+//	Start_t = perf_timer.ReadMs();
+//	return true;
+//}
+//
+//update_status ModuleWindow::PreUpdate(float dt)
+//{
+//	perf_timer.Start();
+//
+//	preUpdate_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
+//
+//update_status ModuleWindow::Update(float dt)
+//{
+//	perf_timer.Start();
+//
+//	Update_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
+//
+//update_status ModuleWindow::postUpdate(float dt)
+//{
+//	perf_timer.Start();
+//
+//	postUpdate_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
 
 bool ModuleAudio::SaveConfig(JSON_Object * node)
 {

@@ -3,6 +3,10 @@
 
 ModuleFS::ModuleFS(bool start_enabled) : Module(start_enabled)
 {
+	Start_enabled = true;
+	preUpdate_enabled = true;
+
+	name = "File System";
 }
 
 
@@ -10,14 +14,18 @@ ModuleFS::~ModuleFS()
 {
 }
 
-bool ModuleFS::Init(JSON_Object* node)
-{
-
-	return true;
-}
+//bool ModuleFS::Init(JSON_Object * node)
+//{
+//	perf_timer.Start();
+//
+//	Awake_t = perf_timer.ReadMs();
+//	return true;
+//}
 
 bool ModuleFS::Start()
 {
+	perf_timer.Start();
+
 	// Will contain exe path
 	HMODULE hModule = GetModuleHandle(NULL);
 	if (hModule != NULL)
@@ -46,11 +54,15 @@ bool ModuleFS::Start()
 	CreateFolder("Assets");
 	//Iterate All Game
 	//files = Get_filenames("Assets\\");
+
+	Start_t = perf_timer.ReadMs();
 	return true;
 }
 
 update_status ModuleFS::PreUpdate(float dt)
 {
+	perf_timer.Start();
+
 	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
 	{
 		//char* buffer = nullptr;
@@ -65,12 +77,25 @@ update_status ModuleFS::PreUpdate(float dt)
 		//LOG("%i", temp);
 	}
 
-
-
-
-
+	preUpdate_t = perf_timer.ReadMs();
 	return UPDATE_CONTINUE;
 }
+
+//update_status ModuleFS::Update(float dt)
+//{
+//	perf_timer.Start();
+//
+//	Update_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
+
+//update_status ModuleFS::PostUpdate(float dt)
+//{
+//	perf_timer.Start();
+//
+//	postUpdate_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
 
 void ModuleFS::CopyFileToAssets(const char* fileNameFrom, const char* fileNameTo)
 {

@@ -16,6 +16,10 @@ public:
 	~ModuleAudio();
 
 	bool Init(JSON_Object* node);
+	//bool Start();
+	//update_status PreUpdate(float dt);
+	//update_status Update(float dt);
+	//update_status PostUpdate(float dt);
 	bool SaveConfig(JSON_Object* node);
 	bool CleanUp();
 

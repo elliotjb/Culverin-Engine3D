@@ -295,33 +295,6 @@ update_status Application::Update()
 		item++;
 	}
 
-	item = list_modules.begin();
-	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
-	{
-		if (item._Ptr->_Myval->IsEnabled())
-		{
-			if (item._Ptr->_Myval == camera)
-			{
-				ret = item._Ptr->_Myval->PostUpdate(realTime.dt); // Camera can't be affected by Game Time Scale (0 dt = 0 movement)
-			}
-			else
-			{
-				if (engineState == EngineState::PLAY || engineState == EngineState::PLAYFRAME)
-				{
-					ret = item._Ptr->_Myval->PostUpdate(realTime.dt * gameTime.timeScale);
-				}
-				else if (engineState == EngineState::PAUSE || engineState == EngineState::STOP)
-				{
-					ret = item._Ptr->_Myval->PostUpdate(0);
-				}
-			}
-		}
-		item++;
-	}
-
-	//CONFIG WINDOW ----------------------------
-	//Config();
-
 	//PERFORMANCE WINDOW -----------------------
 	if (showperformance)
 	{
@@ -349,6 +322,33 @@ update_status Application::Update()
 		stop_perf = false;
 	}
 	//-----------------------------------------------
+
+	item = list_modules.begin();
+	while (item != list_modules.end() && ret == UPDATE_CONTINUE)
+	{
+		if (item._Ptr->_Myval->IsEnabled())
+		{
+			if (item._Ptr->_Myval == camera)
+			{
+				ret = item._Ptr->_Myval->PostUpdate(realTime.dt); // Camera can't be affected by Game Time Scale (0 dt = 0 movement)
+			}
+			else
+			{
+				if (engineState == EngineState::PLAY || engineState == EngineState::PLAYFRAME)
+				{
+					ret = item._Ptr->_Myval->PostUpdate(realTime.dt * gameTime.timeScale);
+				}
+				else if (engineState == EngineState::PAUSE || engineState == EngineState::STOP)
+				{
+					ret = item._Ptr->_Myval->PostUpdate(0);
+				}
+			}
+		}
+		item++;
+	}
+
+	//CONFIG WINDOW ----------------------------
+	//Config();
 
 	FinishUpdate();
 	return ret;

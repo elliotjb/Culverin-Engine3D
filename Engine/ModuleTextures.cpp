@@ -40,9 +40,40 @@ bool ModuleTextures::Init(JSON_Object * node)
 	ilutRenderer(ILUT_OPENGL);
 
 	Awake_t = perf_timer.ReadMs();
-
 	return ret;
 }
+
+//bool ModuleTextures::Start()
+//{
+//	perf_timer.Start();
+//
+//	Start_t = perf_timer.ReadMs();
+//	return true;
+//}
+//
+//update_status ModuleTextures::PreUpdate(float dt)
+//{
+//	perf_timer.Start();
+//
+//	preUpdate_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
+//
+//update_status ModuleTextures::Update(float dt)
+//{
+//	perf_timer.Start();
+//
+//	Update_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
+//
+//update_status ModuleTextures::PostUpdate(float dt)
+//{
+//	perf_timer.Start();
+//
+//	postUpdate_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
 
 update_status ModuleTextures::UpdateConfig(float dt)
 {

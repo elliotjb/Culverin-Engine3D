@@ -24,7 +24,7 @@ public:
 
 	bool Start();
 	update_status PreUpdate(float dt);
-	update_status Update(float dt);
+	//update_status Update(float dt);
 	bool CleanUp();
 
 	void ImportFile(const char* file);

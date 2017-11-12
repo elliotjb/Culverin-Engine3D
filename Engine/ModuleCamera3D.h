@@ -13,9 +13,11 @@ public:
 	ModuleCamera3D(bool start_enabled = true);
 	~ModuleCamera3D();
 
-	bool Start();
 	bool Init(JSON_Object* node);
+	bool Start();
+	//update_status PreUpdate(float dt);
 	update_status Update(float dt);
+	//update_status PostUpdate(float dt);
 	update_status UpdateConfig(float dt);
 	bool SaveConfig(JSON_Object* node);
 	bool CleanUp();

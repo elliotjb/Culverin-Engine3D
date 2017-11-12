@@ -128,11 +128,10 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		
 		node = json_object_get_object(node, "Fog");
 		fog_active = json_object_get_boolean(node, "Active");
-		fog_density = json_object_get_number(node, "Density");
-
-		Awake_t = perf_timer.ReadMs();
+		fog_density = json_object_get_number(node, "Density");	
 	}
 
+	Awake_t = perf_timer.ReadMs();
 	return ret;
 }
 
@@ -155,7 +154,6 @@ bool ModuleRenderer3D::Start()
 	}
 
 	Start_t = perf_timer.ReadMs();
-
 	return true;
 }
 
@@ -189,9 +187,15 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		lights[i].Render();
 
 	preUpdate_t = perf_timer.ReadMs();
-
 	return UPDATE_CONTINUE;
 }
+
+//update_status ModuleRenderer3D::Update(float dt)
+//{
+//	perf_timer.Start();
+//	Update_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
 
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
@@ -269,7 +273,6 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	SDL_GL_SwapWindow(App->window->window);
 
 	postUpdate_t = perf_timer.ReadMs();
-
 	return UPDATE_CONTINUE;
 }
 

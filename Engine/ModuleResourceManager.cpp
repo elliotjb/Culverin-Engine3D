@@ -7,6 +7,9 @@
 
 ModuleResourceManager::ModuleResourceManager(bool start_enabled): Module(start_enabled)
 {
+	Start_enabled = true;
+	preUpdate_enabled = true;
+
 	name = "Resources Manager";
 }
 
@@ -16,28 +19,35 @@ ModuleResourceManager::~ModuleResourceManager()
 
 bool ModuleResourceManager::Start()
 {
-	CreateResourceCube();
+	perf_timer.Start();
 
+	CreateResourceCube();
 	//Load();
+
+	Start_t = perf_timer.ReadMs();
 	return true;
 }
 
 
 update_status ModuleResourceManager::PreUpdate(float dt)
 {
+	perf_timer.Start();
+
 	if (App->input->dropped)
 	{
 		ImportFile(App->input->dropped_filedir);
 
 		App->input->dropped = false;
 	}
+
+	preUpdate_t = perf_timer.ReadMs();
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleResourceManager::Update(float dt)
-{
-	return UPDATE_CONTINUE;
-}
+//update_status ModuleResourceManager::Update(float dt)
+//{
+//	return UPDATE_CONTINUE;
+//}
 
 bool ModuleResourceManager::CleanUp()
 {

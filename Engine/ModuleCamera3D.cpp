@@ -15,6 +15,7 @@
 
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 {
+	Awake_enabled = true;
 	Start_enabled = true;
 	Update_enabled = true;
 
@@ -32,12 +33,26 @@ ModuleCamera3D::~ModuleCamera3D()
 }
 
 // -----------------------------------------------------------------
+bool ModuleCamera3D::Init(JSON_Object * node)
+{
+	perf_timer.Start();
+
+	//Load render config info -------
+	move_speed = json_object_get_number(node, "Movement Speed");
+	rotate_speed = json_object_get_number(node, "Rotation Speed");
+	scroll_speed = json_object_get_number(node, "Zoom Speed");
+
+	Awake_t = perf_timer.ReadMs();
+	return true;
+}
+
+// -----------------------------------------------------------------
 bool ModuleCamera3D::Start()
 {
 	perf_timer.Start();
 
 	LOG("Setting up the camera");
-	
+
 	bool ret = true;
 
 	//Send the renderer ehis cam to draw 
@@ -45,18 +60,7 @@ bool ModuleCamera3D::Start()
 	App->renderer3D->SetActiveCamera(cam);
 
 	Start_t = perf_timer.ReadMs();
-
 	return ret;
-}
-
-bool ModuleCamera3D::Init(JSON_Object * node)
-{
-	//Load render config info -------
-	move_speed = json_object_get_number(node, "Movement Speed");
-	rotate_speed = json_object_get_number(node, "Rotation Speed");
-	scroll_speed = json_object_get_number(node, "Zoom Speed");
-
-	return true;
 }
 
 // -----------------------------------------------------------------
@@ -66,6 +70,14 @@ bool ModuleCamera3D::CleanUp()
 
 	return true;
 }
+
+//update_status ModuleRenderer3D::PreUpdate(float dt)
+//{
+//	perf_timer.Start();
+//	preUpdate_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
+
 
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
@@ -108,12 +120,19 @@ update_status ModuleCamera3D::Update(float dt)
 			{
 				MoveWithKeyboard(dt);
 			}
-		}
-
-		Update_t = perf_timer.ReadMs();
+		}		
 	}
+
+	Update_t = perf_timer.ReadMs();
 	return UPDATE_CONTINUE;
 }
+
+//update_status ModuleRenderer3D::PostUpdate(float dt)
+//{
+//	perf_timer.Start();
+//	postUpdate_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
 
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::UpdateConfig(float dt)

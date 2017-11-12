@@ -37,6 +37,14 @@ Scene::~Scene()
 {
 }
 
+//bool Scene::Init(JSON_Object * node)
+//{
+//	perf_timer.Start();
+
+//	Awake_t = perf_timer.ReadMs();
+//	return true;
+//}
+
 bool Scene::Start()
 {
 	perf_timer.Start();
@@ -46,13 +54,14 @@ bool Scene::Start()
 
 	size_plane = 50;
 
-	//CreateMainCamera(nullptr);
+	CreateMainCamera(nullptr);
+	
+	icon_options_transform = App->textures->LoadTexture("Images/UI/icon_options_transform.png");
 
 	//Init Skybox
 	InitSkybox();
 
 	Start_t = perf_timer.ReadMs();
-
 	return true;
 }
 
@@ -67,7 +76,6 @@ update_status Scene::PreUpdate(float dt)
 	}
 
 	preUpdate_t = perf_timer.ReadMs();
-
 	return UPDATE_CONTINUE;
 }
 
@@ -104,7 +112,7 @@ update_status Scene::Update(float dt)
 		App->Json_seria->LoadScene();
 	}
 
-	// Update GameObjects (Only in Game Time) -----------
+	// Update GameObjects -----------
 	for (uint i = 0; i < gameobjects.size(); i++)
 	{
 		gameobjects[i]->Update(dt);
@@ -118,9 +126,16 @@ update_status Scene::Update(float dt)
 
 	
 	Update_t = perf_timer.ReadMs();
-
 	return UPDATE_CONTINUE;
 }
+
+//update_status Scene::PostUpdate(float dt)
+//{
+//	perf_timer.Start();
+//
+//	postUpdate_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
 
 update_status Scene::UpdateConfig(float dt)
 {
@@ -157,7 +172,6 @@ bool Scene::CleanUp()
 	DeleteSkyboxTex();
 	return true;
 }
-
 
 void Scene::DrawPlane()
 {

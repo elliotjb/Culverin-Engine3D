@@ -28,13 +28,14 @@ public:
 	ModuleFS(bool start_enabled = true);
 	~ModuleFS();
 
-	bool Init(JSON_Object* node);
+	//bool Init(JSON_Object* node);
 	bool Start();
-
 	update_status PreUpdate(float dt);
-	void CopyFileToAssets(const char * fileNameFrom, const char * fileNameTo);
 	//update_status Update(float dt);
 	//update_status PostUpdate(float dt);
+
+	void CopyFileToAssets(const char * fileNameFrom, const char * fileNameTo);
+
 	//update_status UpdateConfig(float dt);
 
 	uint LoadFile(const char* file, char** buffer, DIRECTORY_IMPORT directory = IMPORT_DEFAULT);

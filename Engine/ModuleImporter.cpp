@@ -8,6 +8,10 @@
 
 ModuleImporter::ModuleImporter(bool start_enabled) : Module(start_enabled)
 {
+	Awake_enabled = true;
+	Start_enabled = true;
+	preUpdate_enabled = true;
+
 	//char ownPth[MAX_PATH];
 
 	//// Will contain exe path
@@ -17,6 +21,7 @@ ModuleImporter::ModuleImporter(bool start_enabled) : Module(start_enabled)
 	//	// When passing NULL to GetModuleHandle, it returns handle of exe itself
 	//	GetModuleFileName(hModule, ownPth, (sizeof(ownPth)));
 	//}
+
 	name = "Importer";
 }
 
@@ -27,6 +32,8 @@ ModuleImporter::~ModuleImporter()
 
 bool ModuleImporter::Init(JSON_Object* node)
 {
+	perf_timer.Start();
+
 	// Will contain exe path
 	HMODULE hModule = GetModuleHandle(NULL);
 	if (hModule != NULL)
@@ -37,15 +44,19 @@ bool ModuleImporter::Init(JSON_Object* node)
 	iMesh = new ImportMesh();
 	iMaterial = new ImportMaterial();
 
+	Awake_t = perf_timer.ReadMs();
 	return true;
 }
 
 bool ModuleImporter::Start()
 {
+	perf_timer.Start();
+
 	struct aiLogStream stream;
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 
+	Start_t = perf_timer.ReadMs();
 	return true;
 }
 
@@ -112,11 +123,25 @@ update_status ModuleImporter::PreUpdate(float dt)
 	//	App->input->dropped = false;
 	//}
 
-	Update_t = perf_timer.ReadMs();
-
-
+	preUpdate_t = perf_timer.ReadMs();
 	return UPDATE_CONTINUE;
 }
+
+//update_status ModuleWindow::Update(float dt)
+//{
+//	perf_timer.Start();
+//
+//	Update_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
+
+//update_status ModuleWindow::PostUpdate(float dt)
+//{
+//	perf_timer.Start();
+//
+//	postUpdate_t = perf_timer.ReadMs();
+//	return UPDATE_CONTINUE;
+//}
 
 GameObject* ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj)
 {	
@@ -183,21 +208,6 @@ void ModuleImporter::ProcessTransform(CompTransform* trans)
 	//Set all variables to zero/identity
 	trans->ResetMatrix();
 	trans->Enable();
-}
-
-update_status ModuleImporter::Update(float dt)
-{
-	return UPDATE_CONTINUE;
-}
-
-update_status ModuleImporter::PostUpdate(float dt)
-{
-	return UPDATE_CONTINUE;
-}
-
-update_status ModuleImporter::UpdateConfig(float dt)
-{
-	return UPDATE_CONTINUE;
 }
 
 bool ModuleImporter::CleanUp()
