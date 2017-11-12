@@ -21,7 +21,8 @@ public:
 	void ShowSceneWorld();
 	bool CleanUp();
 
-	void GetWindowParams();
+	void SetWindowParams();
+	float4 GetWindowParams() const;
 	
 	//void OpenClose();
 	//bool IsOpen();

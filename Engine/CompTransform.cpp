@@ -1,11 +1,14 @@
 #include "CompTransform.h"
 #include "Component.h"
 #include "GameObject.h"
-#include "ImGui/ImGuizmo.h"
 #include "Application.h"
 #include "ModuleCamera3D.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleGUI.h"
 #include "CompCamera.h"
+#include "WindowInspector.h"
+#include "WindowSceneWorld.h"
+#include "ImGui/ImGuizmo.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
@@ -33,6 +36,44 @@ void CompTransform::Init(float3 p, float3 r, float3 s)
 
 void CompTransform::Update(float dt)
 {
+	if (((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected() == parent)
+	{
+		ImGuizmo::Enable(true);
+
+		static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
+		static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
+
+		screen = ((SceneWorld*)App->gui->winManager[SCENEWORLD])->GetWindowParams();
+		ImGuizmo::SetRect(screen.x, screen.y, screen.z, screen.w);
+
+		local_transposed = local_transform.Transposed();
+
+		// SET GUIZMO OPERATION ----------------------------------
+		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		{
+			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		{
+			mCurrentGizmoOperation = ImGuizmo::ROTATE;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+		{
+			mCurrentGizmoOperation = ImGuizmo::SCALE;
+		}
+
+		ImGuizmo::Manipulate(App->camera->GetViewMatrix(), App->camera->GetProjMatrix(), mCurrentGizmoOperation, mCurrentGizmoMode, local_transposed.ptr(), NULL, NULL);
+		
+		if (ImGuizmo::IsUsing())
+		{
+			local_transposed.Transpose();
+			local_transposed.Decompose(position, rotation, scale);
+			rotation_euler = rotation.ToEulerXYZ() * RADTODEG;
+			toUpdate = true;
+		}
+	}
+
+
 	if (toUpdate)
 	{
 		UpdateMatrix();
@@ -50,8 +91,7 @@ void CompTransform::ShowInspectorInfo()
 		static int height;
 		SDL_GetWindowSize(App->window->window, &width, &height);
 
-		// Button Reset Values
-
+		// Reset Values Button -------------------------------------------
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
 		ImGui::SameLine(ImGui::GetWindowWidth() - 26);
 		if (ImGui::ImageButton((ImTextureID*)App->scene->icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
@@ -61,7 +101,7 @@ void CompTransform::ShowInspectorInfo()
 		ImGui::PopStyleVar();
 		ImGui::PopStyleColor();
 
-		// Button Options --------------------------------------
+		// Options Button --------------------------------------
 		ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.00f));
 		if (ImGui::BeginPopup("Options"))
 		{
@@ -93,97 +133,7 @@ void CompTransform::ShowInspectorInfo()
 		}
 		ImGui::PopStyleColor();
 		
-		// Values: Position, Rotation, Scale -------------------------------
 		ImGui::Spacing();
-
-		// GIZMO TEST -----------------------------------------------------
-		/*ImGuizmo::Enable(true);
-
-		static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
-		static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
-
-		ImGuiIO& io = ImGui::GetIO();
-		ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-
-		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) 
-		{
-			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-		}
-		else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-		{
-			mCurrentGizmoOperation = ImGuizmo::ROTATE;
-		}
-		else if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-		{
-			mCurrentGizmoOperation = ImGuizmo::SCALE;
-		}
-
-		if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
-		{
-			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-		}
-		ImGui::SameLine();
-
-		if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
-		{
-			mCurrentGizmoOperation = ImGuizmo::ROTATE;
-		}			
-		ImGui::SameLine();
-
-		if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
-		{
-			mCurrentGizmoOperation = ImGuizmo::SCALE;
-		}
-
-		float matrixTranslation[3], matrixRotation[3], matrixScale[3];
-		ImGuizmo::DecomposeMatrixToComponents(local_transform.ptr(), matrixTranslation, matrixRotation, matrixScale);
-		ImGui::InputFloat3("Tr", matrixTranslation, 3);
-		ImGui::InputFloat3("Rt", matrixRotation, 3);
-		ImGui::InputFloat3("Sc", matrixScale, 3);
-		ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, local_transform.ptr());
-		
-		if (mCurrentGizmoOperation != ImGuizmo::SCALE)
-		{
-			if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
-			{
-				mCurrentGizmoMode = ImGuizmo::LOCAL;
-			}				
-			ImGui::SameLine();
-			if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
-			{
-				mCurrentGizmoMode = ImGuizmo::WORLD;
-			}
-		}*/
-
-		//static bool useSnap(false);
-
-		//if (ImGui::IsKeyPressed(83)) // S Key
-		//{
-		//	useSnap = !useSnap;
-		//}
-		//ImGui::Checkbox("", &useSnap);
-		//ImGui::SameLine();
-
-		//float4 snap;
-
-		//switch (mCurrentGizmoOperation)
-		//{
-		//case ImGuizmo::TRANSLATE:
-		//	snap = config.mSnapTranslation;
-		//	ImGui::InputFloat3("Snap", &snap.x);
-		//	break;
-		//case ImGuizmo::ROTATE:
-		//	snap = config.mSnapRotation;
-		//	ImGui::InputFloat("Angle Snap", &snap.x);
-		//	break;
-		//case ImGuizmo::SCALE:
-		//	snap = config.mSnapScale;
-		//	ImGui::InputFloat("Scale Snap", &snap.x);
-		//	break;
-		//}
-
-		//ImGuizmo::Manipulate(App->camera->GetViewMatrix(), App->camera->GetProjMatrix(), mCurrentGizmoOperation, mCurrentGizmoMode, local_transform.ptr(), NULL, NULL);
-		// ----------------------------------------------------------------
 
 		// ORIGINAL -------------------------------------------------------
 		int op = ImGui::GetWindowWidth() / 4;
@@ -219,11 +169,6 @@ void CompTransform::ShowInspectorInfo()
 		//	}
 		//}
 		// -------------------------------------------------------------------------------
-
-		//static bool useSnap(false);
-		//if (ImGui::IsKeyPressed(83))
-		//	useSnap = !useSnap;
-		//ImGui::Checkbox("", &useSnap);
 
 		ImGui::TreePop();
 	}

@@ -61,4 +61,7 @@ private:
 
 	float4x4 global_transform = math::float4x4::identity;
 	float4x4 local_transform = math::float4x4::identity;
+
+	float4 screen = math::float4::zero;
+	float4x4 local_transposed = float4x4::identity;
 };

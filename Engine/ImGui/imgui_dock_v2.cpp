@@ -1215,7 +1215,8 @@ void SetNextDock(Slot_ slot)
 	g_dock.m_next_dock_slot = slot;
 }
 
-void BeginWorkspace() {
+void BeginWorkspace() 
+{
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
 	BeginChild("##workspace", ImVec2(0, 0), false, flags);
 	g_dock.m_workspace_pos = GetWindowPos();
