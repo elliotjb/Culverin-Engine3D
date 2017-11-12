@@ -184,8 +184,24 @@ void GameObject::ShowHierarchy()
 	{
 		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.00f, 1.00f, 1.00f, 1.00f));
 	}
-
+	bool treeNod = false;
 	if (ImGui::TreeNodeEx(name, 0))
+	{
+		treeNod = true;
+	}
+	if (ImGui::BeginPopupContextItem("Create"))
+	{
+		//ImGui::OpenPopup("FilePopup");
+		//if (ImGui::BeginPopup("FilePopup"))
+		// {
+		//	ShowGameObjectOptions();
+		//	ImGui::EndMenu();
+		// }
+		ShowGameObjectOptions();
+		ImGui::EndPopup();
+	}
+	ImGui::SameLine(); App->ShowHelpMarker("Right Click to open Options");
+	if(treeNod)
 	{
 		ImGui::PopStyleColor();
 
@@ -209,19 +225,6 @@ void GameObject::ShowHierarchy()
 			App->camera->SetFocus(this);
 			App->scene->drag = this;
 		}
-
-		if (ImGui::BeginPopupContextItem("Create"))
-		{		            
-			//ImGui::OpenPopup("FilePopup");
-			//if (ImGui::BeginPopup("FilePopup"))
-			// {
-			//	ShowGameObjectOptions();
-			//	ImGui::EndMenu();
-			// }
-			ShowGameObjectOptions();
-			ImGui::EndPopup();
-		}
-		ImGui::SameLine(); App->ShowHelpMarker("Right Click to open Options");
 
 		for (uint i = 0; i < childs.size(); i++)
 		{

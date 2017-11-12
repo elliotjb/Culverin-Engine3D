@@ -38,7 +38,9 @@ void Hierarchy::ShowHierarchy()
 
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
+		ImGui::PushID(i);
 		App->scene->gameobjects[i]->ShowHierarchy();
+		ImGui::PopID();
 	}
 
 	if (App->scene->drag && ImGui::IsMouseReleased(0))
