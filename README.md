@@ -36,6 +36,9 @@ It will create a resource to access its information and operate with it internal
     * Camera culling fixed.
     * Added Guizmos to operate with local transforms of Game Objects.
     * Importing models transformations fixed.
+    * Implemented Resources.
+    * Add class JSONSerialization, Save & Load: Scenes and Prefabs.
+    * Fixed Bugs with Import and Load.
 - 0.5.5:
 	* Fixed Bugs with transmors.
 	* Fixed Bugs with Window Project.
