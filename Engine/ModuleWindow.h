@@ -33,6 +33,15 @@ public:
 	uint GetWidth() const;
 	uint GetHeight() const;
 
+	uint GetDesktopWidth() const
+	{
+		return displaymode.w;
+	}
+	uint GetDesktopHeight() const
+	{
+		return displaymode.h;
+	}
+
 
 public:
 	//The window we'll be rendering to

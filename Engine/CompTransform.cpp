@@ -186,17 +186,17 @@ void CompTransform::ShowInspectorInfo()
 		// ------------------------------------------------------------------
 
 		// This function let mouse trespassing the screen to enter from the opposite side
-		//if (isMoveMouse)
+		//if (1)
 		//{
-		//	if (App->input->GetMouseX() <= width &&
-		//		App->input->GetMouseX() > width - 10)
+		//	if (App->input->GetMouseXGlobal() <= 1680 &&
+		//		App->input->GetMouseXGlobal() > 1680 - 10)
 		//	{
-		//		SetCursorPos(30, App->input->GetMouseY());
+		//		SetCursorPos(30, App->input->GetMouseYGlobal());
 		//	}
-		//	if (App->input->GetMouseX() >= 0 &&
-		//		App->input->GetMouseX() < 10)
+		//	if (App->input->GetMouseXGlobal() >= 0 &&
+		//		App->input->GetMouseXGlobal() < 10)
 		//	{
-		//		SetCursorPos(width - 20, App->input->GetMouseY());
+		//		SetCursorPos(width - 20, App->input->GetMouseYGlobal());
 		//	}
 		//}
 		// -------------------------------------------------------------------------------

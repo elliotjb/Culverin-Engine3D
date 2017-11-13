@@ -101,8 +101,8 @@ update_status ModuleCamera3D::Update(float dt)
 			}
 
 			/* ------------------- MOUSE MOVEMENT ----------------- */
-			int motion_x = App->input->GetMouseXMotion();
-			int	motion_y = App->input->GetMouseYMotion();
+			int motion_x = App->input->GetMouseXMotionGlobal();
+			int	motion_y = App->input->GetMouseYMotionGlobal();
 			if ((motion_x != 0 || motion_y != 0))
 			{
 				MoveWithMouse(motion_x, motion_y, dt);
@@ -119,6 +119,36 @@ update_status ModuleCamera3D::Update(float dt)
 			if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 			{
 				MoveWithKeyboard(dt);
+			}
+			// This function let mouse trespassing the screen to enter from the opposite side
+			if (App->input->GetMouseButton(2) == KEY_REPEAT || App->input->GetMouseButton(3) == KEY_REPEAT)
+			{
+				// Horizontal
+				if (App->input->GetMouseXGlobal() <= App->window->GetDesktopWidth() &&
+					App->input->GetMouseXGlobal() > App->window->GetDesktopWidth() - 10)
+				{
+					SetCursorPos(20, App->input->GetMouseYGlobal());
+					App->input->SetMotionGlobal(20, App->input->GetMouseYGlobal());
+				}
+				if (App->input->GetMouseXGlobal() >= 0 &&
+					App->input->GetMouseXGlobal() < 10)
+				{
+					SetCursorPos(App->window->GetDesktopWidth() - 20, App->input->GetMouseYGlobal());
+					App->input->SetMotionGlobal(App->window->GetDesktopWidth() - 20, App->input->GetMouseYGlobal());
+				}
+				//Vertical
+				if (App->input->GetMouseYGlobal() <= App->window->GetDesktopHeight() &&
+					App->input->GetMouseYGlobal() > App->window->GetDesktopHeight() - 10)
+				{
+					SetCursorPos(App->input->GetMouseXGlobal(), 20);
+					App->input->SetMotionGlobal(App->input->GetMouseXGlobal(), 20);
+				}
+				if (App->input->GetMouseYGlobal() >= 0 &&
+					App->input->GetMouseYGlobal() < 10)
+				{
+					SetCursorPos(App->input->GetMouseXGlobal(), App->window->GetDesktopHeight() - 20);
+					App->input->SetMotionGlobal(App->input->GetMouseXGlobal(), App->window->GetDesktopHeight() - 20);
+				}
 			}
 		}		
 	}

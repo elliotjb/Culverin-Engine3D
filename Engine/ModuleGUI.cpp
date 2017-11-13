@@ -964,7 +964,7 @@ void ModuleGUI::ShowInfoMouse(bool* active)
 		return;
 	}
 	ImGui::Text("Mouse Position: (%.1f,%.1f)", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
-	LOG("Mouse Global Position: (%i,%i)", App->input->GetMouseXGlobal(), App->input->GetMouseYGlobal());
+	LOG("Mouse Global Position: (%i,%i)", App->input->GetMouseXMotionGlobal(), App->input->GetMouseYMotionGlobal());
 	ImGui::Text("FPS: %.0f", App->fps_log[App->frame_index - 1]);
 	ImGui::End();
 }

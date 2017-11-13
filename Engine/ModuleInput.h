@@ -52,6 +52,16 @@ public:
 		return mouse_z;
 	}
 
+	int GetMouseXMotion() const
+	{
+		return mouse_x_motion;
+	}
+
+	int GetMouseYMotion() const
+	{
+		return mouse_y_motion;
+	}
+
 	int GetMouseXGlobal() const
 	{
 		return mouse_x_global;
@@ -62,14 +72,20 @@ public:
 		return mouse_y_global;
 	}
 
-	int GetMouseXMotion() const
+	int GetMouseXMotionGlobal() const
 	{
-		return mouse_x_motion;
+		return mouse_x_motion_global;
 	}
 
-	int GetMouseYMotion() const
+	int GetMouseYMotionGlobal() const
 	{
-		return mouse_y_motion;
+		return mouse_y_motion_global;
+	}
+
+	void SetMotionGlobal(int x, int y)
+	{
+		mouse_x_global = x;
+		mouse_y_global = y;
 	}
 
 private:
@@ -81,6 +97,9 @@ private:
 	int mouse_x_motion;
 	int mouse_y_motion;
 	//int mouse_z_motion;
+
+
+	bool chek = false;
 
 	int mouse_x_global;
 	int mouse_y_global;
