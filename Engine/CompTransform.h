@@ -34,8 +34,9 @@ public:
 	void SetScale(float3 scale);
 	void SetLocalTransform();
 	void SetGlobalTransform();
-	//void UpdateLocalTransform();
+	void UpdateLocalTransform();
 	void UpdateGlobalTransform();
+	void UpdateGlobalMatrixRecursive();
 
 	void ResetMatrix();
 	void UpdateMatrix(ImGuizmo::MODE mode);

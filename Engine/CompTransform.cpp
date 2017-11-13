@@ -265,6 +265,33 @@ void CompTransform::SetGlobalTransform()
 	global_transform = float4x4::FromTRS(position_global, rotation_global, scale);
 }
 
+void CompTransform::UpdateLocalTransform()
+{
+	local_transform = float4x4::identity;
+	std::list<const GameObject*> parents;
+	const GameObject* parent_object = parent;
+
+	// Put all parents of the game object to pass from local to global matrix
+	while (parent_object != nullptr)
+	{
+		parents.push_back(parent_object);
+		parent_object = parent_object->GetParent();
+	}
+
+	std::list<const GameObject*>::reverse_iterator item = parents.rbegin();
+
+	// Multiply parents local transforms (inverted) to get the local transform of this game object
+	while (item != parents.crend())
+	{
+		float4x4 matrix = (*item)->GetComponentTransform()->GetLocalTransform();
+		local_transform = local_transform * matrix.Inverted();
+		item++;
+	}
+
+	//Set Output Variables
+	local_transform.Decompose(position_global, rotation_global, scale);
+}
+
 void CompTransform::UpdateGlobalTransform()
 {
 	global_transform = float4x4::identity;
@@ -292,6 +319,12 @@ void CompTransform::UpdateGlobalTransform()
 	global_transform.Decompose(position_global, rotation_global, scale);
 }
 
+void CompTransform::UpdateGlobalMatrixRecursive()
+{
+	UpdateGlobalTransform();
+	parent->UpdateChildsMatrices();
+}
+
 void CompTransform::UpdateMatrix(ImGuizmo::MODE mode)
 {
 	switch (mode)
@@ -304,7 +337,7 @@ void CompTransform::UpdateMatrix(ImGuizmo::MODE mode)
 	}
 	case (ImGuizmo::MODE::WORLD):
 	{
-		SetGlobalTransform();
+		//SetGlobalTransform();
 		//UpdateLocalTransform();
 		break;
 	}
