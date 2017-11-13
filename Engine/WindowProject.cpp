@@ -185,6 +185,7 @@ void Project::ShowProject()
 void Project::Folders_update(std::vector<FoldersNew>& folders)
 {
 	ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.335f, 0.337f, 0.357f, 1.00f));
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 3));
 	for (int i = 0; i < folders.size(); i++)
 	{
 		ImGui::PushID(i);
@@ -196,6 +197,10 @@ void Project::Folders_update(std::vector<FoldersNew>& folders)
 		else
 		{
 			node_flags = ImGuiTreeNodeFlags_OpenOnArrow;
+		}
+		if (folders[i].folder_child.size() == 0)
+		{
+			node_flags |= ImGuiTreeNodeFlags_Leaf;
 		}
 		if (ImGui::TreeNodeEx(folders[i].file_name, node_flags))
 		{
@@ -225,6 +230,7 @@ void Project::Folders_update(std::vector<FoldersNew>& folders)
 		}
 		ImGui::PopID();
 	}
+	ImGui::PopStyleVar();
 	ImGui::PopStyleColor();
 }
 

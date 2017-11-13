@@ -8,6 +8,8 @@
 #include "WindowSceneWorld.h"
 #include "WindowGame.h"
 #include "WindowProject.h"
+#include "GameObject.h"
+
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_sdl_gl3.h"
 #include "ImGui\imgui_dock_v2.h"
@@ -336,14 +338,14 @@ update_status ModuleGUI::Update(float dt)
 				if (ImGui::MenuItem("Cube"))
 				{
 					// Link inspector to the GameObject Created to call its Inspector window.
-					GameObject* cube = App->scene->CreateCube(nullptr);
+					GameObject* cube = App->scene->CreateCube();
 					((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(cube);
 					App->camera->SetFocus(cube);
 				}
 				if (ImGui::MenuItem("Sphere"))
 				{
 					// Link inspector to the GameObject ...
-					GameObject* sphere = App->scene->CreateSphere(nullptr);
+					GameObject* sphere = App->scene->CreateSphere();
 					((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(sphere);
 					App->camera->SetFocus(sphere);
 				}
@@ -654,7 +656,7 @@ bool ModuleGUI::CleanUp()
 	return true;
 }
 
-void ModuleGUI::ShowStyleEditor(ImGuiStyle* ref)
+void ModuleGUI::ShowStyleEditor(ImGuiStyle* ref) //TODO need reposition
 {
 	ImGuiStyle& style = ImGui::GetStyle();
 
@@ -857,6 +859,11 @@ void ModuleGUI::LogOpenCloseWindow(bool active, std::string name)
 	{
 		LOG("Closed %s Window...", name.c_str());
 	}
+}
+
+void ModuleGUI::SetLinkInspector(GameObject* obj)
+{
+	((Inspector*)winManager[INSPECTOR])->LinkObject(obj);
 }
 
 void ModuleGUI::UpdateWindows(float dt)

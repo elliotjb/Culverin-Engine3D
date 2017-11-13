@@ -44,7 +44,7 @@ bool ModuleFS::Start()
 	directory_Game = directory_Game.substr(0, EndName);
 	EndName = directory_Game.find_last_of("\\");
 	directory_Game = directory_Game.substr(0, EndName);
-	directory_Game += "\\Game";
+	directory_Game += "\\Game"; // "\\Game\\Assets"
 
 	// Check if Main Folders exist --------------------
 	CreateFolder("Library");

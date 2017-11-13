@@ -7,6 +7,7 @@
 #include <vector>
 
 class GameObject;
+class SkyBox;
 
 enum SkyBoxSide
 {
@@ -35,16 +36,12 @@ public:
 	void DrawPlane();
 	void DrawCube(float size);
 
-	void InitSkybox();
-	void DrawSkybox(float size, float3 pos);
-	void DeleteSkyboxTex();
-
 	//OBJECTS CREATION / DELETION ---------------------
 	void Init_IndexVertex(float3* vertex_triangulate, uint num_index, CompMesh* mesh);
-	GameObject* CreateGameObject(GameObject* parent);
-	GameObject* CreateCube(GameObject* parent);
-	GameObject* CreateSphere(GameObject* parent);
-	GameObject* CreateMainCamera(GameObject* parent);
+	GameObject* CreateGameObject(GameObject* parent = nullptr);
+	GameObject* CreateCube(GameObject* parent = nullptr);
+	GameObject* CreateSphere(GameObject* parent = nullptr);
+	GameObject* CreateMainCamera(GameObject* parent = nullptr);
 	void DeleteGameObjects(std::vector<GameObject*>& gameobjects);
 	// -------------------------------------
 
@@ -67,8 +64,8 @@ public:
 	GameObject* drag = nullptr;
 
 	GLuint icon_options_transform;
-
+	SkyBox* skybox = nullptr;
 private:
 	int size_plane;
-	uint skybox[6];
+
 };

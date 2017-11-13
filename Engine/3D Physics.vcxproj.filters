@@ -387,6 +387,9 @@
     <ClInclude Include="Resource_.h">
       <Filter>Engine\Modules\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="SkyBox.h">
+      <Filter>Engine\Containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -619,6 +622,9 @@
     </ClCompile>
     <ClCompile Include="ResourceMesh.cpp">
       <Filter>Engine\Modules\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyBox.cpp">
+      <Filter>Engine\Containers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

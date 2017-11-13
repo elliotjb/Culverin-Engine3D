@@ -190,6 +190,10 @@ void GameObject::ShowHierarchy()
 	{
 		node_flags |= ImGuiTreeNodeFlags_Selected;
 	}
+	if (childs.size() == 0)
+	{
+		node_flags |= ImGuiTreeNodeFlags_Leaf;
+	}
 	//ImGui::SetNextTreeNodeOpen(true);
 	if (ImGui::TreeNodeEx(name, node_flags))
 	{

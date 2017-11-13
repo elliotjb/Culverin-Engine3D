@@ -10,6 +10,8 @@
 #include "WindowManager.h"
 #include "SDL\include\SDL.h"
 
+class GameObject;
+
 #define IM_NEWLINE "\r\n"
 
 enum WindowName
@@ -49,6 +51,8 @@ public:
 	void LoadDocks();
 	void RevertStyleDocks();
 	void LogOpenCloseWindow(bool active, std::string name);
+
+	void SetLinkInspector(GameObject* obj);
 
 public:
 

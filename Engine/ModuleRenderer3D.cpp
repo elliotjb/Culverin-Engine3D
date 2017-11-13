@@ -7,6 +7,8 @@
 #include "WindowGame.h"
 #include "WindowSceneWorld.h"
 #include "parson.h"
+#include "SkyBox.h"
+
 #include "SDL/include/SDL_opengl.h"
 #include "GL3W/include/glew.h"
 #include <gl/GL.h>
@@ -203,7 +205,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	perf_timer.Start();
 	
 	// Draw Skybox
-	App->scene->DrawSkybox(500, active_camera->frustum.pos);
+	App->scene->skybox->DrawSkybox(500, active_camera->frustum.pos);
 
 	//Draw Test Cube
 	//App->scene->DrawCube(5);

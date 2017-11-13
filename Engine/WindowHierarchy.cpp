@@ -40,17 +40,14 @@ void Hierarchy::ShowHierarchy()
 	{
 		if (ImGui::GetIO().MouseClicked[1])
 		{
-			ImGui::OpenPopup("Test_1");
+			ImGui::OpenPopup("OptionsHyerarchy");
 		}
 	}
-	if (ImGui::BeginPopup("Test_1"))
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 3));
+	if (ImGui::BeginPopup("OptionsHyerarchy"))
 	{
 		ShowGameObjectOptions();
 		ImGui::EndMenu();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-	{
-		ImGui::CloseCurrentPopup();
 	}
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
@@ -58,6 +55,7 @@ void Hierarchy::ShowHierarchy()
 		App->scene->gameobjects[i]->ShowHierarchy();
 		ImGui::PopID();
 	}
+	ImGui::PopStyleVar();
 
 	if (App->scene->drag && ImGui::IsMouseReleased(0))
 		App->scene->drag = nullptr;
@@ -71,31 +69,18 @@ void Hierarchy::ShowGameObjectOptions()
 	ImGui::MenuItem("CREATE", NULL, false, false);
 	if (ImGui::MenuItem("Empty"))
 	{
-		//GameObject* empty = App->scene->CreateGameObject(this);
-		//((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(empty);
+		GameObject* empty = App->scene->CreateGameObject();
+		App->gui->SetLinkInspector(empty);
 	}
 	if (ImGui::MenuItem("Cube"))
 	{
-		//GameObject* cube = App->scene->CreateCube(this);
-		//((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(cube);
+		GameObject* cube = App->scene->CreateCube();
+		App->gui->SetLinkInspector(cube);
 	}
 	if (ImGui::MenuItem("Sphere"))
 	{
-		//GameObject* sphere = App->scene->CreateSphere(this);
-		//((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(sphere);
-	}
-	ImGui::MenuItem("ADD COMPONENT", NULL, false, false);
-	if (ImGui::MenuItem("Transform"))
-	{
-		//AddComponent(Comp_Type::C_TRANSFORM);
-	}
-	if (ImGui::MenuItem("Mesh"))
-	{
-		//AddComponent(Comp_Type::C_MESH);
-	}
-	if (ImGui::MenuItem("Material"))
-	{
-		//AddComponent(Comp_Type::C_MATERIAL);
+		GameObject* sphere = App->scene->CreateSphere();
+		App->gui->SetLinkInspector(sphere);
 	}
 }
 

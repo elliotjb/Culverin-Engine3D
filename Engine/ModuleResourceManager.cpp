@@ -22,7 +22,7 @@ bool ModuleResourceManager::Start()
 	perf_timer.Start();
 
 	CreateResourceCube();
-	Load();
+	//Load();
 
 	Start_t = perf_timer.ReadMs();
 	return true;
@@ -193,19 +193,21 @@ Resource*  ModuleResourceManager::ShowResources(bool& active)
 	{
 		ImGui::Text("All Meshes:");
 		ImGui::Spacing();
+		std::map<uint, Resource*>::iterator it = resources.begin();
 		for (int i = 0; i < resources.size(); i++)
 		{
 			ImGui::PushID(i);
-			ImGui::ButtonEx(resources[i]->name);
+			ImGui::ButtonEx(it->second->name);
 			if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
 			{
 				if (ImGui::IsMouseDoubleClicked(0))
 				{
 					ImGui::PopID();
 					ImGui::End();
-					return GetResource(i);
+					return GetResource(it->second->GetUUID());
 				}
 			}
+			it++;
 			ImGui::PopID();
 		}
 		ImGui::End();
