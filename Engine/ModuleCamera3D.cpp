@@ -121,7 +121,8 @@ update_status ModuleCamera3D::Update(float dt)
 				MoveWithKeyboard(dt);
 			}
 			// This function let mouse trespassing the screen to enter from the opposite side
-			if (App->input->GetMouseButton(2) == KEY_REPEAT || App->input->GetMouseButton(3) == KEY_REPEAT)
+			if (App->input->GetMouseButton(2) == KEY_REPEAT || App->input->GetMouseButton(3) == KEY_REPEAT
+				|| App->input->GetMouseButton(1) == KEY_REPEAT)
 			{
 				// Horizontal
 				if (App->input->GetMouseXGlobal() <= App->window->GetDesktopWidth() &&
@@ -469,8 +470,8 @@ void ModuleCamera3D::MoveWithMouse(int motion_x, int motion_y, float dt)
 	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT &&
 		App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
-		float dx = (float)-motion_x * rotate_speed * dt;
-		float dy = (float)-motion_y * rotate_speed * dt;
+		float dx = (float)-motion_x * rotate_speed * dt * 0.1f;
+		float dy = (float)-motion_y * rotate_speed * dt * 0.1f;
 
 		Orbit(dx, dy);
 	}
