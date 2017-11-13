@@ -36,6 +36,22 @@ void Hierarchy::ShowHierarchy()
 		return;
 	}
 
+	if (ImGui::IsMouseHoveringRect(ImGui::GetWindowPos(), ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowSize().x, ImGui::GetWindowPos().y + ImGui::GetWindowSize().y)))
+	{
+		if (ImGui::GetIO().MouseClicked[1])
+		{
+			ImGui::OpenPopup("Test_1");
+		}
+	}
+	if (ImGui::BeginPopup("Test_1"))
+	{
+		ShowGameObjectOptions();
+		ImGui::EndMenu();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		ImGui::CloseCurrentPopup();
+	}
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
 		ImGui::PushID(i);
@@ -47,6 +63,40 @@ void Hierarchy::ShowHierarchy()
 		App->scene->drag = nullptr;
 
 	EndDock();
+}
+
+void Hierarchy::ShowGameObjectOptions()
+{
+	//Create child Game Objects / Components
+	ImGui::MenuItem("CREATE", NULL, false, false);
+	if (ImGui::MenuItem("Empty"))
+	{
+		//GameObject* empty = App->scene->CreateGameObject(this);
+		//((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(empty);
+	}
+	if (ImGui::MenuItem("Cube"))
+	{
+		//GameObject* cube = App->scene->CreateCube(this);
+		//((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(cube);
+	}
+	if (ImGui::MenuItem("Sphere"))
+	{
+		//GameObject* sphere = App->scene->CreateSphere(this);
+		//((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(sphere);
+	}
+	ImGui::MenuItem("ADD COMPONENT", NULL, false, false);
+	if (ImGui::MenuItem("Transform"))
+	{
+		//AddComponent(Comp_Type::C_TRANSFORM);
+	}
+	if (ImGui::MenuItem("Mesh"))
+	{
+		//AddComponent(Comp_Type::C_MESH);
+	}
+	if (ImGui::MenuItem("Material"))
+	{
+		//AddComponent(Comp_Type::C_MATERIAL);
+	}
 }
 
 

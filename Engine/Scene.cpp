@@ -433,7 +433,7 @@ GameObject* Scene::CreateCube(GameObject* parent)
 
 	CompMesh* mesh = (CompMesh*)obj->AddComponent(C_MESH);
 	mesh->Enable();
-	mesh->resourceMesh = (ResourceMesh*)App->resource_manager->GetResource(0);
+	mesh->resourceMesh = (ResourceMesh*)App->resource_manager->GetResource(1); // 1 == Cube
 	//TODO ELLIOT -> LOAD MESH
 	//const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
 	if (mesh->resourceMesh->isLoaded == false)

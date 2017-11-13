@@ -22,7 +22,7 @@ bool ModuleResourceManager::Start()
 	perf_timer.Start();
 
 	CreateResourceCube();
-	//Load();
+	Load();
 
 	Start_t = perf_timer.ReadMs();
 	return true;
@@ -75,10 +75,14 @@ void ModuleResourceManager::ImportFile(const char* file)
 	}
 }
 
-Resource* ModuleResourceManager::CreateNewResource(Resource::Type type)
+Resource* ModuleResourceManager::CreateNewResource(Resource::Type type, uint uuid)
 {
 	Resource* ret = nullptr;
-	uint uid = last_uid++;
+	uint uid;
+	if(uuid == 0)
+		uid = App->random->Int();
+	else
+		uid = uuid;
 
 	switch (type) 
 	{
@@ -176,7 +180,7 @@ void ModuleResourceManager::CreateResourceCube()
 	std::vector<uint> indices;
 	std::vector<float3> vertices;
 	Init_IndexVertex(vertices_array, 36, indices, vertices);
-	App->importer->iMesh->Import(8, 36, 0, indices, vertices);
+	App->importer->iMesh->Import(8, 36, 0, indices, vertices, 1); // 1 == Cube
 }
 
 Resource*  ModuleResourceManager::ShowResources(bool& active)
@@ -187,7 +191,8 @@ Resource*  ModuleResourceManager::ShowResources(bool& active)
 	}
 	else
 	{
-		ImGui::Text("SDL Version: ");
+		ImGui::Text("All Meshes:");
+		ImGui::Spacing();
 		for (int i = 0; i < resources.size(); i++)
 		{
 			ImGui::PushID(i);
@@ -226,14 +231,16 @@ void ModuleResourceManager::Save()
 		json_object_dotset_number_with_std(config_node, "Info.Number of Resources", resources.size());
 
 		// Update Resoruces
+		std::map<uint, Resource*>::iterator it = resources.begin();
 		for (uint i = 0; i < resources.size(); i++)
 		{
 			std::string name = "Resource " + std::to_string(i);
 			name += ".";
-			Resource* resource = GetResource(i);
-			json_object_dotset_number_with_std(config_node, name + "Type", (int)resource->GetType());
-			json_object_dotset_number_with_std(config_node, name + "Directory Mesh UID", resource->uuid_mesh);
-			json_object_dotset_string_with_std(config_node, name + "Name", resource->name);
+			json_object_dotset_number_with_std(config_node, name + "UID", it->second->GetUUID());
+			json_object_dotset_number_with_std(config_node, name + "Type", (int)it->second->GetType());
+			json_object_dotset_number_with_std(config_node, name + "Directory Mesh UID", it->second->uuid_mesh);
+			json_object_dotset_string_with_std(config_node, name + "Name", it->second->name);
+			it++;
 		}
 	}
 	json_serialize_to_file(config_file, "Resources.json");
@@ -264,7 +271,8 @@ void ModuleResourceManager::Load()
 				{
 				case Resource::Type::MESH:
 				{
-					ResourceMesh* mesh = (ResourceMesh*)CreateNewResource(type);
+					uint uid = json_object_dotget_number_with_std(config_node, name + "UID");
+					ResourceMesh* mesh = (ResourceMesh*)CreateNewResource(type, uid);
 					mesh->name = App->GetCharfromConstChar(json_object_dotget_string_with_std(config_node, name + "Name"));
 					mesh->uuid_mesh = json_object_dotget_number_with_std(config_node, name + "Directory Mesh UID");
 					break;

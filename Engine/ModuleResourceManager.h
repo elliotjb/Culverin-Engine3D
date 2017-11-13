@@ -5,16 +5,7 @@
 #include <vector>
 #include "Math\float3.h"
 
-#define PRIMITIVERESERVE 2
-
 struct Vertex;
-
-struct ResourceImport
-{
-	const char* name = nullptr;
-	uint uuid = 0;
-	Resource::Type type = Resource::Type::UNKNOWN;
-};
 
 class ModuleResourceManager : public Module
 {
@@ -28,7 +19,7 @@ public:
 	bool CleanUp();
 
 	void ImportFile(const char* file);
-	Resource* CreateNewResource(Resource::Type type);
+	Resource* CreateNewResource(Resource::Type type, uint uuid = 0);
 	Resource* GetResource(uint id);
 	Resource::Type CheckFileType(const char* filedir);
 
@@ -41,7 +32,5 @@ public:
 	void Load();
 
 private:
-	//uint last_uid = PRIMITIVERESERVE;
-	uint last_uid = 0;
 	std::map<uint, Resource*> resources;
 };

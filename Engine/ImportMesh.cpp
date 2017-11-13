@@ -207,7 +207,7 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 	return ret;
 }
 
-void ImportMesh::Import(uint num_vertices, uint num_indices, uint num_normals, std::vector<uint> indices, std::vector<float3> vertices)
+void ImportMesh::Import(uint num_vertices, uint num_indices, uint num_normals, std::vector<uint> indices, std::vector<float3> vertices, uint uid)
 {
 	// ALLOCATING DATA INTO BUFFER ------------------------
 	uint ranges[3] = { num_vertices, num_indices, num_normals }; //,num_tex_coords };
@@ -258,7 +258,7 @@ void ImportMesh::Import(uint num_vertices, uint num_indices, uint num_normals, s
 	//RELEASE(texture);
 
 	// Create Resource ----------------------
-	ResourceMesh* res_mesh = (ResourceMesh*)App->resource_manager->CreateNewResource(Resource::Type::MESH);
+	ResourceMesh* res_mesh = (ResourceMesh*)App->resource_manager->CreateNewResource(Resource::Type::MESH, uid);
 
 	uint uid_mesh = App->random->Int();
 	std::string fileName = std::to_string(uid_mesh);
