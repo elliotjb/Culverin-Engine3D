@@ -9,19 +9,33 @@ that composes the entire model (only .png or .jpg formats).
 - Configuration options (App, Window, Audio, Render).
 - Game Objects Structure (with components).
 - Basic GameObject Creation (Cube, Sphere).
-- Main Camera (Frustum geometry)
+- Main Camera (Frustum geometry).
+- Game Clock (Play, Pause & Play Frame Modes).
+- Model importation (Imports meshes and textures, and creates Game Objects with correct components).
 
 # CAMERA CONTROLS(is Like Unity)
-- Only Mouse Right: Move Camera with static position
-- Mouse Left with Alt-Left: Move Camera arround object (model)
-- Mouse wheel: Move Camera forward and backward
-- Mouse Middle: Move Camera like 2D.
-- F: Center the Camera on an object
+- Right Mouse Button: look around with static position
+- Left Mouse Button + L-Alt: orbit around a selected object.
+- Mouse Wheel: Zoom in / Zoom out.
+- Middle Mouse Button: drag and move the camera vertically and horitzontally.
+- F: center the Camera on the selected object.
 
 # MODEL/TEXTURES IMPORTING
 To import a model (.fbx/.obj) to the Engine, just drag it inside the window.
+It will create a resource to access its information and operate with it internally.
+
 
 # UPDATES
+- 0.6:
+    * Added Game Clock (with PLAY/PAUSE/PLAY FREAME buttons).
+    * Structured camera with a frustum.
+    * Added Game camera to visualize the scene in Game Mode.
+    * Added Resources Manager (in progress).
+    * Implemented Quadtree.
+    * Mouse Picking feature added.
+    * Camera culling fixed.
+    * Added Guizmos to operate with local transforms of Game Objects.
+    * Importing models transformations fixed.
 - 0.5.5:
 	* Fixed Bugs with transmors.
 	* Fixed Bugs with Window Project.
@@ -29,7 +43,7 @@ To import a model (.fbx/.obj) to the Engine, just drag it inside the window.
 	* Add Window Project:
 		> In left window, you can see a hierarchy folders.
 		> In right, All files from a folder Test.
-	* Add Modules Importers and Loads
+	* Add Modules -> Importer and Loader
 		> Import and Load Meshes.
 		> Import Textures.
 	* Add ModuleFs.
