@@ -47,7 +47,7 @@ void SceneWorld::ShowSceneWorld()
 
 	//Get from dock the parameters of this window to access them externaly
 	SetWindowParams();
-	LOG("X:%f Y:%f W:%f H:%f", SceneWindow.x, SceneWindow.y, SceneWindow.z, SceneWindow.w);
+	//LOG("X:%f Y:%f W:%f H:%f", SceneWindow.x, SceneWindow.y, SceneWindow.z, SceneWindow.w);
 
 	// Generate mouse ray ---------------------------
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) != KEY_REPEAT)

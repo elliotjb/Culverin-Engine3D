@@ -80,6 +80,7 @@ update_status ModuleInput::PreUpdate(float dt)
 	}
 
 	Uint32 buttons = SDL_GetMouseState(&mouse_x, &mouse_y);
+	Uint32 buttons_global = SDL_GetGlobalMouseState(&mouse_x_global, &mouse_y_global);
 
 	mouse_x /= SCREEN_SIZE;
 	mouse_y /= SCREEN_SIZE;
@@ -104,6 +105,7 @@ update_status ModuleInput::PreUpdate(float dt)
 	}
 
 	mouse_x_motion = mouse_y_motion = 0;
+	mouse_x_motion_global = mouse_y_motion_global = 0;
 
 	bool quit = false;
 	SDL_Event e;
@@ -122,8 +124,14 @@ update_status ModuleInput::PreUpdate(float dt)
 			mouse_x = e.motion.x / SCREEN_SIZE;
 			mouse_y = e.motion.y / SCREEN_SIZE;
 
+			mouse_x_global = e.motion.x / SCREEN_SIZE;
+			mouse_y_global = e.motion.y / SCREEN_SIZE;
+
 			mouse_x_motion = e.motion.xrel / SCREEN_SIZE;
 			mouse_y_motion = e.motion.yrel / SCREEN_SIZE;
+
+			mouse_x_motion_global = e.motion.xrel / SCREEN_SIZE;
+			mouse_y_motion_global = e.motion.yrel / SCREEN_SIZE;
 			break;
 
 			case SDL_DROPFILE:

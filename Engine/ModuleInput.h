@@ -52,6 +52,16 @@ public:
 		return mouse_z;
 	}
 
+	int GetMouseXGlobal() const
+	{
+		return mouse_x_global;
+	}
+
+	int GetMouseYGlobal() const
+	{
+		return mouse_y_global;
+	}
+
 	int GetMouseXMotion() const
 	{
 		return mouse_x_motion;
@@ -71,6 +81,11 @@ private:
 	int mouse_x_motion;
 	int mouse_y_motion;
 	//int mouse_z_motion;
+
+	int mouse_x_global;
+	int mouse_y_global;
+	int mouse_x_motion_global;
+	int mouse_y_motion_global;
 
 public:
 	char* dropped_filedir = nullptr;
