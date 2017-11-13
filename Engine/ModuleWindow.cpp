@@ -126,6 +126,12 @@ bool ModuleWindow::Init(JSON_Object* node)
 		{
 			SDL_SetWindowBordered(window, SDL_TRUE);
 		}
+		SDL_Surface*image;
+		image = SDL_LoadBMP("icon_test.bmp");
+		// The icon is attached to the window pointer
+		SDL_SetWindowIcon(window, image);
+		// ...and the surface containing the icon pixel data is no longer required.
+		SDL_FreeSurface(image);
 	}
 
 	Awake_t = perf_timer.ReadMs();
