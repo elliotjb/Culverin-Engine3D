@@ -4,6 +4,9 @@
 #include "Geometry/LineSegment.h"
 #include <map>
 
+#define MARGE_MIN 10
+#define MARGE_MAX 20
+
 class GameObject;
 class CompCamera;
 

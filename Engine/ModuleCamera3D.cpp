@@ -121,34 +121,34 @@ update_status ModuleCamera3D::Update(float dt)
 				MoveWithKeyboard(dt);
 			}
 			// This function let mouse trespassing the screen to enter from the opposite side
-			if (App->input->GetMouseButton(2) == KEY_REPEAT || App->input->GetMouseButton(3) == KEY_REPEAT
-				|| App->input->GetMouseButton(1) == KEY_REPEAT)
+			if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_REPEAT || App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT
+				|| App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
 			{
 				// Horizontal
 				if (App->input->GetMouseXGlobal() <= App->window->GetDesktopWidth() &&
-					App->input->GetMouseXGlobal() > App->window->GetDesktopWidth() - 10)
+					App->input->GetMouseXGlobal() > App->window->GetDesktopWidth() - MARGE_MIN)
 				{
-					SetCursorPos(20, App->input->GetMouseYGlobal());
-					App->input->SetMotionGlobal(20, App->input->GetMouseYGlobal());
+					SetCursorPos(MARGE_MAX, App->input->GetMouseYGlobal());
+					App->input->SetMotionGlobal(MARGE_MAX, App->input->GetMouseYGlobal());
 				}
 				if (App->input->GetMouseXGlobal() >= 0 &&
-					App->input->GetMouseXGlobal() < 10)
+					App->input->GetMouseXGlobal() < MARGE_MIN)
 				{
-					SetCursorPos(App->window->GetDesktopWidth() - 20, App->input->GetMouseYGlobal());
-					App->input->SetMotionGlobal(App->window->GetDesktopWidth() - 20, App->input->GetMouseYGlobal());
+					SetCursorPos(App->window->GetDesktopWidth() - MARGE_MAX, App->input->GetMouseYGlobal());
+					App->input->SetMotionGlobal(App->window->GetDesktopWidth() - MARGE_MAX, App->input->GetMouseYGlobal());
 				}
 				//Vertical
 				if (App->input->GetMouseYGlobal() <= App->window->GetDesktopHeight() &&
-					App->input->GetMouseYGlobal() > App->window->GetDesktopHeight() - 10)
+					App->input->GetMouseYGlobal() > App->window->GetDesktopHeight() - MARGE_MIN)
 				{
-					SetCursorPos(App->input->GetMouseXGlobal(), 20);
-					App->input->SetMotionGlobal(App->input->GetMouseXGlobal(), 20);
+					SetCursorPos(App->input->GetMouseXGlobal(), MARGE_MAX);
+					App->input->SetMotionGlobal(App->input->GetMouseXGlobal(), MARGE_MAX);
 				}
 				if (App->input->GetMouseYGlobal() >= 0 &&
-					App->input->GetMouseYGlobal() < 10)
+					App->input->GetMouseYGlobal() < MARGE_MIN)
 				{
-					SetCursorPos(App->input->GetMouseXGlobal(), App->window->GetDesktopHeight() - 20);
-					App->input->SetMotionGlobal(App->input->GetMouseXGlobal(), App->window->GetDesktopHeight() - 20);
+					SetCursorPos(App->input->GetMouseXGlobal(), App->window->GetDesktopHeight() - MARGE_MAX);
+					App->input->SetMotionGlobal(App->input->GetMouseXGlobal(), App->window->GetDesktopHeight() - MARGE_MAX);
 				}
 			}
 		}		
