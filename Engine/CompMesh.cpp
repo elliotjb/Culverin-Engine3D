@@ -21,6 +21,10 @@ CompMesh::CompMesh(Comp_Type t, GameObject* parent_) : Component(t, parent_)
 
 CompMesh::~CompMesh()
 {
+	RELEASE_ARRAY(name);
+	resourceMesh->NumGameObjectsUseMe--;
+	material = nullptr;
+	resourceMesh = nullptr;
 }
 
 
@@ -212,7 +216,7 @@ bool CompMesh::isRendering() const
 	return render;
 }
 
-void CompMesh::LinkMaterial(CompMaterial * mat)
+void CompMesh::LinkMaterial(CompMaterial* mat)
 {
 	if (mat != nullptr)
 	{
@@ -223,7 +227,12 @@ void CompMesh::LinkMaterial(CompMaterial * mat)
 
 void CompMesh::SetResource(ResourceMesh* resourse_mesh)
 {
-	resourceMesh = resourse_mesh;
+	if (resourceMesh != resourse_mesh)
+	{
+		resourceMesh->NumGameObjectsUseMe--;
+		resourceMesh = resourse_mesh;
+		resourceMesh->NumGameObjectsUseMe++;
+	}
 }
 
 void CompMesh::Save(JSON_Object* object, std::string name) const
@@ -290,6 +299,7 @@ void CompMesh::Load(const JSON_Object* object, std::string name)
 	{
 		uint resourceID = json_object_dotget_number_with_std(object, name + "Resource Mesh ID");
 		resourceMesh = (ResourceMesh*)App->resource_manager->GetResource(resourceID);
+		resourceMesh->NumGameObjectsUseMe++;
 		//TODO ELLIOT -> LOAD MESH
 		//const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
 		if (resourceMesh->isLoaded == false)

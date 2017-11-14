@@ -40,5 +40,8 @@ public:
 	const char* directory_mesh = nullptr; //Only use in save and load
 	bool isLoaded = false;
 
+public:
+	int NumGameObjectsUseMe = 0;
+
 };
 
