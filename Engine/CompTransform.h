@@ -5,7 +5,6 @@
 #include "ImGui/ImGuizmo.h"
 #include <vector>
 
-
 class GameObject;
 
 struct Axis
@@ -29,8 +28,8 @@ public:
 	void SetPosGlobal(float3 pos);
 	void SetRotGlobal(float3 rot);
 	void SetPos(float3 pos);
-	void SetRot(float3 rot); //"rot" is "rotation_euler" updated, so we don't need to update it inside this method
-	void SetRot(Quat rot); //"rot" is the quaternion we want to set to our rotation quaternion
+	void SetRot(float3 rot);	//"rot" is "rotation_euler" updated, so we don't need to update it inside this method
+	void SetRot(Quat rot);		//"rot" is the quaternion we want to set to our rotation quaternion
 	void SetScale(float3 scale);
 	void SetLocalTransform();
 	void SetGlobalTransform();
@@ -39,7 +38,7 @@ public:
 	void UpdateGlobalMatrixRecursive();
 
 	void ResetMatrix();
-	void UpdateMatrix(ImGuizmo::MODE mode);
+	void UpdateMatrix();
 	//void MultMatrix(float4x4 matrix);
 
 	float3 GetPos() const;
@@ -75,6 +74,6 @@ private:
 	float4x4 local_transform = math::float4x4::identity;
 
 	float4 screen = math::float4::zero;
-	float4x4 local_transposed = float4x4::identity;
+	float4x4 global_transposed = float4x4::identity;
 	ImGuizmo::MODE transform_mode = ImGuizmo::LOCAL;
 };

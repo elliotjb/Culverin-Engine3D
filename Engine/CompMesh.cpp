@@ -22,13 +22,11 @@ CompMesh::CompMesh(Comp_Type t, GameObject* parent_) : Component(t, parent_)
 
 CompMesh::~CompMesh()
 {
-	RELEASE_ARRAY(name);
+	//RELEASE_ARRAY(name);
 	resourceMesh->NumGameObjectsUseMe--;
 	material = nullptr;
 	resourceMesh = nullptr;
 }
-
-
 
 //void CompMesh::Init(std::vector<_Vertex> v, std::vector<uint> i)
 //{
@@ -95,7 +93,16 @@ void CompMesh::ShowInspectorInfo()
 			{
 				if (resourceMesh->isLoaded == false)
 				{
+<<<<<<< HEAD
 					App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);
+=======
+					if (resourceMesh->isLoaded == false)
+					{
+						App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);
+					}
+					Enable();
+					parent->AddBoundingBox(resourceMesh);
+>>>>>>> 42caba2c6dc4553ecc1e348a34f20fb0716afd98
 				}
 				Enable();
 				parent->Addbounding_box();
