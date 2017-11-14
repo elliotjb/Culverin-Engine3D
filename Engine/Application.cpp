@@ -62,6 +62,7 @@ Application::~Application()
 		item++;
 	}
 
+	RELEASE(configuration);
 	RELEASE(random);
 	RELEASE(Json_seria);
 }
@@ -168,7 +169,7 @@ void Application::FinishUpdate()
 
 	if (want_to_load == true)
 	{
-		App->scene->DeleteGameObjects(App->scene->gameobjects);
+		App->scene->DeleteAllGameObjects(App->scene->gameobjects);
 		Json_seria->LoadScene();
 
 		want_to_load = false;

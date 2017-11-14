@@ -47,6 +47,7 @@ public:
 	CompMesh* GetComponentMesh() const;
 	CompMaterial* GetComponentMaterial() const;
 	Component* GetComponentbyIndex(uint i) const;
+	void DeleteAllComponents();
 
 	void SaveComponents(JSON_Object* object, std::string name) const;
 	void LoadComponents(const JSON_Object * object, std::string name, uint numComponents);

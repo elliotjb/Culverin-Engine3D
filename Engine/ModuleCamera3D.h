@@ -37,7 +37,9 @@ public:
 	void CheckAABBIntersection(GameObject* candidate, float& entry_dist, float& exit_dist);
 	void CheckGeometryIntersection();
 
+	// Focus -------------------------
 	void SetFocus(const GameObject* selected);
+	void SetFocusNull();
 	void CenterToObject();
 
 	bool isMouseOnWindow();

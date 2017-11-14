@@ -14,6 +14,13 @@ CompMaterial::CompMaterial(Comp_Type t, GameObject* parent): Component(t, parent
 
 CompMaterial::~CompMaterial()
 {
+	for (int i = 0; i < texture.size(); i++)
+	{
+		texture[i].name.clear();
+		texture[i].path.clear();
+		texture[i].type.clear();
+	}
+	texture.clear();
 }
 
 void CompMaterial::SetColor(float r, float g, float b, float a)

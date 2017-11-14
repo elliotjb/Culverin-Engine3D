@@ -39,7 +39,6 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 	uint* indices = nullptr;
 	float3* vert_normals = nullptr;
 	float2* tex_coords = nullptr;
-	Texture* texture = nullptr;
 
 	CompMesh* meshComp = (CompMesh*)obj->AddComponent(C_MESH);
 	//ResourceMesh* resourceMesh = App->resource_manager->CreateNewResource(Resource::Type::MESH);
@@ -137,7 +136,6 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 		text_t.insert(text_t.end(), specularMaps.begin(), specularMaps.end());
 
 		materialComp->SetTexture(text_t);
-		texture = text_t.data();
 		num_textures = text_t.size();
 	}
 	

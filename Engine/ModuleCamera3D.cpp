@@ -282,6 +282,10 @@ void ModuleCamera3D::MousePick(float x, float y, float w, float h)
 		// Check intersection ray-traingles
 		CheckGeometryIntersection();
 	}
+	else
+	{
+		((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
+	}
 }
 
 void ModuleCamera3D::CheckAABBIntersection(GameObject* candidate, float& entry_dist, float& exit_dist)
@@ -368,6 +372,11 @@ void ModuleCamera3D::SetFocus(const GameObject* selected)
 	{
 		focus = selected;
 	}
+}
+
+void ModuleCamera3D::SetFocusNull()
+{
+	focus = nullptr;
 }
 
 void ModuleCamera3D::CenterToObject()

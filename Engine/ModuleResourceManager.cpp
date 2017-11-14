@@ -15,6 +15,13 @@ ModuleResourceManager::ModuleResourceManager(bool start_enabled): Module(start_e
 
 ModuleResourceManager::~ModuleResourceManager()
 {
+	std::map<uint, Resource*>::iterator it = resources.begin();
+	for (int i = 0; i < resources.size(); i++)
+	{
+		RELEASE(it->second);
+		it++;
+	}
+	resources.clear();
 }
 
 bool ModuleResourceManager::Start()

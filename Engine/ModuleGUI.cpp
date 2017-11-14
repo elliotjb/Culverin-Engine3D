@@ -28,6 +28,11 @@ ModuleGUI::ModuleGUI(bool start_enabled): Module(start_enabled)
 
 ModuleGUI::~ModuleGUI()
 {
+	for (int i = 0; i < winManager.size(); i++)
+	{
+		delete winManager[i];
+	}
+	winManager.clear();
 }
 
 //bool ModuleGUI::Init(JSON_Object * node)

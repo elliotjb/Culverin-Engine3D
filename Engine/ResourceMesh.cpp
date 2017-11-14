@@ -9,6 +9,9 @@ ResourceMesh::ResourceMesh(uint uid) : Resource(uid, Resource::Type::MESH)
 
 ResourceMesh::~ResourceMesh()
 {
+	vertices.clear();
+	indices.clear();
+	vertices_normals.clear();
 }
 
 void ResourceMesh::Init(const float3* vert, const uint* ind, const float3* vert_normals, const float2* texCoord)

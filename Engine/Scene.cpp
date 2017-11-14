@@ -100,6 +100,7 @@ update_status Scene::Update(float dt)
 		//gameobjects[0]->AddChildGameObject(gameobjects[2]);
 		//SaveScene();
 		//App->Json_seria->LoadPrefab("Assets/BakerHouse.fbx.meta.json");
+		DeleteAllGameObjects(gameobjects);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
@@ -302,25 +303,33 @@ GameObject* Scene::CreateGameObject(GameObject* parent)
 	return obj;
 }
 
-void Scene::DeleteGameObjects(std::vector<GameObject*>& gameobjects)
+void Scene::DeleteAllGameObjects(std::vector<GameObject*>& gameobjects)
 {
 	for (int i = 0; i < gameobjects.size(); i++)
 	{
 		if (gameobjects[i]->GetNumChilds() > 0)
 		{
-			DeleteGameObjects(gameobjects[i]->GetChildsVec());
+			DeleteAllGameObjects(gameobjects[i]->GetChildsVec());
 		}
 		else
 		{
 			// First delete all components
-
+			gameobjects[i]->DeleteAllComponents();
 
 			// Now Delete GameObject
 			//delete gameobjects[i];
-			gameobjects[i]->GetChildsVec().clear();
+			//gameobjects[i]->GetChildsVec().clear();
+			delete gameobjects[i];
 		}
+
 	}
+	App->camera->SetFocusNull();
+	((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
 	gameobjects.clear();
+}
+
+void Scene::DeleteGameObject(GameObject * gameobjects)
+{
 }
 
 GameObject* Scene::CreateCube(GameObject* parent)

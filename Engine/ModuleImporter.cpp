@@ -28,6 +28,8 @@ ModuleImporter::ModuleImporter(bool start_enabled) : Module(start_enabled)
 
 ModuleImporter::~ModuleImporter()
 {
+	RELEASE(iMesh);
+	RELEASE(iMaterial);
 }
 
 bool ModuleImporter::Init(JSON_Object* node)

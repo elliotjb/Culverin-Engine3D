@@ -12,6 +12,8 @@ Project::Project()
 Project::~Project()
 {
 	active.clear();
+	App->fs->DeleteFolders(folders);
+	App->fs->DeleteFiles(files);
 }
 
 bool Project::Start()

@@ -46,11 +46,12 @@ GameObject::GameObject(const GameObject& copy)
 
 GameObject::~GameObject()
 {
-	//for (int i = 0; i < childs.size(); i++)
-	//{
-	//	childs[i]->~GameObject();
-	//	delete childs[i];
-	//}
+	RELEASE_ARRAY(name);
+	delete bounding_box;
+	bounding_box = nullptr;
+	parent = nullptr;
+	components.clear();
+	childs.clear();
 }
 
 void GameObject::preUpdate(float dt)
@@ -569,6 +570,15 @@ Component* GameObject::GetComponentbyIndex(uint i) const
 		return components[i];
 	}
 	return nullptr;
+}
+
+void GameObject::DeleteAllComponents()
+{
+	for (int i = 0; i < components.size(); i++)
+	{
+		delete components[i];
+	}
+	components.clear();
 }
 
 uint GameObject::GetNumChilds() const

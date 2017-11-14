@@ -9,6 +9,7 @@ JSONSerialization::JSONSerialization()
 
 JSONSerialization::~JSONSerialization()
 {
+	namesScene.clear();
 }
 
 void JSONSerialization::SaveScene()

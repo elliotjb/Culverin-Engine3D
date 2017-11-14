@@ -11,6 +11,7 @@ Inspector::Inspector() : WindowManager()
 Inspector::~Inspector()
 {
 	active.clear();
+	selected_object = nullptr;
 }
 
 bool Inspector::Start()
