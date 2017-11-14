@@ -321,14 +321,16 @@ void ModuleCamera3D::CheckGeometryIntersection()
 	ray_local_space = ray;
 	best_candidate = nullptr;
 	tris_map.clear();
+	const CompTransform* trans = nullptr;
+	const CompMesh* mesh = nullptr;
+	Triangle tri;
 
 	for (it = possible_intersections.begin(); it != possible_intersections.end(); ++it)
 	{
 		if (it->second->GetComponentTransform() != nullptr && it->second->FindComponentByType(C_MESH))
 		{
-			Triangle tri;
-			const CompTransform* trans = it->second->GetComponentTransform();
-			const CompMesh* mesh = (CompMesh*)it->second->FindComponentByType(C_MESH);
+			trans = it->second->GetComponentTransform();
+			mesh = (CompMesh*)it->second->FindComponentByType(C_MESH);
 
 			// Transform ray coordinates into local space coordinates of the object
 			float4x4 object_transform = it->second->GetComponentTransform()->GetGlobalTransform();

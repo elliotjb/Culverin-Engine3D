@@ -70,11 +70,12 @@ void ModuleResourceManager::ImportFile(const char* file)
 
 	if (dropped_File_type != Resource::Type::UNKNOWN)
 	{
-		App->importer->Import(App->input->dropped_filedir, dropped_File_type);
-
-		// Copy file to Specify folder in Assets (This folder is the folder active)
-		App->fs->CopyFileToAssets(App->input->dropped_filedir, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
-		((Project*)App->gui->winManager[WindowName::PROJECT])->UpdateNow();
+		if (App->importer->Import(App->input->dropped_filedir, dropped_File_type))
+		{
+			// Copy file to Specify folder in Assets (This folder is the folder active)
+			App->fs->CopyFileToAssets(App->input->dropped_filedir, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
+			((Project*)App->gui->winManager[WindowName::PROJECT])->UpdateNow();
+		}
 	}
 	else
 	{

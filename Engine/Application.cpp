@@ -575,7 +575,7 @@ bool Application::SaveConfig()
 	return ret;
 }
 
-void Application::ShowHelpMarker(const char * desc, const char * icon)
+void Application::ShowHelpMarker(const char* desc, const char* icon)
 {
 	ImGui::TextDisabled(icon);
 	if (ImGui::IsItemHovered())
