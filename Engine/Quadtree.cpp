@@ -28,6 +28,7 @@ QuadtreeNode::~QuadtreeNode()
 	{
 		if (childs[i] != nullptr)
 		{
+			childs[i]->objects.clear();
 			RELEASE(childs[i]);
 		}
 	}
@@ -77,6 +78,18 @@ void QuadtreeNode::Remove(GameObject* obj)
 		for (uint i = 0; i < 4; i++)
 		{
 			childs[i]->Remove(obj);
+		}
+	}
+}
+
+void QuadtreeNode::Clear()
+{
+	if (childs[0] != nullptr)
+	{
+		for (uint i = 0; i < 4; i++)
+		{
+			childs[i]->objects.clear();
+			RELEASE(childs[i]);
 		}
 	}
 }
@@ -171,7 +184,6 @@ void QuadtreeNode::RedistributeChilds()
 
 
 // QUADTREE ------------------------------
-
 Quadtree::Quadtree()
 {
 }
@@ -188,16 +200,18 @@ void Quadtree::Boundaries(AABB limits)
 
 void Quadtree::Clear()
 {
-	RELEASE(root_node);
+	if (root_node != nullptr)
+	{
+		root_node->objects.clear();
+		RELEASE(root_node);
+	}	
 }
 
 void Quadtree::Bake(const std::vector<GameObject*>& objects)
 {
-	//Clear();
-
 	for (uint i = 0; i < objects.size(); i++)
 	{
-		if (objects[i]->isStatic())
+		if (!objects[i]->isStatic())
 		{
 			Insert(objects[i]);
 

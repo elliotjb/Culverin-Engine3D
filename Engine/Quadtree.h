@@ -18,6 +18,8 @@ public:
 	void Insert(GameObject* obj);
 	void Remove(GameObject* obj);
 
+	void Clear();
+
 	void DebugDraw();
 
 	void CreateChilds();

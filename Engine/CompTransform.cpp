@@ -14,7 +14,7 @@
 
 CompTransform::CompTransform(Comp_Type t, GameObject* parent) :Component(t, parent)
 {
-	name = "Transformation";
+	nameComponent = "Transformation";
 }
 
 CompTransform::~CompTransform()
@@ -127,10 +127,12 @@ void CompTransform::ShowInspectorInfo()
 
 		ImGui::Spacing();
 		ImGui::PopStyleVar();
-		// ORIGINAL -------------------------------------------------------
-		int op = ImGui::GetWindowWidth() / 4;
 	}
 	ImGui::PopStyleColor();
+
+	// ORIGINAL -------------------------------------------------------
+	int op = ImGui::GetWindowWidth() / 4;
+
 	/*if (ImGui::RadioButton("Local", transform_mode == ImGuizmo::LOCAL))
 	{
 		SetRot(math::float3::zero);
@@ -158,7 +160,6 @@ if (ImGui::RadioButton("World", transform_mode == ImGuizmo::WORLD))
 {
 	transform_mode = ImGuizmo::WORLD;
 }
-int op = ImGui::GetWindowWidth() / 4;
 
 switch (transform_mode)
 {
@@ -225,11 +226,21 @@ case (ImGuizmo::MODE::WORLD):
 
 	//	ImGui::TreePop();
 	//}
-	//ImGui::Text("Scale"); ImGui::SameLine(op + 30);
-	//if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
-	//{
-	//	SetScale(scale);
-	//}
+	ImGui::Text("Position"); ImGui::SameLine(op + 30);
+	if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
+	{
+		SetPos(position);
+	}
+	ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
+	if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
+	{
+		SetRot(rotation_euler);
+	}
+	ImGui::Text("Scale"); ImGui::SameLine(op + 30);
+	if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
+	{
+		SetScale(scale);
+	}
 	// ------------------------------------------------------------------
 
 	// This function let mouse trespassing the screen to enter from the opposite side
