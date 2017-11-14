@@ -7,6 +7,8 @@
 #include "ImGui\imgui.h"
 #include "WindowManager.h"
 
+class GameObject;
+
 class Hierarchy : public WindowManager
 {
 public:
@@ -18,11 +20,18 @@ public:
 	update_status Update(float dt);
 	void ShowHierarchy();
 	void ShowOptions();
+	void SetGameObjecttoDelete(GameObject* todelete);
+	void ChangeShowConfirmDelete();
 	bool CleanUp();
 
+public:
+	bool showconfirmDelete = true;
 private:
 	std::string model_name = "";
 	bool haveModel = false;
+	GameObject* toDelete = nullptr;
+	bool wait_toSelect = false;
+	bool dont_ask_me_next_time = false;
 
 };
 

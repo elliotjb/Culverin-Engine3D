@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "WindowInspector.h"
+#include "WindowHierarchy.h"
 #include "ModuleInput.h"
 #include "GameObject.h"
 #include "Component.h"
@@ -287,24 +288,25 @@ void GameObject::ShowGameObjectOptions()
 	}
 	if (ImGui::MenuItem("Delate"))
 	{
-		toDelete = true;
+		((Hierarchy*)App->gui->winManager[WindowName::HIERARCHY])->SetGameObjecttoDelete(this);
+		//toDelete = true;
 	}
 	ImGui::Separator();
 	ImGui::MenuItem("CREATE", NULL, false, false);
 	if (ImGui::MenuItem("Empty"))
 	{
 		GameObject* empty = App->scene->CreateGameObject(this);
-		((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(empty);
+		((Inspector*)App->gui->winManager[WindowName::INSPECTOR])->LinkObject(empty);
 	}
 	if (ImGui::MenuItem("Cube"))
 	{
 		GameObject* cube = App->scene->CreateCube(this);
-		((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(cube);
+		((Inspector*)App->gui->winManager[WindowName::INSPECTOR])->LinkObject(cube);
 	}
 	if (ImGui::MenuItem("Sphere"))
 	{
 		GameObject* sphere = App->scene->CreateSphere(this);
-		((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(sphere);
+		((Inspector*)App->gui->winManager[WindowName::INSPECTOR])->LinkObject(sphere);
 	}
 	ImGui::Separator();
 	ImGui::MenuItem("ADD COMPONENT", NULL, false, false);
@@ -812,4 +814,9 @@ void GameObject::SetUUIDRandom()
 bool GameObject::WanttoDelete() const
 {
 	return toDelete;
+}
+
+void GameObject::SettoDelete()
+{
+	toDelete = true;
 }

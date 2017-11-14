@@ -595,6 +595,13 @@ update_status ModuleGUI::UpdateConfig(float dt)
 	ImGui::Text("Inspector");
 	ImGui::Checkbox("##HierarchyActive", &winManager[HIERARCHY]->active[0].active); ImGui::SameLine();
 	ImGui::Text("Hierarchy");
+	ImGui::Bullet();  ImGui::SameLine();
+	ImGui::Text("Show Window Confirm Delete");  ImGui::SameLine(); 
+	if(ImGui::Checkbox("##HierarchyConfirmDelete", &((Hierarchy*)winManager[HIERARCHY])->showconfirmDelete))
+	{
+		((Hierarchy*)winManager[HIERARCHY])->ChangeShowConfirmDelete();
+	}
+
 	ImGui::Checkbox("##ConsoleActive", &App->console->console_activated); ImGui::SameLine();
 	ImGui::Text("Console");
 	ImGui::Checkbox("##HardwareActive", &winManager[HARDWARE]->active[0].active); ImGui::SameLine();

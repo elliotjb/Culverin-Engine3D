@@ -49,6 +49,7 @@ void Hierarchy::ShowHierarchy()
 		ShowOptions();
 		ImGui::EndMenu();
 	}
+
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
 		ImGui::PushID(i);
@@ -56,6 +57,47 @@ void Hierarchy::ShowHierarchy()
 		ImGui::PopID();
 	}
 	ImGui::PopStyleVar();
+	// Open Window To Delete GameObject
+	if (toDelete != nullptr)
+	{
+		if (showconfirmDelete == false && dont_ask_me_next_time)
+		{
+			toDelete->SettoDelete();
+			toDelete = nullptr;
+		}
+		else
+		{
+			static int width = 0;
+			static int height = 0;
+			bool active = true;
+			//SDL_GetWindowSize(App->window->window, &width, &height);
+			//ImGui::SetNextWindowPos(ImVec2(width / 2 - 180, height / 2 - 80));
+			ImGui::SetNextWindowPosCenter();
+			ImGui::Begin("Delete GameObject", &active, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse);
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+			ImGui::Checkbox("Don't ask me next time", &wait_toSelect);
+			ImGui::PopStyleVar();
+			if (ImGui::Button("OK", ImVec2(120, 0)))
+			{
+				showconfirmDelete = !wait_toSelect;
+				dont_ask_me_next_time = wait_toSelect;
+				toDelete->SettoDelete();
+				toDelete = nullptr;
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel", ImVec2(120, 0)))
+			{
+				showconfirmDelete = !wait_toSelect;
+				dont_ask_me_next_time = wait_toSelect;
+				toDelete = nullptr;
+			}
+			if (active == false)
+			{
+				toDelete = nullptr;
+			}
+			ImGui::End();
+		}
+	}
 
 	if (App->scene->drag && ImGui::IsMouseReleased(0))
 		App->scene->drag = nullptr;
@@ -82,6 +124,17 @@ void Hierarchy::ShowOptions()
 		GameObject* sphere = App->scene->CreateSphere();
 		App->gui->SetLinkInspector(sphere);
 	}
+}
+
+void Hierarchy::SetGameObjecttoDelete(GameObject* todelete)
+{
+	toDelete = todelete;
+}
+
+void Hierarchy::ChangeShowConfirmDelete()
+{
+	dont_ask_me_next_time = !showconfirmDelete;
+	wait_toSelect = false;
 }
 
 

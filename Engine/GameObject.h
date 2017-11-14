@@ -79,7 +79,9 @@ public:
 	void SetUUID(uint uuid);
 	void SetUUIDRandom();
 
+	// Delete -----------------
 	bool WanttoDelete() const;
+	void SettoDelete();
 
 
 private:
