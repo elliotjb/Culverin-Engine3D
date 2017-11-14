@@ -378,9 +378,9 @@ void CompTransform::UpdateGlobalTransform()
 		item++;
 	}
 
-	//Fill the output variables from the updated matrix
-	global_transform.Decompose(position_global, rotation_global, scale);
-	rotation_euler_global = rotation_global.ToEulerXYZ() * RADTODEG;
+	////Fill the output variables from the updated matrix
+	//global_transform.Decompose(position_global, rotation_global, scale);
+	//rotation_euler_global = rotation_global.ToEulerXYZ() * RADTODEG;
 }
 
 void CompTransform::UpdateGlobalMatrixRecursive()

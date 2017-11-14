@@ -59,7 +59,6 @@ void QuadtreeNode::Insert(GameObject* obj)
 			CreateChilds();
 		}
 		objects.push_back(obj);
-
 		RedistributeChilds();
 	}
 }

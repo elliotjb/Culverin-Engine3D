@@ -94,12 +94,6 @@ void CompMesh::ShowInspectorInfo()
 				if (resourceMesh->isLoaded == false)
 				{
 					App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);
-					if (resourceMesh->isLoaded == false)
-					{
-						App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);
-					}
-					Enable();
-					parent->AddBoundingBox(resourceMesh);
 				}
 				Enable();
 				parent->AddBoundingBox(resourceMesh);
@@ -225,7 +219,11 @@ void CompMesh::SetResource(ResourceMesh* resourse_mesh)
 {
 	if (resourceMesh != resourse_mesh)
 	{
-		resourceMesh->NumGameObjectsUseMe--;
+		if (resourceMesh != nullptr)
+		{
+			resourceMesh->NumGameObjectsUseMe--;
+		}
+
 		resourceMesh = resourse_mesh;
 		resourceMesh->NumGameObjectsUseMe++;
 	}
@@ -301,6 +299,7 @@ void CompMesh::Load(const JSON_Object* object, std::string name)
 		if (resourceMesh->isLoaded == false)
 		{
 			App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);
+			parent->AddBoundingBox(resourceMesh);
 		}
 
 		Enable();
