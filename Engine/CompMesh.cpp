@@ -93,19 +93,16 @@ void CompMesh::ShowInspectorInfo()
 			{
 				if (resourceMesh->isLoaded == false)
 				{
-<<<<<<< HEAD
 					App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);
-=======
 					if (resourceMesh->isLoaded == false)
 					{
 						App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);
 					}
 					Enable();
 					parent->AddBoundingBox(resourceMesh);
->>>>>>> 42caba2c6dc4553ecc1e348a34f20fb0716afd98
 				}
 				Enable();
-				parent->Addbounding_box();
+				parent->AddBoundingBox(resourceMesh);
 			}
 		}
 	}

@@ -122,100 +122,89 @@ void CompTransform::ShowInspectorInfo()
 			SetPos(float3::zero);
 			ImGui::CloseCurrentPopup();
 		}
-<<<<<<< HEAD
 		if (ImGui::Button("Reset Rotation"))
-=======
-		ImGui::PopStyleColor();
-		
-		ImGui::Spacing();
+			ImGui::PopStyleColor();
 
+		ImGui::Spacing();
+		ImGui::PopStyleVar();
 		// ORIGINAL -------------------------------------------------------
 		int op = ImGui::GetWindowWidth() / 4;
-
-		/*if (ImGui::RadioButton("Local", transform_mode == ImGuizmo::LOCAL))
->>>>>>> 42caba2c6dc4553ecc1e348a34f20fb0716afd98
-		{
-			SetRot(math::float3::zero);
-			rotation_euler = float3::zero;
-			ImGui::CloseCurrentPopup();
-		} ImGui::SameLine(); App->ShowHelpMarker("Doesn't Work!!");
-		if (ImGui::Button("Reset Size"))
-		{
-			SetScale(math::float3(1, 1, 1));
-			ImGui::CloseCurrentPopup();
-		}
-<<<<<<< HEAD
-		ImGui::PopStyleVar();
-		ImGui::EndPopup();
 	}
 	ImGui::PopStyleColor();
-=======
->>>>>>> 42caba2c6dc4553ecc1e348a34f20fb0716afd98
-
-	ImGui::Spacing();
-
-	// ORIGINAL -------------------------------------------------------
-	if (ImGui::RadioButton("Local", transform_mode == ImGuizmo::LOCAL))
+	/*if (ImGui::RadioButton("Local", transform_mode == ImGuizmo::LOCAL))
 	{
-		transform_mode = ImGuizmo::LOCAL;
+		SetRot(math::float3::zero);
+		rotation_euler = float3::zero;
+		ImGui::CloseCurrentPopup();
+	} ImGui::SameLine(); App->ShowHelpMarker("Doesn't Work!!");
+	if (ImGui::Button("Reset Size"))
+	{
+		SetScale(math::float3(1, 1, 1));
+		ImGui::CloseCurrentPopup();
 	}
-	ImGui::SameLine();
-	if (ImGui::RadioButton("World", transform_mode == ImGuizmo::WORLD))
-	{
-		transform_mode = ImGuizmo::WORLD;
-	}
-	int op = ImGui::GetWindowWidth() / 4;
+	ImGui::PopStyleVar();
+	ImGui::EndPopup();
+}
+ImGui::PopStyleColor();
+ImGui::Spacing();
 
-	switch (transform_mode)
-	{
-	case (ImGuizmo::MODE::LOCAL):
-	{
-		ImGui::Text("Position"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
-		{
-			SetPos(position);
-		}
-		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
-		{
-			SetRot(rotation_euler);
-		}
-<<<<<<< HEAD
-		break;
-	}
-	case (ImGuizmo::MODE::WORLD):
-	{
-		ImGui::Text("Position"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##pos", &position_global[0], 0.5f))
-		{
-			SetPosGlobal(position_global);
-=======
-		default:
-			break;
-		}*/
+// ORIGINAL -------------------------------------------------------
+if (ImGui::RadioButton("Local", transform_mode == ImGuizmo::LOCAL))
+{
+	transform_mode = ImGuizmo::LOCAL;
+}
+ImGui::SameLine();
+if (ImGui::RadioButton("World", transform_mode == ImGuizmo::WORLD))
+{
+	transform_mode = ImGuizmo::WORLD;
+}
+int op = ImGui::GetWindowWidth() / 4;
 
-		ImGui::Text("Position"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
-		{
-			SetPos(position);
-		}
-		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
-		{
-			SetRot(rotation_euler);
->>>>>>> 42caba2c6dc4553ecc1e348a34f20fb0716afd98
-		}
-		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##rot", &rotation_euler_global[0], 0.5f))
-		{
-			SetRotGlobal(rotation_euler_global);
-		}
-<<<<<<< HEAD
-		break;
+switch (transform_mode)
+{
+case (ImGuizmo::MODE::LOCAL):
+{
+	ImGui::Text("Position"); ImGui::SameLine(op + 30);
+	if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
+	{
+		SetPos(position);
 	}
+	ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
+	if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
+	{
+		SetRot(rotation_euler);
+	}
+	break;
+}
+case (ImGuizmo::MODE::WORLD):
+{
+	ImGui::Text("Position"); ImGui::SameLine(op + 30);
+	if (ImGui::DragFloat3("##pos", &position_global[0], 0.5f))
+	{
+		SetPosGlobal(position_global);
 	default:
 		break;
-=======
+	}*/
+
+	//	ImGui::Text("Position"); ImGui::SameLine(op + 30);
+	//	if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
+	//	{
+	//		SetPos(position);
+	//	}
+	//	ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
+	//	if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
+	//	{
+	//		SetRot(rotation_euler);
+	//	}
+	//	ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
+	//	if (ImGui::DragFloat3("##rot", &rotation_euler_global[0], 0.5f))
+	//	{
+	//		SetRotGlobal(rotation_euler_global);
+	//	}
+	//	break;
+	//}
+	//default:
+	//	break;
 
 		// ------------------------------------------------------------------
 		// This function let mouse trespassing the screen to enter from the opposite side
@@ -234,14 +223,13 @@ void CompTransform::ShowInspectorInfo()
 		//}
 		// -------------------------------------------------------------------------------
 
-		ImGui::TreePop();
->>>>>>> 42caba2c6dc4553ecc1e348a34f20fb0716afd98
-	}
-	ImGui::Text("Scale"); ImGui::SameLine(op + 30);
-	if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
-	{
-		SetScale(scale);
-	}
+	//	ImGui::TreePop();
+	//}
+	//ImGui::Text("Scale"); ImGui::SameLine(op + 30);
+	//if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
+	//{
+	//	SetScale(scale);
+	//}
 	// ------------------------------------------------------------------
 
 	// This function let mouse trespassing the screen to enter from the opposite side
@@ -261,6 +249,7 @@ void CompTransform::ShowInspectorInfo()
 	// -------------------------------------------------------------------------------
 
 	ImGui::TreePop();
+
 }
 
 void CompTransform::SetPosGlobal(float3 pos)
@@ -353,7 +342,6 @@ void CompTransform::UpdateLocalTransform()
 	// Fill the output variables from the updated matrix
 	local_transform.Decompose(position, rotation, scale);
 	rotation_euler = rotation.ToEulerXYZ() * RADTODEG;
-;
 }
 
 void CompTransform::UpdateGlobalTransform()
