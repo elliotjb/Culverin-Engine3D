@@ -8,7 +8,7 @@
 
 CompMaterial::CompMaterial(Comp_Type t, GameObject* parent): Component(t, parent)
 {
-	name = "Material";
+	nameComponent = "Material";
 	uid = App->random->Int();
 	color = White;
 }

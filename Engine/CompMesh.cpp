@@ -15,7 +15,7 @@
 
 CompMesh::CompMesh(Comp_Type t, GameObject* parent_) : Component(t, parent_)
 {
-	name = "Mesh";
+	nameComponent = "Mesh";
 	uid = App->random->Int();
 	parent = parent_;
 }

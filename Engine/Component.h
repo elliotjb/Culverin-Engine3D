@@ -37,7 +37,7 @@ public:
 	uint GetUUID() const;
 	const char* GetName() const
 	{
-		return name;
+		return nameComponent;
 	}
 
 	virtual void Save(JSON_Object* object, std::string name) const;
@@ -51,5 +51,5 @@ private:
 protected:
 	GameObject* parent = nullptr;
 	uint uid = 0;
-	const char* name = nullptr;
+	const char* nameComponent = nullptr;
 };

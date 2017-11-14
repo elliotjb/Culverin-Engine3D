@@ -11,7 +11,7 @@
 
 CompCamera::CompCamera(Comp_Type t, GameObject* parent) : Component(t, parent)
 {
-	name = "Camera";
+	nameComponent = "Camera";
 	//uid = App->random->Int();
 	/* Set camera vars*/
 	width = 16;

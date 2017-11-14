@@ -58,7 +58,7 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 
 bool ModuleResourceManager::CleanUp()
 {
-	Save();
+	//Save();
 	return true;
 }
 
