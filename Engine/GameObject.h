@@ -79,6 +79,9 @@ public:
 	void SetUUID(uint uuid);
 	void SetUUIDRandom();
 
+	bool WanttoDelete() const;
+
+
 private:
 	char* name = "CHANGE THIS";
 	bool active = false;

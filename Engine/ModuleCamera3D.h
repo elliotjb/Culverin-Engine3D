@@ -39,6 +39,7 @@ public:
 
 	// Focus -------------------------
 	void SetFocus(const GameObject* selected);
+	const GameObject* GetFocus() const;
 	void SetFocusNull();
 	void CenterToObject();
 

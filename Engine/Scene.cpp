@@ -74,7 +74,14 @@ update_status Scene::PreUpdate(float dt)
 	// PreUpdate GameObjects ------------------------
 	for (uint i = 0; i < gameobjects.size(); i++)
 	{
-		gameobjects[i]->preUpdate(dt);
+		if (gameobjects[i]->WanttoDelete() == false)
+		{
+			gameobjects[i]->preUpdate(dt);
+		}
+		else
+		{
+			DeleteGameObject(gameobjects[i]);
+		}
 	}
 
 	preUpdate_t = perf_timer.ReadMs();
@@ -324,25 +331,55 @@ void Scene::DeleteGameObjects(std::vector<GameObject*>& gameobjects)
 	gameobjects.clear();
 }
 
-void Scene::DeleteGameObject(GameObject* gameobjects)
+void Scene::DeleteGameObject(GameObject* gameobject)
 {
-	if (gameobjects != nullptr)
+	if (gameobject != nullptr)
 	{
-		// First Delete All Childs and his components
-		if (gameobjects->GetNumChilds() > 0)
+		// First of all, Set nullptr all pointer to this GameObject
+		if (App->camera->GetFocus() == gameobject)
 		{
-			DeleteGameObjects(gameobjects->GetChildsVec());
+			App->camera->SetFocusNull();
+		}
+		if (((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected() == gameobject)
+		{
+			((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
+		}
+		// First Delete All Childs and his components
+		if (gameobject->GetNumChilds() > 0)
+		{
+			DeleteGameObjects(gameobject->GetChildsVec());
 		}
 		// Then Delete Components
-		if (gameobjects->GetNumComponents() > 0)
+		if (gameobject->GetNumComponents() > 0)
 		{
-			gameobjects->DeleteAllComponents();
+			gameobject->DeleteAllComponents();
 		}
 		// Finnaly Check have Parent and remove from childs
-		if (gameobjects->GetParent() != nullptr)
+		if (gameobject->GetParent() != nullptr)
 		{
-			int index = gameobjects->GetParent()->GetIndexChildbyName(gameobjects->GetName());
-			gameobjects->GetParent()->RemoveChildbyIndex(index);
+			int index = gameobject->GetParent()->GetIndexChildbyName(gameobject->GetName());
+			gameobject->GetParent()->RemoveChildbyIndex(index);
+		}
+		else
+		{
+			int index = 0;
+			for (int i = 0; i < gameobjects.size(); i++)
+			{
+				if (strcmp(gameobject->GetName(), gameobjects[i]->GetName()) == 0)
+				{
+					index = i;
+				}
+			}
+			std::vector<GameObject*>::iterator item = gameobjects.begin();
+			for (int i = 0; i < gameobjects.size(); i++)
+			{
+				if (i == index)
+				{
+					gameobjects.erase(item);
+					break;
+				}
+				item++;
+			}
 		}
 	}
 }

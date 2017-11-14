@@ -374,6 +374,11 @@ void ModuleCamera3D::SetFocus(const GameObject* selected)
 	}
 }
 
+const GameObject* ModuleCamera3D::GetFocus() const
+{
+	return focus;
+}
+
 void ModuleCamera3D::SetFocusNull()
 {
 	focus = nullptr;

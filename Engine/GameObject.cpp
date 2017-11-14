@@ -70,9 +70,16 @@ void GameObject::preUpdate(float dt)
 		//preUpdate child Game Objects -------------------
 		for (uint i = 0; i < childs.size(); i++)
 		{
-			if (childs[i]->isActive())
+			if (childs[i]->toDelete)
 			{
-				childs[i]->preUpdate(dt);
+				App->scene->DeleteGameObject(childs[i]);
+			}
+			else
+			{
+				if (childs[i]->isActive())
+				{
+					childs[i]->preUpdate(dt);
+				}
 			}
 		}
 	}
@@ -697,6 +704,7 @@ void GameObject::RemoveChildbyIndex(uint index)
 			if (i == index)
 			{
 				childs.erase(item);
+				break;
 			}
 			item++;
 		}
@@ -748,7 +756,10 @@ GameObject* GameObject::GetParent() const
 
 void GameObject::AddBoundingBox(const ResourceMesh* mesh)
 {
-	bounding_box = new AABB();
+	if (bounding_box == nullptr)
+	{
+		bounding_box = new AABB();
+	}
 	bounding_box->SetNegativeInfinity();
 	bounding_box->Enclose(mesh->vertices, mesh->num_vertices);
 }
@@ -796,4 +807,9 @@ void GameObject::SetUUID(uint uuid)
 void GameObject::SetUUIDRandom()
 {
 	uid = App->random->Int();
+}
+
+bool GameObject::WanttoDelete() const
+{
+	return toDelete;
 }
