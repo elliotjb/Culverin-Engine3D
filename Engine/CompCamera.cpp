@@ -131,12 +131,13 @@ void CompCamera::ShowInspectorInfo()
 
 void CompCamera::DoCulling()
 {
+	AABB* box = nullptr;
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
 		if (App->scene->gameobjects[i]->isActive() && App->scene->gameobjects[i] != parent)
 		{
 			// Check its bounding box
-			AABB* box = &App->scene->gameobjects[i]->box_fixed;
+			box = &App->scene->gameobjects[i]->box_fixed;
 			if (box != nullptr)
 			{
 				// We set visible varialbe True / False to know if the GameObject will be drawn(or not) in renderer PostUpdate

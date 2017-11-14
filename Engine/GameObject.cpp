@@ -634,16 +634,11 @@ GameObject* GameObject::GetParent() const
 	return parent;
 }
 
-void GameObject::Addbounding_box()
+void GameObject::AddBoundingBox(const ResourceMesh* mesh)
 {
-	OBB* box = new OBB();
-	box->pos = float3::zero;
-	box->r = float3::one;
-	box->axis[0] = float3(1, 0, 0);
-	box->axis[1] = float3(0, 1, 0);
-	box->axis[2] = float3(0, 0, 1);
-
-	bounding_box = new AABB(*box);
+	bounding_box = new AABB();
+	bounding_box->SetNegativeInfinity();
+	bounding_box->Enclose(mesh->vertices, mesh->num_vertices);
 }
 
 void GameObject::DrawBoundingBox()
