@@ -35,6 +35,10 @@ public:
 	Comp_Type GetType() const;
 	bool isActive() const;
 	uint GetUUID() const;
+	const char* GetName() const
+	{
+		return name;
+	}
 
 	virtual void Save(JSON_Object* object, std::string name) const;
 	virtual void Load(const JSON_Object* object, std::string name);
@@ -47,4 +51,5 @@ private:
 protected:
 	GameObject* parent = nullptr;
 	uint uid = 0;
+	const char* name = nullptr;
 };

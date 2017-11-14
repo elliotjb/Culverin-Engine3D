@@ -15,6 +15,7 @@
 
 CompMesh::CompMesh(Comp_Type t, GameObject* parent_) : Component(t, parent_)
 {
+	name = "Mesh";
 	uid = App->random->Int();
 	parent = parent_;
 }
@@ -42,75 +43,66 @@ CompMesh::~CompMesh()
 
 void CompMesh::ShowInspectorInfo()
 {
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
-	if (ImGui::TreeNodeEx("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
+	ImGui::SameLine(ImGui::GetWindowWidth() - 26);
+	if (ImGui::ImageButton((ImTextureID*)App->scene->icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
 	{
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
-		ImGui::SameLine(ImGui::GetWindowWidth() - 26);
-		if (ImGui::ImageButton((ImTextureID*)App->scene->icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
+		ImGui::OpenPopup("Options");
+	}
+	ImGui::PopStyleVar();
+
+	// Button Options --------------------------------------
+	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.00f));
+	if (ImGui::BeginPopup("Options"))
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 2));
+		if (ImGui::Button("Reset Mesh"))
 		{
-			ImGui::OpenPopup("Options");
+			resourceMesh = nullptr;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::Separator();
+		if (ImGui::Button("Select Mesh..."))
+		{
+			SelectMesh = true;
+			ImGui::CloseCurrentPopup();
 		}
 		ImGui::PopStyleVar();
+		ImGui::EndPopup();
+	}
+	ImGui::PopStyleColor();
+	if (resourceMesh != nullptr)
+	{
+		ImGui::Text("Name:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", resourceMesh->name);
+		ImGui::Text("Vertices:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", resourceMesh->num_vertices);
+		ImGui::Text("Indices:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", resourceMesh->num_indices);
 
-		// Button Options --------------------------------------
-		ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.00f));
-		if (ImGui::BeginPopup("Options"))
-		{
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 2));
-			if (ImGui::Button("Reset Mesh"))
-			{
-				resourceMesh = nullptr;
-				ImGui::CloseCurrentPopup();
-			}
-			ImGui::Separator();
-			if (ImGui::Button("Select Mesh..."))
-			{
-				SelectMesh = true;
-				ImGui::CloseCurrentPopup();
-			}
-			ImGui::PopStyleVar();
-			ImGui::EndPopup();
-		}
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
-		if (resourceMesh != nullptr)
-		{
-			ImGui::Text("Name:"); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", resourceMesh->name);
-			ImGui::Text("Vertices:"); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", resourceMesh->num_vertices);
-			ImGui::Text("Indices:"); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%i", resourceMesh->num_indices);
-
-			ImGui::Checkbox("Render", &render);
-		}
-		else
-		{
-			if (ImGui::Button("Select Mesh..."))
-			{
-				SelectMesh = true;
-			}
-			if (SelectMesh)
-			{
-				resourceMesh = (ResourceMesh*)App->resource_manager->ShowResources(SelectMesh);
-				if (resourceMesh != nullptr)
-				{
-					if (resourceMesh->isLoaded == false)
-					{
-						App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);
-					}
-					Enable();
-					parent->Addbounding_box();
-				}
-			}
-		}
-		ImGui::TreePop();
+		ImGui::Checkbox("Render", &render);
 	}
 	else
 	{
-		ImGui::PopStyleColor();
+		if (ImGui::Button("Select Mesh..."))
+		{
+			SelectMesh = true;
+		}
+		if (SelectMesh)
+		{
+			resourceMesh = (ResourceMesh*)App->resource_manager->ShowResources(SelectMesh);
+			if (resourceMesh != nullptr)
+			{
+				if (resourceMesh->isLoaded == false)
+				{
+					App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);
+				}
+				Enable();
+				parent->Addbounding_box();
+			}
+		}
 	}
+	ImGui::TreePop();
 }
 
 void CompMesh::Draw()

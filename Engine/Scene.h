@@ -42,7 +42,7 @@ public:
 	GameObject* CreateCube(GameObject* parent = nullptr);
 	GameObject* CreateSphere(GameObject* parent = nullptr);
 	GameObject* CreateMainCamera(GameObject* parent = nullptr);
-	void DeleteAllGameObjects(std::vector<GameObject*>& gameobjects);
+	void DeleteGameObjects(std::vector<GameObject*>& gameobjects);
 	void DeleteGameObject(GameObject* gameobjects);
 	// -------------------------------------
 

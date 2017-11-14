@@ -8,6 +8,7 @@
 
 CompMaterial::CompMaterial(Comp_Type t, GameObject* parent): Component(t, parent)
 {
+	name = "Material";
 	uid = App->random->Int();
 	color = White;
 }
@@ -59,19 +60,9 @@ void CompMaterial::SetUUIDMesh(uint uuid)
 
 void CompMaterial::ShowInspectorInfo()
 {
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
-	if (ImGui::TreeNodeEx("Color", ImGuiTreeNodeFlags_DefaultOpen))
-	{
-		ImGui::PopStyleColor();
+	ImGui::ColorEdit3("", (float*)&color);
 
-		ImGui::ColorEdit3("", (float*)&color);
-
-		ImGui::TreePop();
-	}
-	else
-	{
-		ImGui::PopStyleColor();
-	}
+	ImGui::TreePop();
 }
 
 void CompMaterial::Save(JSON_Object* object, std::string name) const

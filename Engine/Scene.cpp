@@ -100,7 +100,7 @@ update_status Scene::Update(float dt)
 		//gameobjects[0]->AddChildGameObject(gameobjects[2]);
 		//SaveScene();
 		//App->Json_seria->LoadPrefab("Assets/BakerHouse.fbx.meta.json");
-		DeleteAllGameObjects(gameobjects);
+		DeleteGameObjects(gameobjects);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
@@ -112,7 +112,7 @@ update_status Scene::Update(float dt)
 		//}
 		//((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
 		
-		App->Json_seria->LoadScene();
+		//App->Json_seria->LoadScene();
 	}
 
 	// Update GameObjects -----------
@@ -303,33 +303,48 @@ GameObject* Scene::CreateGameObject(GameObject* parent)
 	return obj;
 }
 
-void Scene::DeleteAllGameObjects(std::vector<GameObject*>& gameobjects)
+void Scene::DeleteGameObjects(std::vector<GameObject*>& gameobjects)
 {
 	for (int i = 0; i < gameobjects.size(); i++)
 	{
 		if (gameobjects[i]->GetNumChilds() > 0)
 		{
-			DeleteAllGameObjects(gameobjects[i]->GetChildsVec());
+			DeleteGameObjects(gameobjects[i]->GetChildsVec());
 		}
 		else
 		{
 			// First delete all components
 			gameobjects[i]->DeleteAllComponents();
-
 			// Now Delete GameObject
-			//delete gameobjects[i];
-			//gameobjects[i]->GetChildsVec().clear();
 			delete gameobjects[i];
 		}
-
 	}
 	App->camera->SetFocusNull();
 	((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
 	gameobjects.clear();
 }
 
-void Scene::DeleteGameObject(GameObject * gameobjects)
+void Scene::DeleteGameObject(GameObject* gameobjects)
 {
+	if (gameobjects != nullptr)
+	{
+		// First Delete All Childs and his components
+		if (gameobjects->GetNumChilds() > 0)
+		{
+			DeleteGameObjects(gameobjects->GetChildsVec());
+		}
+		// Then Delete Components
+		if (gameobjects->GetNumComponents() > 0)
+		{
+			gameobjects->DeleteAllComponents();
+		}
+		// Finnaly Check have Parent and remove from childs
+		if (gameobjects->GetParent() != nullptr)
+		{
+			int index = gameobjects->GetParent()->GetIndexChildbyName(gameobjects->GetName());
+			gameobjects->GetParent()->RemoveChildbyIndex(index);
+		}
+	}
 }
 
 GameObject* Scene::CreateCube(GameObject* parent)

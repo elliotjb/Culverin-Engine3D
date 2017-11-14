@@ -17,7 +17,7 @@ public:
 	bool Start();
 	update_status Update(float dt);
 	void ShowHierarchy();
-	void ShowGameObjectOptions();
+	void ShowOptions();
 	bool CleanUp();
 
 private:

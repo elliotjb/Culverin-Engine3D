@@ -48,6 +48,7 @@ public:
 	CompMaterial* GetComponentMaterial() const;
 	Component* GetComponentbyIndex(uint i) const;
 	void DeleteAllComponents();
+	void DeleteComponent(Component* component);
 
 	void SaveComponents(JSON_Object* object, std::string name) const;
 	void LoadComponents(const JSON_Object * object, std::string name, uint numComponents);
@@ -55,6 +56,9 @@ public:
 	// Childs ---------------------------------
 	uint GetNumChilds() const;
 	GameObject* GetChildbyIndex(uint pos_inVec) const;
+	GameObject* GetChildbyName(const char* name) const;
+	uint GetIndexChildbyName(const char* name) const;
+	void RemoveChildbyIndex(uint index);
 	std::vector<GameObject*> GetChildsVec() const;
 	void AddChildGameObject_Copy(GameObject* child);
 	void AddChildGameObject_Load(GameObject* child);
@@ -80,6 +84,7 @@ private:
 	bool active = false;
 	bool visible = false;
 	bool static_obj = false;
+	bool toDelete = false; 
 
 	GameObject* parent = nullptr;
 	std::vector<Component*> components;

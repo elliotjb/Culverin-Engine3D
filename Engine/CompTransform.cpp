@@ -14,6 +14,7 @@
 
 CompTransform::CompTransform(Comp_Type t, GameObject* parent) :Component(t, parent)
 {
+	name = "Transformation";
 }
 
 CompTransform::~CompTransform()
@@ -81,132 +82,123 @@ void CompTransform::Update(float dt)
 
 void CompTransform::ShowInspectorInfo()
 {
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
-	if (ImGui::TreeNodeEx("Transformation", ImGuiTreeNodeFlags_DefaultOpen))
-	{
-		// Set Size Windows
-		static int width;
-		static int height;
-		SDL_GetWindowSize(App->window->window, &width, &height);
+	// Set Size Windows
+	static int width;
+	static int height;
+	SDL_GetWindowSize(App->window->window, &width, &height);
 
-		// Reset Values Button -------------------------------------------
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
-		ImGui::SameLine(ImGui::GetWindowWidth() - 26);
-		if (ImGui::ImageButton((ImTextureID*)App->scene->icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
+	// Reset Values Button -------------------------------------------
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
+	ImGui::SameLine(ImGui::GetWindowWidth() - 26);
+	if (ImGui::ImageButton((ImTextureID*)App->scene->icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
+	{
+		ImGui::OpenPopup("Options");
+	}
+	ImGui::PopStyleVar();
+
+	// Options Button --------------------------------------
+	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.00f));
+	if (ImGui::BeginPopup("Options"))
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 2));
+		if (ImGui::Button("Reset Values"))
 		{
-			ImGui::OpenPopup("Options");
+			ResetMatrix();
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::Separator();
+		if (ImGui::Button("Reset Position"))
+		{
+			SetPos(float3::zero);
+			ImGui::CloseCurrentPopup();
+		}
+		if (ImGui::Button("Reset Rotation"))
+		{
+			SetRot(math::float3::zero);
+			rotation_euler = float3::zero;
+			ImGui::CloseCurrentPopup();
+		} ImGui::SameLine(); App->ShowHelpMarker("Doesn't Work!!");
+		if (ImGui::Button("Reset Size"))
+		{
+			SetScale(math::float3(1, 1, 1));
+			ImGui::CloseCurrentPopup();
 		}
 		ImGui::PopStyleVar();
-		ImGui::PopStyleColor();
-
-		// Options Button --------------------------------------
-		ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.00f));
-		if (ImGui::BeginPopup("Options"))
-		{
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 2));
-			if (ImGui::Button("Reset Values"))
-			{
-				ResetMatrix();
-				ImGui::CloseCurrentPopup();
-			}
-			ImGui::Separator();
-			if (ImGui::Button("Reset Position"))
-			{
-				SetPos(float3::zero);
-				ImGui::CloseCurrentPopup();
-			}
-			if (ImGui::Button("Reset Rotation"))
-			{
-				SetRot(math::float3::zero);
-				rotation_euler = float3::zero;
-				ImGui::CloseCurrentPopup();
-			} ImGui::SameLine(); App->ShowHelpMarker("Doesn't Work!!");
-			if (ImGui::Button("Reset Size"))
-			{
-				SetScale(math::float3(1, 1, 1));
-				ImGui::CloseCurrentPopup();
-			}
-			ImGui::PopStyleVar();
-			ImGui::EndPopup();
-		}
-		ImGui::PopStyleColor();
-		
-		ImGui::Spacing();
-
-		// ORIGINAL -------------------------------------------------------
-		if (ImGui::RadioButton("Local", transform_mode == ImGuizmo::LOCAL))
-		{
-			transform_mode = ImGuizmo::LOCAL;
-		}		
-		ImGui::SameLine();
-		if (ImGui::RadioButton("World", transform_mode == ImGuizmo::WORLD))
-		{
-			transform_mode = ImGuizmo::WORLD;
-		}
-		int op = ImGui::GetWindowWidth() / 4;
-
-		switch (transform_mode)
-		{
-		case (ImGuizmo::MODE::LOCAL):
-		{
-			ImGui::Text("Position"); ImGui::SameLine(op + 30);
-			if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
-			{
-				SetPos(position);
-			}
-			ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-			if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
-			{
-				SetRot(rotation_euler);
-			}
-			break;
-		}
-		case (ImGuizmo::MODE::WORLD):
-		{
-			ImGui::Text("Position"); ImGui::SameLine(op + 30);
-			if (ImGui::DragFloat3("##pos", &position_global[0], 0.5f))
-			{
-				SetPosGlobal(position_global);
-			}
-			ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-			if (ImGui::DragFloat3("##rot", &rotation_euler_global[0], 0.5f))
-			{
-				SetRotGlobal(rotation_euler_global);
-			}
-			break;
-		}
-		default:
-			break;
-		}
-		ImGui::Text("Scale"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
-		{
-			SetScale(scale);
-		}
-		// ------------------------------------------------------------------
-
-		// This function let mouse trespassing the screen to enter from the opposite side
-		//if (1)
-		//{
-		//	if (App->input->GetMouseXGlobal() <= 1680 &&
-		//		App->input->GetMouseXGlobal() > 1680 - 10)
-		//	{
-		//		SetCursorPos(30, App->input->GetMouseYGlobal());
-		//	}
-		//	if (App->input->GetMouseXGlobal() >= 0 &&
-		//		App->input->GetMouseXGlobal() < 10)
-		//	{
-		//		SetCursorPos(width - 20, App->input->GetMouseYGlobal());
-		//	}
-		//}
-		// -------------------------------------------------------------------------------
-
-		ImGui::TreePop();
+		ImGui::EndPopup();
 	}
-	else
+	ImGui::PopStyleColor();
+
+	ImGui::Spacing();
+
+	// ORIGINAL -------------------------------------------------------
+	if (ImGui::RadioButton("Local", transform_mode == ImGuizmo::LOCAL))
 	{
-		ImGui::PopStyleColor();
+		transform_mode = ImGuizmo::LOCAL;
 	}
+	ImGui::SameLine();
+	if (ImGui::RadioButton("World", transform_mode == ImGuizmo::WORLD))
+	{
+		transform_mode = ImGuizmo::WORLD;
+	}
+	int op = ImGui::GetWindowWidth() / 4;
+
+	switch (transform_mode)
+	{
+	case (ImGuizmo::MODE::LOCAL):
+	{
+		ImGui::Text("Position"); ImGui::SameLine(op + 30);
+		if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
+		{
+			SetPos(position);
+		}
+		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
+		if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
+		{
+			SetRot(rotation_euler);
+		}
+		break;
+	}
+	case (ImGuizmo::MODE::WORLD):
+	{
+		ImGui::Text("Position"); ImGui::SameLine(op + 30);
+		if (ImGui::DragFloat3("##pos", &position_global[0], 0.5f))
+		{
+			SetPosGlobal(position_global);
+		}
+		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
+		if (ImGui::DragFloat3("##rot", &rotation_euler_global[0], 0.5f))
+		{
+			SetRotGlobal(rotation_euler_global);
+		}
+		break;
+	}
+	default:
+		break;
+	}
+	ImGui::Text("Scale"); ImGui::SameLine(op + 30);
+	if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
+	{
+		SetScale(scale);
+	}
+	// ------------------------------------------------------------------
+
+	// This function let mouse trespassing the screen to enter from the opposite side
+	//if (1)
+	//{
+	//	if (App->input->GetMouseXGlobal() <= 1680 &&
+	//		App->input->GetMouseXGlobal() > 1680 - 10)
+	//	{
+	//		SetCursorPos(30, App->input->GetMouseYGlobal());
+	//	}
+	//	if (App->input->GetMouseXGlobal() >= 0 &&
+	//		App->input->GetMouseXGlobal() < 10)
+	//	{
+	//		SetCursorPos(width - 20, App->input->GetMouseYGlobal());
+	//	}
+	//}
+	// -------------------------------------------------------------------------------
+
+	ImGui::TreePop();
 }
 
 void CompTransform::SetPosGlobal(float3 pos)

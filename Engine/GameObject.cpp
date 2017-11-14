@@ -254,6 +254,35 @@ void GameObject::ShowHierarchy()
 void GameObject::ShowGameObjectOptions()
 {
 	//Create child Game Objects / Components
+	if (ImGui::MenuItem("Copy"))
+	{
+		if (ImGui::MenuItem("Transform"))
+		{
+			AddComponent(Comp_Type::C_TRANSFORM);
+		}
+		if (ImGui::MenuItem("Mesh"))
+		{
+			AddComponent(Comp_Type::C_MESH);
+		}
+	}
+	if (ImGui::MenuItem("Copy", NULL, false, false))
+	{
+
+	}
+	ImGui::Separator();
+	if (ImGui::MenuItem("Rename", NULL, false, false))
+	{
+
+	}
+	if (ImGui::MenuItem("Duplicate", NULL, false, false))
+	{
+
+	}
+	if (ImGui::MenuItem("Delate"))
+	{
+		toDelete = true;
+	}
+	ImGui::Separator();
 	ImGui::MenuItem("CREATE", NULL, false, false);
 	if (ImGui::MenuItem("Empty"))
 	{
@@ -270,6 +299,7 @@ void GameObject::ShowGameObjectOptions()
 		GameObject* sphere = App->scene->CreateSphere(this);
 		((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(sphere);
 	}
+	ImGui::Separator();
 	ImGui::MenuItem("ADD COMPONENT", NULL, false, false);
 	if (ImGui::MenuItem("Transform"))
 	{
@@ -283,6 +313,7 @@ void GameObject::ShowGameObjectOptions()
 	{
 		AddComponent(Comp_Type::C_MATERIAL);
 	}
+
 }
 
 void GameObject::ShowInspectorInfo()
@@ -343,8 +374,25 @@ void GameObject::ShowInspectorInfo()
 	// UPDATE EDITOR WINDOWS OF EACH COMPONENT
 	for (uint i = 0; i < components.size(); i++)
 	{
-		components[i]->ShowInspectorInfo();
-		ImGui::Separator();
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
+		bool open = false;
+		if (ImGui::TreeNodeEx(components[i]->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			open = true;
+		}
+		ImGui::PopStyleColor();
+		if (ImGui::BeginPopupContextItem("Create"))
+		{
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 3));
+			((Inspector*)App->gui->winManager[INSPECTOR])->ShowComponentsOptions();
+			ImGui::PopStyleVar();
+			ImGui::EndPopup();
+		}
+		if(open)
+		{
+			components[i]->ShowInspectorInfo();
+			ImGui::Separator();
+		}
 	}
 }
 
@@ -581,6 +629,24 @@ void GameObject::DeleteAllComponents()
 	components.clear();
 }
 
+void GameObject::DeleteComponent(Component* component)
+{
+	if (component != nullptr && components.size() > 0)
+	{
+		std::vector<Component*>::iterator item = components.begin();
+		for (int i = 0; i < components.size(); i++)
+		{
+			if (component == components[i])
+			{
+				components.erase(item);
+				break;
+			}
+			item++;
+		}
+		RELEASE(component);
+	}
+}
+
 uint GameObject::GetNumChilds() const
 {
 	return childs.size();
@@ -589,6 +655,52 @@ uint GameObject::GetNumChilds() const
 GameObject* GameObject::GetChildbyIndex(uint pos_inVec) const
 {
 	return childs[pos_inVec];
+}
+
+GameObject* GameObject::GetChildbyName(const char* name) const
+{
+	if (childs.size() > 0)
+	{
+		for (int i = 0; i < childs.size(); i++)
+		{
+			if (strcmp(childs[i]->GetName(), name) == 0)
+			{
+				return childs[i];
+			}
+		}
+	}
+	return nullptr;
+}
+
+uint GameObject::GetIndexChildbyName(const char * name) const
+{
+	if (childs.size() > 0)
+	{
+		for (int i = 0; i < childs.size(); i++)
+		{
+			if (strcmp(childs[i]->GetName(), name) == 0)
+			{
+				return i;
+			}
+		}
+	}
+	return 0;
+}
+
+void GameObject::RemoveChildbyIndex(uint index)
+{
+	if (childs.size() > 0)
+	{
+		std::vector<GameObject*>::iterator item = childs.begin();
+		for (int i = 0; i < childs.size(); i++)
+		{
+			if (i == index)
+			{
+				childs.erase(item);
+			}
+			item++;
+		}
+	}
 }
 
 std::vector<GameObject*> GameObject::GetChildsVec() const

@@ -24,6 +24,9 @@ public:
 	void SetLinkObjectNull();
 
 	GameObject* GetSelected() const;
+
+	void ShowComponentsOptions();
+	void ShowOptions();
 	
 	//void OpenClose();
 	//bool IsOpen();

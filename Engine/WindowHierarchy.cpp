@@ -46,7 +46,7 @@ void Hierarchy::ShowHierarchy()
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 3));
 	if (ImGui::BeginPopup("OptionsHyerarchy"))
 	{
-		ShowGameObjectOptions();
+		ShowOptions();
 		ImGui::EndMenu();
 	}
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
@@ -63,7 +63,7 @@ void Hierarchy::ShowHierarchy()
 	EndDock();
 }
 
-void Hierarchy::ShowGameObjectOptions()
+void Hierarchy::ShowOptions()
 {
 	//Create child Game Objects / Components
 	ImGui::MenuItem("CREATE", NULL, false, false);

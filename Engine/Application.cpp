@@ -169,7 +169,7 @@ void Application::FinishUpdate()
 
 	if (want_to_load == true)
 	{
-		App->scene->DeleteAllGameObjects(App->scene->gameobjects);
+		App->scene->DeleteGameObjects(App->scene->gameobjects);
 		Json_seria->LoadScene();
 
 		want_to_load = false;

@@ -11,6 +11,7 @@
 
 CompCamera::CompCamera(Comp_Type t, GameObject* parent) : Component(t, parent)
 {
+	name = "Camera";
 	//uid = App->random->Int();
 	/* Set camera vars*/
 	width = 16;
@@ -87,46 +88,35 @@ void CompCamera::DebugDraw()
 
 void CompCamera::ShowInspectorInfo()
 {
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
-	if (ImGui::TreeNodeEx("Camera", ImGuiTreeNodeFlags_DefaultOpen))
+	if (ImGui::Checkbox("Main Camera", &is_main))
 	{
-		ImGui::PopStyleColor();
-
-		if (ImGui::Checkbox("Main Camera", &is_main))
-		{
-			SetMain(is_main);
-		}
-
-		if (ImGui::Checkbox("Culling", &culling))
-		{
-			if (!culling)
-			{
-				UnCull();
-			}
-		}
-
-		ImGui::PushItemWidth(80);
-		if (ImGui::DragFloat("Near Plane", &near_plane, 0.5f, 0.01f, far_plane - 0.01f))
-		{
-			SetNear(near_plane);
-		}
-		if (ImGui::DragFloat("Far Plane", &far_plane, 0.5f, near_plane + 0.01f, 1000.0f))
-		{
-			SetFar(far_plane);
-		}
-		if (ImGui::SliderFloat("FOV", &vertical_fov, 1, 179))
-		{
-			SetFov(vertical_fov);
-		}
-
-		ImGui::PopItemWidth();
-		ImGui::TreePop();
-
+		SetMain(is_main);
 	}
-	else
+
+	if (ImGui::Checkbox("Culling", &culling))
 	{
-		ImGui::PopStyleColor();
+		if (!culling)
+		{
+			UnCull();
+		}
 	}
+
+	ImGui::PushItemWidth(80);
+	if (ImGui::DragFloat("Near Plane", &near_plane, 0.5f, 0.01f, far_plane - 0.01f))
+	{
+		SetNear(near_plane);
+	}
+	if (ImGui::DragFloat("Far Plane", &far_plane, 0.5f, near_plane + 0.01f, 1000.0f))
+	{
+		SetFar(far_plane);
+	}
+	if (ImGui::SliderFloat("FOV", &vertical_fov, 1, 179))
+	{
+		SetFov(vertical_fov);
+	}
+
+	ImGui::PopItemWidth();
+	ImGui::TreePop();
 }
 
 void CompCamera::DoCulling()
