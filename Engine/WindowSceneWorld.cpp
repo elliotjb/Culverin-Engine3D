@@ -39,7 +39,7 @@ void SceneWorld::Draw()
 
 void SceneWorld::ShowSceneWorld()
 {
-	if (!BeginDock("Scene", NULL, 0))
+	if (!BeginDock("Scene", NULL, ImGuiWindowFlags_NoScrollWithMouse))
 	{
 		EndDock();
 		return;
