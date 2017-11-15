@@ -10,7 +10,7 @@ class GameObject;
 class QuadtreeNode
 {
 public:
-	QuadtreeNode(const AABB& box);
+	QuadtreeNode(const AABB& box, QuadtreeNode* parent);
 	virtual ~QuadtreeNode();
 
 	bool isLeaf() const;
@@ -27,10 +27,11 @@ public:
 
 
 public:
-	AABB box;
-	std::list<GameObject*> objects;
-	QuadtreeNode* parent = nullptr;
-	QuadtreeNode* childs[4];
+
+	AABB box;	// container to check colisions
+	std::list<GameObject*> objects;	// Objects inside this node
+	QuadtreeNode* parent = nullptr; // From which node comes this node
+	QuadtreeNode* childs[4]; // 4 child nodes (it's a Quadtree)
 
 };
 

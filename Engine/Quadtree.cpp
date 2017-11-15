@@ -12,10 +12,8 @@ enum QuadTreeChild
 	BACK_LEFT
 };
 
-QuadtreeNode::QuadtreeNode(const AABB& box) : box(box)
+QuadtreeNode::QuadtreeNode(const AABB& box, QuadtreeNode* parent) : box(box), parent(parent)
 {
-	parent = nullptr;
-
 	for (uint i = 0; i < 4; i++)
 	{
 		childs[i] = nullptr;
@@ -34,6 +32,7 @@ QuadtreeNode::~QuadtreeNode()
 	}
 }
 
+// To check if this node hasn't got childrens
 bool QuadtreeNode::isLeaf() const
 {
 	if (childs[0] == nullptr)
@@ -46,6 +45,7 @@ bool QuadtreeNode::isLeaf() const
 
 void QuadtreeNode::Insert(GameObject* obj)
 {
+	// If the node has space for the gameobject, add it to its list
 	if (isLeaf() && (objects.size() < QUADTREE_MAX_ITEMS ||
 		(box.HalfSize().LengthSq() <= QUADTREE_MIN_SIZE * QUADTREE_MIN_SIZE)))
 	{
@@ -60,6 +60,7 @@ void QuadtreeNode::Insert(GameObject* obj)
 		}
 		objects.push_back(obj);
 		RedistributeChilds();
+		objects.clear();
 	}
 }
 
@@ -110,6 +111,7 @@ void QuadtreeNode::DebugDraw()
 	}
 }
 
+// Subdivide the node into 4 childs
 void QuadtreeNode::CreateChilds()
 {
 	// We divide the node into 4 equal parts
@@ -124,27 +126,27 @@ void QuadtreeNode::CreateChilds()
 	// -X / -Z
 	center_new.Set(center.x - size_new.x * 0.5f, center.y, center.z - size_new.z * 0.5f);
 	box_new.SetFromCenterAndSize(center_new, size_new);
-	childs[FRONT_LEFT] = new QuadtreeNode(box_new);
+	childs[FRONT_LEFT] = new QuadtreeNode(box_new, this);
 
 	// +X / -Z
 	center_new.Set(center.x + size_new.x * 0.5f, center.y, center.z - size_new.z * 0.5f);
 	box_new.SetFromCenterAndSize(center_new, size_new);
-	childs[FRONT_RIGHT] = new QuadtreeNode(box_new);
+	childs[FRONT_RIGHT] = new QuadtreeNode(box_new, this);
 
 	// +X / +Z
 	center_new.Set(center.x + size_new.x * 0.5f, center.y, center.z + size_new.z * 0.5f);
 	box_new.SetFromCenterAndSize(center_new, size_new);
-	childs[BACK_RIGHT] = new QuadtreeNode(box_new);
+	childs[BACK_RIGHT] = new QuadtreeNode(box_new, this);
 
 	// -X / +Z
 	center_new.Set(center.x - size_new.x * 0.5f, center.y, center.z + size_new.z * 0.5f);
 	box_new.SetFromCenterAndSize(center_new, size_new);
-	childs[BACK_LEFT] = new QuadtreeNode(box_new);
+	childs[BACK_LEFT] = new QuadtreeNode(box_new, this);
 }
 
+// We distribute the Game Objects depending on its position respect to the new childs
 void QuadtreeNode::RedistributeChilds()
-{
-	// We distribute the Game Objects depending on its position respect to the new childs
+{	
 	GameObject* object = nullptr;
 
 	std::list<GameObject*>::iterator it;
@@ -194,7 +196,7 @@ Quadtree::~Quadtree()
 void Quadtree::Boundaries(AABB limits)
 {
 	Clear();
-	root_node = new QuadtreeNode(limits);
+	root_node = new QuadtreeNode(limits,nullptr);
 }
 
 void Quadtree::Clear()
@@ -226,7 +228,7 @@ void Quadtree::Insert(GameObject* obj)
 {
 	if (root_node != nullptr)
 	{
-		// If object is inside the Root Bounding box, insert it in a node
+		// If object is inside the Boundaries, insert it in a node
 		if (obj->bounding_box != nullptr)
 		{
 			if (obj->bounding_box->Intersects(root_node->box))
