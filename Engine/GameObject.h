@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#define Width_AddComponent 204
+
 class CompTransform;
 class CompMesh;
 class CompMaterial;

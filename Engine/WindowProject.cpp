@@ -215,7 +215,7 @@ void Project::Folders_update(std::vector<FoldersNew>& folders)
 			if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
 			{
 				//LOG("%.2f - %.2f  / /  %.2f - %.2f", ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y, ImGui::GetItemRectMax().x, ImGui::GetItemRectMax().y);
-				if (ImGui::IsMouseDoubleClicked(0) && folders[i].active == false && ImGui::IsWindowFocused())
+				if (ImGui::IsMouseDoubleClicked(0) && folders[i].active == false && ImGui::IsMouseHoveringWindow())
 				{
 					SetAllFolderBool(folders, false);
 					folders[i].active = true;
@@ -287,7 +287,7 @@ void Project::Files_Update(const std::vector<FilesNew>& files)
 			if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
 			{
 				//LOG("%.2f - %.2f  / /  %.2f - %.2f", ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y, ImGui::GetItemRectMax().x, ImGui::GetItemRectMax().y);
-				if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsWindowFocused())
+				if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsMouseHoveringWindow())
 				{
 					//ChangefileViwer(files[i].parentFolder->folder_child, files[i].file_name);
 					directory_see = App->GetCharfromConstChar(files[i].directory_name);
@@ -301,7 +301,7 @@ void Project::Files_Update(const std::vector<FilesNew>& files)
 			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_fbx, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
 			if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
 			{
-				if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsWindowFocused())
+				if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsMouseHoveringWindow())
 				{
 					std::string directory_prebaf = GetDirectory(); 
 					directory_prebaf += "/";

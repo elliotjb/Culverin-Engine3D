@@ -328,7 +328,6 @@ void GameObject::ShowGameObjectOptions()
 void GameObject::ShowInspectorInfo()
 {
 	ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, ImVec4(0.211f, 0.211f, 0.211f, 1.00f));
-
 	if (ImGui::BeginChild(ImGui::GetID("Inspector"), ImVec2(ImGui::GetWindowWidth(), 90)))
 	{
 		static GLuint icon_GameObject = App->textures->LoadTexture("Images/UI/icon_GameObject.png");
@@ -408,15 +407,32 @@ void GameObject::ShowInspectorInfo()
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Text("");
-	ImGui::SameLine(ImGui::GetWindowWidth() / 3);
-	ImGui::PushItemWidth(ImGui::GetWindowWidth() / 2);
+	ImGui::SameLine(ImGui::GetWindowWidth() / 2 - Width_AddComponent / 2);
+	//ImGui::PushItemWidth(ImGui::GetWindowWidth() / 2);
 	static bool add_component = false;
-	if (ImGui::Button("ADD COMPONENT"))
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.208f, 0.208f, 0.208f, 1.00f));
+	if (ImGui::ButtonEx("ADD COMPONENT", ImVec2(Width_AddComponent, 20)))
 	{
 		add_component = !add_component;
 	}
+	ImGui::PopStyleColor();
+	ImVec2 pos_min = ImVec2(ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y);
+	ImVec2 pos_max = ImVec2(pos_min.x + (ImGui::GetWindowWidth() / 2), pos_min.y + (Width_AddComponent / 2));
 	if (add_component)
 	{
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.258f, 0.258f, 0.258f, 1.00f));
+		ImGui::SetNextWindowPos(ImVec2(ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y + ImGui::GetItemRectSize().y));
+		ImGui::SetNextWindowSize(ImVec2(Width_AddComponent, Width_AddComponent / 2));
+		ImGui::Begin("AddComponent", NULL, ImGuiWindowFlags_ShowBorders | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
+		ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, ImVec4(0.311f, 0.311f, 0.311f, 1.00f));
+		if (ImGui::BeginChild(ImGui::GetID("AddComponent"), ImVec2(ImGui::GetWindowWidth(), 20), false, ImGuiWindowFlags_NoScrollWithMouse))
+		{
+			ImGui::Text("");
+			ImGui::SameLine(62);
+			ImGui::Text("Component");
+		}
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
 		if (ImGui::MenuItem("Transform"))
 		{
 			AddComponent(Comp_Type::C_TRANSFORM);
@@ -429,6 +445,17 @@ void GameObject::ShowInspectorInfo()
 		{
 			AddComponent(Comp_Type::C_MATERIAL);
 		}
+		if (ImGui::MenuItem("Camera"))
+		{
+			AddComponent(Comp_Type::C_CAMERA);
+		}
+		ImGui::End();
+		ImGui::PopStyleColor();
+	}
+	if (ImGui::IsMouseHoveringRect(pos_min, pos_max) == false)
+	{
+		if(ImGui::IsMouseClicked(0) || ImGui::IsMouseClicked(1) || ImGui::IsMouseClicked(2))
+			add_component = false;
 	}
 }
 

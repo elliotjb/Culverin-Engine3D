@@ -284,7 +284,7 @@ void ModuleCamera3D::MousePick(float x, float y, float w, float h)
 	}
 	else
 	{
-		((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
+		//((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
 	}
 }
 
