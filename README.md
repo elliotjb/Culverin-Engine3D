@@ -1,9 +1,9 @@
-﻿# 3D Engine
+# 3D Engine
 This is a project consistent of creating a Game Engine,
 that allows you to use tools to create video games.
-At this moment, this is a Geometry Loader, where you can import your model (.fbx, etc.)
-and see info about it. Also you can change/apply textures to the different meshes
-that composes the entire model (only .png or .jpg formats).
+
+Lasted Feature: Move camera without restrictions:
+![](https://i.gyazo.com/3b8c3ac28bbc3b1ed5355f736fe57458.gif)
 
 # FEATURES
 - Configuration options (App, Window, Audio, Render).
@@ -107,8 +107,15 @@ It will create a resource to access its information and operate with it internal
 - ASSIMP -> http://assimp.sourceforge.net/
 - DevIL -> http://openil.sourceforge.net/
 
-# ScreenShots
-![](https://i.gyazo.com/4a351d2420d2e0ed7f133a1802fa5a57.jpg)
+# ScreenShots & Gifs
+- Scene Example:
+![](https://i.gyazo.com/168fc2126497595b762aa51338b36628.jpg)
+
+- Create a GameObject Empty and Add a component Mesh ("Cube"):
+![](https://i.gyazo.com/9842ac7895a6548156948e469976cbfa.gif)
+
+- How to Delete a GameObjects:
+![](https://i.gyazo.com/094a7c24b98ff87a6cb16992953fc99a.gif)
 
 Authors: 
 - Elliot Jimenez: https://github.com/elliotjb
