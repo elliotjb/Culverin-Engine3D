@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "Scene.h"
 #include "GameObject.h"
-
+#include "WindowInspector.h"
 
 Hierarchy::Hierarchy() : WindowManager()
 {
@@ -44,12 +44,14 @@ void Hierarchy::ShowHierarchy()
 		}
 	}
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 3));
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 6));
 	if (ImGui::BeginPopup("OptionsHyerarchy"))
 	{
+		selected = ((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected();
 		ShowOptions();
 		ImGui::EndMenu();
 	}
-
+	ImGui::PopStyleVar();
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
 		ImGui::PushID(i);
@@ -107,9 +109,51 @@ void Hierarchy::ShowHierarchy()
 
 void Hierarchy::ShowOptions()
 {
-	//Create child Game Objects / Components
-	ImGui::MenuItem("CREATE", NULL, false, false);
-	if (ImGui::MenuItem("Empty"))
+	if (ImGui::MenuItem("Copy"))
+	{
+		if (selected != nullptr)
+		{
+			copy = selected;
+		}
+	}
+	if (ImGui::MenuItem("Paste"))
+	{
+		if (selected != nullptr && copy != nullptr)
+		{
+			if (selected->HaveParent())
+			{
+				// TODO ELLIOT
+				// selected->GetParent()->AddChildGameObject_Copy(copie);
+				// Copied = nullptr;
+			}
+			else
+			{
+				// App->scene->gameobjects.push_back(GameObject Copied);
+				// Copied = nullptr;
+			}
+		}
+	}
+	ImGui::Separator();
+	if (ImGui::MenuItem("Rename", NULL, false, false))
+	{
+		// Not functional
+	}
+	if (ImGui::MenuItem("Duplicate", NULL, false, false))
+	{
+		if (selected != nullptr)
+		{
+			// selected->GetParent()->AddChildGameObject_Copy(selected);
+		}
+	}
+	if (ImGui::MenuItem("Delete"))
+	{
+		if (selected != nullptr)
+		{
+			SetGameObjecttoDelete(selected);
+		}
+	}
+	ImGui::Separator();
+	if (ImGui::MenuItem("Create Empty"))
 	{
 		GameObject* empty = App->scene->CreateGameObject();
 		App->gui->SetLinkInspector(empty);
@@ -129,6 +173,19 @@ void Hierarchy::ShowOptions()
 void Hierarchy::SetGameObjecttoDelete(GameObject* todelete)
 {
 	toDelete = todelete;
+}
+
+void Hierarchy::SetGameObjectCopy(GameObject* copy_)
+{
+	if (copy_ != nullptr)
+	{
+		copy = copy_;
+	}
+}
+
+const GameObject * Hierarchy::GetCopied() const
+{
+	return copy;
 }
 
 void Hierarchy::ChangeShowConfirmDelete()

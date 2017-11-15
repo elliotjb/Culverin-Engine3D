@@ -62,14 +62,16 @@ public:
 	uint GetIndexChildbyName(const char* name) const;
 	void RemoveChildbyIndex(uint index);
 	std::vector<GameObject*> GetChildsVec() const;
-	void AddChildGameObject_Copy(GameObject* child);
+	void AddChildGameObject_Copy(const GameObject* child);
 	void AddChildGameObject_Load(GameObject* child);
 	void AddChildGameObject_Replace(GameObject* child);
 
 	// Transform Modifications -----------------
 	void UpdateChildsMatrices();
 
+	// Parent ----------------
 	GameObject* GetParent() const;
+	bool HaveParent();
 
 	// Bounding Box -----------------------
 	void AddBoundingBox(const ResourceMesh* mesh);

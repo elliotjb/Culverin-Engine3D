@@ -20,7 +20,10 @@ public:
 	update_status Update(float dt);
 	void ShowHierarchy();
 	void ShowOptions();
+	// GameObjects* -----------
 	void SetGameObjecttoDelete(GameObject* todelete);
+	void SetGameObjectCopy(GameObject* copy);
+	const GameObject* GetCopied() const;
 	void ChangeShowConfirmDelete();
 	bool CleanUp();
 
@@ -30,6 +33,8 @@ private:
 	std::string model_name = "";
 	bool haveModel = false;
 	GameObject* toDelete = nullptr;
+	GameObject* selected = nullptr;
+	GameObject* copy = nullptr;
 	bool wait_toSelect = false;
 	bool dont_ask_me_next_time = false;
 

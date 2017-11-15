@@ -222,6 +222,7 @@ void GameObject::ShowHierarchy()
 		App->camera->SetFocus(this);
 		App->scene->drag = this;
 	}
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 6));
 	if (ImGui::BeginPopupContextItem("Create"))
 	{
 		//ImGui::OpenPopup("FilePopup");
@@ -233,6 +234,7 @@ void GameObject::ShowHierarchy()
 		ShowGameObjectOptions();
 		ImGui::EndPopup();
 	}
+	ImGui::PopStyleVar();
 	ImGui::SameLine(); App->ShowHelpMarker("Right Click to open Options");
 	if(treeNod)
 	{
@@ -271,36 +273,28 @@ void GameObject::ShowGameObjectOptions()
 	//Create child Game Objects / Components
 	if (ImGui::MenuItem("Copy"))
 	{
-		if (ImGui::MenuItem("Transform"))
-		{
-			AddComponent(Comp_Type::C_TRANSFORM);
-		}
-		if (ImGui::MenuItem("Mesh"))
-		{
-			AddComponent(Comp_Type::C_MESH);
-		}
+		((Hierarchy*)App->gui->winManager[WindowName::HIERARCHY])->SetGameObjectCopy(this);
 	}
-	if (ImGui::MenuItem("Copy", NULL, false, false))
+	if (ImGui::MenuItem("Paste", NULL, false, false))
 	{
-
+		// TODO ELLIOT
+		//parent->AddChildGameObject_Copy(((Hierarchy*)App->gui->winManager[WindowName::HIERARCHY])->GetCopied());
 	}
 	ImGui::Separator();
 	if (ImGui::MenuItem("Rename", NULL, false, false))
 	{
-
+		// Not functional
 	}
 	if (ImGui::MenuItem("Duplicate", NULL, false, false))
 	{
-
+		// GetParent()->AddChildGameObject_Copy(this);
 	}
 	if (ImGui::MenuItem("Delete"))
 	{
 		((Hierarchy*)App->gui->winManager[WindowName::HIERARCHY])->SetGameObjecttoDelete(this);
-		//toDelete = true;
 	}
 	ImGui::Separator();
-	ImGui::MenuItem("CREATE", NULL, false, false);
-	if (ImGui::MenuItem("Empty"))
+	if (ImGui::MenuItem("Create Empty"))
 	{
 		GameObject* empty = App->scene->CreateGameObject(this);
 		((Inspector*)App->gui->winManager[WindowName::INSPECTOR])->LinkObject(empty);
@@ -329,7 +323,6 @@ void GameObject::ShowGameObjectOptions()
 	{
 		AddComponent(Comp_Type::C_MATERIAL);
 	}
-
 }
 
 void GameObject::ShowInspectorInfo()
@@ -783,7 +776,7 @@ std::vector<GameObject*> GameObject::GetChildsVec() const
 	return childs;
 }
 
-void GameObject::AddChildGameObject_Copy(GameObject* child)
+void GameObject::AddChildGameObject_Copy(const GameObject* child)
 {
 	GameObject* temp = new GameObject(*child);
 	temp->uid = App->random->Int();
@@ -819,6 +812,11 @@ void GameObject::UpdateChildsMatrices()
 GameObject* GameObject::GetParent() const
 {
 	return parent;
+}
+
+bool GameObject::HaveParent()
+{
+	return (parent != nullptr);
 }
 
 void GameObject::AddBoundingBox(const ResourceMesh* mesh)
