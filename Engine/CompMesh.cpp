@@ -23,7 +23,10 @@ CompMesh::CompMesh(Comp_Type t, GameObject* parent_) : Component(t, parent_)
 CompMesh::~CompMesh()
 {
 	//RELEASE_ARRAY(name);
-	resourceMesh->NumGameObjectsUseMe--;
+	if (resourceMesh != nullptr)
+	{
+		resourceMesh->NumGameObjectsUseMe--;
+	}
 	material = nullptr;
 	resourceMesh = nullptr;
 }

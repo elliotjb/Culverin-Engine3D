@@ -85,6 +85,15 @@ update_status ModuleInput::PreUpdate(float dt)
 	Uint32 buttons_global = SDL_GetGlobalMouseState(&mouse_x_global, &mouse_y_global);
 	mouse_x_motion_global = mouse_x_global - mouse_x_motion_global;
 	mouse_y_motion_global = mouse_y_global - mouse_y_motion_global;
+	//Cap Error?
+	if (mouse_x_motion_global > 600 || mouse_x_motion_global < -600)
+	{
+		mouse_x_motion_global = 0;
+	}
+	if (mouse_y_motion_global > 600 || mouse_y_motion_global < -600)
+	{
+		mouse_y_motion_global = 0;
+	}
 
 	mouse_x /= SCREEN_SIZE;
 	mouse_y /= SCREEN_SIZE;
