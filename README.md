@@ -2,7 +2,7 @@
 This is a project consistent of creating a Game Engine,
 that allows you to use tools to create video games.
 
-Lasted Feature: Move camera without restrictions:
+Last Feature: Move camera without restrictions:
 ![](https://i.gyazo.com/3b8c3ac28bbc3b1ed5355f736fe57458.gif)
 
 # FEATURES
