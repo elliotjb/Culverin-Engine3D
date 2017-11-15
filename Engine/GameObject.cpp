@@ -286,7 +286,7 @@ void GameObject::ShowGameObjectOptions()
 	{
 
 	}
-	if (ImGui::MenuItem("Delate"))
+	if (ImGui::MenuItem("Delete"))
 	{
 		((Hierarchy*)App->gui->winManager[WindowName::HIERARCHY])->SetGameObjecttoDelete(this);
 		//toDelete = true;
@@ -401,6 +401,32 @@ void GameObject::ShowInspectorInfo()
 		{
 			components[i]->ShowInspectorInfo();
 			ImGui::Separator();
+		}
+	}
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Text("");
+	ImGui::SameLine(10);
+	static bool add_component = false;
+	if (ImGui::Button("ADD COMPONENT"))
+	{
+		add_component = !add_component;
+	}
+	if (add_component)
+	{
+		if (ImGui::MenuItem("Transform"))
+		{
+			AddComponent(Comp_Type::C_TRANSFORM);
+		}
+		if (ImGui::MenuItem("Mesh"))
+		{
+			AddComponent(Comp_Type::C_MESH);
+		}
+		if (ImGui::MenuItem("Material"))
+		{
+			AddComponent(Comp_Type::C_MATERIAL);
 		}
 	}
 }
