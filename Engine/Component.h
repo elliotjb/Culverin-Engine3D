@@ -30,6 +30,8 @@ public:
 	virtual void Update(float dt);
 	virtual void Draw();
 
+	virtual void ShowOptions();
+
 	virtual void ShowInspectorInfo();
 
 	Comp_Type GetType() const;
@@ -38,6 +40,10 @@ public:
 	const char* GetName() const
 	{
 		return nameComponent;
+	}
+	bool WantDelete()
+	{
+		return toDelete;
 	}
 
 	virtual void Save(JSON_Object* object, std::string name) const;
@@ -52,4 +58,5 @@ protected:
 	GameObject* parent = nullptr;
 	uint uid = 0;
 	const char* nameComponent = nullptr;
+	bool toDelete = false;
 };

@@ -86,6 +86,45 @@ void CompCamera::DebugDraw()
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
+void CompCamera::ShowOptions()
+{
+	//ImGui::MenuItem("CREATE", NULL, false, false);
+	if (ImGui::MenuItem("Reset"))
+	{
+		// Not implmented yet.
+	}
+	ImGui::Separator();
+	if (ImGui::MenuItem("Move to Front", NULL, false, false))
+	{
+		// Not implmented yet.
+	}
+	if (ImGui::MenuItem("Move to Back", NULL, false, false))
+	{
+		// Not implmented yet.
+	}
+	if (ImGui::MenuItem("Remove Component"))
+	{
+		toDelete = true;
+	}
+	if (ImGui::MenuItem("Move Up", NULL, false, false))
+	{
+		// Not implmented yet.
+	}
+	if (ImGui::MenuItem("Move Down", NULL, false, false))
+	{
+		// Not implmented yet.
+	}
+	if (ImGui::MenuItem("Copy Component"))
+	{
+		// Component* Copy = this;
+	}
+	if (ImGui::MenuItem("Paste Component", NULL, false, false))
+	{
+		//parent->AddComponent(App->scene->copyComponent->GetType())
+		// Create contructor Component Copy or add funtion to add info
+	}
+}
+
 void CompCamera::ShowInspectorInfo()
 {
 	if (ImGui::Checkbox("Main Camera", &is_main))

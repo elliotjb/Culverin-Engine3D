@@ -29,6 +29,7 @@ public:
 
 	void SetUUIDMesh(uint uuid);
 
+	void ShowOptions();
 	void ShowInspectorInfo();
 
 	void Save(JSON_Object* object, std::string name) const;

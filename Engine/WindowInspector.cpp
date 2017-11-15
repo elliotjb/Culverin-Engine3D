@@ -80,27 +80,6 @@ GameObject* Inspector::GetSelected() const
 	return selected_object;
 }
 
-void Inspector::ShowComponentsOptions()
-{
-	//Create child Game Objects / Components
-	ImGui::MenuItem("CREATE", NULL, false, false);
-	if (ImGui::MenuItem("Empty"))
-	{
-		//GameObject* empty = App->scene->CreateGameObject(this);
-		//((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(empty);
-	}
-	if (ImGui::MenuItem("Cube"))
-	{
-		//GameObject* cube = App->scene->CreateCube(this);
-		//((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(cube);
-	}
-	if (ImGui::MenuItem("Sphere"))
-	{
-		//GameObject* sphere = App->scene->CreateSphere(this);
-		//((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(sphere);
-	}
-}
-
 void Inspector::ShowOptions()
 {
 	ImGui::MenuItem("ADD COMPONENT", NULL, false, false);

@@ -25,7 +25,6 @@ public:
 
 	GameObject* GetSelected() const;
 
-	void ShowComponentsOptions();
 	void ShowOptions();
 	
 	//void OpenClose();

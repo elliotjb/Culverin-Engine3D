@@ -62,9 +62,16 @@ void GameObject::preUpdate(float dt)
 		//preUpdate Components --------------------------
 		for (uint i = 0; i < components.size(); i++)
 		{
-			if (components[i]->isActive())
+			if (components[i]->WantDelete())
 			{
-				components[i]->preUpdate(dt);
+				DeleteComponent(components[i]);
+			}
+			else
+			{
+				if (components[i]->isActive())
+				{
+					components[i]->preUpdate(dt);
+				}
 			}
 		}
 
@@ -392,7 +399,7 @@ void GameObject::ShowInspectorInfo()
 		if (ImGui::BeginPopupContextItem("Create"))
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 3));
-			((Inspector*)App->gui->winManager[INSPECTOR])->ShowComponentsOptions();
+			components[i]->ShowOptions();
 			ImGui::PopStyleVar();
 			ImGui::EndPopup();
 		}

@@ -23,6 +23,7 @@ public:
 	void Init(float3 p, float4 r, float3 s);
 	void Init(float3 p, float3 r, float3 s);
 	void Update(float dt);
+	void ShowOptions();
 	void ShowInspectorInfo();
 
 	void SetPosGlobal(float3 pos);

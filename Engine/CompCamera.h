@@ -23,6 +23,7 @@ public:
 	void Draw();
 	void DebugDraw();
 
+	void ShowOptions();
 	void ShowInspectorInfo();
 
 	void DoCulling();

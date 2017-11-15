@@ -90,6 +90,50 @@ void CompTransform::Update(float dt)
 	}
 }
 
+void CompTransform::ShowOptions()
+{
+	//ImGui::MenuItem("CREATE", NULL, false, false);
+	if (ImGui::MenuItem("Reset"))
+	{
+		// Not implmented yet.
+	}
+	ImGui::Separator();
+	if (ImGui::MenuItem("Move to Front", NULL, false, false))
+	{
+		// Not implmented yet.
+	}
+	if (ImGui::MenuItem("Move to Back", NULL, false, false))
+	{
+		// Not implmented yet.
+	}
+	if (ImGui::MenuItem("Copy Component"))
+	{
+		// Component* Copy = this;
+	}
+	if (ImGui::MenuItem("Paste Component", NULL, false, false))
+	{
+		//parent->AddComponent(App->scene->copyComponent->GetType())
+		// Create contructor Component Copy or add funtion to add info
+	}
+	ImGui::Separator();
+	if (ImGui::MenuItem("Reset Position"))
+	{
+		SetPos(float3::zero);
+		ImGui::CloseCurrentPopup();
+	}
+	if (ImGui::MenuItem("Reset Rotation", NULL, false, false))
+	{
+		//SetRot(math::float3::zero);
+		//rotation_euler = float3::zero;
+		//ImGui::CloseCurrentPopup();
+	}
+	if (ImGui::MenuItem("Reset Scale"))
+	{
+		SetScale(math::float3(1, 1, 1));
+		ImGui::CloseCurrentPopup();
+	}
+}
+
 void CompTransform::ShowInspectorInfo()
 {
 	// Set Size Windows
@@ -123,8 +167,16 @@ void CompTransform::ShowInspectorInfo()
 			ImGui::CloseCurrentPopup();
 		}
 		if (ImGui::Button("Reset Rotation"))
-			ImGui::PopStyleColor();
-
+		{
+			SetRot(math::float3::zero);
+			rotation_euler = float3::zero;
+			ImGui::CloseCurrentPopup();
+		} ImGui::SameLine(); App->ShowHelpMarker("Doesn't Work!!");
+		if (ImGui::Button("Reset Size"))
+		{
+			SetScale(math::float3(1, 1, 1));
+			ImGui::CloseCurrentPopup();
+		}
 		ImGui::Spacing();
 		ImGui::PopStyleVar();
 	}

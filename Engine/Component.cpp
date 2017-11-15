@@ -40,6 +40,10 @@ void Component::Draw()
 {
 }
 
+void Component::ShowOptions()
+{
+}
+
 void Component::ShowInspectorInfo()
 {
 }

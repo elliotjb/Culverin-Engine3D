@@ -29,6 +29,7 @@ public:
 	CompMesh(Comp_Type t, GameObject* parent);
 	~CompMesh();
 	
+	void ShowOptions();
 	void ShowInspectorInfo();
 	void Draw();
 	void Update(float dt);
