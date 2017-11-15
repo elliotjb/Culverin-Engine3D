@@ -59,7 +59,11 @@ void QuadtreeNode::Insert(GameObject* obj)
 			CreateChilds();
 		}
 		objects.push_back(obj);
-		RedistributeChilds();
+
+		// All gameobjects of the father have to be inside at least one of the childs
+		DistributeObjects();
+
+		// Clear objects list(only leaf nodes have to contain objects)
 		objects.clear();
 	}
 }
@@ -145,7 +149,7 @@ void QuadtreeNode::CreateChilds()
 }
 
 // We distribute the Game Objects depending on its position respect to the new childs
-void QuadtreeNode::RedistributeChilds()
+void QuadtreeNode::DistributeObjects()
 {	
 	GameObject* object = nullptr;
 
@@ -165,7 +169,7 @@ void QuadtreeNode::RedistributeChilds()
 
 		if (num_intersections == 4)
 		{
-			it++; // Game Object mantains its original relation with the parent
+			it++; 
 		}
 		else
 		{

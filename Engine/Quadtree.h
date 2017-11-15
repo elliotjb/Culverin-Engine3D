@@ -23,7 +23,7 @@ public:
 	void DebugDraw();
 
 	void CreateChilds();
-	void RedistributeChilds();
+	void DistributeObjects();
 
 
 public:
