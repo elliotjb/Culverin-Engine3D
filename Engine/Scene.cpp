@@ -162,6 +162,7 @@ update_status Scene::UpdateConfig(float dt)
 
 		if(ImGui::Button("UPDATE QUADTREE"))	
 		{ 
+			quadtree.root_node->Clear();
 			quadtree.Bake(App->scene->gameobjects);
 		}
 

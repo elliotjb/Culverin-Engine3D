@@ -39,7 +39,6 @@ bool QuadtreeNode::isLeaf() const
 	{
 		return true;
 	}
-
 	return false;
 }
 
@@ -56,15 +55,25 @@ void QuadtreeNode::Insert(GameObject* obj)
 	{
 		if (isLeaf())
 		{
+			//Divide the root node into 4 childs
 			CreateChilds();
+
+			objects.push_back(obj);
+
+			// All gameobjects of the father node have to be inside at least one of the childs
+			DistributeObjects();
+
+			// Clear objects list(only leaf nodes have to contain objects)
+			objects.clear();
 		}
-		objects.push_back(obj);
 
-		// All gameobjects of the father have to be inside at least one of the childs
-		DistributeObjects();
-
-		// Clear objects list(only leaf nodes have to contain objects)
-		objects.clear();
+		for (uint i = 0; i < 4; i++)
+		{
+			if (childs[i]->box.Intersects(obj->box_fixed))
+			{
+				childs[i]->Insert(obj);
+			}
+		}
 	}
 }
 
@@ -92,10 +101,11 @@ void QuadtreeNode::Clear()
 	{
 		for (uint i = 0; i < 4; i++)
 		{
-			childs[i]->objects.clear();
+			childs[i]->Clear();
 			RELEASE(childs[i]);
 		}
 	}
+	objects.clear();
 }
 
 void QuadtreeNode::DebugDraw()
@@ -150,6 +160,7 @@ void QuadtreeNode::CreateChilds()
 
 // We distribute the Game Objects depending on its position respect to the new childs
 void QuadtreeNode::DistributeObjects()
+
 {	
 	GameObject* object = nullptr;
 
@@ -163,7 +174,7 @@ void QuadtreeNode::DistributeObjects()
 		uint num_intersections = 0;
 		for (uint i = 0; i < 4; i++)
 		{
-			intersecting[i] = childs[i]->box.Intersects(*object->bounding_box);
+			intersecting[i] = childs[i]->box.Intersects(object->box_fixed);
 			num_intersections++;
 		}
 
@@ -232,7 +243,7 @@ void Quadtree::Insert(GameObject* obj)
 {
 	if (root_node != nullptr)
 	{
-		// If object is inside the Boundaries, insert it in a node
+		// If object is inside the Boundaries & has an AABB, insert it in a node
 		if (obj->bounding_box != nullptr)
 		{
 			if (obj->bounding_box->Intersects(root_node->box))
