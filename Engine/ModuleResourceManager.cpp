@@ -208,7 +208,7 @@ Resource*  ModuleResourceManager::ShowResources(bool& active)
 			ImGui::ButtonEx(it->second->name);
 			if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
 			{
-				if (ImGui::IsMouseDoubleClicked(0))
+				if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsWindowFocused())
 				{
 					ImGui::PopID();
 					ImGui::End();

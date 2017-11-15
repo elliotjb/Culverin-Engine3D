@@ -38,7 +38,7 @@ void Hierarchy::ShowHierarchy()
 
 	if (ImGui::IsMouseHoveringRect(ImGui::GetWindowPos(), ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowSize().x, ImGui::GetWindowPos().y + ImGui::GetWindowSize().y)))
 	{
-		if (ImGui::GetIO().MouseClicked[1])
+		if (ImGui::GetIO().MouseClicked[1] && ImGui::IsWindowFocused())
 		{
 			ImGui::OpenPopup("OptionsHyerarchy");
 		}

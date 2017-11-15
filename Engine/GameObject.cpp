@@ -408,7 +408,8 @@ void GameObject::ShowInspectorInfo()
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Text("");
-	ImGui::SameLine(10);
+	ImGui::SameLine(ImGui::GetWindowWidth() / 3);
+	ImGui::PushItemWidth(ImGui::GetWindowWidth() / 2);
 	static bool add_component = false;
 	if (ImGui::Button("ADD COMPONENT"))
 	{
