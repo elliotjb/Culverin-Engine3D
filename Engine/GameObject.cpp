@@ -436,18 +436,22 @@ void GameObject::ShowInspectorInfo()
 		if (ImGui::MenuItem("Transform"))
 		{
 			AddComponent(Comp_Type::C_TRANSFORM);
+			add_component = false;
 		}
 		if (ImGui::MenuItem("Mesh"))
 		{
 			AddComponent(Comp_Type::C_MESH);
+			add_component = false;
 		}
 		if (ImGui::MenuItem("Material"))
 		{
 			AddComponent(Comp_Type::C_MATERIAL);
+			add_component = false;
 		}
 		if (ImGui::MenuItem("Camera"))
 		{
 			AddComponent(Comp_Type::C_CAMERA);
+			add_component = false;
 		}
 		ImGui::End();
 		ImGui::PopStyleColor();
