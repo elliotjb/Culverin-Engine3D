@@ -32,7 +32,8 @@ public:
 	void ShowHierarchy();
 	void ShowGameObjectOptions();
 	void ShowInspectorInfo();
-	void FreezeTransforms(bool freeze);
+	void FreezeTransforms(bool freeze, bool change_childs);
+	void ShowFreezeChildsWindow(bool freeze, bool& active);
 	// ----------------------------------
 
 	void SetVisible(bool visible);

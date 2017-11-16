@@ -356,10 +356,29 @@ void GameObject::ShowInspectorInfo()
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 8));
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
 		
+		static bool window_active = false;
+		static bool static_object = false;
 		ImGui::Text(""); ImGui::SameLine(8);
 		if (ImGui::Checkbox("##2", &static_obj))
 		{
-			FreezeTransforms(static_obj);
+			window_active = true;
+			static_object = static_obj;
+			static_obj = !static_obj;
+			
+		}
+
+		if (window_active)
+		{
+			if (childs.size() > 0)
+			{
+				// Show window to change childs to static
+				ShowFreezeChildsWindow(static_object, window_active);
+			}
+			else
+			{
+				FreezeTransforms(static_object, false);
+				window_active = false;
+			}
 		}
 
 		ImGui::SameLine();
@@ -470,12 +489,59 @@ void GameObject::ShowInspectorInfo()
 	}
 }
 
-void GameObject::FreezeTransforms(bool freeze)
+void GameObject::FreezeTransforms(bool freeze, bool change_childs)
 {
 	if (GetComponentTransform() != nullptr)
 	{
+		static_obj = freeze;
 		GetComponentTransform()->Freeze(freeze);
+		
+		if (change_childs)
+		{
+			for (uint i = 0; i < childs.size(); i++)
+			{
+				childs[i]->static_obj = freeze;
+				childs[i]->FreezeTransforms(freeze, change_childs);
+			}
+		}
 	}
+}
+
+void GameObject::ShowFreezeChildsWindow(bool freeze, bool& active)
+{
+	//SDL_GetWindowSize(App->window->window, &width, &height);
+	//ImGui::SetNextWindowPos(ImVec2(width / 2 - 180, height / 2 - 80));
+	ImGui::SetNextWindowPosCenter();
+	ImGui::SetNextWindowSize(ImVec2(370, 100));
+	ImGui::Begin("Change Static Flags", &active, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders);
+
+	if (freeze)
+	{
+		ImGui::TextWrapped("Do you want to enable the static flags for all the child objects as well?");
+	}
+	else
+	{
+		ImGui::TextWrapped("Do you want to disable the static flags for all the child objects as well?");
+	}
+	ImGui::Spacing();
+	if (ImGui::Button("Yes change children", ImVec2(140, 0)))
+	{
+		FreezeTransforms(freeze, true);
+		active = false;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("No, this object only", ImVec2(130, 0)))
+	{
+		FreezeTransforms(freeze, false);
+		active = false;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Cancel", ImVec2(80, 0)))
+	{
+		static_obj = !freeze;
+		active = false;
+	}
+	ImGui::End();
 }
 
 void GameObject::SetVisible(bool visible)
