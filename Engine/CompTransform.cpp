@@ -259,20 +259,20 @@ case (ImGuizmo::MODE::WORLD):
 
 	//	ImGui::TreePop();
 	//}
-	ImGui::Text("Position"); ImGui::SameLine(op + 30);
-	if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
+	if(App->engineState == EngineState::STOP)
 	{
-		SetPos(position);
+		ShowEditableTransform();
 	}
-	ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-	if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
+	else
 	{
-		SetRot(rotation_euler);
-	}
-	ImGui::Text("Scale"); ImGui::SameLine(op + 30);
-	if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
-	{
-		SetScale(scale);
+		if (freeze)
+		{
+			ShowFreezedTrasnform();
+		}
+		else
+		{
+			ShowEditableTransform();
+		}
 	}
 	// ------------------------------------------------------------------
 
@@ -294,6 +294,49 @@ case (ImGuizmo::MODE::WORLD):
 
 	ImGui::TreePop();
 
+}
+
+void CompTransform::ShowEditableTransform()
+{
+	int op = ImGui::GetWindowWidth() / 4;
+
+	ImGui::Text("Position"); ImGui::SameLine(op + 30);
+	if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
+	{
+		SetPos(position);
+	}
+	ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
+	if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
+	{
+		SetRot(rotation_euler);
+	}
+	ImGui::Text("Scale"); ImGui::SameLine(op + 30);
+	if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
+	{
+		SetScale(scale);
+	}
+}
+
+void CompTransform::ShowFreezedTrasnform()
+{
+	int op = ImGui::GetWindowWidth() / 4;
+	PushStyleColor(ImGuiCol_Text, GImGui->Style.Colors[ImGuiCol_TextDisabled]);
+	ImGui::Text("Position"); ImGui::SameLine(op + 30);
+	if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
+	{
+		SetPos(position);
+	}
+	ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
+	if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
+	{
+		SetRot(rotation_euler);
+	}
+	ImGui::Text("Scale"); ImGui::SameLine(op + 30);
+	if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
+	{
+		SetScale(scale);
+	}
+	PopStyleColor();
 }
 
 void CompTransform::SetPosGlobal(float3 pos)
@@ -477,6 +520,11 @@ float4x4 CompTransform::GetGlobalTransform() const
 ImGuizmo::MODE CompTransform::GetMode() const
 {
 	return transform_mode;
+}
+
+void CompTransform::Freeze(bool freeze)
+{
+	this->freeze = freeze;
 }
 
 const float* CompTransform::GetMultMatrixForOpenGL() const

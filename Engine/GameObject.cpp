@@ -357,7 +357,10 @@ void GameObject::ShowInspectorInfo()
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 3));
 		
 		ImGui::Text(""); ImGui::SameLine(8);
-		ImGui::Checkbox("##2", &static_obj);
+		if (ImGui::Checkbox("##2", &static_obj))
+		{
+			FreezeTransforms(static_obj);
+		}
 
 		ImGui::SameLine();
 		ImGui::PopStyleVar();
@@ -464,6 +467,14 @@ void GameObject::ShowInspectorInfo()
 	{
 		if(ImGui::IsMouseClicked(0) || ImGui::IsMouseClicked(1) || ImGui::IsMouseClicked(2))
 			add_component = false;
+	}
+}
+
+void GameObject::FreezeTransforms(bool freeze)
+{
+	if (GetComponentTransform() != nullptr)
+	{
+		GetComponentTransform()->Freeze(freeze);
 	}
 }
 
