@@ -60,7 +60,7 @@ void SceneWorld::ShowSceneWorld()
 		mouse_pos.y = ImGui::GetMousePos().y - SceneWindow.y;
 
 		if (mouse_pos.x >= 0 && mouse_pos.y >= 0 &&
-			mouse_pos.x <= SceneWindow.z && mouse_pos.y <= SceneWindow.w)
+			mouse_pos.x <= SceneWindow.z && mouse_pos.y <= SceneWindow.w && ImGui::IsMouseHoveringWindow())
 		{
 			App->camera->MousePick(mouse_pos.x, mouse_pos.y + PICK_OFFSET_Y, SceneWindow.z, SceneWindow.w);
 			//LOG("MOUSE CLICK (%f, %f).", mouse_pos.x, mouse_pos.y);

@@ -72,7 +72,7 @@ Texture ImportMaterial::Load(const char* file)
 
 	std::string temp = file;
 	temp = DIRECTORY_LIBRARY_MATERIALS + temp + ".dds";
-	success = ilLoadImage(file);
+	success = ilLoadImage(temp.c_str());
 
 	if (success)
 	{
