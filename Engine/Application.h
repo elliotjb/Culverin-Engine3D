@@ -2,29 +2,32 @@
 #include "Globals.h"
 #include "Timer.h"
 #include "Module.h"
-#include "ModuleWindow.h"
-#include "ModuleInput.h"
-#include "ModuleAudio.h"
-#include "ModuleRenderer3D.h"
-#include "ModuleCamera3D.h"
-#include "Scene.h"
-#include "ModuleConsole.h"
-#include "ModuleGUI.h"			//TODO JORDI OÑA AND ELLIOT forward declaration
-#include "ModuleImporter.h"
-#include "ModuleTextures.h"
-#include "ModuleFS.h"
-#include "ModuleResourceManager.h"
 #include "parson.h"
+
 #include "GL3W/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
 #include "ImGui/imgui_dock_v2.h"
 #include "Algorithm/Random/LCG.h"
 #include "Math/float4.h"
+
+#include <list>
 #include <vector>
 #include <string>
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+class ModuleWindow;
+class ModuleInput;
+class ModuleAudio;
+class ModuleRenderer3D;
+class ModuleCamera3D;
+class Scene;
+class Console;
+class ModuleGUI;
+class ModuleImporter;
+class ModuleFS;
+class ModuleTextures;
+class ModuleResourceManager;
 
 class JSONSerialization;
 

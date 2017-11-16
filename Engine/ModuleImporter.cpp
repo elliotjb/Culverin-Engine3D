@@ -4,6 +4,11 @@
 #include "ImportMaterial.h"
 #include "CompMaterial.h"
 #include "CompTransform.h"
+#include "ModuleFS.h"
+#include "ModuleInput.h"
+#include "Scene.h"
+#include "ModuleGUI.h"
+#include "ModuleWindow.h"
 #include "JSONSerialization.h"
 
 ModuleImporter::ModuleImporter(bool start_enabled) : Module(start_enabled)

@@ -1,6 +1,7 @@
 #include "JSONSerialization.h"
 #include "Application.h"
-
+#include "Scene.h"
+#include "GameObject.h"
 
 JSONSerialization::JSONSerialization()
 {

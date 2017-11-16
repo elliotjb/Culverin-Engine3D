@@ -7,6 +7,12 @@
 #include "ResourceMesh.h"
 #include "CompTransform.h"
 #include "WindowInspector.h"
+#include "ModuleRenderer3D.h"
+#include "Scene.h"
+#include "ModuleInput.h"
+#include "ModuleGUI.h"
+#include "ModuleWindow.h"
+
 #include "ImGui/imgui.h"
 #include "Geometry/Frustum.h"
 #include <map>
@@ -437,9 +443,9 @@ void ModuleCamera3D::CheckOut()
 	{
 		canOut = true;
 	}
-	if ((App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_UP ||
+	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_UP ||
 		App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP ||
-		App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_UP) && isMouseOnWindow())
+		App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_UP)
 	{
 		canOut = false;
 	}
@@ -495,8 +501,8 @@ void ModuleCamera3D::MoveWithMouse(int motion_x, int motion_y, float dt)
 	// POINT
 	else if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
-		float dx = (float)-motion_x * rotate_speed * dt;
-		float dy = (float)-motion_y * rotate_speed * dt;
+		float dx = (float)-motion_x * rotate_speed * dt * 0.1f;
+		float dy = (float)-motion_y * rotate_speed * dt * 0.1f;
 
 		LookAround(dx, dy);
 	}

@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Scene.h"
 #include "GameObject.h"
+#include "ModuleGUI.h"
 #include "WindowInspector.h"
 
 Hierarchy::Hierarchy() : WindowManager()

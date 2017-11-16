@@ -7,6 +7,7 @@
 #include "ResourceMesh.h"
 #include "CompMaterial.h"
 #include "CompTransform.h"
+#include "ModuleTextures.h"
 
 #include <filesystem>
 #include <iostream>

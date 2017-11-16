@@ -9,16 +9,6 @@
 class GameObject;
 class SkyBox;
 
-enum SkyBoxSide
-{
-	SKY_LEFT = 0,
-	SKY_BACK,
-	SKY_RIGHT,
-	SKY_FRONT,
-	SKY_TOP,
-	SKY_BOTTOM
-};
-
 class Scene : public Module
 {
 public:

@@ -6,6 +6,7 @@
 #include "CompTransform.h"
 #include "ModuleRenderer3D.h"
 #include "GameObject.h"
+#include "Scene.h"
 #include "ImportMesh.h"
 #include "ResourceMesh.h"
 #include "Color.h"

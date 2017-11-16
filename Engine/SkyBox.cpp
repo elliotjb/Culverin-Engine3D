@@ -1,5 +1,7 @@
 #include "SkyBox.h"
 #include "Application.h"
+#include "ModuleTextures.h"
+#include "ModuleRenderer3D.h"
 
 SkyBox::SkyBox()
 {

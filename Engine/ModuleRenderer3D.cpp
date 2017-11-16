@@ -8,6 +8,8 @@
 #include "WindowSceneWorld.h"
 #include "parson.h"
 #include "SkyBox.h"
+#include "ModuleWindow.h"
+#include "ModuleCamera3D.h"
 
 #include "SDL/include/SDL_opengl.h"
 #include "GL3W/include/glew.h"

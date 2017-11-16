@@ -1,6 +1,6 @@
 #include "WindowGame.h"
 #include "Application.h"
-
+#include "Scene.h"
 
 WindowGame::WindowGame()
 {

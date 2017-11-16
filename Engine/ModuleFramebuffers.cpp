@@ -1,5 +1,6 @@
 #include "ModuleFramebuffers.h"
 #include "Application.h"
+#include "ModuleRenderer3D.h"
 
 FrameBuffer::FrameBuffer()
 {

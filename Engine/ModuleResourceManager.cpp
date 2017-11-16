@@ -3,6 +3,9 @@
 #include "ResourceMaterial.h"
 #include "ResourceMesh.h"
 #include "ImportMesh.h"
+#include "ModuleFS.h"
+#include "ModuleInput.h"
+#include "ModuleGUI.h"
 
 
 ModuleResourceManager::ModuleResourceManager(bool start_enabled): Module(start_enabled)

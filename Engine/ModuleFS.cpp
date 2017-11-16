@@ -1,5 +1,7 @@
 #include "ModuleFS.h"
 #include "Application.h"
+#include "ModuleInput.h"
+#include "ModuleGUI.h"
 
 ModuleFS::ModuleFS(bool start_enabled) : Module(start_enabled)
 {

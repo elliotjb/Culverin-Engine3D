@@ -4,6 +4,8 @@
 #include "MathGeoLib.h"
 #include "Application.h"
 #include "Scene.h"
+#include "ModuleFS.h"
+#include "ModuleRenderer3D.h"
 #include "GameObject.h"
 
 #include "SDL\include\SDL_opengl.h"

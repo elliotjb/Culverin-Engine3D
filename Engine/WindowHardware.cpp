@@ -1,5 +1,6 @@
 #include "WindowHardware.h"
 #include "Application.h"
+#include "ModuleGUI.h"
 #include "SDL\include\SDL.h"
 
 Hardware::Hardware() : WindowManager()

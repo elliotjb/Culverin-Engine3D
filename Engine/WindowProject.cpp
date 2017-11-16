@@ -1,5 +1,7 @@
 #include "WindowProject.h"
 #include "Application.h"
+#include "ModuleFS.h"
+#include "ModuleTextures.h"
 #include "JSONSerialization.h"
 
 Project::Project()
@@ -47,10 +49,10 @@ update_status Project::Update(float dt)
 	{
 
 	}
-	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
-	{
-		//GetFolderSee();
-	}
+	//if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+	//{
+	//	//GetFolderSee();
+	//}
 	if (active[0].active)
 	{
 		//ShowProject();

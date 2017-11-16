@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ImGui/ImGuizmo.h"
+#include "ModuleCamera3D.h"
+#include "Scene.h"
 
 SceneWorld::SceneWorld() : WindowManager()
 {
