@@ -238,6 +238,8 @@ void ModuleCamera3D::LookAround(float dx, float dy)
 	// ROTATE HORIZONTAL --------------
 	if (dx != 0.0f)
 	{
+		if (lookInvers)
+			dx *= -1;
 		Quat quat = Quat::RotateY(dx); // Rotate around Y World Axis.
 		cam->frustum.front = quat.Mul(cam->frustum.front).Normalized();
 		cam->frustum.up = quat.Mul(cam->frustum.up).Normalized();
@@ -250,6 +252,13 @@ void ModuleCamera3D::LookAround(float dx, float dy)
 		float3 up_modified = quat.Mul(cam->frustum.up).Normalized();
 		if (up_modified.y > 0.0f)
 		{
+			lookInvers = false;
+			cam->frustum.up = up_modified;
+			cam->frustum.front = quat.Mul(cam->frustum.front).Normalized();
+		}
+		else
+		{
+			lookInvers = true;
 			cam->frustum.up = up_modified;
 			cam->frustum.front = quat.Mul(cam->frustum.front).Normalized();
 		}

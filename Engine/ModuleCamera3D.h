@@ -52,7 +52,7 @@ public:
 
 private:
 	void CheckOut();
-
+	bool lookInvers = false;
 public:
 	bool changecam = false;
 	bool CanMoveCamera = false;
