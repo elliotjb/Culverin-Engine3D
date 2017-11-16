@@ -227,14 +227,11 @@ void Quadtree::Bake(const std::vector<GameObject*>& objects)
 {
 	for (uint i = 0; i < objects.size(); i++)
 	{
-		if (!objects[i]->isStatic())
-		{
-			Insert(objects[i]);
+		Insert(objects[i]);
 
-			if (objects[i]->GetNumChilds() > 0)
-			{
-				Bake(objects[i]->GetChildsVec());
-			}
+		if (objects[i]->GetNumChilds() > 0)
+		{
+			Bake(objects[i]->GetChildsVec());
 		}
 	}
 }

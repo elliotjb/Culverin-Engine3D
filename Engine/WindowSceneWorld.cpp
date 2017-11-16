@@ -5,6 +5,8 @@
 #include "ModuleCamera3D.h"
 #include "Scene.h"
 
+#define PICK_OFFSET_Y -20
+
 SceneWorld::SceneWorld() : WindowManager()
 {
 	active.push_back(Active());
@@ -60,7 +62,7 @@ void SceneWorld::ShowSceneWorld()
 		if (mouse_pos.x >= 0 && mouse_pos.y >= 0 &&
 			mouse_pos.x <= SceneWindow.z && mouse_pos.y <= SceneWindow.w)
 		{
-			App->camera->MousePick(mouse_pos.x, mouse_pos.y, SceneWindow.z, SceneWindow.w);
+			App->camera->MousePick(mouse_pos.x, mouse_pos.y + PICK_OFFSET_Y, SceneWindow.z, SceneWindow.w);
 			//LOG("MOUSE CLICK (%f, %f).", mouse_pos.x, mouse_pos.y);
 		}
 	}

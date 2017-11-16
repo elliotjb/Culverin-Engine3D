@@ -174,20 +174,23 @@ void CompCamera::DoCulling()
 	AABB* box = nullptr;
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
-		if (App->scene->gameobjects[i]->isActive() && App->scene->gameobjects[i] != parent)
+		if (App->scene->gameobjects[i]->isActive() && App->scene->gameobjects[i] != parent) // Don't cull itself
 		{
-			// Check its bounding box
-			box = &App->scene->gameobjects[i]->box_fixed;
-			if (box != nullptr)
+			if (App->scene->gameobjects[i]->isStatic())
 			{
-				// We set visible varialbe True / False to know if the GameObject will be drawn(or not) in renderer PostUpdate
-				if (ContainsAABox(*box) == CULL_OUT)
+				// Check its bounding box
+				box = &App->scene->gameobjects[i]->box_fixed;
+				if (box != nullptr)
 				{
-					App->scene->gameobjects[i]->SetVisible(false);
-				}
-				else
-				{
-					App->scene->gameobjects[i]->SetVisible(true);
+					// We set visible varialbe True / False to know if the GameObject will be drawn(or not) in renderer PostUpdate
+					if (ContainsAABox(*box) == CULL_OUT)
+					{
+						App->scene->gameobjects[i]->SetVisible(false);
+					}
+					else
+					{
+						App->scene->gameobjects[i]->SetVisible(true);
+					}
 				}
 			}
 		}

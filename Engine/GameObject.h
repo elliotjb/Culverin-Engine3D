@@ -32,6 +32,7 @@ public:
 	void ShowHierarchy();
 	void ShowGameObjectOptions();
 	void ShowInspectorInfo();
+	void FreezeTransforms(bool freeze);
 	// ----------------------------------
 
 	void SetVisible(bool visible);

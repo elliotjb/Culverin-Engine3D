@@ -696,7 +696,7 @@ ImGuiStyle::ImGuiStyle()
 	CurveTessellationTol = 1.25f;           // Tessellation tolerance. Decrease for highly tessellated curves (higher quality, more polygons), increase to reduce quality.
 
 	Colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.00f);
-	Colors[ImGuiCol_TextDisabled] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
+	Colors[ImGuiCol_TextDisabled] = ImVec4(0.399f, 0.399f, 0.399f, 1.00f);
 
 	Colors[ImGuiCol_WindowBg] = ImVec4(0.136f, 0.136f, 0.136f, 1.00f);
 	Colors[ImGuiCol_ChildWindowBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);

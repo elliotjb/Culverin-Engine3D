@@ -25,6 +25,8 @@ public:
 	void Update(float dt);
 	void ShowOptions();
 	void ShowInspectorInfo();
+	void ShowEditableTransform();
+	void ShowFreezedTrasnform();
 
 	void SetPosGlobal(float3 pos);
 	void SetRotGlobal(float3 rot);
@@ -49,6 +51,8 @@ public:
 	float4x4 GetGlobalTransform() const;
 	ImGuizmo::MODE GetMode() const;
 
+	void Freeze(bool freeze);
+
 	const float* GetMultMatrixForOpenGL() const;
 
 	void Save(JSON_Object* object, std::string name) const;
@@ -57,6 +61,7 @@ public:
 private:
 	Axis axis;
 	bool toUpdate = false;
+	bool freeze = false;
 
 	// Output Values ----------------------
 	float3 position = { 0, 0, 0 };
