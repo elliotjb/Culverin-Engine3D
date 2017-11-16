@@ -129,6 +129,9 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 		
 		std::vector<Texture> text_t;
 		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
+		//for(int i =0; i<8;i++)
+		//if(mesh->HasVertexColors(mesh->GetNumColorChannels()))
+		//	materialComp->SetColor(mesh->mColors[0]->r, mesh->mColors[0]->g, mesh->mColors[0]->b, mesh->mColors[0]->a);
 		std::vector<Texture> diffuseMaps = LoadMaterialTextures(mat, aiTextureType_DIFFUSE, "texture_diffuse");
 		text_t.insert(text_t.end(), diffuseMaps.begin(), diffuseMaps.end());
 

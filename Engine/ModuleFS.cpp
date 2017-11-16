@@ -76,7 +76,7 @@ update_status ModuleFS::PreUpdate(float dt)
 	if (checkAssets.ReadSec() > 7)
 	{
 		checkAssets.Start();
-		AnyfileModificated(allfilesAsstes);
+		//AnyfileModificated(allfilesAsstes);
 	}
 
 	preUpdate_t = perf_timer.ReadMs();

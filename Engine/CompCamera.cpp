@@ -129,6 +129,15 @@ void CompCamera::ShowOptions()
 
 void CompCamera::ShowInspectorInfo()
 {
+	// Reset Values Button -------------------------------------------
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
+	ImGui::SameLine(ImGui::GetWindowWidth() - 26);
+	if (ImGui::ImageButton((ImTextureID*)App->scene->icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
+	{
+		// Open Options
+	}
+	ImGui::PopStyleVar();
+
 	if (ImGui::Checkbox("Main Camera", &is_main))
 	{
 		SetMain(is_main);

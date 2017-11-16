@@ -6,6 +6,7 @@
 #include "Application.h"
 #include "ModuleFS.h"
 #include "ImportMaterial.h"
+#include "Scene.h"
 
 CompMaterial::CompMaterial(Comp_Type t, GameObject* parent): Component(t, parent)
 {
@@ -61,6 +62,15 @@ void CompMaterial::SetUUIDMesh(uint uuid)
 
 void CompMaterial::ShowOptions()
 {
+	// Reset Values Button -------------------------------------------
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
+	ImGui::SameLine(ImGui::GetWindowWidth() - 26);
+	if (ImGui::ImageButton((ImTextureID*)App->scene->icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
+	{
+		// Open Options
+	}
+	ImGui::PopStyleVar();
+
 	//ImGui::MenuItem("CREATE", NULL, false, false);
 	if (ImGui::MenuItem("Reset"))
 	{
@@ -108,6 +118,8 @@ void CompMaterial::ShowInspectorInfo()
 void CompMaterial::Save(JSON_Object* object, std::string name) const
 {
 	json_object_dotset_number_with_std(object, name + "Type", C_MATERIAL);
+	float4 tempColor = { color.r, color.g, color.b, color.a };
+	App->fs->json_array_dotset_float4(object, name + "Color", tempColor);
 	if (texture.size() > 0)
 	{
 		json_object_dotset_number_with_std(object, name + "Num Textures", texture.size());
@@ -119,6 +131,8 @@ void CompMaterial::Save(JSON_Object* object, std::string name) const
 void CompMaterial::Load(const JSON_Object* object, std::string name)
 {
 	int num_textrues = json_object_dotget_number_with_std(object, name + "Num Textures");
+	float4 tempColor = App->fs->json_array_dotget_float4_string(object, name + "Color");
+	color.Set(tempColor.x, tempColor.y, tempColor.z, tempColor.w);
 	if (num_textrues > 0)
 	{
 		const char* directory = json_object_dotget_string_with_std(object, name + "Directory Material");
