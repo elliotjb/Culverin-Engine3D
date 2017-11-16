@@ -258,6 +258,14 @@ void Scene::DrawCube(float size)
 
 }
 
+// Before Rendering with the game camera, fill a vector with all the static objects 
+// of the quadtree to iterate them to apply Culling (if activated)
+void Scene::FillStaticObjectsVector()
+{
+	static_objects.clear();
+	quadtree.CollectObjects(static_objects);
+}
+
 
 void Scene::Init_IndexVertex(float3 * vertex_triangulate, uint num_index, CompMesh * mesh)
 {

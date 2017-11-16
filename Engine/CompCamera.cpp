@@ -171,16 +171,40 @@ void CompCamera::ShowInspectorInfo()
 
 void CompCamera::DoCulling()
 {
+	// First check culling with static objects (optimized with quadtree)
+	CullStaticObjects();
+
+	// Then check dynamic objects
+	CullDynamicObjects();
+}
+
+void CompCamera::CullStaticObjects()
+{
+	// Set all static objects invisible first
+	for (uint i = 0; i < App->scene->static_objects.size(); i++)
+	{
+		App->scene->static_objects[i]->SetVisible(false);
+	}
+
+	candidates_to_cull.clear();
+	// Get all static objects that are inside the frustum (accelerated with quadtree)
+	App->scene->quadtree.CollectCandidates(candidates_to_cull, frustum);
+
+	// Set visible only these static objects
+	for (uint i = 0; i < candidates_to_cull.size(); i++)
+	{
+		candidates_to_cull[i]->SetVisible(true);
+	}
+}
+
+void CompCamera::CullDynamicObjects()
+{
 	AABB* box = nullptr;
-
-	// Get all game
-	//App->scene->quadtree.CollectCandidates(candidates_to_cull, frustum);
-
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
 		if (App->scene->gameobjects[i]->isActive() && App->scene->gameobjects[i] != parent) // Don't cull itself
 		{
-			if (App->scene->gameobjects[i]->isStatic())
+			if (!App->scene->gameobjects[i]->isStatic())
 			{
 				// Check its bounding box
 				box = &App->scene->gameobjects[i]->box_fixed;
@@ -275,6 +299,9 @@ void CompCamera::SetMain(bool isMain)
 	{
 		App->renderer3D->SetGameCamera(nullptr);
 	}
+
+	// Set output variable to check on inspector
+	is_main = isMain;
 }
 
 void CompCamera::SetPos(float3 pos)

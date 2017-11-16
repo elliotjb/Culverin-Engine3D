@@ -27,6 +27,8 @@ public:
 	void ShowInspectorInfo();
 
 	void DoCulling();
+	void CullStaticObjects();
+	void CullDynamicObjects();
 	void UnCull();
 
 	void LookAt(const float3& position);

@@ -160,7 +160,6 @@ void QuadtreeNode::CreateChilds()
 
 // We distribute the Game Objects depending on its position respect to the new childs
 void QuadtreeNode::DistributeObjects()
-
 {	
 	GameObject* object = nullptr;
 
@@ -195,7 +194,29 @@ void QuadtreeNode::DistributeObjects()
 		}
 	}
 }
+void QuadtreeNode::CollectObjects(std::vector<GameObject*>& vec_to_fill)
+{
+	// Fill the vector with the objects of this node
+	for (std::list<GameObject*>::const_iterator it = objects.begin(); it != objects.end(); ++it)
+	{
+		vec_to_fill.push_back(*it);
+	}
 
+	// If it has no children, end
+	if (childs[0] == nullptr)
+	{
+		return;
+	}
+
+	// Otherwise, repeat this process for its 4 children
+	for (int i = 0; i < 4; ++i)
+	{
+		if (childs[i] != nullptr)
+		{
+			childs[i]->CollectObjects(vec_to_fill);
+		}
+	}
+}
 // ---------------------------------------
 
 
@@ -281,6 +302,15 @@ void Quadtree::DebugDraw()
 
 	glEnd();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
+// Fill a vector with all the objects inside the quadtree
+void Quadtree::CollectObjects(std::vector<GameObject*>& vec_to_fill)
+{
+	if (root_node != nullptr)
+	{
+		root_node->CollectObjects(vec_to_fill);
+	}
 }
 
 // --------------------------------------

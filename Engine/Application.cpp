@@ -626,6 +626,7 @@ void Application::SetState(EngineState state)
 		{
 			engineState = EngineState::PLAY;
 			ChangeCamera("Game");
+			scene->FillStaticObjectsVector();
 			WantToSave();
 		}
 	}

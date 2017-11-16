@@ -28,6 +28,7 @@ public:
 	template<typename TYPE>
 	int CollectCandidates(std::vector<GameObject*>& objects, const TYPE& primitive) const;
 
+	void CollectObjects(std::vector<GameObject*>& vec_to_fill);
 
 public:
 
@@ -55,6 +56,8 @@ public:
 
 	template<typename TYPE>
 	int CollectCandidates(std::vector<GameObject*>& objects, const TYPE& primitive) const;
+
+	void CollectObjects(std::vector<GameObject*>& objects);
 
 public:
 	QuadtreeNode* root_node = nullptr;

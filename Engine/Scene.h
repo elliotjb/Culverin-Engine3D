@@ -26,6 +26,8 @@ public:
 	void DrawPlane();
 	void DrawCube(float size);
 
+	void FillStaticObjectsVector();
+
 	//OBJECTS CREATION / DELETION ---------------------
 	void Init_IndexVertex(float3* vertex_triangulate, uint num_index, CompMesh* mesh);
 	GameObject* CreateGameObject(GameObject* parent = nullptr);
@@ -49,6 +51,9 @@ public:
 
 	//Container Vector of all Game Objects
 	std::vector<GameObject*> gameobjects;
+
+	//Container Vector of Static Objects
+	std::vector<GameObject*> static_objects;
 
 	Quadtree quadtree;
 	bool quadtree_draw = false;
