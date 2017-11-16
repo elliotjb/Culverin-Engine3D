@@ -4,6 +4,7 @@
 #include "ModuleImporter.h"
 
 struct Texture;
+class ResourceMesh;
 
 class ImportMesh
 {
@@ -19,13 +20,13 @@ public:
 	//void Import(uint num_vert, uint num_ind, uint num_normals, std::vector<uint> indices, std::vector<Vertex> vertices);
 
 	bool LoadResource(const char * file, ResourceMesh* resourceMesh);
-	std::vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const char* typeName);
+	//std::vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const char* typeName);
 	bool Load(const char* name, CompMesh* mesh);
 	//Call always before ProseceNode();
-	void PrepareToImport();
+	//void PrepareToImport();
 
 private:
 
-	std::vector<Texture> materialImpoted; //Const char* ?
+	//std::vector<Texture> materialImpoted; //Const char* ?
 };
 

@@ -38,10 +38,9 @@ public:
 	uint vertices_norm_id = 0;	/* NORMALS OF VERTICES ID */
 
 	const char* directory_mesh = nullptr; //Only use in save and load
-	bool isLoaded = false;
 
-public:
-	int NumGameObjectsUseMe = 0;
+private:
+	bool isLoaded = false;
 
 };
 

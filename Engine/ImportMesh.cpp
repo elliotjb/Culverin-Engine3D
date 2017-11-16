@@ -4,7 +4,9 @@
 #include "GameObject.h"
 #include "ImportMaterial.h"
 #include "CompMesh.h"
+#include "ModuleResourceManager.h"
 #include "ResourceMesh.h"
+#include "ResourceMaterial.h"
 #include "CompMaterial.h"
 #include "CompTransform.h"
 #include "ModuleTextures.h"
@@ -28,6 +30,7 @@ bool ImportMesh::Load(const char* exported_file, Texture* resource)
 	return false;
 }
 
+// Import Mesh -----------------------------------------------------------------------------------------------------------------------------
 bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* obj, const char* name)
 {
 	bool ret = true;
@@ -126,19 +129,35 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 	if (mesh->mMaterialIndex >= 0)
 	{
 		CompMaterial* materialComp = (CompMaterial*)obj->AddComponent(C_MATERIAL);
-		
-		std::vector<Texture> text_t;
+		//
+		//std::vector<Texture> text_t;
 		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
 
-		std::vector<Texture> diffuseMaps = LoadMaterialTextures(mat, aiTextureType_DIFFUSE, "texture_diffuse");
-		text_t.insert(text_t.end(), diffuseMaps.begin(), diffuseMaps.end());
+		for (uint i = 0; i < mat->GetTextureCount(aiTextureType_DIFFUSE); i++)
+		{
+			aiString str;
+			mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
+			ResourceMaterial* resource_mat = (ResourceMaterial*)App->resource_manager->GetResource(str.C_Str());
+			if (resource_mat != nullptr)
+			{
+				if (resource_mat->IsLoadedToMemory() == false)
+				{
+					std::string temp = str.C_Str();
+					App->importer->iMaterial->LoadResource(temp.c_str(), resource_mat);
+				}
+				materialComp->resourceMaterial = resource_mat;
+			}
+		}
 
-		// For the moment, we can only see textures on the diffuse channel, but we can load the specular ones
-		std::vector<Texture> specularMaps = LoadMaterialTextures(mat, aiTextureType_SPECULAR, "texture_specular");
-		text_t.insert(text_t.end(), specularMaps.begin(), specularMaps.end());
+		//std::vector<Texture> diffuseMaps = LoadMaterialTextures(mat, aiTextureType_DIFFUSE, "texture_diffuse");
+		//text_t.insert(text_t.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-		materialComp->SetTexture(text_t);
-		num_textures = text_t.size();
+		//// For the moment, we can only see textures on the diffuse channel, but we can load the specular ones
+		//std::vector<Texture> specularMaps = LoadMaterialTextures(mat, aiTextureType_SPECULAR, "texture_specular");
+		//text_t.insert(text_t.end(), specularMaps.begin(), specularMaps.end());
+
+		//materialComp->SetTexture(text_t);
+		//num_textures = text_t.size();
 	}
 	
 
@@ -195,7 +214,6 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 	uint uid_mesh = App->random->Int();
 	std::string fileName = std::to_string(uid_mesh);
 	res_mesh->InitInfo(uid_mesh, name);
-	res_mesh->name = App->GetCharfromConstChar(name);
 	//res_mesh->uuid_directory = fileName.c_str();
 	//meshComp->SetUUIDMesh(uid_mesh);
 	//Save Mesh
@@ -207,6 +225,7 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 	return ret;
 }
 
+// Import Primitive -----------------------------------------------------------------------------------------------------------------------------
 void ImportMesh::Import(uint num_vertices, uint num_indices, uint num_normals, std::vector<uint> indices, std::vector<float3> vertices, uint uid)
 {
 	// ALLOCATING DATA INTO BUFFER ------------------------
@@ -263,7 +282,6 @@ void ImportMesh::Import(uint num_vertices, uint num_indices, uint num_normals, s
 	uint uid_mesh = App->random->Int();
 	std::string fileName = std::to_string(uid_mesh);
 	res_mesh->InitInfo(uid_mesh, "Cube");
-	res_mesh->name = "Cube";
 
 	//Save Mesh
 	App->fs->SaveFile(data, fileName, size, IMPORT_DIRECTORY_LIBRARY_MESHES);
@@ -332,7 +350,6 @@ bool ImportMesh::LoadResource(const char* file, ResourceMesh* resourceMesh)
 		resourceMesh->InitRanges(num_vertices, num_indices, num_normals);
 		resourceMesh->Init(vertices, indices, vert_normals, tex_coords);
 		resourceMesh->LoadToMemory();
-		resourceMesh->isLoaded = true;
 
 		LOG("Mesh %s Loaded!", file);
 	}
@@ -410,83 +427,83 @@ bool ImportMesh::Load(const char* file, CompMesh* mesh)
 	return true;
 }
 
-void ImportMesh::PrepareToImport()
-{
-	for (int i = 0; i < materialImpoted.size(); i++)
-	{
-		materialImpoted[i].name.clear();
-		materialImpoted[i].path.clear();
-		materialImpoted[i].name.clear();
-	}
-	materialImpoted.clear();
-}
-
-std::vector<Texture> ImportMesh::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const char* typeName)
-{
-	std::vector<Texture> textures;
-	std::vector<Texture> l_tex;
-	bool skip = false;
-	for (uint i = 0; i < mat->GetTextureCount(type); i++)
-	{
-		aiString str;
-		mat->GetTexture(type, i, &str);
-
-		for (uint j = 0; j < l_tex.size(); j++)
-		{
-			if (std::strcmp(l_tex[j].path.c_str(), str.C_Str()) == 0)
-			{
-				textures.push_back(l_tex[j]);
-				skip = true;
-				break;
-			}
-		}
-
-		if (skip == false)
-		{
-			// Check if the texture has been imported.
-			// if so, only put the information (Dont import again).
-			bool noImport = false;
-			int num_texture = -1;
-			if (materialImpoted.size() > 0)
-			{
-				for (int ds = 0; ds < materialImpoted.size(); ds++)
-				{
-					if (materialImpoted[ds].path.compare(str.C_Str()) == 0)
-					{
-						LOG("The texture was already imported!");
-						noImport = true;
-						num_texture = ds;
-					}
-				}
-			}
-
-			if (noImport == false)
-			{
-				//if Not imported, just import
-				Texture tex;
-				tex.id = App->textures->LoadTexture(str.C_Str());
-				tex.type = typeName;
-				tex.path = str.C_Str();
-
-				uint uid_material = App->random->Int();
-				tex.name = std::to_string(uid_material);
-
-				//App->importer->iMaterial->Import(tex.path.c_str(), tex.name.c_str());
-				tex.name += ".dds";
-
-				textures.push_back(tex);
-				l_tex.push_back(tex);
-				//delete importmaterial;
-
-				materialImpoted.push_back(tex);
-			}
-			else
-			{
-				textures.push_back(materialImpoted[num_texture]);
-				l_tex.push_back(materialImpoted[num_texture]);
-			}
-		}
-	}
-
-	return textures;
-}
+//void ImportMesh::PrepareToImport()
+//{
+//	for (int i = 0; i < materialImpoted.size(); i++)
+//	{
+//		materialImpoted[i].name.clear();
+//		materialImpoted[i].path.clear();
+//		materialImpoted[i].name.clear();
+//	}
+//	materialImpoted.clear();
+//}
+//
+//std::vector<Texture> ImportMesh::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const char* typeName)
+//{
+//	std::vector<Texture> textures;
+//	std::vector<Texture> l_tex;
+//	bool skip = false;
+//	for (uint i = 0; i < mat->GetTextureCount(type); i++)
+//	{
+//		aiString str;
+//		mat->GetTexture(type, i, &str);
+//
+//		for (uint j = 0; j < l_tex.size(); j++)
+//		{
+//			if (std::strcmp(l_tex[j].path.c_str(), str.C_Str()) == 0)
+//			{
+//				textures.push_back(l_tex[j]);
+//				skip = true;
+//				break;
+//			}
+//		}
+//
+//		if (skip == false)
+//		{
+//			// Check if the texture has been imported.
+//			// if so, only put the information (Dont import again).
+//			bool noImport = false;
+//			int num_texture = -1;
+//			if (materialImpoted.size() > 0)
+//			{
+//				for (int ds = 0; ds < materialImpoted.size(); ds++)
+//				{
+//					if (materialImpoted[ds].path.compare(str.C_Str()) == 0)
+//					{
+//						LOG("The texture was already imported!");
+//						noImport = true;
+//						num_texture = ds;
+//					}
+//				}
+//			}
+//
+//			if (noImport == false)
+//			{
+//				//if Not imported, just import
+//				Texture tex;
+//				tex.id = App->textures->LoadTexture(str.C_Str());
+//				tex.type = typeName;
+//				tex.path = str.C_Str();
+//
+//				uint uid_material = App->random->Int();
+//				tex.name = std::to_string(uid_material);
+//
+//				//App->importer->iMaterial->Import(tex.path.c_str(), tex.name.c_str());
+//				tex.name += ".dds";
+//
+//				textures.push_back(tex);
+//				l_tex.push_back(tex);
+//				//delete importmaterial;
+//
+//				materialImpoted.push_back(tex);
+//			}
+//			else
+//			{
+//				textures.push_back(materialImpoted[num_texture]);
+//				l_tex.push_back(materialImpoted[num_texture]);
+//			}
+//		}
+//	}
+//
+//	return textures;
+//}

@@ -25,5 +25,6 @@ protected:
 public:
 	char* name = "Name Resource";
 	uint uuid_mesh = 0;
+	int NumGameObjectsUseMe = 0;
 };
 

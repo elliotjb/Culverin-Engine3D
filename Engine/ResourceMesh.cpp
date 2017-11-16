@@ -66,7 +66,7 @@ void ResourceMesh::InitRanges(uint num_vert, uint num_ind, uint num_normals)
 
 void ResourceMesh::InitInfo(uint uuid, const char* nameResource)
 {
-	name = App->GetCharfromConstChar(name);
+	name = App->GetCharfromConstChar(nameResource);
 	uuid_mesh = uuid;
 }
 
@@ -104,10 +104,11 @@ bool ResourceMesh::LoadToMemory()
 	//glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+	isLoaded = true;
 	return true;
 }
 
 bool ResourceMesh::IsLoadedToMemory()
 {
-	return false;
+	return isLoaded;
 }

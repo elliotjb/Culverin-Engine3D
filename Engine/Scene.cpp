@@ -413,7 +413,7 @@ GameObject* Scene::CreateCube(GameObject* parent)
 	mesh->resourceMesh = (ResourceMesh*)App->resource_manager->GetResource(1); // 1 == Cube
 	//TODO ELLIOT -> LOAD MESH
 	//const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
-	if (mesh->resourceMesh->isLoaded == false)
+	if (mesh->resourceMesh->IsLoadedToMemory() == false)
 	{
 		App->importer->iMesh->LoadResource(std::to_string(mesh->resourceMesh->uuid_mesh).c_str(), mesh->resourceMesh);
 	}
@@ -485,8 +485,8 @@ GameObject* Scene::CreateSphere(GameObject* parent)
 
 	// MESH COMPONENT -------------------
 	CompMesh* mesh = (CompMesh*)obj->AddComponent(C_MESH); 
-	mesh->isPrimitive = true;
-	mesh->TypePrimitive = 1;
+	//mesh->isPrimitive = true;
+	//mesh->TypePrimitive = 1;
 
 	float3* vertices_array = new float3[SPHERE_DEFINITION];
 	float3* normals = new float3[SPHERE_DEFINITION];

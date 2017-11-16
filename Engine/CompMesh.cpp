@@ -131,10 +131,10 @@ void CompMesh::ShowInspectorInfo()
 		}
 		if (SelectMesh)
 		{
-			resourceMesh = (ResourceMesh*)App->resource_manager->ShowResources(SelectMesh);
+			resourceMesh = (ResourceMesh*)App->resource_manager->ShowResources(SelectMesh, Resource::Type::MESH);
 			if (resourceMesh != nullptr)
 			{
-				if (resourceMesh->isLoaded == false)
+				if (resourceMesh->IsLoadedToMemory() == false)
 				{
 					App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);
 				}
@@ -276,75 +276,35 @@ void CompMesh::Save(JSON_Object* object, std::string name) const
 {
 	json_object_dotset_number_with_std(object, name + "Type", C_MESH);
 	json_object_dotset_number_with_std(object, name + "UUID", uid);
-	json_object_dotset_boolean_with_std(object, name + "Primitive", isPrimitive);
-	if (isPrimitive)
+	if(resourceMesh != nullptr)
 	{
-		json_object_dotset_number_with_std(object, name + "Type primitive", TypePrimitive);
+		json_object_dotset_number_with_std(object, name + "Resource Mesh ID", resourceMesh->GetUUID());
 	}
 	else
 	{
-		json_object_dotset_number_with_std(object, name + "Resource Mesh ID", resourceMesh->GetUUID());
+		json_object_dotset_number_with_std(object, name + "Resource Mesh ID", 0);
 	}
 }
 
 void CompMesh::Load(const JSON_Object* object, std::string name)
 {
-	isPrimitive = json_object_dotget_boolean_with_std(object, name + "Primitive");
 	uid = json_object_dotget_number_with_std(object, name + "UUID");
-	if (isPrimitive)
+	uint resourceID = json_object_dotget_number_with_std(object, name + "Resource Mesh ID");
+	if (resourceID > 0)
 	{
-		TypePrimitive = json_object_dotget_number_with_std(object, name + "Type primitive");
-		if (TypePrimitive == 1 /*TYPE_SPHERE*/)
-		{
-			//float3* vertices_array = new float3[1536];
-
-			//Sphere* sphere = new Sphere(float3::zero, 1);
-			//sphere->Triangulate(vertices_array, NULL, NULL, 1536, false);
-
-			//App->scene->Init_IndexVertex(vertices_array, 1536, this);
-			//InitRanges(vertices.size(), indices.size(), 0);
-			//SetupMesh();
-			//Enable();
-
-			///* Set Bounding Box */
-			//parent->bounding_box = new AABB();
-			//parent->bounding_box->SetNegativeInfinity();
-			//parent->bounding_box->Enclose(vertices, num_vertices);
-		}
-		if (TypePrimitive == 2/*TYPE_CUBE*/)
-		{
-			//InitRanges(8, 36, 0); // 0 normals by now.
-
-			//OBB* box = new OBB();
-			//box->pos = float3::zero;
-			//box->r = float3::one;
-			//box->axis[0] = float3(1, 0, 0);
-			//box->axis[1] = float3(0, 1, 0);
-			//box->axis[2] = float3(0, 0, 1);
-
-			//parent->bounding_box = new AABB(*box);
-			//float3* vertices_array = new float3[36];
-
-			//parent->bounding_box->Triangulate(1, 1, 1, vertices_array, NULL, NULL, false);
-
-			//App->scene->Init_IndexVertex(vertices_array, num_indices, this);
-			//SetupMesh();
-			//Enable();
-		}
-	}
-	else
-	{
-		uint resourceID = json_object_dotget_number_with_std(object, name + "Resource Mesh ID");
 		resourceMesh = (ResourceMesh*)App->resource_manager->GetResource(resourceID);
-		resourceMesh->NumGameObjectsUseMe++;
-		//TODO ELLIOT -> LOAD MESH
-		//const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
-		if (resourceMesh->isLoaded == false)
+		if (resourceMesh != nullptr)
 		{
-			App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);
-			parent->AddBoundingBox(resourceMesh);
+			resourceMesh->NumGameObjectsUseMe++;
+			//TODO ELLIOT -> LOAD MESH
+			//const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
+			if (resourceMesh->IsLoadedToMemory() == false)
+			{
+				App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);
+				parent->AddBoundingBox(resourceMesh);
+			}
 		}
-
-		Enable();
 	}
+
+	Enable();
 }

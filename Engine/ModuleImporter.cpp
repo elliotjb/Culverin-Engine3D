@@ -234,12 +234,12 @@ bool ModuleImporter::Import(const char* file, Resource::Type type)
 			LOG("IMPORTING MODEL, File Path: %s", file);
 			
 			//Clear vector of textures, but dont import same textures!
-			iMesh->PrepareToImport();
+			//iMesh->PrepareToImport();
 			const aiScene* scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
 			if (scene != nullptr)
 			{
 				GameObject* obj = ProcessNode(scene->mRootNode, scene, nullptr);
-				obj->SetName(App->GetCharfromConstChar(App->fs->FixName_directory(App->input->dropped_filedir).c_str()));
+				obj->SetName(App->GetCharfromConstChar(App->fs->FixName_directory(file).c_str()));
 
 				//Now Save Serialitzate OBJ -> Prefab
 				App->Json_seria->SavePrefab(*obj, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
@@ -258,7 +258,7 @@ bool ModuleImporter::Import(const char* file, Resource::Type type)
 		case Resource::Type::MATERIAL:
 		{
 			LOG("IMPORTING TEXTURE, File Path: %s", file);
-			//iMaterial->Import(App->input->dropped_filedir);
+			iMaterial->Import(file);
 		
 			break;
 		}

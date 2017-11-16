@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleFS.h"
+#include "ModuleResourceManager.h"
 
 #include "ImGui\imgui_impl_sdl_gl3.h"
 
@@ -122,6 +124,7 @@ update_status ModuleInput::PreUpdate(float dt)
 	mouse_x_motion = mouse_y_motion = 0;
 
 	bool quit = false;
+	dropped = false;
 	SDL_Event e;
 
 	while(SDL_PollEvent(&e))
@@ -149,8 +152,17 @@ update_status ModuleInput::PreUpdate(float dt)
 			break;
 
 			case SDL_DROPFILE:
-			dropped_filedir = e.drop.file;
-			dropped = true;
+			{
+				dropped = true;
+				if (App->resource_manager->CheckFileType(e.drop.file) == Resource::Type::MESH)
+				{
+					dropedfiles.push_back(e.drop.file);
+				}
+				else if (App->resource_manager->CheckFileType(e.drop.file) == Resource::Type::MATERIAL)
+				{
+					dropedfiles.push_front(e.drop.file);
+				}
+			}
 			break;
 
 			case SDL_QUIT:

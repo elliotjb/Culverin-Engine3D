@@ -4,6 +4,7 @@
 #include "ModuleImporter.h"
 
 struct Texture;
+class ResourceMaterial;
 
 class ImportMaterial
 {
@@ -12,9 +13,9 @@ public:
 	~ImportMaterial();
 
 	//bool Import(const char* file, const char* path, std::string& output_file);
-	bool Import(const char* file, const char* name_file);
-	bool Load(const char* exported_file, CompMaterial* materialComp);
-	bool LoadCheckers(Texture* resource);
+	bool Import(const char* file);
+	Texture Load(const char * file);
+	bool LoadResource(const char * file, ResourceMaterial* resourceMaterial);
 
 
 };

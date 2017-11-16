@@ -1,6 +1,7 @@
 #include "ImportMaterial.h"
 #include "CompMaterial.h"
 #include "ModuleFS.h"
+#include "ResourceMaterial.h"
 
 #include "Devil/include/il.h"
 #include "Devil/include/ilu.h"
@@ -27,7 +28,7 @@ ImportMaterial::~ImportMaterial()
 //	return UPDATE_CONTINUE;
 //}
 
-bool ImportMaterial::Import(const char* file, const char* name_file)
+bool ImportMaterial::Import(const char* file)
 {
 	bool ret = false;
 	char* buffer;
@@ -41,7 +42,10 @@ bool ImportMaterial::Import(const char* file, const char* name_file)
 		if (size > 0)
 		{
 			data = new ILubyte[size]; // allocate data buffer
-			std::string name = name_file;
+			uint uuid_mesh = App->random->Int();
+			ResourceMaterial* res_material = (ResourceMaterial*)App->resource_manager->CreateNewResource(Resource::Type::MATERIAL, uuid_mesh);
+			res_material->InitInfo(uuid_mesh, App->fs->FixName_directory(file).c_str());
+			std::string name = std::to_string(uuid_mesh);
 			name = App->fs->FixName_directory(name);
 			name = App->fs->FixExtension(name, ".dds");
 			if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
@@ -55,71 +59,93 @@ bool ImportMaterial::Import(const char* file, const char* name_file)
 	return false;
 }
 
-bool ImportMaterial::Load(const char* file, CompMaterial* materialComp)
+Texture ImportMaterial::Load(const char* file)
 {
 	Texture texture;
-	ILuint textureID = 0;
+	ILuint textureID;
+	ILenum error;
+	ILboolean success;
+
+	// Texture Generation
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
-	ILboolean success = ilLoadImage(file);
 
-	//If the image is correctly loaded
+	std::string temp = file;
+	temp = DIRECTORY_LIBRARY_MATERIALS + temp + ".dds";
+	success = ilLoadImage(file);
+
 	if (success)
 	{
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
-		glBindTexture(GL_TEXTURE_2D, textureID);
-		success = ilConvertImage(ilGetInteger(IL_IMAGE_FORMAT), IL_UNSIGNED_BYTE);
 
-		if (!success)
+		//Flip the image into the right way
+		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
 		{
-			ILenum error = ilGetError();
-			LOG("Error, Loading texture: %s", file);
-			LOG("Error, %s", iluErrorString(error));
-			ilDeleteImages(1, &textureID);
-			return false;
+			iluFlipImage();
 		}
 
-		//Set the texture parameters
+		// Convert the image into a suitable format to work with
+		if (!ilConvertImage(ilGetInteger(IL_IMAGE_FORMAT), IL_UNSIGNED_BYTE))
+		{
+			error = ilGetError();
+			LOG("Image conversion failed - IL reportes error: %i, %s", error, iluErrorString(error));
+			exit(-1);
+			texture.id = 0;
+			return texture;
+		}
+
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-		glTexImage2D(GL_TEXTURE_2D,	0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH),	ilGetInteger(IL_IMAGE_HEIGHT), 
-			0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+		glTexImage2D(GL_TEXTURE_2D,
+			0,
+			ilGetInteger(IL_IMAGE_FORMAT),
+			ilGetInteger(IL_IMAGE_WIDTH),
+			ilGetInteger(IL_IMAGE_HEIGHT),
+			0,
+			ilGetInteger(IL_IMAGE_FORMAT),
+			GL_UNSIGNED_BYTE,
+			ilGetData());
 
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-		LOG("Texture, %s loaded!", file);
+		LOG("Texture Application Successful.");
 	}
+
 	else
 	{
-		ILenum error = ilGetError();
-		LOG("Error, Loading texture: %s", file);
-		LOG("Error, %s", iluErrorString(error));
-		ilDeleteImages(1, &textureID);
-		return false;
+		error = ilGetError();
+		LOG("Image Load failed - IL reportes error: %i, %s", error, iluErrorString(error));
+		texture.id = 0;
+		return texture;
 	}
 
-	//Delete the image 
+	//RELEASE MEMORY used by the image
 	ilDeleteImages(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	//Texture id and name, now no need path, because that the texture was imported.
+
 	texture.id = textureID;
 	texture.name = file;
 
 	//Add the texture to the component
 	if (textureID != 0)
 	{
-		materialComp->AddTexture(texture);
+		return texture;
 	}
-
-	return true;
+	texture.id = 0;
+	return texture;
 }
 
-bool ImportMaterial::LoadCheckers(Texture* resource)
+bool ImportMaterial::LoadResource(const char* file, ResourceMaterial* resourceMaterial)
 {
+	Texture texture = Load(file);
+	if (texture.id > 0)
+	{
+		resourceMaterial->Init(texture);
+		resourceMaterial->LoadToMemory();
+		return true;
+	}
 	return false;
 }

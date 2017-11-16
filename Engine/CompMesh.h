@@ -48,10 +48,6 @@ public:
 
 	ResourceMesh* resourceMesh = nullptr;
 
-	// Primitive 
-	bool isPrimitive = false;
-	int TypePrimitive = 0;//0 nothing / 1-Sphere / 2-Cube / 3-etc...
-
 private:
 	bool render = true;
 	bool SelectMesh = false;

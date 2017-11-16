@@ -6,6 +6,7 @@
 #include "Application.h"
 #include "ModuleFS.h"
 #include "ImportMaterial.h"
+#include "ResourceMaterial.h"
 #include "Scene.h"
 
 CompMaterial::CompMaterial(Comp_Type t, GameObject* parent): Component(t, parent)
@@ -17,13 +18,11 @@ CompMaterial::CompMaterial(Comp_Type t, GameObject* parent): Component(t, parent
 
 CompMaterial::~CompMaterial()
 {
-	for (int i = 0; i < texture.size(); i++)
+	if (resourceMaterial != nullptr)
 	{
-		texture[i].name.clear();
-		texture[i].path.clear();
-		texture[i].type.clear();
+		resourceMaterial->NumGameObjectsUseMe--;
 	}
-	texture.clear();
+	resourceMaterial = nullptr;
 }
 
 void CompMaterial::SetColor(float r, float g, float b, float a)
@@ -39,20 +38,25 @@ Color CompMaterial::GetColor() const
 	return color;
 }
 
-void CompMaterial::SetTexture(std::vector<Texture> textures)
-{
-	texture = textures;
-}
-
-void CompMaterial::AddTexture(const Texture tex)
-{
-	texture.push_back(tex);
-}
+//void CompMaterial::SetTexture(std::vector<Texture> textures)
+//{
+//	texture = textures;
+//}
+//
+//void CompMaterial::AddTexture(const Texture tex)
+//{
+//	texture.push_back(tex);
+//}
 
 uint CompMaterial::GetTextureID()
 {
-	if(texture.size() > 0)
-		return texture[0].id;
+	//if(texture.size() > 0)
+	//	return texture[0].id;
+	if (resourceMaterial != nullptr)
+	{
+		return resourceMaterial->GetTextureID();
+	}
+	return 0;
 }
 
 void CompMaterial::SetUUIDMesh(uint uuid)
@@ -112,6 +116,33 @@ void CompMaterial::ShowInspectorInfo()
 {
 	ImGui::ColorEdit3("", (float*)&color);
 
+	if (resourceMaterial != nullptr)
+	{
+		ImGui::Text("Name:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", resourceMaterial->name);
+
+		//ImGui::Checkbox("Render", &render);
+	}
+	else
+	{
+		if (ImGui::Button("Select Material..."))
+		{
+			SelectMesh = true;
+		}
+		if (SelectMesh)
+		{
+			resourceMaterial = (ResourceMaterial*)App->resource_manager->ShowResources(SelectMesh, Resource::Type::MATERIAL);
+			if (resourceMaterial != nullptr)
+			{
+				if (resourceMaterial->IsLoadedToMemory() == false)
+				{
+					App->importer->iMaterial->LoadResource(std::to_string(resourceMaterial->uuid_mesh).c_str(), resourceMaterial);
+				}
+				Enable();
+			}
+		}
+	}
+
 	ImGui::TreePop();
 }
 
@@ -120,27 +151,33 @@ void CompMaterial::Save(JSON_Object* object, std::string name) const
 	json_object_dotset_number_with_std(object, name + "Type", C_MATERIAL);
 	float4 tempColor = { color.r, color.g, color.b, color.a };
 	App->fs->json_array_dotset_float4(object, name + "Color", tempColor);
-	if (texture.size() > 0)
+	json_object_dotset_number_with_std(object, name + "UUID", uid);
+	if (resourceMaterial != nullptr)
 	{
-		json_object_dotset_number_with_std(object, name + "Num Textures", texture.size());
-		json_object_dotset_number_with_std(object, name + "ID Texture", texture.begin()._Ptr->id);
-		json_object_dotset_string_with_std(object, name + "Directory Material", texture[0].name.c_str());
+		json_object_dotset_number_with_std(object, name + "Resource Material ID", resourceMaterial->GetUUID());
+	}
+	else
+	{
+		json_object_dotset_number_with_std(object, name + "Resource Material ID", 0);
 	}
 }
 
 void CompMaterial::Load(const JSON_Object* object, std::string name)
 {
-	int num_textrues = json_object_dotget_number_with_std(object, name + "Num Textures");
 	float4 tempColor = App->fs->json_array_dotget_float4_string(object, name + "Color");
 	color.Set(tempColor.x, tempColor.y, tempColor.z, tempColor.w);
-	if (num_textrues > 0)
+	uid = json_object_dotget_number_with_std(object, name + "UUID");
+	uint resourceID = json_object_dotget_number_with_std(object, name + "Resource Material ID");
+	if (resourceID > 0)
 	{
-		const char* directory = json_object_dotget_string_with_std(object, name + "Directory Material");
-		std::string name3 = App->fs->AddDirectorybyType(directory, IMPORT_DIRECTORY_LIBRARY_MATERIALS);
-		//App->importer->iMaterial->Load(name3.c_str(), this);
-
-		Texture tex;
-		tex.id = json_object_dotget_number_with_std(object, name + "ID Texture");
-		AddTexture(tex);
+		resourceMaterial = (ResourceMaterial*)App->resource_manager->GetResource(resourceID);
+		resourceMaterial->NumGameObjectsUseMe++;
+		//TODO ELLIOT -> LOAD MESH
+		//const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
+		if (resourceMaterial->IsLoadedToMemory() == false)
+		{
+			App->importer->iMaterial->LoadResource(std::to_string(resourceMaterial->uuid_mesh).c_str(), resourceMaterial);
+		}
 	}
+	Enable();
 }

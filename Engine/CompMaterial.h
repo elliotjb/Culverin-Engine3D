@@ -2,17 +2,8 @@
 #include "Component.h"
 #include "Color.h"
 #include <string>
-#include <vector>
 
-struct Texture
-{
-	uint id;
-	//Const char* ?
-	std::string type;
-	std::string path;
-	std::string name; 
-
-};
+class ResourceMaterial;
 
 class CompMaterial : public Component
 {
@@ -23,8 +14,8 @@ public:
 	void SetColor(float r, float g, float b, float a);
 	Color GetColor() const;
 	
-	void SetTexture(std::vector<Texture> textures);
-	void AddTexture(const Texture texture);
+	//void SetTexture(std::vector<Texture> textures);
+	//void AddTexture(const Texture texture);
 	uint GetTextureID();
 
 	void SetUUIDMesh(uint uuid);
@@ -35,9 +26,11 @@ public:
 	void Save(JSON_Object* object, std::string name) const;
 	void Load(const JSON_Object* object, std::string name);
 
+public:
+	ResourceMaterial* resourceMaterial = nullptr;
 private:
 	Color color;
+	bool SelectMesh = false;
 	//Texture texture;
-	std::vector<Texture> texture;
 	uint uuid_material = 0;
 };

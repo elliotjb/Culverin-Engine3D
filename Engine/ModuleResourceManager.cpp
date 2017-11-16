@@ -45,9 +45,21 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 
 	if (App->input->dropped)
 	{
-		ImportFile(App->input->dropped_filedir);
-
-		App->input->dropped = false;
+		allfilesprepared = true;
+	}
+	if (allfilesprepared)
+	{
+		if (App->input->dropped == false)
+		{
+			nowImport = true;
+		}
+	}
+	if(nowImport)
+	{
+		ImportFile(App->input->dropedfiles);
+		App->input->dropedfiles.clear();
+		nowImport = false;
+		allfilesprepared = false;
 	}
 
 	preUpdate_t = perf_timer.ReadMs();
@@ -65,24 +77,29 @@ bool ModuleResourceManager::CleanUp()
 	return true;
 }
 
-void ModuleResourceManager::ImportFile(const char* file)
+void ModuleResourceManager::ImportFile(std::list<const char*>& file)
 {
-	// Get Type file
-	Resource::Type dropped_File_type = Resource::Type::UNKNOWN;
-	dropped_File_type = CheckFileType(App->input->dropped_filedir);
+	std::list<const char*>::iterator& it = file.begin();
+	for (int i = 0; i < file.size(); i++)
+	{
+		// Get Type file
+		Resource::Type dropped_File_type = Resource::Type::UNKNOWN;
+		dropped_File_type = CheckFileType(it._Ptr->_Myval);
 
-	if (dropped_File_type != Resource::Type::UNKNOWN)
-	{
-		if (App->importer->Import(App->input->dropped_filedir, dropped_File_type))
+		if (dropped_File_type != Resource::Type::UNKNOWN)
 		{
-			// Copy file to Specify folder in Assets (This folder is the folder active)
-			App->fs->CopyFileToAssets(App->input->dropped_filedir, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
-			((Project*)App->gui->winManager[WindowName::PROJECT])->UpdateNow();
+			if (App->importer->Import(it._Ptr->_Myval, dropped_File_type))
+			{
+				// Copy file to Specify folder in Assets (This folder is the folder active)
+				App->fs->CopyFileToAssets(it._Ptr->_Myval, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
+				((Project*)App->gui->winManager[WindowName::PROJECT])->UpdateNow();
+			}
 		}
-	}
-	else
-	{
-		LOG("[error] This file: %s with this format %s is incorrect!", App->fs->FixName_directory(file).c_str(), App->fs->GetExtension(file));
+		else
+		{
+			LOG("[error] This file: %s with this format %s is incorrect!", App->fs->FixName_directory(it._Ptr->_Myval).c_str(), App->fs->GetExtension(it._Ptr->_Myval));
+		}
+		it++;
 	}
 }
 
@@ -110,6 +127,20 @@ Resource* ModuleResourceManager::GetResource(uint id)
 	std::map<uint, Resource*>::iterator it = resources.find(id);
 	if (it != resources.end())
 		return it->second;
+	return nullptr;
+}
+
+Resource* ModuleResourceManager::GetResource(const char* material)
+{
+	std::map<uint, Resource*>::iterator it = resources.begin();
+	for (int i = 0; i < resources.size(); i++)
+	{
+		if (strcmp(it->second->name, material) == 0)
+		{
+			return it->second;
+		}
+		it++;
+	}
 	return nullptr;
 }
 
@@ -194,28 +225,43 @@ void ModuleResourceManager::CreateResourceCube()
 	App->importer->iMesh->Import(8, 36, 0, indices, vertices, 1); // 1 == Cube
 }
 
-Resource*  ModuleResourceManager::ShowResources(bool& active)
+Resource*  ModuleResourceManager::ShowResources(bool& active, Resource::Type type)
 {
-	if (!ImGui::Begin("Select Mesh", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders)) //TODO ELLIOT CLOSE Windows example
+	const char* nameWindow = nullptr;
+	const char* subname = nullptr;
+	if (type == Resource::Type::MESH)
+	{
+		nameWindow = "Select Mesh";
+		subname = "All Meshes";
+	}
+	else if (type == Resource::Type::MATERIAL)
+	{
+		nameWindow = "Select Material";
+		subname = "All Materials:";
+	}
+	if (!ImGui::Begin(nameWindow, &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders)) //TODO ELLIOT CLOSE Windows example
 	{
 		ImGui::End();
 	}
 	else
 	{
-		ImGui::Text("All Meshes:");
+		ImGui::Text(subname);
 		ImGui::Spacing();
 		std::map<uint, Resource*>::iterator it = resources.begin();
 		for (int i = 0; i < resources.size(); i++)
 		{
 			ImGui::PushID(i);
-			ImGui::ButtonEx(it->second->name);
-			if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
+			if (type == it->second->GetType())
 			{
-				if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsMouseHoveringWindow())
+				ImGui::ButtonEx(it->second->name);
+				if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
 				{
-					ImGui::PopID();
-					ImGui::End();
-					return GetResource(it->second->GetUUID());
+					if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsMouseHoveringWindow())
+					{
+						ImGui::PopID();
+						ImGui::End();
+						return GetResource(it->second->GetUUID());
+					}
 				}
 			}
 			it++;

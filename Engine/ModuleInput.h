@@ -107,6 +107,7 @@ private:
 	int mouse_y_motion_global;
 
 public:
-	char* dropped_filedir = nullptr;
+	std::list<const char*> dropedfiles;
 	bool dropped = false;
+
 };
