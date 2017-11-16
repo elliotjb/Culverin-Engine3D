@@ -140,51 +140,28 @@ void CompTransform::ShowOptions()
 
 void CompTransform::ShowInspectorInfo()
 {
-	// Set Size Windows
-	static int width;
-	static int height;
-	SDL_GetWindowSize(App->window->window, &width, &height);
+	//// Set Size Windows
+	//static int width;
+	//static int height;
+	//SDL_GetWindowSize(App->window->window, &width, &height);
 
 	// Reset Values Button -------------------------------------------
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
 	ImGui::SameLine(ImGui::GetWindowWidth() - 26);
 	if (ImGui::ImageButton((ImTextureID*)App->scene->icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
 	{
-		ImGui::OpenPopup("Options");
+		ImGui::OpenPopup("OptionsTransform");
 	}
 	ImGui::PopStyleVar();
 
 	// Options Button --------------------------------------
-	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.00f));
-	if (ImGui::BeginPopup("Options"))
+	//ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.00f));
+	if (ImGui::BeginPopup("OptionsTransform"))
 	{
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 2));
-		if (ImGui::Button("Reset Values"))
-		{
-			ResetMatrix();
-			ImGui::CloseCurrentPopup();
-		}
-		ImGui::Separator();
-		if (ImGui::Button("Reset Position"))
-		{
-			SetPos(float3::zero);
-			ImGui::CloseCurrentPopup();
-		}
-		if (ImGui::Button("Reset Rotation"))
-		{
-			SetRot(math::float3::zero);
-			rotation_euler = float3::zero;
-			ImGui::CloseCurrentPopup();
-		} ImGui::SameLine(); App->ShowHelpMarker("Doesn't Work!!");
-		if (ImGui::Button("Reset Size"))
-		{
-			SetScale(math::float3(1, 1, 1));
-			ImGui::CloseCurrentPopup();
-		}
-		ImGui::Spacing();
-		ImGui::PopStyleVar();
+		ShowOptions();
+		ImGui::EndPopup();
 	}
-	ImGui::PopStyleColor();
+	//ImGui::PopStyleColor();
 
 	// ORIGINAL -------------------------------------------------------
 	int op = ImGui::GetWindowWidth() / 4;

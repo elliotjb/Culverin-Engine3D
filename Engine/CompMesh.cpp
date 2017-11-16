@@ -88,13 +88,13 @@ void CompMesh::ShowInspectorInfo()
 	ImGui::SameLine(ImGui::GetWindowWidth() - 26);
 	if (ImGui::ImageButton((ImTextureID*)App->scene->icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
 	{
-		ImGui::OpenPopup("Options");
+		ImGui::OpenPopup("OptionsMesh");
 	}
 	ImGui::PopStyleVar();
 
 	// Button Options --------------------------------------
 	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.00f));
-	if (ImGui::BeginPopup("Options"))
+	if (ImGui::BeginPopup("OptionsMesh"))
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 2));
 		if (ImGui::Button("Reset Mesh"))

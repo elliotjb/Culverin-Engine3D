@@ -393,7 +393,7 @@ void GameObject::ShowInspectorInfo()
 			open = true;
 		}
 		ImGui::PopStyleColor();
-		if (ImGui::BeginPopupContextItem("Create"))
+		if (ImGui::BeginPopupContextItem("Open"))
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 3));
 			components[i]->ShowOptions();
