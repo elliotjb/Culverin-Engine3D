@@ -123,17 +123,21 @@ void CompMesh::ShowInspectorInfo()
 
 		ImGui::Checkbox("Render", &render);
 	}
-	else
+	if(resourceMesh == nullptr || SelectMesh)
 	{
-		if (ImGui::Button("Select Mesh..."))
+		if (resourceMesh != nullptr)
 		{
-			SelectMesh = true;
+			if (ImGui::Button("Select Mesh..."))
+			{
+				SelectMesh = true;
+			}
 		}
 		if (SelectMesh)
 		{
-			resourceMesh = (ResourceMesh*)App->resource_manager->ShowResources(SelectMesh, Resource::Type::MESH);
-			if (resourceMesh != nullptr)
+			ResourceMesh* temp = (ResourceMesh*)App->resource_manager->ShowResources(SelectMesh, Resource::Type::MESH);
+			if (temp != nullptr)
 			{
+				resourceMesh = temp;
 				if (resourceMesh->IsLoadedToMemory() == false)
 				{
 					App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);

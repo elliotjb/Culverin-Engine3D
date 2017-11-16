@@ -260,6 +260,7 @@ Resource*  ModuleResourceManager::ShowResources(bool& active, Resource::Type typ
 					{
 						ImGui::PopID();
 						ImGui::End();
+						active = false;
 						return GetResource(it->second->GetUUID());
 					}
 				}

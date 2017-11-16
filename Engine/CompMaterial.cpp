@@ -66,15 +66,6 @@ void CompMaterial::SetUUIDMesh(uint uuid)
 
 void CompMaterial::ShowOptions()
 {
-	// Reset Values Button -------------------------------------------
-	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
-	ImGui::SameLine(ImGui::GetWindowWidth() - 26);
-	if (ImGui::ImageButton((ImTextureID*)App->scene->icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
-	{
-		// Open Options
-	}
-	ImGui::PopStyleVar();
-
 	//ImGui::MenuItem("CREATE", NULL, false, false);
 	if (ImGui::MenuItem("Reset"))
 	{
@@ -114,6 +105,34 @@ void CompMaterial::ShowOptions()
 
 void CompMaterial::ShowInspectorInfo()
 {
+	// Reset Values Button -------------------------------------------
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
+	ImGui::SameLine(ImGui::GetWindowWidth() - 26);
+	if (ImGui::ImageButton((ImTextureID*)App->scene->icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
+	{
+		ImGui::OpenPopup("OptionsMaterial");
+	}
+	// Button Options --------------------------------------
+	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.00f));
+	if (ImGui::BeginPopup("OptionsMaterial"))
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 2));
+		if (ImGui::Button("Reset Material"))
+		{
+			resourceMaterial = nullptr;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::Separator();
+		if (ImGui::Button("Select Mesh..."))
+		{
+			selectMaterial = true;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::PopStyleVar();
+		ImGui::EndPopup();
+	}
+	ImGui::PopStyleColor();
+	ImGui::PopStyleVar();
 	ImGui::ColorEdit3("", (float*)&color);
 
 	if (resourceMaterial != nullptr)
@@ -123,17 +142,21 @@ void CompMaterial::ShowInspectorInfo()
 
 		//ImGui::Checkbox("Render", &render);
 	}
-	else
+	if(resourceMaterial == nullptr || selectMaterial)
 	{
-		if (ImGui::Button("Select Material..."))
+		if (resourceMaterial == nullptr)
 		{
-			SelectMesh = true;
-		}
-		if (SelectMesh)
-		{
-			resourceMaterial = (ResourceMaterial*)App->resource_manager->ShowResources(SelectMesh, Resource::Type::MATERIAL);
-			if (resourceMaterial != nullptr)
+			if (ImGui::Button("Select Material..."))
 			{
+				selectMaterial = true;
+			}
+		}
+		if (selectMaterial)
+		{
+			ResourceMaterial* temp = (ResourceMaterial*)App->resource_manager->ShowResources(selectMaterial, Resource::Type::MATERIAL);
+			if (temp != nullptr)
+			{
+				resourceMaterial = temp;
 				if (resourceMaterial->IsLoadedToMemory() == false)
 				{
 					App->importer->iMaterial->LoadResource(std::to_string(resourceMaterial->uuid_mesh).c_str(), resourceMaterial);

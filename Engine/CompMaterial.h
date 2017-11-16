@@ -30,7 +30,7 @@ public:
 	ResourceMaterial* resourceMaterial = nullptr;
 private:
 	Color color;
-	bool SelectMesh = false;
+	bool selectMaterial = false;
 	//Texture texture;
 	uint uuid_material = 0;
 };
