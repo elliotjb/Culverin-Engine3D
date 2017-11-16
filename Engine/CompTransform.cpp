@@ -322,20 +322,12 @@ void CompTransform::ShowFreezedTrasnform()
 	int op = ImGui::GetWindowWidth() / 4;
 	PushStyleColor(ImGuiCol_Text, GImGui->Style.Colors[ImGuiCol_TextDisabled]);
 	ImGui::Text("Position"); ImGui::SameLine(op + 30);
-	if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
-	{
-		SetPos(position);
-	}
+	ImGui::DragFloat3("##pos", &position[0], 0);
 	ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-	if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
-	{
-		SetRot(rotation_euler);
-	}
+	ImGui::DragFloat3("##rot", &rotation_euler[0], 0);
 	ImGui::Text("Scale"); ImGui::SameLine(op + 30);
-	if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
-	{
-		SetScale(scale);
-	}
+	ImGui::DragFloat3("##scal", &scale[0], 0);
+
 	PopStyleColor();
 }
 

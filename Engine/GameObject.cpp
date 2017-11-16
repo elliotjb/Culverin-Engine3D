@@ -361,10 +361,17 @@ void GameObject::ShowInspectorInfo()
 		ImGui::Text(""); ImGui::SameLine(8);
 		if (ImGui::Checkbox("##2", &static_obj))
 		{
-			window_active = true;
-			static_object = static_obj;
-			static_obj = !static_obj;
-			
+			if (App->engineState == EngineState::STOP)
+			{
+				window_active = true;
+				static_object = static_obj;
+				static_obj = !static_obj;
+			}
+			else
+			{
+				window_active = false;
+				static_obj = !static_obj;
+			}
 		}
 
 		if (window_active)
@@ -380,7 +387,6 @@ void GameObject::ShowInspectorInfo()
 				window_active = false;
 			}
 		}
-
 		ImGui::SameLine();
 		ImGui::PopStyleVar();
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "Static");
