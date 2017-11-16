@@ -14,15 +14,8 @@ ModuleFS::ModuleFS(bool start_enabled) : Module(start_enabled)
 
 ModuleFS::~ModuleFS()
 {
+	allfilesAsstes.clear(); //
 }
-
-//bool ModuleFS::Init(JSON_Object * node)
-//{
-//	perf_timer.Start();
-//
-//	Awake_t = perf_timer.ReadMs();
-//	return true;
-//}
 
 bool ModuleFS::Start()
 {
@@ -46,7 +39,8 @@ bool ModuleFS::Start()
 	directory_Game = directory_Game.substr(0, EndName);
 	EndName = directory_Game.find_last_of("\\");
 	directory_Game = directory_Game.substr(0, EndName);
-	directory_Game += "\\Game"; // "\\Game\\Assets"
+	directory_Assets = directory_Game + "\\Game";
+	directory_Game += "\\Game\\Assets"; // "\\Game\\Assets"
 
 	// Check if Main Folders exist --------------------
 	CreateFolder("Library");
@@ -54,8 +48,9 @@ bool ModuleFS::Start()
 	CreateFolder("Library\\Materials");
 	CreateFolder("Library\\Animations");
 	CreateFolder("Assets");
-	//Iterate All Game
-	//files = Get_filenames("Assets\\");
+	// Get All Files From Assets
+	GetAllFilesAssets(directory_Game, allfilesAsstes);
+	checkAssets.Start();
 
 	Start_t = perf_timer.ReadMs();
 	return true;
@@ -78,26 +73,15 @@ update_status ModuleFS::PreUpdate(float dt)
 		//uint temp = App->random->Int();
 		//LOG("%i", temp);
 	}
+	if (checkAssets.ReadSec() > 7)
+	{
+		checkAssets.Start();
+		AnyfileModificated(allfilesAsstes);
+	}
 
 	preUpdate_t = perf_timer.ReadMs();
 	return UPDATE_CONTINUE;
 }
-
-//update_status ModuleFS::Update(float dt)
-//{
-//	perf_timer.Start();
-//
-//	Update_t = perf_timer.ReadMs();
-//	return UPDATE_CONTINUE;
-//}
-
-//update_status ModuleFS::PostUpdate(float dt)
-//{
-//	perf_timer.Start();
-//
-//	postUpdate_t = perf_timer.ReadMs();
-//	return UPDATE_CONTINUE;
-//}
 
 void ModuleFS::CopyFileToAssets(const char* fileNameFrom, const char* fileNameTo)
 {
@@ -129,23 +113,28 @@ void ModuleFS::GetAllFolders(std::experimental::filesystem::path path, std::stri
 
 	if (path == "")
 	{
-		path = directory_Game;
+		path = directory_Assets;
 	}
 
 	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
 	{
 		if (stdfs::is_directory(*iter))
 		{
-			FoldersNew folder_temp;
-
-			folder_temp.directory_name = ConverttoConstChar(iter->path().string());
-			folder_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
-			if (folderActive == folder_temp.directory_name)
+			const char* isdirectA = ConverttoConstChar(iter->path().string());
+			std::string isFolderAssets = FixName_directory(isdirectA);
+			if (isFolderAssets == "Assets")
 			{
-				folder_temp.active = true;
+				FoldersNew folder_temp;
+
+				folder_temp.directory_name = ConverttoConstChar(iter->path().string());
+				folder_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
+				if (folderActive == folder_temp.directory_name)
+				{
+					folder_temp.active = true;
+				}
+				GetAllFoldersChild(iter->path().string(), folderActive, folder_temp.folder_child);
+				folders.push_back(folder_temp);
 			}
-			GetAllFoldersChild(iter->path().string(), folderActive, folder_temp.folder_child);
-			folders.push_back(folder_temp);
 		}
 	}
 }
@@ -201,6 +190,52 @@ void ModuleFS::GetAllFiles(std::experimental::filesystem::path path, std::vector
 		files_temp.file_type = ((Project*)App->gui->winManager[PROJECT])->SetType(files_temp.file_name);
 		files.push_back(files_temp);
 	}
+}
+
+void ModuleFS::GetAllFilesAssets(std::experimental::filesystem::path path, std::vector<AllFiles>& files)
+{
+	namespace stdfs = std::experimental::filesystem;
+
+	const stdfs::directory_iterator end{};
+
+	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
+	{
+		AllFiles files_temp;
+		stdfs::file_time_type temp = stdfs::last_write_time(iter->path());
+		std::time_t cftime = decltype(temp)::clock::to_time_t(temp);
+		files_temp.ftime = cftime;
+		files_temp.directory_name = ConverttoConstChar(iter->path().string());
+		files_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
+		files.push_back(files_temp);
+		if (stdfs::is_directory(*iter))
+		{
+			GetAllFilesAssets(iter->path().string(), files);
+		}
+	}
+}
+
+bool ModuleFS::AnyfileModificated(std::vector<AllFiles>& files)
+{
+	namespace stdfs = std::experimental::filesystem;
+
+	const stdfs::directory_iterator end{};
+	std::experimental::filesystem::path path = directory_Game;
+	int i = 0;
+	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
+	{
+		stdfs::file_time_type temp = stdfs::last_write_time(iter->path());
+		std::time_t cftime = decltype(temp)::clock::to_time_t(temp);
+		if (files[i].ftime == cftime)
+		{
+			// No Modificated
+		}
+		else
+		{
+			LOG("MODIFICATED");
+		}
+		i++;
+	}
+	return true;
 }
 
 void ModuleFS::DeleteFiles(std::vector<FilesNew>& files)

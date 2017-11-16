@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include "Module.h"
 #include "WindowProject.h"
+#include "Timer.h"
 
 #include <filesystem>
 #include <iostream>
@@ -22,17 +23,21 @@ enum DIRECTORY_IMPORT
 	IMPORT_DIRECTORY_LIBRARY_MATERIALS
 };
 
+struct AllFiles
+{
+	const char* directory_name = nullptr;
+	char* file_name = nullptr;
+	std::time_t ftime;
+};
+
 class ModuleFS : public Module
 {
 public:
 	ModuleFS(bool start_enabled = true);
 	~ModuleFS();
 
-	//bool Init(JSON_Object* node);
 	bool Start();
 	update_status PreUpdate(float dt);
-	//update_status Update(float dt);
-	//update_status PostUpdate(float dt);
 
 	void CopyFileToAssets(const char * fileNameFrom, const char * fileNameTo);
 
@@ -45,8 +50,12 @@ public:
 
 	void GetAllFolders(std::experimental::filesystem::path path, std::string folderActive, std::vector<FoldersNew>& folders);
 	void GetAllFoldersChild(std::experimental::filesystem::path path, std::string folderActive, std::vector<FoldersNew>& folders);
-
 	void GetAllFiles(std::experimental::filesystem::path path, std::vector<FilesNew>& files);
+
+	void GetAllFilesAssets(std::experimental::filesystem::path path, std::vector<AllFiles>& files);
+
+	bool AnyfileModificated(std::vector<AllFiles>& files);
+
 
 	void DeleteFiles(std::vector<FilesNew>& files);
 	void DeleteFolders(std::vector<FoldersNew>& folders);
@@ -88,9 +97,12 @@ public:
 
 
 private:
-	std::vector<std::string> files;
+	Timer checkAssets;
+	std::vector<AllFiles> allfilesAsstes;
+
 	char ownPth[MAX_PATH];
 	std::string directory_Game;
+	std::string directory_Assets;
 	//std::vector<FoldersNew> filenames;
 };
 

@@ -294,6 +294,7 @@ void Project::Files_Update(const std::vector<FilesNew>& files)
 					//ChangefileViwer(files[i].parentFolder->folder_child, files[i].file_name);
 					directory_see = App->GetCharfromConstChar(files[i].directory_name);
 					updateFilesNow = true;
+					updateFoldersNow = true;
 				}
 			}
 			break;
