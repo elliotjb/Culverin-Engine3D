@@ -172,6 +172,10 @@ void CompCamera::ShowInspectorInfo()
 void CompCamera::DoCulling()
 {
 	AABB* box = nullptr;
+
+	// Get all game
+	//App->scene->quadtree.CollectCandidates(candidates_to_cull, frustum);
+
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
 		if (App->scene->gameobjects[i]->isActive() && App->scene->gameobjects[i] != parent) // Don't cull itself

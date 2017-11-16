@@ -2,7 +2,7 @@
 #include "Geometry/AABB.h"
 #include <list>
 
-#define QUADTREE_MAX_ITEMS 2
+#define QUADTREE_MAX_ITEMS 4
 #define QUADTREE_MIN_SIZE 10.0f
 
 class GameObject;
@@ -24,6 +24,9 @@ public:
 
 	void CreateChilds();
 	void DistributeObjects();
+
+	template<typename TYPE>
+	int CollectCandidates(std::vector<GameObject*>& objects, const TYPE& primitive) const;
 
 
 public:
@@ -51,17 +54,59 @@ public:
 	void DebugDraw();
 
 	template<typename TYPE>
-	void CollectIntersections(std::vector<GameObject*>& objects, const TYPE& primitive) const;
+	int CollectCandidates(std::vector<GameObject*>& objects, const TYPE& primitive) const;
 
 public:
 	QuadtreeNode* root_node = nullptr;
 };
 
 template<typename TYPE>
-inline void Quadtree::CollectIntersections(std::vector<GameObject*>& objects, const TYPE& primitive) const
+inline int QuadtreeNode::CollectCandidates(std::vector<GameObject*>& candidates, const TYPE & primitive) const
 {
+	int ret = 0;
+
+	// Check if primitive intersects with the node first
+	if (!primitive.Intersects(box))
+	{
+		return ret;
+	}
+
+	// Then, check if primitive intersects with objects of this node
+	for (std::list<GameObject*>::const_iterator it = objects.begin(); it != objects.end(); ++it)
+	{
+		if (primitive.Intersects((*it)->box_fixed))
+		{
+			// If intersects, add it to candidates vector
+			candidates.push_back(*it);
+		}
+	}
+
+	// If there is no children, end iteration
+	if (childs[0] == nullptr)
+	{
+		return ret;
+	}
+
+	// Otherwise, repeat this process for its 4 children
+	for (int i = 0; i < 4; ++i)
+	{
+		if (childs[i] != nullptr)
+		{
+			ret += childs[i]->CollectCandidates(candidates, primitive);
+		}
+	}
+
+	return ret;
+}
+
+template<typename TYPE>
+inline int Quadtree::CollectCandidates(std::vector<GameObject*>& objects, const TYPE& primitive) const
+{
+	int tests = 1;
 	if (root_node != nullptr)
 	{
-		root_node->CollectIntersections(objects, primitive);
+		root_node->CollectCandidates(objects, primitive);
 	}
+	return tests;
 }
+

@@ -227,11 +227,16 @@ void Quadtree::Bake(const std::vector<GameObject*>& objects)
 {
 	for (uint i = 0; i < objects.size(); i++)
 	{
-		Insert(objects[i]);
-
-		if (objects[i]->GetNumChilds() > 0)
+		if (objects[i]->isActive())
 		{
-			Bake(objects[i]->GetChildsVec());
+			if (!objects[i]->isStatic())
+			{
+				Insert(objects[i]);
+			}
+			if (objects[i]->GetNumChilds() > 0)
+			{
+				Bake(objects[i]->GetChildsVec());
+			}
 		}
 	}
 }
@@ -243,7 +248,7 @@ void Quadtree::Insert(GameObject* obj)
 		// If object is inside the Boundaries & has an AABB, insert it in a node
 		if (obj->bounding_box != nullptr)
 		{
-			if (obj->bounding_box->Intersects(root_node->box))
+			if (obj->box_fixed.Intersects(root_node->box))
 			{
 				root_node->Insert(obj);
 			}

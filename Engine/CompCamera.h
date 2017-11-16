@@ -66,4 +66,6 @@ private:
 	float far_plane = 0.0f;
 	float vertical_fov = 0.0f;
 	// -------------------------------
+
+	std::vector<GameObject*> candidates_to_cull;
 };
