@@ -146,6 +146,11 @@ void CompCamera::ShowInspectorInfo()
 		SetMain(is_main);
 	}
 
+	if (showPopup)
+	{
+		ShowCameraPopup();
+	}
+
 	if (ImGui::Checkbox("Culling", &culling))
 	{
 		if (!culling)
@@ -170,6 +175,24 @@ void CompCamera::ShowInspectorInfo()
 
 	ImGui::PopItemWidth();
 	ImGui::TreePop();
+}
+
+void CompCamera::ShowCameraPopup()
+{
+	ImGui::OpenPopup("Main Camera Problem");
+	if (ImGui::BeginPopupModal("Main Camera Problem", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("There is an active Game Camera already.");
+		float width = ImGui::GetItemRectSize().x * 0.5;
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Text(""); ImGui::SameLine(width - 20);
+		if (ImGui::Button("OK", ImVec2(40, 20)))
+		{
+			showPopup = false;
+		}
+	}
+	ImGui::EndPopup();
 }
 
 void CompCamera::DoCulling()
@@ -345,9 +368,9 @@ void CompCamera::SetMain(bool isMain)
 		}
 		else
 		{
-			// Only one game camera must be active at a time.
+			// Enable Pop Up of the camera
+			showPopup = true;
 			is_main = false;
-			LOG("There is already an active Game Camera.");
 		}
 	}
 	else 
@@ -422,7 +445,7 @@ float* CompCamera::GetProjectionMatrix() const
 	return (float*)matrix.v;
 }
 
-void CompCamera::Save(JSON_Object * object, std::string name) const
+void CompCamera::Save(JSON_Object * object, std::string name, bool saveScene, uint& countResources) const
 {
 	// TRANSFORM-----------
 	json_object_dotset_number_with_std(object, name + "Type", C_CAMERA);

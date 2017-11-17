@@ -515,39 +515,37 @@ void GameObject::FreezeTransforms(bool freeze, bool change_childs)
 
 void GameObject::ShowFreezeChildsWindow(bool freeze, bool& active)
 {
-	//SDL_GetWindowSize(App->window->window, &width, &height);
-	//ImGui::SetNextWindowPos(ImVec2(width / 2 - 180, height / 2 - 80));
-	ImGui::SetNextWindowPosCenter();
-	ImGui::SetNextWindowSize(ImVec2(370, 100));
-	ImGui::Begin("Change Static Flags", &active, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders);
-
-	if (freeze)
+	ImGui::OpenPopup("Change Static Flags");
+	if (ImGui::BeginPopupModal("Change Static Flags", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		ImGui::TextWrapped("Do you want to enable the static flags for all the child objects as well?");
+		if (freeze)
+		{
+			ImGui::TextWrapped("Do you want to enable the static flags for all the child objects as well?");
+		}
+		else
+		{
+			ImGui::TextWrapped("Do you want to disable the static flags for all the child objects as well?");
+		}
+		ImGui::Spacing();
+		if (ImGui::Button("Yes change children", ImVec2(140, 0)))
+		{
+			FreezeTransforms(freeze, true);
+			active = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("No, this object only", ImVec2(130, 0)))
+		{
+			FreezeTransforms(freeze, false);
+			active = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(80, 0)))
+		{
+			static_obj = !freeze;
+			active = false;
+		}
 	}
-	else
-	{
-		ImGui::TextWrapped("Do you want to disable the static flags for all the child objects as well?");
-	}
-	ImGui::Spacing();
-	if (ImGui::Button("Yes change children", ImVec2(140, 0)))
-	{
-		FreezeTransforms(freeze, true);
-		active = false;
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("No, this object only", ImVec2(130, 0)))
-	{
-		FreezeTransforms(freeze, false);
-		active = false;
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Cancel", ImVec2(80, 0)))
-	{
-		static_obj = !freeze;
-		active = false;
-	}
-	ImGui::End();
+	ImGui::EndPopup();
 }
 
 void GameObject::SetVisible(bool visible)
@@ -711,12 +709,12 @@ void GameObject::AddComponent_(Comp_Type type)
 	}
 }
 
-void GameObject::SaveComponents(JSON_Object* object, std::string name) const
+void GameObject::SaveComponents(JSON_Object* object, std::string name, bool saveScene, uint& countResources) const
 {
 	for (int i = 0; i < components.size(); i++)
 	{
 		std::string temp = name + "Component " + std::to_string(i) + ".";
-		components[i]->Save(object, temp);
+		components[i]->Save(object, temp, saveScene, countResources);
 	}
 }
 

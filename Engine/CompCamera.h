@@ -25,6 +25,7 @@ public:
 
 	void ShowOptions();
 	void ShowInspectorInfo();
+	void ShowCameraPopup();
 
 	void DoCulling();
 	void CullStaticObjects();
@@ -50,7 +51,7 @@ public:
 	float* GetViewMatrix() const;
 	float* GetProjectionMatrix() const;
 
-	void Save(JSON_Object* object, std::string name) const;
+	void Save(JSON_Object* object, std::string name, bool saveScene, uint& countResources) const;
 	void Load(const JSON_Object* object, std::string name);
 
 public:
@@ -59,6 +60,7 @@ public:
 private:
 	bool culling = false;
 	bool is_main = false;
+	bool showPopup = false;
 
 	// Editor Variables -------------
 	float width = 0.0f;

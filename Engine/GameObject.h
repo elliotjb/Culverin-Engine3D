@@ -54,7 +54,7 @@ public:
 	void DeleteAllComponents();
 	void DeleteComponent(Component* component);
 
-	void SaveComponents(JSON_Object* object, std::string name) const;
+	void SaveComponents(JSON_Object* object, std::string name, bool saveScene, uint& countResources) const;
 	void LoadComponents(const JSON_Object * object, std::string name, uint numComponents);
 
 	// Childs ---------------------------------
