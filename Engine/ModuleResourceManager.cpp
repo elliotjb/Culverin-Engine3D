@@ -55,6 +55,8 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 		// Now Import the new Resources ------
 
 
+		// After reimport, update time of vector of files in filesystem.
+		App->fs->UpdateFilesAsstes();
 		resourcesToReimport.clear();
 	}
 
@@ -111,7 +113,6 @@ void ModuleResourceManager::ImportFile(std::list<const char*>& file)
 			{
 				// Copy file to Specify folder in Assets (This folder is the folder active)
 				App->fs->CopyFileToAssets(it._Ptr->_Myval, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
-				((Project*)App->gui->winManager[WindowName::PROJECT])->UpdateNow();
 			}
 		}
 		else
@@ -120,6 +121,8 @@ void ModuleResourceManager::ImportFile(std::list<const char*>& file)
 		}
 		it++;
 	}
+	((Project*)App->gui->winManager[WindowName::PROJECT])->UpdateNow();
+	App->fs->UpdateFilesAsstes();
 }
 
 Resource* ModuleResourceManager::CreateNewResource(Resource::Type type, uint uuid)

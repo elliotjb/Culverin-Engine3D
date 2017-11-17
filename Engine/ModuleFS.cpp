@@ -76,7 +76,7 @@ update_status ModuleFS::PreUpdate(float dt)
 		//uint temp = App->random->Int();
 		//LOG("%i", temp);
 	}
-	if (checkAssets.ReadSec() > 7)
+	if (checkAssets.ReadSec() > 20)
 	{
 		checkAssets.Start();
 		//DeleteAllFilesAssets(allfilesAsstes);
@@ -257,6 +257,21 @@ bool ModuleFS::AnyfileModificated(std::vector<AllFiles>& files)
 		}
 	}
 	return true;
+}
+
+// If we Import a new File!
+void ModuleFS::UpdateFilesAsstes()
+{
+	checkAssets.Start();
+	DeleteAllFilesAssets(allfilesAsstes);
+	GetAllFilesAssets(directory_Game, allfilesAsstes);
+}
+
+// If focused window check if have a file was modificated and reimport.-
+void ModuleFS::CheckNowfilesAssets()
+{
+	checkAssets.Start();
+	AnyfileModificated(allfilesAsstes);
 }
 
 void ModuleFS::DeleteFiles(std::vector<FilesNew>& files)

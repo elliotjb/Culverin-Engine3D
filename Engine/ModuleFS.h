@@ -48,13 +48,16 @@ public:
 	//Name of file NOT DIRECTORY!!!
 	bool SaveFile(const char* data, std::string name, uint size, DIRECTORY_IMPORT directory = IMPORT_DEFAULT);
 
+	// Get Files to Window Project ---------------------------------------------------
 	void GetAllFolders(std::experimental::filesystem::path path, std::string folderActive, std::vector<FoldersNew>& folders);
 	void GetAllFoldersChild(std::experimental::filesystem::path path, std::string folderActive, std::vector<FoldersNew>& folders);
 	void GetAllFiles(std::experimental::filesystem::path path, std::vector<FilesNew>& files);
 
+	// Get Files to check if a file was modificated ---------------------------------
 	void GetAllFilesAssets(std::experimental::filesystem::path path, std::vector<AllFiles>& files);
-
 	bool AnyfileModificated(std::vector<AllFiles>& files);
+	void UpdateFilesAsstes();
+	void CheckNowfilesAssets();
 
 
 	void DeleteFiles(std::vector<FilesNew>& files);

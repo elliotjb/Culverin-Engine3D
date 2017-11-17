@@ -176,6 +176,8 @@ update_status ModuleInput::PreUpdate(float dt)
 				if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
 				{
 					// Now Update All vectors "project" and "fs"
+					((Project*)App->gui->winManager[PROJECT])->UpdateNow();
+					App->fs->CheckNowfilesAssets();
 				}
 			}
 		}
