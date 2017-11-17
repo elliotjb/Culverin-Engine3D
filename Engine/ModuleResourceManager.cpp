@@ -61,6 +61,27 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 		nowImport = false;
 		allfilesprepared = false;
 	}
+	//static bool waitUpdate = false;
+	//if (waitUpdate)
+	//{
+	//	std::map<uint, Resource*>::iterator it = resources.begin();
+	//	for (int i = 0; i < resources.size(); i++)
+	//	{
+	//		RELEASE(it->second);
+	//		it++;
+	//	}
+	//	resources.clear();
+	//}
+	//if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
+	//{
+	//	std::map<uint, Resource*>::iterator it = resources.begin();
+	//	for (int i = 0; i < resources.size(); i++)
+	//	{
+	//		it->second->state = Resource::State::WANTDELETE;
+	//		it++;
+	//	}
+	//	waitUpdate = true;
+	//}
 
 	preUpdate_t = perf_timer.ReadMs();
 	return UPDATE_CONTINUE;
@@ -296,9 +317,8 @@ void ModuleResourceManager::Save()
 		{
 			std::string name = "Resource " + std::to_string(i);
 			name += ".";
-			json_object_dotset_number_with_std(config_node, name + "UID", it->second->GetUUID());
+			json_object_dotset_number_with_std(config_node, name + "UUID & UUID Directory", it->second->GetUUID());
 			json_object_dotset_number_with_std(config_node, name + "Type", (int)it->second->GetType());
-			json_object_dotset_number_with_std(config_node, name + "Directory Mesh UID", it->second->uuid_mesh);
 			json_object_dotset_string_with_std(config_node, name + "Name", it->second->name);
 			it++;
 		}
@@ -331,15 +351,16 @@ void ModuleResourceManager::Load()
 				{
 				case Resource::Type::MESH:
 				{
-					uint uid = json_object_dotget_number_with_std(config_node, name + "UID");
+					uint uid = json_object_dotget_number_with_std(config_node, name + "UUID & UUID Directory");
 					ResourceMesh* mesh = (ResourceMesh*)CreateNewResource(type, uid);
 					mesh->name = App->GetCharfromConstChar(json_object_dotget_string_with_std(config_node, name + "Name"));
-					mesh->uuid_mesh = json_object_dotget_number_with_std(config_node, name + "Directory Mesh UID");
 					break;
 				}
 				case Resource::Type::MATERIAL:
 				{
-					ResourceMaterial* material = (ResourceMaterial*)CreateNewResource(type);
+					uint uid = json_object_dotget_number_with_std(config_node, name + "UUID & UUID Directory");
+					ResourceMaterial* material = (ResourceMaterial*)CreateNewResource(type, uid);
+					material->name = App->GetCharfromConstChar(json_object_dotget_string_with_std(config_node, name + "Name"));
 					break;
 				}
 				case Resource::Type::UNKNOWN:

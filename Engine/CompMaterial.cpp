@@ -25,6 +25,18 @@ CompMaterial::~CompMaterial()
 	resourceMaterial = nullptr;
 }
 
+void CompMaterial::preUpdate(float dt)
+{
+	// Before delete Resource Set this pointer to nullptr
+	if (resourceMaterial != nullptr)
+	{
+		if (resourceMaterial->GetState() == Resource::State::WANTDELETE)
+		{
+			resourceMaterial = nullptr;
+		}
+	}
+}
+
 void CompMaterial::SetColor(float r, float g, float b, float a)
 {
 	color.r = r;
@@ -157,9 +169,9 @@ void CompMaterial::ShowInspectorInfo()
 			if (temp != nullptr)
 			{
 				resourceMaterial = temp;
-				if (resourceMaterial->IsLoadedToMemory() == false)
+				if (resourceMaterial->IsLoadedToMemory() == Resource::State::UNLOADED)
 				{
-					App->importer->iMaterial->LoadResource(std::to_string(resourceMaterial->uuid_mesh).c_str(), resourceMaterial);
+					App->importer->iMaterial->LoadResource(std::to_string(resourceMaterial->GetUUID()).c_str(), resourceMaterial);
 				}
 				Enable();
 			}
@@ -169,7 +181,7 @@ void CompMaterial::ShowInspectorInfo()
 	ImGui::TreePop();
 }
 
-void CompMaterial::Save(JSON_Object* object, std::string name) const
+void CompMaterial::Save(JSON_Object* object, std::string name, bool saveScene, uint& countResources) const
 {
 	json_object_dotset_number_with_std(object, name + "Type", C_MATERIAL);
 	float4 tempColor = { color.r, color.g, color.b, color.a };
@@ -177,11 +189,18 @@ void CompMaterial::Save(JSON_Object* object, std::string name) const
 	json_object_dotset_number_with_std(object, name + "UUID", uid);
 	if (resourceMaterial != nullptr)
 	{
-		json_object_dotset_number_with_std(object, name + "Resource Material ID", resourceMaterial->GetUUID());
+		//if (saveScene == false) // At the moment we only save info of the Resoruce Mesh
+		//{
+		//	// Save Info of Resource in Prefab (next we use this info for Reimport this prefab)
+		//	std::string temp = std::to_string(countResources++);
+		//	json_object_dotset_number_with_std(object, "Info.Resources.Resource " + temp + ".UUID Resource", resourceMaterial->GetUUID());
+		//	json_object_dotset_string_with_std(object, "Info.Resources.Resource " + temp + ".name", resourceMaterial->name);
+		//}
+		json_object_dotset_number_with_std(object, name + "Resource Material UUID", resourceMaterial->GetUUID());
 	}
 	else
 	{
-		json_object_dotset_number_with_std(object, name + "Resource Material ID", 0);
+		json_object_dotset_number_with_std(object, name + "Resource Material UUID", 0);
 	}
 }
 
@@ -190,16 +209,16 @@ void CompMaterial::Load(const JSON_Object* object, std::string name)
 	float4 tempColor = App->fs->json_array_dotget_float4_string(object, name + "Color");
 	color.Set(tempColor.x, tempColor.y, tempColor.z, tempColor.w);
 	uid = json_object_dotget_number_with_std(object, name + "UUID");
-	uint resourceID = json_object_dotget_number_with_std(object, name + "Resource Material ID");
+	uint resourceID = json_object_dotget_number_with_std(object, name + "Resource Material UUID");
 	if (resourceID > 0)
 	{
 		resourceMaterial = (ResourceMaterial*)App->resource_manager->GetResource(resourceID);
 		resourceMaterial->NumGameObjectsUseMe++;
 		//TODO ELLIOT -> LOAD MESH
 		//const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
-		if (resourceMaterial->IsLoadedToMemory() == false)
+		if (resourceMaterial->IsLoadedToMemory() == Resource::State::UNLOADED)
 		{
-			App->importer->iMaterial->LoadResource(std::to_string(resourceMaterial->uuid_mesh).c_str(), resourceMaterial);
+			App->importer->iMaterial->LoadResource(std::to_string(resourceMaterial->GetUUID()).c_str(), resourceMaterial);
 		}
 	}
 	Enable();

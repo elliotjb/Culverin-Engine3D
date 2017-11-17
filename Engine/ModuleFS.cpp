@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleGUI.h"
+#include "Application.h"
+#include "ModuleResourceManager.h"
 
 ModuleFS::ModuleFS(bool start_enabled) : Module(start_enabled)
 {
@@ -76,6 +78,8 @@ update_status ModuleFS::PreUpdate(float dt)
 	if (checkAssets.ReadSec() > 7)
 	{
 		checkAssets.Start();
+		//DeleteAllFilesAssets(allfilesAsstes);
+		//GetAllFilesAssets(directory_Game, allfilesAsstes);
 		//AnyfileModificated(allfilesAsstes);
 	}
 
@@ -231,15 +235,20 @@ bool ModuleFS::AnyfileModificated(std::vector<AllFiles>& files)
 	int i = 0;
 	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
 	{
-		stdfs::file_time_type temp = stdfs::last_write_time(iter->path());
-		std::time_t cftime = decltype(temp)::clock::to_time_t(temp);
-		if (files[i].ftime == cftime)
+		if (stdfs::is_directory(*iter) == false)
 		{
-			// No Modificated
-		}
-		else
-		{
-			LOG("MODIFICATED");
+			stdfs::file_time_type temp = stdfs::last_write_time(iter->path());
+			std::time_t cftime = decltype(temp)::clock::to_time_t(temp);
+			if (files[i].ftime == cftime)
+			{
+				// No Modificated
+			}
+			else
+			{
+				LOG("MODIFICATED");
+
+				//App->resource_manager->resourcesToReimport.push_back()
+			}
 		}
 		i++;
 	}
@@ -266,6 +275,16 @@ void ModuleFS::DeleteFolders(std::vector<FoldersNew>& folders)
 		DeleteFolders(folders[i].folder_child);
 	}
 	folders.clear();
+}
+
+void ModuleFS::DeleteAllFilesAssets(std::vector<AllFiles>& filesAssets)
+{
+	for (int i = 0; i < filesAssets.size(); i++)
+	{
+		RELEASE_ARRAY(filesAssets[i].directory_name);
+		RELEASE_ARRAY(filesAssets[i].file_name);
+	}
+	filesAssets.clear();
 }
 
 uint ModuleFS::LoadFile(const char* file, char** buffer, DIRECTORY_IMPORT directory)

@@ -8,6 +8,12 @@
 
 struct Vertex;
 
+struct ReImport
+{
+	uint uuid = 0;
+	const char* directoryObj = nullptr;
+};
+
 class ModuleResourceManager : public Module
 {
 public:
@@ -32,6 +38,9 @@ public:
 
 	void Save();
 	void Load();
+
+public:
+	std::vector<ReImport> resourcesToReimport;
 
 private:
 	std::map<uint, Resource*> resources;

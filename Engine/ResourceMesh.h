@@ -18,7 +18,7 @@ public:
 
 	void Init(const float3* vert, const uint* ind, const float3* vert_normals, const float2* texCoord);
 	void InitRanges(uint num_vert, uint num_ind, uint num_normals);
-	void InitInfo(uint uuid, const char* name);
+	void InitInfo(const char* name);
 
 	bool LoadToMemory();
 	bool IsLoadedToMemory();
@@ -36,11 +36,6 @@ public:
 	uint vertices_id = 0;		/* VERTICES ID */
 	uint indices_id = 0;		/* INDICES ID */
 	uint vertices_norm_id = 0;	/* NORMALS OF VERTICES ID */
-
-	const char* directory_mesh = nullptr; //Only use in save and load
-
-private:
-	bool isLoaded = false;
 
 };
 

@@ -1,6 +1,8 @@
 #include "ImportMaterial.h"
 #include "CompMaterial.h"
 #include "ModuleFS.h"
+#include "ModuleGUI.h"
+#include "JSONSerialization.h"
 #include "ResourceMaterial.h"
 
 #include "Devil/include/il.h"
@@ -44,9 +46,10 @@ bool ImportMaterial::Import(const char* file)
 			data = new ILubyte[size]; // allocate data buffer
 			uint uuid_mesh = App->random->Int();
 			ResourceMaterial* res_material = (ResourceMaterial*)App->resource_manager->CreateNewResource(Resource::Type::MATERIAL, uuid_mesh);
-			res_material->InitInfo(uuid_mesh, App->fs->FixName_directory(file).c_str());
+			res_material->InitInfo(App->fs->FixName_directory(file).c_str());
+			App->Json_seria->SaveMaterial(res_material, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory(), file);
 			std::string name = std::to_string(uuid_mesh);
-			name = App->fs->FixName_directory(name);
+			name = App->fs->FixName_directory(name);//?
 			name = App->fs->FixExtension(name, ".dds");
 			if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
 				ret = App->fs->SaveFile((char*)data, name, size, IMPORT_DIRECTORY_LIBRARY_MATERIALS);

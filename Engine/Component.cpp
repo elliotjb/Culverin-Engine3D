@@ -63,7 +63,7 @@ uint Component::GetUUID() const
 	return uid;
 }
 
-void Component::Save(JSON_Object * object, std::string name) const
+void Component::Save(JSON_Object * object, std::string name, bool saveScene, uint& countResources) const
 {
 }
 

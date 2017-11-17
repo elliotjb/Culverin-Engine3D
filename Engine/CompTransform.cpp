@@ -524,7 +524,7 @@ const float* CompTransform::GetMultMatrixForOpenGL() const
 	return global_transform.Transposed().ptr();
 }
 
-void CompTransform::Save(JSON_Object* object, std::string name) const
+void CompTransform::Save(JSON_Object* object, std::string name, bool saveScene, uint& countResources) const
 {
 	// TRANSFORM-----------
 	json_object_dotset_number_with_std(object, name + "Type", C_TRANSFORM);

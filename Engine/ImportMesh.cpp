@@ -167,7 +167,8 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 	meshComp->Enable();
 
 	// Create Resource ----------------------
-	ResourceMesh* res_mesh = (ResourceMesh*)App->resource_manager->CreateNewResource(Resource::Type::MESH);
+	uint uuid_mesh = App->random->Int();
+	ResourceMesh* res_mesh = (ResourceMesh*)App->resource_manager->CreateNewResource(Resource::Type::MESH, uuid_mesh);
 	meshComp->SetResource(res_mesh);
 
 
@@ -211,11 +212,10 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 	RELEASE_ARRAY(tex_coords);
 	//RELEASE(texture);
 
-	uint uid_mesh = App->random->Int();
-	std::string fileName = std::to_string(uid_mesh);
-	res_mesh->InitInfo(uid_mesh, name);
-	//res_mesh->uuid_directory = fileName.c_str();
-	//meshComp->SetUUIDMesh(uid_mesh);
+	// Set Info ResoruceMesh
+	std::string fileName = std::to_string(uuid_mesh);
+	res_mesh->InitInfo(name);
+
 	//Save Mesh
 	App->fs->SaveFile(data, fileName, size, IMPORT_DIRECTORY_LIBRARY_MESHES);
 
@@ -226,7 +226,7 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 }
 
 // Import Primitive -----------------------------------------------------------------------------------------------------------------------------
-void ImportMesh::Import(uint num_vertices, uint num_indices, uint num_normals, std::vector<uint> indices, std::vector<float3> vertices, uint uid)
+void ImportMesh::Import(uint num_vertices, uint num_indices, uint num_normals, std::vector<uint> indices, std::vector<float3> vertices, uint uuid)
 {
 	// ALLOCATING DATA INTO BUFFER ------------------------
 	uint ranges[3] = { num_vertices, num_indices, num_normals }; //,num_tex_coords };
@@ -277,13 +277,12 @@ void ImportMesh::Import(uint num_vertices, uint num_indices, uint num_normals, s
 	//RELEASE(texture);
 
 	// Create Resource ----------------------
-	ResourceMesh* res_mesh = (ResourceMesh*)App->resource_manager->CreateNewResource(Resource::Type::MESH, uid);
+	ResourceMesh* res_mesh = (ResourceMesh*)App->resource_manager->CreateNewResource(Resource::Type::MESH, uuid);
+	// Set info
+	std::string fileName = std::to_string(uuid);
+	res_mesh->InitInfo("Cube");
 
-	uint uid_mesh = App->random->Int();
-	std::string fileName = std::to_string(uid_mesh);
-	res_mesh->InitInfo(uid_mesh, "Cube");
-
-	//Save Mesh
+	// Save Mesh
 	App->fs->SaveFile(data, fileName, size, IMPORT_DIRECTORY_LIBRARY_MESHES);
 
 	RELEASE_ARRAY(data);

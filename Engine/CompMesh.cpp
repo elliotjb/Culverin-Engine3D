@@ -43,6 +43,22 @@ CompMesh::~CompMesh()
 //	SetupMesh();
 //}
 
+void CompMesh::preUpdate(float dt)
+{
+	// Before delete Resource Set this pointer to nullptr
+	if (resourceMesh != nullptr)
+	{
+		if (resourceMesh->GetState() == Resource::State::WANTDELETE)
+		{
+			resourceMesh = nullptr;
+		}
+	}
+}
+
+void CompMesh::Update(float dt)
+{
+}
+
 void CompMesh::ShowOptions()
 {
 	//ImGui::MenuItem("CREATE", NULL, false, false);
@@ -145,9 +161,9 @@ void CompMesh::ShowInspectorInfo()
 			if (temp != nullptr)
 			{
 				resourceMesh = temp;
-				if (resourceMesh->IsLoadedToMemory() == false)
+				if (resourceMesh->IsLoadedToMemory() == Resource::State::UNLOADED)
 				{
-					App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);
+					App->importer->iMesh->LoadResource(std::to_string(resourceMesh->GetUUID()).c_str(), resourceMesh);
 				}
 				Enable();
 				parent->AddBoundingBox(resourceMesh);
@@ -246,9 +262,6 @@ void CompMesh::Draw()
 	}
 }
 
-void CompMesh::Update(float dt)
-{
-}
 
 void CompMesh::Render(bool render)
 {
@@ -283,24 +296,31 @@ void CompMesh::SetResource(ResourceMesh* resourse_mesh)
 	}
 }
 
-void CompMesh::Save(JSON_Object* object, std::string name) const
+void CompMesh::Save(JSON_Object* object, std::string name, bool saveScene, uint& countResources) const
 {
 	json_object_dotset_number_with_std(object, name + "Type", C_MESH);
 	json_object_dotset_number_with_std(object, name + "UUID", uid);
 	if(resourceMesh != nullptr)
 	{
-		json_object_dotset_number_with_std(object, name + "Resource Mesh ID", resourceMesh->GetUUID());
+		if (saveScene == false)
+		{
+			// Save Info of Resource in Prefab (next we use this info for Reimport this prefab)
+			std::string temp = std::to_string(countResources++);
+			json_object_dotset_number_with_std(object, "Info.Resources.Resource " + temp + ".UUID Resource", resourceMesh->GetUUID());
+			json_object_dotset_string_with_std(object, "Info.Resources.Resource " + temp + ".name", resourceMesh->name);
+		}
+		json_object_dotset_number_with_std(object, name + "Resource Mesh UUID", resourceMesh->GetUUID());
 	}
 	else
 	{
-		json_object_dotset_number_with_std(object, name + "Resource Mesh ID", 0);
+		json_object_dotset_number_with_std(object, name + "Resource Mesh UUID", 0);
 	}
 }
 
 void CompMesh::Load(const JSON_Object* object, std::string name)
 {
 	uid = json_object_dotget_number_with_std(object, name + "UUID");
-	uint resourceID = json_object_dotget_number_with_std(object, name + "Resource Mesh ID");
+	uint resourceID = json_object_dotget_number_with_std(object, name + "Resource Mesh UUID");
 	if (resourceID > 0)
 	{
 		resourceMesh = (ResourceMesh*)App->resource_manager->GetResource(resourceID);
@@ -309,9 +329,9 @@ void CompMesh::Load(const JSON_Object* object, std::string name)
 			resourceMesh->NumGameObjectsUseMe++;
 			//TODO ELLIOT -> LOAD MESH
 			//const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
-			if (resourceMesh->IsLoadedToMemory() == false)
+			if (resourceMesh->IsLoadedToMemory() == Resource::State::UNLOADED)
 			{
-				App->importer->iMesh->LoadResource(std::to_string(resourceMesh->uuid_mesh).c_str(), resourceMesh);
+				App->importer->iMesh->LoadResource(std::to_string(resourceMesh->GetUUID()).c_str(), resourceMesh);
 				parent->AddBoundingBox(resourceMesh);
 			}
 		}

@@ -32,6 +32,7 @@ public:
 	void ShowOptions();
 	void ShowInspectorInfo();
 	void Draw();
+	void preUpdate(float dt);
 	void Update(float dt);
 	void Render(bool render);
 	bool isRendering() const;
@@ -39,7 +40,7 @@ public:
 	void LinkMaterial(CompMaterial* mat);
 	void SetResource(ResourceMesh* resourse_mesh);
 
-	void Save(JSON_Object* object, std::string name) const;
+	void Save(JSON_Object* object, std::string name, bool saveScene, uint& countResources) const;
 	void Load(const JSON_Object* object, std::string name);
 
 public:

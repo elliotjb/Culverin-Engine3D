@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "Globals.h"
 
-ResourceMesh::ResourceMesh(uint uid) : Resource(uid, Resource::Type::MESH)
+ResourceMesh::ResourceMesh(uint uid) : Resource(uid, Resource::Type::MESH, Resource::State::UNLOADED)
 {
 }
 
@@ -64,10 +64,9 @@ void ResourceMesh::InitRanges(uint num_vert, uint num_ind, uint num_normals)
 	}
 }
 
-void ResourceMesh::InitInfo(uint uuid, const char* nameResource)
+void ResourceMesh::InitInfo(const char* nameResource)
 {
 	name = App->GetCharfromConstChar(nameResource);
-	uuid_mesh = uuid;
 }
 
 
@@ -104,11 +103,11 @@ bool ResourceMesh::LoadToMemory()
 	//glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	isLoaded = true;
+	state = Resource::State::LOADED;
 	return true;
 }
 
 bool ResourceMesh::IsLoadedToMemory()
 {
-	return isLoaded;
+	return state;
 }

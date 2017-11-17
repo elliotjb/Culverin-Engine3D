@@ -59,6 +59,7 @@ public:
 
 	void DeleteFiles(std::vector<FilesNew>& files);
 	void DeleteFolders(std::vector<FoldersNew>& folders);
+	void DeleteAllFilesAssets(std::vector<AllFiles>& filesAssets);
 
 	bool CheckIsFileExist(const std::string & name);
 

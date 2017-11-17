@@ -46,7 +46,7 @@ public:
 		return toDelete;
 	}
 
-	virtual void Save(JSON_Object* object, std::string name) const;
+	virtual void Save(JSON_Object* object, std::string name, bool saveScene, uint& countResources) const;
 	virtual void Load(const JSON_Object* object, std::string name);
 
 private:

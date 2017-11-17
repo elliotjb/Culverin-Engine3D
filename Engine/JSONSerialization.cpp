@@ -1,5 +1,7 @@
 #include "JSONSerialization.h"
 #include "Application.h"
+#include "ResourceMaterial.h"
+#include "ModuleResourceManager.h"
 #include "Scene.h"
 #include "GameObject.h"
 
@@ -24,6 +26,7 @@ void JSONSerialization::SaveScene()
 	config_file = json_parse_file("Scene_1.json");
 
 	uint count = 0;
+	uint countResources = 0; // no use!
 	if (config_file != nullptr)
 	{
 		config = json_value_get_object(config_file);
@@ -49,13 +52,13 @@ void JSONSerialization::SaveScene()
 			if (App->scene->gameobjects[i]->GetNumComponents() > 0)
 			{
 				components += "Components.";
-				App->scene->gameobjects[i]->SaveComponents(config_node, components);
+				App->scene->gameobjects[i]->SaveComponents(config_node, components, true, countResources);
 			}
 			if (App->scene->gameobjects[i]->GetNumChilds() > 0)
 			{
 				for (int j = 0; j < App->scene->gameobjects[i]->GetNumChilds(); j++)
 				{
-					SaveChildGameObject(config_node, *App->scene->gameobjects[i]->GetChildbyIndex(j), count);
+					SaveChildGameObject(config_node, *App->scene->gameobjects[i]->GetChildbyIndex(j), count, countResources);
 				}
 			}
 		}
@@ -64,7 +67,7 @@ void JSONSerialization::SaveScene()
 	json_serialize_to_file(config_file, "Scene_1.json");
 }
 
-void JSONSerialization::SaveChildGameObject(JSON_Object* config_node, const GameObject& gameObject, uint& count)
+void JSONSerialization::SaveChildGameObject(JSON_Object* config_node, const GameObject& gameObject, uint& count, uint& countResources)
 {
 	// Update GameObjects
 	std::string name = "GameObject" + std::to_string(count++);
@@ -86,13 +89,13 @@ void JSONSerialization::SaveChildGameObject(JSON_Object* config_node, const Game
 	if (gameObject.GetNumComponents() > 0)
 	{
 		components += "Components.";
-		gameObject.SaveComponents(config_node, components);
+		gameObject.SaveComponents(config_node, components, true, countResources);
 	}
 	if (gameObject.GetNumChilds() > 0)
 	{
 		for (int i = 0; i < gameObject.GetNumChilds(); i++)
 		{
-			SaveChildGameObject(config_node, *gameObject.GetChildbyIndex(i), count);
+			SaveChildGameObject(config_node, *gameObject.GetChildbyIndex(i), count, countResources);
 		}
 	}
 }
@@ -174,7 +177,7 @@ void JSONSerialization::LoadChilds(GameObject& parent, GameObject& child, int uu
 }
 
 
-void JSONSerialization::SavePrefab(const GameObject& gameObject, const char* directory)
+void JSONSerialization::SavePrefab(const GameObject& gameObject, const char* directory, const char* fileName)
 {
 	LOG("SAVING PREFAB %s -----", gameObject.GetName());
 
@@ -189,11 +192,14 @@ void JSONSerialization::SavePrefab(const GameObject& gameObject, const char* dir
 	config_file = json_value_init_object();
 
 	uint count = 0;
+	uint countResources = 0;
 	if (config_file != nullptr)
 	{
 		config = json_value_get_object(config_file);
 		json_object_clear(config);
 		json_object_dotset_number_with_std(config, "Prefab.Info.Number of GameObjects", count);
+		json_object_dotset_string_with_std(config, "Prefab.Info.Directory Prefab", fileName);
+		json_object_dotset_number_with_std(config, "Prefab.Info.Resources.Number of Resources", countResources);
 		config_node = json_object_get_object(config, "Prefab");
 		std::string name = "GameObject" + std::to_string(count++);
 		name += ".";
@@ -210,22 +216,23 @@ void JSONSerialization::SavePrefab(const GameObject& gameObject, const char* dir
 		if (gameObject.GetNumComponents() > 0)
 		{
 			components += "Components.";
-			gameObject.SaveComponents(config_node, components);
+			gameObject.SaveComponents(config_node, components, false, countResources);
 		}
 		// Childs --------------
 		if (gameObject.GetNumChilds() > 0)
 		{
 			for (int j = 0; j < gameObject.GetNumChilds(); j++)
 			{
-				SaveChildGameObject(config_node, *gameObject.GetChildbyIndex(j), count);
+				SaveChildPrefab(config_node, *gameObject.GetChildbyIndex(j), count, countResources);
 			}
 		}
 		json_object_dotset_number_with_std(config_node, "Info.Number of GameObjects", count);
+		json_object_dotset_number_with_std(config, "Prefab.Info.Resources.Number of Resources", countResources);
 		json_serialize_to_file(config_file, nameJson.c_str());
 	}
 }
 
-void JSONSerialization::SaveChildPrefab(JSON_Object* config_node, const GameObject& gameObject, uint& count)
+void JSONSerialization::SaveChildPrefab(JSON_Object* config_node, const GameObject& gameObject, uint& count, uint& countResources)
 {
 	// Update GameObjects
 	std::string name = "GameObject" + std::to_string(count++);
@@ -247,13 +254,13 @@ void JSONSerialization::SaveChildPrefab(JSON_Object* config_node, const GameObje
 	if (gameObject.GetNumComponents() > 0)
 	{
 		components += "Components.";
-		gameObject.SaveComponents(config_node, components);
+		gameObject.SaveComponents(config_node, components, false, countResources);
 	}
 	if (gameObject.GetNumChilds() > 0)
 	{
 		for (int i = 0; i < gameObject.GetNumChilds(); i++)
 		{
-			SaveChildGameObject(config_node, *gameObject.GetChildbyIndex(i), count);
+			SaveChildPrefab(config_node, *gameObject.GetChildbyIndex(i), count, countResources);
 		}
 	}
 }
@@ -350,6 +357,61 @@ void JSONSerialization::LoadChildLoadPrefab(GameObject& parent, GameObject& chil
 			return;
 		}
 	}
+}
+
+void JSONSerialization::SaveMaterial(const ResourceMaterial* material, const char* directory, const char* fileName)
+{
+	LOG("SAVING PREFAB %s -----", material->name);
+
+	JSON_Value* config_file;
+	JSON_Object* config;
+
+	std::string nameJson = directory;
+	nameJson += "/";
+	nameJson += material->name;
+	nameJson += ".meta.json";
+	config_file = json_value_init_object();
+
+	uint count = 0;
+	if (config_file != nullptr)
+	{
+		config = json_value_get_object(config_file);
+		json_object_clear(config);
+		json_object_dotset_string_with_std(config, "Material.Directory Material", fileName);
+		json_object_dotset_number_with_std(config, "Material.UUID Resource", material->GetUUID());
+		json_object_dotset_string_with_std(config, "Material.Name", material->name);
+		json_serialize_to_file(config_file, nameJson.c_str());
+	}
+}
+
+
+
+// Utilities --------------------------------------------------------------------------
+
+ReImport JSONSerialization::GetUUIDPrefab(const char* file)
+{
+	return ReImport();
+}
+
+ReImport JSONSerialization::GetUUIDMaterial(const char* file)
+{
+	JSON_Value* config_file;
+	JSON_Object* config;
+	JSON_Object* config_node;
+
+	std::string nameJson = file;
+	nameJson += ".meta.json";
+	config_file = json_parse_file(nameJson.c_str());
+
+	ReImport info;
+	if (config_file != nullptr)
+	{
+		config = json_value_get_object(config_file);
+		config_node = json_object_get_object(config, "Material");
+		info.uuid = json_object_dotget_number_with_std(config_node, ".UUID Resource");
+		info.directoryObj = json_object_dotget_string_with_std(config_node, ".Directory Material");
+	}
+	return info;
 }
 
 void JSONSerialization::ChangeUUIDs(GameObject& gameObject)

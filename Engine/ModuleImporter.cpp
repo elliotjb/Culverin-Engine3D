@@ -242,7 +242,7 @@ bool ModuleImporter::Import(const char* file, Resource::Type type)
 				obj->SetName(App->GetCharfromConstChar(App->fs->FixName_directory(file).c_str()));
 
 				//Now Save Serialitzate OBJ -> Prefab
-				App->Json_seria->SavePrefab(*obj, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
+				App->Json_seria->SavePrefab(*obj, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory(), file);
 
 				App->scene->gameobjects.push_back(obj);
 				App->scene->DeleteGameObject(obj);

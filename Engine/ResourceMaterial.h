@@ -18,7 +18,7 @@ public:
 	ResourceMaterial(uint uid);
 	virtual ~ResourceMaterial();
 
-	void InitInfo(uint uuid, const char* name);
+	void InitInfo(const char* name);
 	void Init(Texture texture);
 
 	bool LoadToMemory();
@@ -26,7 +26,6 @@ public:
 	bool IsLoadedToMemory();
 
 private:
-	bool isLoaded = false;
 	Texture texture;
 };
 

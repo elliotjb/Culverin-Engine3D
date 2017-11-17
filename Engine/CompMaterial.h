@@ -11,6 +11,7 @@ public:
 	CompMaterial(Comp_Type t, GameObject* parent);
 	~CompMaterial();
 
+	void preUpdate(float dt);
 	void SetColor(float r, float g, float b, float a);
 	Color GetColor() const;
 	
@@ -23,7 +24,7 @@ public:
 	void ShowOptions();
 	void ShowInspectorInfo();
 
-	void Save(JSON_Object* object, std::string name) const;
+	void Save(JSON_Object* object, std::string name, bool saveScene, uint& countResources) const;
 	void Load(const JSON_Object* object, std::string name);
 
 public:

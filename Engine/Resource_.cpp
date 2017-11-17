@@ -1,7 +1,7 @@
 #include "Resource_.h"
 
 
-Resource::Resource(uint uid, Resource::Type type) : uid(uid), type(type)
+Resource::Resource(uint uid, Resource::Type type, Resource::State state) : uuid(uid), type(type), state(state)
 {
 }
 
@@ -14,8 +14,13 @@ Resource::Type Resource::GetType() const
 	return type;
 }
 
+Resource::State Resource::GetState() const
+{
+	return state;
+}
+
 uint Resource::GetUUID() const
 {
-	return uid;
+	return uuid;
 }
 

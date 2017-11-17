@@ -421,9 +421,9 @@ GameObject* Scene::CreateCube(GameObject* parent)
 	mesh->resourceMesh = (ResourceMesh*)App->resource_manager->GetResource(1); // 1 == Cube
 	//TODO ELLIOT -> LOAD MESH
 	//const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
-	if (mesh->resourceMesh->IsLoadedToMemory() == false)
+	if (mesh->resourceMesh->IsLoadedToMemory() == Resource::State::UNLOADED)
 	{
-		App->importer->iMesh->LoadResource(std::to_string(mesh->resourceMesh->uuid_mesh).c_str(), mesh->resourceMesh);
+		App->importer->iMesh->LoadResource(std::to_string(mesh->resourceMesh->GetUUID()).c_str(), mesh->resourceMesh);
 	}
 	OBB* box = new OBB();
 	box->pos = float3::zero;

@@ -10,21 +10,28 @@ public:
 		MATERIAL,
 		MESH
 	};
+	enum State {
+		UNLOADED,
+		LOADED,
+		WANTDELETE
+	};
 
 public:
-	Resource(uint uid, Resource::Type type);
+	Resource(uint uuid, Resource::Type type, Resource::State state);
 	virtual ~Resource();
 
 	Resource::Type GetType() const;
+	Resource::State GetState() const;
 	uint GetUUID() const;
 
+
 protected:
-	Type type = UNKNOWN;
-	uint uid = 0;
+	Type type = Type::UNKNOWN;
+	State state = State::UNLOADED;
+	uint uuid = 0;
 
 public:
 	char* name = "Name Resource";
-	uint uuid_mesh = 0;
 	int NumGameObjectsUseMe = 0;
 };
 

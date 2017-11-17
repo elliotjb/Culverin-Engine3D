@@ -2,7 +2,7 @@
 #include "Application.h"
 
 
-ResourceMaterial::ResourceMaterial(uint uid) : Resource(uid, Resource::Type::MATERIAL)
+ResourceMaterial::ResourceMaterial(uint uuid) : Resource(uuid, Resource::Type::MATERIAL, Resource::State::UNLOADED)
 {
 }
 
@@ -11,10 +11,9 @@ ResourceMaterial::~ResourceMaterial()
 {
 }
 
-void ResourceMaterial::InitInfo(uint uuid, const char* nameResource)
+void ResourceMaterial::InitInfo(const char* nameResource)
 {
 	name = App->GetCharfromConstChar(nameResource);
-	uuid_mesh = uuid;
 }
 
 void ResourceMaterial::Init(Texture textureloaded)
@@ -25,7 +24,7 @@ void ResourceMaterial::Init(Texture textureloaded)
 
 bool ResourceMaterial::LoadToMemory()
 {
-	isLoaded = true;
+	state = Resource::State::LOADED;
 	return true;
 }
 
@@ -40,7 +39,7 @@ uint ResourceMaterial::GetTextureID()
 
 bool ResourceMaterial::IsLoadedToMemory()
 {
-	return isLoaded;
+	return state;
 }
 
 
