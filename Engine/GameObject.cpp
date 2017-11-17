@@ -601,15 +601,25 @@ Component* GameObject::AddComponent(Comp_Type type)
 
 	if (!dupe)
 	{
-		if (type == C_MESH)
+		if (type == Comp_Type::C_MESH)
 		{
 			LOG("Adding MESH COMPONENT.");
 			CompMesh* mesh = new CompMesh(type, this);
 			components.push_back(mesh);
+			/* Link Material to the Mesh if exists */
+			CompMaterial* material_link = (CompMaterial*)FindComponentByType(Comp_Type::C_MATERIAL);
+			if (material_link != nullptr)
+			{
+				mesh->LinkMaterial(material_link);
+			}
+			else
+			{
+				LOG("Havent Material");
+			}
 			return mesh;
 		}
 
-		else if (type == C_TRANSFORM)
+		else if (type == Comp_Type::C_TRANSFORM)
 		{
 			LOG("Adding TRANSFORM COMPONENT.");
 			CompTransform* transform = new CompTransform(type, this);
@@ -617,14 +627,14 @@ Component* GameObject::AddComponent(Comp_Type type)
 			return transform;
 		}
 
-		else if (type == C_MATERIAL)
+		else if (type == Comp_Type::C_MATERIAL)
 		{
 			LOG("Adding MATERIAL COMPONENT.");
 			CompMaterial* material = new CompMaterial(type, this);
 			components.push_back(material);
 
 			/* Link Material to the Mesh if exists */
-			CompMesh* mesh_to_link = (CompMesh*)FindComponentByType(C_MESH);
+			CompMesh* mesh_to_link = (CompMesh*)FindComponentByType(Comp_Type::C_MESH);
 			if (mesh_to_link != nullptr)
 			{
 				mesh_to_link->LinkMaterial(material);
@@ -636,7 +646,7 @@ Component* GameObject::AddComponent(Comp_Type type)
 			return material;
 		}
 
-		else if (type == C_CAMERA)
+		else if (type == Comp_Type::C_CAMERA)
 		{
 			LOG("Adding CAMERA COMPONENT.");
 			CompCamera* camera = new CompCamera(type, this);

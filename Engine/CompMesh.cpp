@@ -123,15 +123,22 @@ void CompMesh::ShowInspectorInfo()
 
 		ImGui::Checkbox("Render", &render);
 	}
+	if (resourceMesh == nullptr)
+	{
+		if (ImGui::Button("Select Mesh..."))
+		{
+			SelectMesh = true;
+		}
+	}
 	if(resourceMesh == nullptr || SelectMesh)
 	{
-		if (resourceMesh != nullptr)
-		{
-			if (ImGui::Button("Select Mesh..."))
-			{
-				SelectMesh = true;
-			}
-		}
+		//if (1)
+		//{
+		//	if (ImGui::Button("Select Mesh..."))
+		//	{
+		//		SelectMesh = true;
+		//	}
+		//}
 		if (SelectMesh)
 		{
 			ResourceMesh* temp = (ResourceMesh*)App->resource_manager->ShowResources(SelectMesh, Resource::Type::MESH);
