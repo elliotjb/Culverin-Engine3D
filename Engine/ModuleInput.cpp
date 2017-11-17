@@ -3,6 +3,8 @@
 #include "ModuleInput.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleFS.h"
+#include "ModuleGUI.h"
+#include "WindowProject.h"
 #include "ModuleResourceManager.h"
 
 #include "ImGui\imgui_impl_sdl_gl3.h"
@@ -124,7 +126,6 @@ update_status ModuleInput::PreUpdate(float dt)
 	mouse_x_motion = mouse_y_motion = 0;
 
 	bool quit = false;
-	dropped = false;
 	SDL_Event e;
 
 	while(SDL_PollEvent(&e))
@@ -153,7 +154,6 @@ update_status ModuleInput::PreUpdate(float dt)
 
 			case SDL_DROPFILE:
 			{
-				dropped = true;
 				if (App->resource_manager->CheckFileType(e.drop.file) == Resource::Type::MESH)
 				{
 					dropedfiles.push_back(e.drop.file);
@@ -173,6 +173,10 @@ update_status ModuleInput::PreUpdate(float dt)
 			{
 				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
+				if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+				{
+					// Now Update All vectors "project" and "fs"
+				}
 			}
 		}
 	}

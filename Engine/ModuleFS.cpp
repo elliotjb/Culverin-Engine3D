@@ -4,6 +4,7 @@
 #include "ModuleGUI.h"
 #include "Application.h"
 #include "ModuleResourceManager.h"
+#include "JSONSerialization.h"
 
 ModuleFS::ModuleFS(bool start_enabled) : Module(start_enabled)
 {
@@ -80,7 +81,7 @@ update_status ModuleFS::PreUpdate(float dt)
 		checkAssets.Start();
 		//DeleteAllFilesAssets(allfilesAsstes);
 		//GetAllFilesAssets(directory_Game, allfilesAsstes);
-		//AnyfileModificated(allfilesAsstes);
+		AnyfileModificated(allfilesAsstes);
 	}
 
 	preUpdate_t = perf_timer.ReadMs();
@@ -237,20 +238,23 @@ bool ModuleFS::AnyfileModificated(std::vector<AllFiles>& files)
 	{
 		if (stdfs::is_directory(*iter) == false)
 		{
-			stdfs::file_time_type temp = stdfs::last_write_time(iter->path());
-			std::time_t cftime = decltype(temp)::clock::to_time_t(temp);
-			if (files[i].ftime == cftime)
+			std::string extension = GetExtension(iter->path().string());
+			if (strcmp(extension.c_str(), "json") != 0)
 			{
-				// No Modificated
-			}
-			else
-			{
-				LOG("MODIFICATED");
+				stdfs::file_time_type temp = stdfs::last_write_time(iter->path());
+				std::time_t cftime = decltype(temp)::clock::to_time_t(temp);
+				if (files[i++].ftime == cftime)
+				{
+					// No Modificated
+				}
+				else
+				{
+					LOG("MODIFICATED");
 
-				//App->resource_manager->resourcesToReimport.push_back()
+					App->resource_manager->resourcesToReimport.push_back(App->Json_seria->GetUUIDMaterial(files[i - 1].directory_name));
+				}
 			}
 		}
-		i++;
 	}
 	return true;
 }

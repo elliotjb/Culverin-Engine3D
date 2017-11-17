@@ -161,7 +161,7 @@ void Project::ShowProject()
 	//Column 1 LEFT ------------------------
 	ImGui::Spacing();
 	// Folders ---------------------
-	if (timeFolders.ReadSec() > 7 || updateFoldersNow)
+	if (timeFolders.ReadSec() > 10 || updateFoldersNow)
 	{
 		timeFolders.Start();
 		updateFoldersNow = false;
@@ -174,7 +174,7 @@ void Project::ShowProject()
 	ImGui::Separator();
 	//GetAllFiles
 	//files = App->fs->GetAllFilesNew(directory_see);
-	if (timeFiles.ReadSec() > 7 || updateFilesNow)
+	if (timeFiles.ReadSec() > 10 || updateFilesNow)
 	{
 		timeFiles.Start();
 		updateFilesNow = false;

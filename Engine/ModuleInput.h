@@ -108,6 +108,5 @@ private:
 
 public:
 	std::list<const char*> dropedfiles;
-	bool dropped = false;
 
 };

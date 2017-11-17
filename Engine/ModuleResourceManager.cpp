@@ -43,24 +43,22 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 {
 	perf_timer.Start();
 
-	if (App->input->dropped)
-	{
-		allfilesprepared = true;
-	}
-	if (allfilesprepared)
-	{
-		if (App->input->dropped == false)
-		{
-			nowImport = true;
-		}
-	}
-	if(nowImport)
+	if(App->input->dropedfiles.size() > 0)
 	{
 		ImportFile(App->input->dropedfiles);
 		App->input->dropedfiles.clear();
-		nowImport = false;
-		allfilesprepared = false;
 	}
+
+	if (resourcesToReimport.size() > 0)
+	{
+		LOG("HEHE");
+		// Now Import the new Resources ------
+
+
+		resourcesToReimport.clear();
+	}
+
+
 	//static bool waitUpdate = false;
 	//if (waitUpdate)
 	//{

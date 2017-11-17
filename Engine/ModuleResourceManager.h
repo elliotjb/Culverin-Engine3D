@@ -44,6 +44,4 @@ public:
 
 private:
 	std::map<uint, Resource*> resources;
-	bool allfilesprepared = false;
-	bool nowImport = false;
 };

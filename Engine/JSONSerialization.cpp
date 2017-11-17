@@ -407,9 +407,17 @@ ReImport JSONSerialization::GetUUIDMaterial(const char* file)
 	if (config_file != nullptr)
 	{
 		config = json_value_get_object(config_file);
-		config_node = json_object_get_object(config, "Material");
-		info.uuid = json_object_dotget_number_with_std(config_node, ".UUID Resource");
-		info.directoryObj = json_object_dotget_string_with_std(config_node, ".Directory Material");
+		//config_node = json_object_get_object(config, "Material");
+		info.uuid = json_object_dotget_number_with_std(config, "Material.UUID Resource");
+		info.directoryObj = json_object_dotget_string_with_std(config, "Material.Directory Material");
+		if (strcmp(file, info.directoryObj) == 0)
+		{
+			return info;
+		}
+		else
+		{
+			info.directoryObj = nullptr;
+		}
 	}
 	return info;
 }
