@@ -338,9 +338,18 @@ void CompCamera::SetMain(bool isMain)
 {
 	if (isMain)
 	{
-		App->renderer3D->SetGameCamera(this);
+		if (App->renderer3D->game_camera == nullptr)
+		{
+			App->renderer3D->SetGameCamera(this);
+		}
+		else
+		{
+			// Only one game camera must be active at a time.
+			is_main = false;
+			LOG("There is already an active Game Camera.");
+		}
 	}
-	else
+	else 
 	{
 		App->renderer3D->SetGameCamera(nullptr);
 	}
