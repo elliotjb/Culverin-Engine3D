@@ -180,13 +180,14 @@ void CompCamera::DoCulling()
 
 void CompCamera::CullStaticObjects()
 {
-	// Set all static objects invisible first
+	candidates_to_cull.clear();
+
+	// First, set all static objects invisible
 	for (uint i = 0; i < App->scene->static_objects.size(); i++)
 	{
 		App->scene->static_objects[i]->SetVisible(false);
 	}
 
-	candidates_to_cull.clear();
 	// Get all static objects that are inside the frustum (accelerated with quadtree)
 	App->scene->quadtree.CollectCandidates(candidates_to_cull, frustum);
 
@@ -202,7 +203,7 @@ void CompCamera::CullDynamicObjects()
 	AABB* box = nullptr;
 	candidates_to_cull.clear();
 
-	// Push all active elements that are root and are active
+	// Push all active elements that are root & active
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
 		if (App->scene->gameobjects[i]->isActive())
@@ -214,43 +215,66 @@ void CompCamera::CullDynamicObjects()
 	// Check candidates_to_cull vector until it's empty
 	while (candidates_to_cull.empty() == false)
 	{
+		// If it's not static, check if it's inside the vision of the camera to set 
 		if (!candidates_to_cull.front()->isStatic())
 		{
 			box = &candidates_to_cull.front()->box_fixed;
-			if (box != nullptr && candidates_to_cull.front() != parent)
+			if (box != nullptr && candidates_to_cull.front() != parent) // Check if it has AABB and it's not the camera itself
 			{
 				if (ContainsAABox(*box) == CULL_OUT)
 				{
-					candidates_to_cull.front()->SetVisible(false);
+					candidates_to_cull.front()->SetVisible(false); // OUTSIDE CAMERA VISION
 				}
 				else
 				{
-					candidates_to_cull.front()->SetVisible(true);
+					candidates_to_cull.front()->SetVisible(true); // INSIDE CAMERA VISION
 				}
 			}		
 		}
 
-		//Push all childs that are active to candidates vector
+		//Push all the active childs to the candidates vector
 		for (std::vector<GameObject*>::iterator it = candidates_to_cull.front()->GetChildsVec().begin(); it != candidates_to_cull.front()->GetChildsVec().end(); it++)
 		{
-			if (!((GameObject*)*it)->isActive())
+			if ((*it)->isActive())
 			{
 				candidates_to_cull.push_back((*it));
 			}		
 		}
-		// delete from vector the object already checked
+
+		// Delete from vector the object already checked
 		candidates_to_cull.pop_back();
 	}
 }
 
 void CompCamera::UnCull()
 {
+	candidates_to_cull.clear();
+
+	// Push all active elements that are root & active
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
 		if (App->scene->gameobjects[i]->isActive())
 		{
-			App->scene->gameobjects[i]->SetVisible(true);
+			candidates_to_cull.push_back(App->scene->gameobjects[i]);
 		}
+	}
+
+	// Check candidates_to_cull vector until it's empty
+	while (candidates_to_cull.empty() == false)
+	{
+		candidates_to_cull.front()->SetVisible(true);
+
+		//Push all childs that are active to the candidates vector
+		for (std::vector<GameObject*>::iterator it = candidates_to_cull.front()->GetChildsVec().begin(); it != candidates_to_cull.front()->GetChildsVec().end(); it++)
+		{
+			if ((*it)->isActive())
+			{
+				candidates_to_cull.push_back((*it));
+			}
+		}
+
+		// Delete from vector the object already checked
+		candidates_to_cull.pop_back();
 	}
 }
 
