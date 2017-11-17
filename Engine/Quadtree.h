@@ -4,7 +4,7 @@
 #include <list>
 
 #define QUADTREE_MAX_ITEMS 4
-#define QUADTREE_MIN_SIZE 10.0f
+#define QUADTREE_MIN_SIZE 5.0f
 
 class GameObject;
 

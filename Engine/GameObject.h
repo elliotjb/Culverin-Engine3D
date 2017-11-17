@@ -78,9 +78,11 @@ public:
 
 	// Bounding Box -----------------------
 	void AddBoundingBox(const ResourceMesh* mesh);
+	void DrawBoundingBox();
 	AABB* bounding_box = nullptr;
 	AABB  box_fixed;
-	void DrawBoundingBox();
+	bool isAABBActive() const;
+
 
 	uint GetUUID() const;
 	void SetUUID(uint uuid);

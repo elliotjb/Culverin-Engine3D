@@ -287,7 +287,7 @@ void CompCamera::UnCull()
 		candidates_to_cull.front()->SetVisible(true);
 
 		//Push all childs that are active to the candidates vector
-		for (std::vector<GameObject*>::iterator it = candidates_to_cull.front()->GetChildsVec().begin(); it != candidates_to_cull.front()->GetChildsVec().end(); it++)
+		for (std::vector<GameObject*>::iterator it = candidates_to_cull.front()->GetChildsPtr()->begin(); it != candidates_to_cull.front()->GetChildsPtr()->end(); it++)
 		{
 			if ((*it)->isActive())
 			{
@@ -298,6 +298,8 @@ void CompCamera::UnCull()
 		// Delete from vector the object already checked
 		candidates_to_cull.pop();
 	}
+
+	App->scene->static_objects.clear();
 }
 
 void CompCamera::LookAt(const float3& position)
@@ -455,6 +457,7 @@ void CompCamera::Save(JSON_Object * object, std::string name, bool saveScene, ui
 	json_object_dotset_number_with_std(object, name + "Vertical Pov", frustum.verticalFov);
 
 	json_object_dotset_boolean_with_std(object, name + "Main Camera", is_main);
+	json_object_dotset_boolean_with_std(object, name + "Culling", culling);
 }
 
 void CompCamera::Load(const JSON_Object * object, std::string name)
@@ -472,6 +475,8 @@ void CompCamera::Load(const JSON_Object * object, std::string name)
 
 	is_main = json_object_dotget_boolean_with_std(object, name + "Main Camera");
 	SetMain(is_main);
+
+	culling = json_object_dotget_boolean_with_std(object, name + "Culling");
 
 	Enable();
 }

@@ -250,7 +250,7 @@ void Quadtree::Bake(const std::vector<GameObject*>& objects)
 	{
 		if (objects[i]->isActive())
 		{
-			if (!objects[i]->isStatic())
+			if (objects[i]->isStatic())
 			{
 				Insert(objects[i]);
 			}

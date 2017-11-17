@@ -43,8 +43,12 @@ void JSONSerialization::SaveScene()
 			json_object_dotset_number_with_std(config_node, name + "UUID", App->scene->gameobjects[i]->GetUUID());
 			// Parent UUID------------
 			json_object_dotset_number_with_std(config_node, name + "Parent", -1);
-			// Name- --------
+			// Name --------
 			json_object_dotset_string_with_std(config_node, name + "Name", App->scene->gameobjects[i]->GetName());
+			// Bounding Box ---------
+			json_object_dotset_boolean_with_std(config_node, name + "Bounding Box", App->scene->gameobjects[i]->isAABBActive());
+			// Static ---------
+			json_object_dotset_boolean_with_std(config_node, name + "Static", App->scene->gameobjects[i]->isStatic());
 
 			// Components  ------------
 			std::string components = name;
@@ -77,11 +81,17 @@ void JSONSerialization::SaveChildGameObject(JSON_Object* config_node, const Game
 	// Parent UUID------------
 	int uuidParent = -1;
 	if (gameObject.GetParent() != nullptr)
+	{
 		uuidParent = gameObject.GetParent()->GetUUID();
-
+	}
 	json_object_dotset_number_with_std(config_node, name + "Parent", uuidParent);
 	// Name- --------
 	json_object_dotset_string_with_std(config_node, name + "Name", gameObject.GetName());
+	// Bounding Box ---------
+	json_object_dotset_boolean_with_std(config_node, name + "Bounding Box", gameObject.isAABBActive());
+	// Static ---------
+	json_object_dotset_boolean_with_std(config_node, name + "Static", gameObject.isStatic());
+
 
 	// Components  ------------
 	std::string components = name;

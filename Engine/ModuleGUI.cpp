@@ -924,6 +924,11 @@ void ModuleGUI::UpdateWindows(float dt)
 			App->gameTime.prepare_frame = true;
 		}
 		ImGui::PopStyleColor(1);
+
+		if (App->showCameraPopup)
+		{
+			ShowCameraMissing();
+		}
 	}
 
 	ImGui::EndChild();
@@ -1031,4 +1036,22 @@ void ModuleGUI::ShowWindowExit(bool* active)
 		reposition_exit = true;
 	}
 	ImGui::End();
+}
+
+void ModuleGUI::ShowCameraMissing()
+{
+	ImGui::OpenPopup("Active Game Camera Missing!");
+	if (ImGui::BeginPopupModal("Active Game Camera Missing!", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("There isn't any Game Camera Activated! Make sure that one\nof them is active before clicking 'Play' Button.");
+		float width = ImGui::GetItemRectSize().x * 0.5;
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Text(""); ImGui::SameLine(width - 20);
+		if (ImGui::Button("OK", ImVec2(40, 20)))
+		{
+			App->showCameraPopup = false;
+		}
+	}
+	ImGui::EndPopup();
 }

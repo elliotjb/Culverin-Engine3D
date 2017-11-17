@@ -331,9 +331,9 @@ void CompMesh::Load(const JSON_Object* object, std::string name)
 			//const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
 			if (resourceMesh->IsLoadedToMemory() == Resource::State::UNLOADED)
 			{
-				App->importer->iMesh->LoadResource(std::to_string(resourceMesh->GetUUID()).c_str(), resourceMesh);
-				parent->AddBoundingBox(resourceMesh);
+				App->importer->iMesh->LoadResource(std::to_string(resourceMesh->GetUUID()).c_str(), resourceMesh);			
 			}
+			parent->AddBoundingBox(resourceMesh);
 		}
 	}
 

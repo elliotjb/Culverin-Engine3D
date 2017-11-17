@@ -931,32 +931,22 @@ void GameObject::AddBoundingBox(const ResourceMesh* mesh)
 
 void GameObject::DrawBoundingBox()
 {
-	//CompTransform* transform = (CompTransform*)FindComponentByType(C_TRANSFORM);
-	//if (transform != nullptr)
-	//{
-	//	glPushMatrix();
-	//	glMultMatrixf(transform->GetMultMatrixForOpenGL());
-	//}
-
 	glBegin(GL_LINES);
 	glLineWidth(3.0f);
 	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
 
 	for (uint i = 0; i < 12; i++)
 	{
-		//glVertex3f(bounding_box->Edge(i).a.x, bounding_box->Edge(i).a.y, bounding_box->Edge(i).a.z);
-		//glVertex3f(bounding_box->Edge(i).b.x, bounding_box->Edge(i).b.y, bounding_box->Edge(i).b.z);
 		glVertex3f(box_fixed.Edge(i).a.x, box_fixed.Edge(i).a.y, box_fixed.Edge(i).a.z);
 		glVertex3f(box_fixed.Edge(i).b.x, box_fixed.Edge(i).b.y, box_fixed.Edge(i).b.z);
 	}
 	glEnd();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+}
 
-	//if (transform != nullptr)
-	//{
-	//	glPopMatrix();
-	//}
-
+bool GameObject::isAABBActive() const
+{
+	return bb_active;
 }
 
 uint GameObject::GetUUID() const

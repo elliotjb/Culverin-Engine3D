@@ -624,15 +624,26 @@ void Application::SetState(EngineState state)
 		}
 		else
 		{
-			engineState = EngineState::PLAY;
-			ChangeCamera("Game");
-			scene->FillStaticObjectsVector();
-			WantToSave();
+			if (App->renderer3D->game_camera != nullptr)
+			{
+				engineState = EngineState::PLAY;
+				ChangeCamera("Game");
+				scene->FillStaticObjectsVector();
+				WantToSave();
+			}
+			else
+			{
+				showCameraPopup = true;
+			}
 		}
 	}
 	else 
 	{
-		engineState = state;
+		// PAUSE & PLAYFRAME buttons only work if you are in game mode
+		if (engineState != EngineState::STOP)
+		{
+			engineState = state;
+		}
 	}
 	LOG("Engine State is Now: %i", engineState);
 }

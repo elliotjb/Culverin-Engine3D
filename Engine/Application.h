@@ -134,6 +134,8 @@ public:
 	LCG* random = nullptr;
 	bool showconfig = false;
 	bool showperformance = false;
+	bool showCameraPopup = false;
+
 	float4 SceneDock = { 0, 0, 0, 0 };
 
 	//Use for Serialization scene or prefabs 
