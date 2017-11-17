@@ -37,6 +37,7 @@ public:
 	// ----------------------------------
 
 	void SetVisible(bool visible);
+	void SetStatic(bool set_static);
 
 	bool isActive() const;
 	bool isVisible() const;
@@ -81,6 +82,7 @@ public:
 	void DrawBoundingBox();
 	AABB* bounding_box = nullptr;
 	AABB  box_fixed;
+	void SetAABBActive(bool active);
 	bool isAABBActive() const;
 
 

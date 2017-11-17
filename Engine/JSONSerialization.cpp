@@ -133,6 +133,10 @@ void JSONSerialization::LoadScene()
 				char* nameGameObject = App->GetCharfromConstChar(json_object_dotget_string_with_std(config_node, name + "Name"));
 				uint uid = json_object_dotget_number_with_std(config_node, name + "UUID");
 				GameObject* obj = new GameObject(nameGameObject, uid);
+				bool static_obj = json_object_dotget_boolean_with_std(config_node, name + "Static");
+				obj->SetStatic(static_obj);
+				bool aabb_active = json_object_dotget_boolean_with_std(config_node, name + "Bounding Box");
+				obj->SetAABBActive(aabb_active);
 
 				//Load Components
 				int NumberofComponents = json_object_dotget_number_with_std(config_node, name + "Number of Components");

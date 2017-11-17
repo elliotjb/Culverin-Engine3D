@@ -553,6 +553,11 @@ void GameObject::SetVisible(bool visible)
 	this->visible = visible;
 }
 
+void GameObject::SetStatic(bool set_static)
+{
+	static_obj = set_static;
+}
+
 bool GameObject::isActive() const
 {
 	return active;
@@ -942,6 +947,11 @@ void GameObject::DrawBoundingBox()
 	}
 	glEnd();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
+void GameObject::SetAABBActive(bool active)
+{
+	bb_active = active;
 }
 
 bool GameObject::isAABBActive() const
