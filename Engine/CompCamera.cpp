@@ -341,6 +341,7 @@ void CompCamera::SetMain(bool isMain)
 		if (App->renderer3D->game_camera == nullptr)
 		{
 			App->renderer3D->SetGameCamera(this);
+			is_main = true;
 		}
 		else
 		{
@@ -352,10 +353,8 @@ void CompCamera::SetMain(bool isMain)
 	else 
 	{
 		App->renderer3D->SetGameCamera(nullptr);
+		is_main = false;
 	}
-
-	// Set output variable to check on inspector
-	is_main = isMain;
 }
 
 void CompCamera::SetPos(float3 pos)
