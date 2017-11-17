@@ -177,18 +177,22 @@ void ModuleFS::GetAllFiles(std::experimental::filesystem::path path, std::vector
 
 	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
 	{
-		FilesNew files_temp;
-		files_temp.directory_name = ConverttoConstChar(iter->path().string());
-		if (stdfs::is_directory(*iter))
+		std::string extension = GetExtension(iter->path().string());
+		if (strcmp(extension.c_str(), "json") != 0)
 		{
-			files_temp.directory_name_next = ConverttoConstChar(iter->path().string() + "\\");
-		}
-		else
-			files_temp.directory_name_next = nullptr;
+			FilesNew files_temp;
+			files_temp.directory_name = ConverttoConstChar(iter->path().string());
+			if (stdfs::is_directory(*iter))
+			{
+				files_temp.directory_name_next = ConverttoConstChar(iter->path().string() + "\\");
+			}
+			else
+				files_temp.directory_name_next = nullptr;
 
-		files_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
-		files_temp.file_type = ((Project*)App->gui->winManager[PROJECT])->SetType(files_temp.file_name);
-		files.push_back(files_temp);
+			files_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
+			files_temp.file_type = ((Project*)App->gui->winManager[PROJECT])->SetType(files_temp.file_name);
+			files.push_back(files_temp);
+		}
 	}
 }
 
@@ -200,16 +204,20 @@ void ModuleFS::GetAllFilesAssets(std::experimental::filesystem::path path, std::
 
 	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
 	{
-		AllFiles files_temp;
-		stdfs::file_time_type temp = stdfs::last_write_time(iter->path());
-		std::time_t cftime = decltype(temp)::clock::to_time_t(temp);
-		files_temp.ftime = cftime;
-		files_temp.directory_name = ConverttoConstChar(iter->path().string());
-		files_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
-		files.push_back(files_temp);
-		if (stdfs::is_directory(*iter))
+		std::string extension = GetExtension(iter->path().string());
+		if (strcmp(extension.c_str(), "json") != 0)
 		{
-			GetAllFilesAssets(iter->path().string(), files);
+			AllFiles files_temp;
+			stdfs::file_time_type temp = stdfs::last_write_time(iter->path());
+			std::time_t cftime = decltype(temp)::clock::to_time_t(temp);
+			files_temp.ftime = cftime;
+			files_temp.directory_name = ConverttoConstChar(iter->path().string());
+			files_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
+			files.push_back(files_temp);
+			if (stdfs::is_directory(*iter))
+			{
+				GetAllFilesAssets(iter->path().string(), files);
+			}
 		}
 	}
 }
@@ -407,11 +415,11 @@ std::string ModuleFS::FixExtension(std::string file, const char* newExtension)
 	return file;
 }
 
-const char* ModuleFS::GetExtension(std::string file)
+std::string ModuleFS::GetExtension(std::string file)
 {
 	size_t EndName = file.find_last_of(".");
-	file = file.substr(EndName, 0);
-	return file.c_str();
+	file = file.substr(EndName + 1);
+	return file;
 }
 
 char* ModuleFS::ConverttoChar(std::string name)
