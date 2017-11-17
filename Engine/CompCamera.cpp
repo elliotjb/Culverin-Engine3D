@@ -200,28 +200,46 @@ void CompCamera::CullStaticObjects()
 void CompCamera::CullDynamicObjects()
 {
 	AABB* box = nullptr;
+	candidates_to_cull.clear();
+
+	// Push all active elements that are root and are active
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
 	{
-		if (App->scene->gameobjects[i]->isActive() && App->scene->gameobjects[i] != parent) // Don't cull itself
+		if (App->scene->gameobjects[i]->isActive())
 		{
-			if (!App->scene->gameobjects[i]->isStatic())
-			{
-				// Check its bounding box
-				box = &App->scene->gameobjects[i]->box_fixed;
-				if (box != nullptr)
-				{
-					// We set visible varialbe True / False to know if the GameObject will be drawn(or not) in renderer PostUpdate
-					if (ContainsAABox(*box) == CULL_OUT)
-					{
-						App->scene->gameobjects[i]->SetVisible(false);
-					}
-					else
-					{
-						App->scene->gameobjects[i]->SetVisible(true);
-					}
-				}
-			}
+			candidates_to_cull.push_back(App->scene->gameobjects[i]);
 		}
+	}
+
+	// Check candidates_to_cull vector until it's empty
+	while (candidates_to_cull.empty() == false)
+	{
+		if (!candidates_to_cull.front()->isStatic())
+		{
+			box = &candidates_to_cull.front()->box_fixed;
+			if (box != nullptr && candidates_to_cull.front() != parent)
+			{
+				if (ContainsAABox(*box) == CULL_OUT)
+				{
+					candidates_to_cull.front()->SetVisible(false);
+				}
+				else
+				{
+					candidates_to_cull.front()->SetVisible(true);
+				}
+			}		
+		}
+
+		//Push all childs that are active to candidates vector
+		for (std::vector<GameObject*>::iterator it = candidates_to_cull.front()->GetChildsVec().begin(); it != candidates_to_cull.front()->GetChildsVec().end(); it++)
+		{
+			if (!((GameObject*)*it)->isActive())
+			{
+				candidates_to_cull.push_back((*it));
+			}		
+		}
+		// delete from vector the object already checked
+		candidates_to_cull.pop_back();
 	}
 }
 
