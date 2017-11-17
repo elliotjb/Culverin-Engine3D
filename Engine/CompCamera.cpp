@@ -67,8 +67,11 @@ void CompCamera::UpdateFrustum()
 
 void CompCamera::Draw()
 {
-	// if(parent->selected == true)
-	DebugDraw();
+	// Only draw frustums on editor mode, not in game mode
+	if (App->engineState == EngineState::STOP)
+	{
+		DebugDraw();
+	}
 }
 
 void CompCamera::DebugDraw()

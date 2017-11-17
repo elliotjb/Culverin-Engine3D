@@ -5,7 +5,7 @@
 #include "ModuleCamera3D.h"
 #include "Scene.h"
 
-#define PICK_OFFSET_Y -20
+#define PICK_OFFSET_Y -15
 
 SceneWorld::SceneWorld() : WindowManager()
 {

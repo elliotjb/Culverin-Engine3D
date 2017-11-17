@@ -397,22 +397,21 @@ void ModuleCamera3D::CenterToObject()
 {
 	if (focus != nullptr)
 	{
-		const AABB* box = &focus->box_fixed;
-		float3 center = box->Centroid();
-		float3 size = box->Size();
-		cam->frustum.pos.Set(center.x + size.x, center.y + size.y, center.z + size.z);
-		
-		CompTransform* transform = (CompTransform*)focus->FindComponentByType(C_TRANSFORM);
-		if (transform != nullptr)
+		const AABB* box;
+		// Only center camera if the game object has bounding box
+		if (focus->bounding_box != nullptr)
 		{
+			box = &focus->box_fixed;
+			float3 center = box->Centroid();
+			float3 size = box->Size();
+			
+			// Set camera to a reasonable distance depending on the size of the bounding box
+			cam->frustum.pos.Set(center.x + size.x, center.y + size.y, center.z + size.z);			
 			point_to_look = center;
+	
+			// Make the camera to look at the center of the box
+			LookAt(point_to_look);
 		}
-		else
-		{
-			point_to_look = cam->frustum.pos + cam->frustum.front * 30.0f;
-		}
-
-		LookAt(point_to_look);
 	}
 }
 
