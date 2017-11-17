@@ -370,26 +370,17 @@ bool ModuleRenderer3D::CleanUp()
 
 void ModuleRenderer3D::SetActiveCamera(CompCamera* cam)
 {
-	if (cam != nullptr)
-	{
-		active_camera = cam;
-	}
+	active_camera = cam;
 }
 
 void ModuleRenderer3D::SetSceneCamera(CompCamera* cam)
 {
-	if (cam != nullptr)
-	{
-		scene_camera = cam;
-	}
+	scene_camera = cam;
 }
 
 void ModuleRenderer3D::SetGameCamera(CompCamera* cam)
 {
-	if (cam != scene_camera)
-	{
-		game_camera = cam;
-	}
+	game_camera = cam;
 }
 
 void ModuleRenderer3D::UpdateProjection(CompCamera* cam)

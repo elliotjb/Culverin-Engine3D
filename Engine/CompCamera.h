@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Geometry/Frustum.h"
+#include <queue>
 
 class GameObject;
 
@@ -71,5 +72,5 @@ private:
 	float vertical_fov = 0.0f;
 	// -------------------------------
 
-	std::vector<GameObject*> candidates_to_cull;
+	std::queue<GameObject*> candidates_to_cull;
 };

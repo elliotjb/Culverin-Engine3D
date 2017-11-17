@@ -64,6 +64,7 @@ public:
 	uint GetIndexChildbyName(const char* name) const;
 	void RemoveChildbyIndex(uint index);
 	std::vector<GameObject*> GetChildsVec() const;
+	std::vector<GameObject*>* GetChildsPtr();
 	void AddChildGameObject_Copy(const GameObject* child);
 	void AddChildGameObject_Load(GameObject* child);
 	void AddChildGameObject_Replace(GameObject* child);

@@ -5,6 +5,7 @@
 #include "ModuleTextures.h"
 #include "ModuleCamera3D.h"
 #include "ModuleGUI.h"
+#include "ModuleRenderer3D.h"
 #include "GameObject.h"
 #include "Component.h"
 #include "CompTransform.h"
@@ -323,13 +324,13 @@ GameObject* Scene::CreateGameObject(GameObject* parent)
 	return obj;
 }
 
-void Scene::DeleteGameObjects(std::vector<GameObject*>& gameobjects)
+void Scene::DeleteGameObjects(std::vector<GameObject*>& gameobjects, bool isMain)
 {
 	for (int i = 0; i < gameobjects.size(); i++)
 	{
 		if (gameobjects[i]->GetNumChilds() > 0)
 		{
-			DeleteGameObjects(gameobjects[i]->GetChildsVec());
+			DeleteGameObjects(gameobjects[i]->GetChildsVec(), false);
 		}
 		else
 		{
@@ -339,9 +340,14 @@ void Scene::DeleteGameObjects(std::vector<GameObject*>& gameobjects)
 			delete gameobjects[i];
 		}
 	}
-	App->camera->SetFocusNull();
-	((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
 	gameobjects.clear();
+
+	if (isMain)
+	{
+		App->camera->SetFocusNull();
+		App->renderer3D->SetGameCamera(nullptr);
+		((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
+	}
 }
 
 void Scene::DeleteGameObject(GameObject* gameobject)
@@ -357,10 +363,10 @@ void Scene::DeleteGameObject(GameObject* gameobject)
 		{
 			((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
 		}
-		// First Delete All Childs and his components
+		// First Delete All Childs and their components
 		if (gameobject->GetNumChilds() > 0)
 		{
-			DeleteGameObjects(gameobject->GetChildsVec());
+			DeleteGameObjects(gameobject->GetChildsVec(), false);
 		}
 		// Then Delete Components
 		if (gameobject->GetNumComponents() > 0)

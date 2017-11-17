@@ -1,5 +1,6 @@
 #pragma once
 #include "Geometry/AABB.h"
+#include <queue>
 #include <list>
 
 #define QUADTREE_MAX_ITEMS 4
@@ -26,7 +27,7 @@ public:
 	void DistributeObjects();
 
 	template<typename TYPE>
-	int CollectCandidates(std::vector<GameObject*>& objects, const TYPE& primitive) const;
+	int CollectCandidates(std::queue<GameObject*>& objects, const TYPE& primitive) const;
 
 	void CollectObjects(std::vector<GameObject*>& vec_to_fill);
 
@@ -55,7 +56,7 @@ public:
 	void DebugDraw();
 
 	template<typename TYPE>
-	int CollectCandidates(std::vector<GameObject*>& objects, const TYPE& primitive) const;
+	int CollectCandidates(std::queue<GameObject*>& objects, const TYPE& primitive) const;
 
 	void CollectObjects(std::vector<GameObject*>& objects);
 
@@ -64,7 +65,7 @@ public:
 };
 
 template<typename TYPE>
-inline int QuadtreeNode::CollectCandidates(std::vector<GameObject*>& candidates, const TYPE & primitive) const
+inline int QuadtreeNode::CollectCandidates(std::queue<GameObject*>& candidates, const TYPE & primitive) const
 {
 	int ret = 0;
 
@@ -80,7 +81,7 @@ inline int QuadtreeNode::CollectCandidates(std::vector<GameObject*>& candidates,
 		if (primitive.Intersects((*it)->box_fixed))
 		{
 			// If intersects, add it to candidates vector
-			candidates.push_back(*it);
+			candidates.push(*it);
 		}
 	}
 
@@ -103,7 +104,7 @@ inline int QuadtreeNode::CollectCandidates(std::vector<GameObject*>& candidates,
 }
 
 template<typename TYPE>
-inline int Quadtree::CollectCandidates(std::vector<GameObject*>& objects, const TYPE& primitive) const
+inline int Quadtree::CollectCandidates(std::queue<GameObject*>& objects, const TYPE& primitive) const
 {
 	int tests = 1;
 	if (root_node != nullptr)

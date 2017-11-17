@@ -871,6 +871,11 @@ std::vector<GameObject*> GameObject::GetChildsVec() const
 	return childs;
 }
 
+std::vector<GameObject*>* GameObject::GetChildsPtr() 
+{
+	return &childs;
+}
+
 void GameObject::AddChildGameObject_Copy(const GameObject* child)
 {
 	GameObject* temp = new GameObject(*child);
