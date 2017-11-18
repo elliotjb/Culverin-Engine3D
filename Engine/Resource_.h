@@ -13,6 +13,7 @@ public:
 	enum State {
 		UNLOADED,
 		LOADED,
+		REIMPORTED,
 		WANTDELETE
 	};
 
@@ -23,7 +24,7 @@ public:
 	Resource::Type GetType() const;
 	Resource::State GetState() const;
 	uint GetUUID() const;
-
+	void SetState(Resource::State state);
 
 protected:
 	Type type = Type::UNKNOWN;

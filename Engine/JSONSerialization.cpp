@@ -424,6 +424,7 @@ ReImport JSONSerialization::GetUUIDMaterial(const char* file)
 		//config_node = json_object_get_object(config, "Material");
 		info.uuid = json_object_dotget_number_with_std(config, "Material.UUID Resource");
 		info.directoryObj = json_object_dotget_string_with_std(config, "Material.Directory Material");
+		info.nameMesh = json_object_dotget_string_with_std(config, "Material.Name");
 		if (strcmp(file, info.directoryObj) == 0)
 		{
 			return info;

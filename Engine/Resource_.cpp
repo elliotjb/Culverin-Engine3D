@@ -24,3 +24,8 @@ uint Resource::GetUUID() const
 	return uuid;
 }
 
+void Resource::SetState(Resource::State newstate)
+{
+	state = newstate;
+}
+

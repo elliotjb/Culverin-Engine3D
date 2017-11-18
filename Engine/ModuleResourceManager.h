@@ -11,6 +11,7 @@ struct Vertex;
 struct ReImport
 {
 	uint uuid = 0;
+	const char* nameMesh = nullptr;
 	const char* directoryObj = nullptr;
 };
 
@@ -23,9 +24,12 @@ public:
 	bool Start();
 	update_status PreUpdate(float dt);
 	//update_status Update(float dt);
+	update_status PostUpdate(float dt);
 	bool CleanUp();
 
 	void ImportFile(std::list<const char*>& file);
+	void ImportFile(std::vector<const char*>& file, std::vector<ReImport>& resourcesToReimport);
+	
 	Resource* CreateNewResource(Resource::Type type, uint uuid = 0);
 	Resource* GetResource(uint id);
 	Resource* GetResource(const char* material); //Only Use in ImportMesh -> Add recourceMaterial
@@ -44,4 +48,6 @@ public:
 
 private:
 	std::map<uint, Resource*> resources;
+	std::vector<const char*> filesReimport;
+	bool reimportNow = false;
 };

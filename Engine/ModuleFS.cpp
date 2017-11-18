@@ -81,7 +81,9 @@ update_status ModuleFS::PreUpdate(float dt)
 		checkAssets.Start();
 		//DeleteAllFilesAssets(allfilesAsstes);
 		//GetAllFilesAssets(directory_Game, allfilesAsstes);
-		AnyfileModificated(allfilesAsstes);
+
+		// Need something...
+		//AnyfileModificated(allfilesAsstes); 
 	}
 
 	preUpdate_t = perf_timer.ReadMs();
@@ -234,12 +236,18 @@ bool ModuleFS::AnyfileModificated(std::vector<AllFiles>& files)
 	const stdfs::directory_iterator end{};
 	std::experimental::filesystem::path path = directory_Game;
 	int i = 0;
+	int count = 0;
 	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
 	{
 		if (stdfs::is_directory(*iter) == false)
 		{
 			std::string extension = GetExtension(iter->path().string());
-			if (strcmp(extension.c_str(), "json") != 0)
+			//Set lowercase the extension to normalize it
+			for (std::string::iterator it = extension.begin(); it != extension.end(); it++)
+			{
+				*it = tolower(*it);
+			}
+			if (IsPermitiveExtension(extension.c_str()))
 			{
 				stdfs::file_time_type temp = stdfs::last_write_time(iter->path());
 				std::time_t cftime = decltype(temp)::clock::to_time_t(temp);
@@ -255,8 +263,20 @@ bool ModuleFS::AnyfileModificated(std::vector<AllFiles>& files)
 				}
 			}
 		}
+		count++;
 	}
+	LOG("%i", count);
 	return true;
+}
+
+bool ModuleFS::IsPermitiveExtension(const char* extension)
+{
+	if (strcmp(extension, "png") == 0 || strcmp(extension, "jpg") == 0 ||
+		strcmp(extension, "fbx") == 0 || strcmp(extension, "obj") == 0)
+	{
+		return true;
+	}
+	return false;
 }
 
 // If we Import a new File!

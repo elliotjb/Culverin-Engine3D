@@ -31,7 +31,7 @@ bool ImportMesh::Load(const char* exported_file, Texture* resource)
 }
 
 // Import Mesh -----------------------------------------------------------------------------------------------------------------------------
-bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* obj, const char* name)
+bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* obj, const char* name, uint uuid)
 {
 	bool ret = true;
 	uint num_vertices = 0;
@@ -148,26 +148,19 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 				materialComp->resourceMaterial = resource_mat;
 			}
 		}
-
-		//std::vector<Texture> diffuseMaps = LoadMaterialTextures(mat, aiTextureType_DIFFUSE, "texture_diffuse");
-		//text_t.insert(text_t.end(), diffuseMaps.begin(), diffuseMaps.end());
-
-		//// For the moment, we can only see textures on the diffuse channel, but we can load the specular ones
-		//std::vector<Texture> specularMaps = LoadMaterialTextures(mat, aiTextureType_SPECULAR, "texture_specular");
-		//text_t.insert(text_t.end(), specularMaps.begin(), specularMaps.end());
-
-		//materialComp->SetTexture(text_t);
-		//num_textures = text_t.size();
 	}
 	
-
-	//meshComp->InitRanges(num_vertices, num_indices, num_normals);
-	//meshComp->Init(vertices, indices, vert_normals, tex_coords);
-	//meshComp->SetupMesh();
 	meshComp->Enable();
-
 	// Create Resource ----------------------
-	uint uuid_mesh = App->random->Int();
+	uint uuid_mesh = 0;
+	if (uuid == 0)
+	{
+		uuid_mesh = App->random->Int();
+	}
+	else
+	{
+		uuid_mesh = uuid;
+	}
 	ResourceMesh* res_mesh = (ResourceMesh*)App->resource_manager->CreateNewResource(Resource::Type::MESH, uuid_mesh);
 	meshComp->SetResource(res_mesh);
 
@@ -425,84 +418,3 @@ bool ImportMesh::Load(const char* file, CompMesh* mesh)
 	}
 	return true;
 }
-
-//void ImportMesh::PrepareToImport()
-//{
-//	for (int i = 0; i < materialImpoted.size(); i++)
-//	{
-//		materialImpoted[i].name.clear();
-//		materialImpoted[i].path.clear();
-//		materialImpoted[i].name.clear();
-//	}
-//	materialImpoted.clear();
-//}
-//
-//std::vector<Texture> ImportMesh::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const char* typeName)
-//{
-//	std::vector<Texture> textures;
-//	std::vector<Texture> l_tex;
-//	bool skip = false;
-//	for (uint i = 0; i < mat->GetTextureCount(type); i++)
-//	{
-//		aiString str;
-//		mat->GetTexture(type, i, &str);
-//
-//		for (uint j = 0; j < l_tex.size(); j++)
-//		{
-//			if (std::strcmp(l_tex[j].path.c_str(), str.C_Str()) == 0)
-//			{
-//				textures.push_back(l_tex[j]);
-//				skip = true;
-//				break;
-//			}
-//		}
-//
-//		if (skip == false)
-//		{
-//			// Check if the texture has been imported.
-//			// if so, only put the information (Dont import again).
-//			bool noImport = false;
-//			int num_texture = -1;
-//			if (materialImpoted.size() > 0)
-//			{
-//				for (int ds = 0; ds < materialImpoted.size(); ds++)
-//				{
-//					if (materialImpoted[ds].path.compare(str.C_Str()) == 0)
-//					{
-//						LOG("The texture was already imported!");
-//						noImport = true;
-//						num_texture = ds;
-//					}
-//				}
-//			}
-//
-//			if (noImport == false)
-//			{
-//				//if Not imported, just import
-//				Texture tex;
-//				tex.id = App->textures->LoadTexture(str.C_Str());
-//				tex.type = typeName;
-//				tex.path = str.C_Str();
-//
-//				uint uid_material = App->random->Int();
-//				tex.name = std::to_string(uid_material);
-//
-//				//App->importer->iMaterial->Import(tex.path.c_str(), tex.name.c_str());
-//				tex.name += ".dds";
-//
-//				textures.push_back(tex);
-//				l_tex.push_back(tex);
-//				//delete importmaterial;
-//
-//				materialImpoted.push_back(tex);
-//			}
-//			else
-//			{
-//				textures.push_back(materialImpoted[num_texture]);
-//				l_tex.push_back(materialImpoted[num_texture]);
-//			}
-//		}
-//	}
-//
-//	return textures;
-//}

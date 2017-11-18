@@ -77,78 +77,9 @@ update_status ModuleImporter::PreUpdate(float dt)
 		//imp->Load("Baker_house.rin");
 	}
 
-	//if (App->input->dropped)
-	//{
-	//	dropped_File_type = CheckFileType(App->input->dropped_filedir);
-
-
-	//	App->fs->CopyFileToAssets(App->input->dropped_filedir, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
-	//	((Project*)App->gui->winManager[WindowName::PROJECT])->UpdateNow();
-
-	//	switch (dropped_File_type)
-	//	{
-	//	case F_MODEL_i:
-	//	{
-	//		LOG("IMPORTING MODEL, File Path: %s", App->input->dropped_filedir);
-	//		std::string file;
-
-	//		//Clear vector of textures, but dont import same textures!
-	//		iMesh->PrepareToImport();
-
-	//		const aiScene* scene = aiImportFile(App->input->dropped_filedir, aiProcessPreset_TargetRealtime_MaxQuality);
-	//		GameObject* obj = ProcessNode(scene->mRootNode, scene, nullptr);
-	//		
-	//		aiReleaseImport(scene);
-
-	//		App->scene->gameobjects.push_back(obj);
-	//		
-	//		//Now Save Serialitzate OBJ -> Prefab
-	//		App->Json_seria->SavePrefab(*obj, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
-	//		break;
-	//	}
-	//	case F_TEXTURE_i:
-	//	{
-	//		LOG("IMPORTING TEXTURE, File Path: %s", App->input->dropped_filedir);
-	//		//iMaterial->Import(App->input->dropped_filedir);
-	//	
-	//		break;
-	//	}
-	//	case F_UNKNOWN_i:
-	//	{
-	//		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "UNKNOWN file type dropped on window",
-	//			App->input->dropped_filedir, App->window->window);
-	//		LOG("UNKNOWN FILE TYPE, File Path: %s", App->input->dropped_filedir);
-
-	//		break;
-	//	}
-
-	//	default:
-	//		break;
-
-	//	}
-
-	//	App->input->dropped = false;
-	//}
-
 	preUpdate_t = perf_timer.ReadMs();
 	return UPDATE_CONTINUE;
 }
-
-//update_status ModuleWindow::Update(float dt)
-//{
-//	perf_timer.Start();
-//
-//	Update_t = perf_timer.ReadMs();
-//	return UPDATE_CONTINUE;
-//}
-
-//update_status ModuleWindow::PostUpdate(float dt)
-//{
-//	perf_timer.Start();
-//
-//	postUpdate_t = perf_timer.ReadMs();
-//	return UPDATE_CONTINUE;
-//}
 
 GameObject* ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj)
 {	
@@ -180,6 +111,53 @@ GameObject* ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, Game
 
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		iMesh->Import(scene, mesh, newObj, node->mName.C_Str());
+	}
+
+	// Process children
+	for (uint i = 0; i < node->mNumChildren; i++)
+	{
+		ProcessNode(node->mChildren[i], scene, objChild);
+	}
+
+	return objChild;
+}
+
+GameObject* ModuleImporter::ProcessNode(aiNode * node, const aiScene * scene, GameObject * obj, std::vector<ReImport>& resourcesToReimport)
+{
+	static int count = 0;
+	GameObject* objChild = new GameObject(obj);
+	objChild->SetName(App->GetCharfromConstChar(node->mName.C_Str()));
+
+	CompTransform* trans = (CompTransform*)objChild->AddComponent(C_TRANSFORM);
+	ProcessTransform(node, trans);
+
+	// Process all the Node's MESHES
+	for (uint i = 0; i < node->mNumMeshes; i++)
+	{
+		GameObject* newObj = nullptr;
+
+		if (node->mNumMeshes > 1)
+		{
+			newObj = new GameObject(obj);
+			std::string newName = "Submesh" + std::to_string(i);
+			newObj->SetName(App->GetCharfromConstChar(newName.c_str()));
+			CompTransform* newTrans = (CompTransform*)newObj->AddComponent(C_TRANSFORM);
+			ProcessTransform(node, newTrans);
+		}
+
+		else
+		{
+			newObj = objChild;
+		}
+
+		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		for (int i = 0; i < resourcesToReimport.size(); i++)
+		{
+			if (strcmp(node->mName.C_Str(), resourcesToReimport[i].nameMesh) == 0)
+			{
+				iMesh->Import(scene, mesh, newObj, node->mName.C_Str(), resourcesToReimport[i].uuid);
+			}
+		}
 	}
 
 	// Process children
@@ -227,52 +205,119 @@ bool ModuleImporter::Import(const char* file, Resource::Type type)
 {
 	bool ret = true;
 
-		switch (type)
-		{
-		case Resource::Type::MESH:
-		{
-			LOG("IMPORTING MODEL, File Path: %s", file);
-			
-			//Clear vector of textures, but dont import same textures!
-			//iMesh->PrepareToImport();
-			const aiScene* scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
-			if (scene != nullptr)
-			{
-				GameObject* obj = ProcessNode(scene->mRootNode, scene, nullptr);
-				obj->SetName(App->GetCharfromConstChar(App->fs->FixName_directory(file).c_str()));
+	switch (type)
+	{
+	case Resource::Type::MESH:
+	{
+		LOG("IMPORTING MODEL, File Path: %s", file);
 
-				//Now Save Serialitzate OBJ -> Prefab
-				App->Json_seria->SavePrefab(*obj, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory(), file);
+		//Clear vector of textures, but dont import same textures!
+		//iMesh->PrepareToImport();
+		const aiScene* scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
+		if (scene != nullptr)
+		{
+			GameObject* obj = ProcessNode(scene->mRootNode, scene, nullptr);
+			obj->SetName(App->GetCharfromConstChar(App->fs->FixName_directory(file).c_str()));
 
-				App->scene->gameobjects.push_back(obj);
-				App->scene->DeleteGameObject(obj);
-			}
-			else
-			{
-				ret = false;
-				LOG("Cannot import this fbx.");
-			}
-			aiReleaseImport(scene);
-			break;
+			//Now Save Serialitzate OBJ -> Prefab
+			App->Json_seria->SavePrefab(*obj, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory(), file);
+
+			App->scene->gameobjects.push_back(obj);
+			App->scene->DeleteGameObject(obj);
 		}
-		case Resource::Type::MATERIAL:
+		else
 		{
-			LOG("IMPORTING TEXTURE, File Path: %s", file);
+			ret = false;
+			LOG("Cannot import this fbx.");
+		}
+		aiReleaseImport(scene);
+		break;
+	}
+	case Resource::Type::MATERIAL:
+	{
+		LOG("IMPORTING TEXTURE, File Path: %s", file);
+		iMaterial->Import(file);
+
+		break;
+	}
+	case Resource::Type::UNKNOWN:
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "UNKNOWN file type dropped on window",
+			file, App->window->window);
+		LOG("UNKNOWN FILE TYPE, File Path: %s", file);
+		break;
+	}
+
+	default:
+		break;
+	}
+
+	return true;
+}
+
+bool ModuleImporter::Import(const char* file, Resource::Type type, std::vector<ReImport>& resourcesToReimport)
+{
+	bool ret = true;
+
+	switch (type)
+	{
+	case Resource::Type::MESH:
+	{
+		LOG("IMPORTING MODEL, File Path: %s", file);
+
+		//Clear vector of textures, but dont import same textures!
+		//iMesh->PrepareToImport();
+		const aiScene* scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
+		if (scene != nullptr)
+		{
+			GameObject* obj = ProcessNode(scene->mRootNode, scene, nullptr, resourcesToReimport);
+			obj->SetName(App->GetCharfromConstChar(App->fs->FixName_directory(file).c_str()));
+
+			//Now Save Serialitzate OBJ -> Prefab
+			App->Json_seria->SavePrefab(*obj, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory(), file);
+
+			App->scene->gameobjects.push_back(obj); // Need cleen
+			App->scene->DeleteGameObject(obj);
+		}
+		else
+		{
+			ret = false;
+			LOG("Cannot import this fbx.");
+		}
+		aiReleaseImport(scene);
+		break;
+	}
+	case Resource::Type::MATERIAL:
+	{
+		LOG("IMPORTING TEXTURE, File Path: %s", file);
+		//
+		bool isReImport = false;
+		for (int i = 0; i < resourcesToReimport.size(); i++)
+		{
+			if (strcmp(file, resourcesToReimport[i].directoryObj) == 0)
+			{
+				iMaterial->Import(file, resourcesToReimport[i].uuid);
+				isReImport = true;
+				break;
+			}
+		}
+		if (isReImport == false)
+		{
 			iMaterial->Import(file);
-		
-			break;
 		}
-		case Resource::Type::UNKNOWN:
-		{
-			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "UNKNOWN file type dropped on window",
-				file, App->window->window);
-			LOG("UNKNOWN FILE TYPE, File Path: %s", file);
-			break;
-		}
+		break;
+	}
+	case Resource::Type::UNKNOWN:
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "UNKNOWN file type dropped on window",
+			file, App->window->window);
+		LOG("UNKNOWN FILE TYPE, File Path: %s", file);
+		break;
+	}
 
-		default:
-			break;
-		}
+	default:
+		break;
+	}
 
 	return true;
 }

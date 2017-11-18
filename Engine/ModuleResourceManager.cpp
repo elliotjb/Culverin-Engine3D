@@ -25,6 +25,8 @@ ModuleResourceManager::~ModuleResourceManager()
 		it++;
 	}
 	resources.clear();
+	filesReimport.clear();
+	resourcesToReimport.clear();
 }
 
 bool ModuleResourceManager::Start()
@@ -51,13 +53,26 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 
 	if (resourcesToReimport.size() > 0)
 	{
-		LOG("HEHE");
-		// Now Import the new Resources ------
-
-
-		// After reimport, update time of vector of files in filesystem.
-		App->fs->UpdateFilesAsstes();
-		resourcesToReimport.clear();
+		// Now ReImport the new Resources ------
+		// First put all fbx and textures to vector, with this we dont repeat import.
+		filesReimport.push_back(resourcesToReimport[0].directoryObj);
+		for (int i = 1; i < resourcesToReimport.size(); i++)
+		{
+			if (strcmp(filesReimport[filesReimport.size() - 1], resourcesToReimport[i].directoryObj) != 0)
+			{
+				filesReimport.push_back(resourcesToReimport[i].directoryObj);
+			}
+		}
+		// Then delete all Resources that want ReImport
+		std::map<uint, Resource*>::iterator it;
+		for (int i = 0; i < resourcesToReimport.size(); i++)
+		{
+			it = resources.find(resourcesToReimport[i].uuid);
+			it->second->SetState(Resource::State::REIMPORTED);
+			//delete it->second;
+			//resources.erase(it);
+		}
+		reimportNow = true;
 	}
 
 
@@ -92,6 +107,35 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 //	return UPDATE_CONTINUE;
 //}
 
+update_status ModuleResourceManager::PostUpdate(float dt)
+{
+	if (resourcesToReimport.size() > 0 && reimportNow)
+	{
+		// if a Resource state == Resource::State::REIMPORT delete it.
+		std::map<uint, Resource*>::iterator it;
+		for (int i = 0; i < resourcesToReimport.size(); i++)
+		{
+			it = resources.find(resourcesToReimport[i].uuid);
+			if (it->second->GetState() == Resource::State::REIMPORTED)
+			{
+				delete it->second;
+				resources.erase(it);
+			}
+		}
+
+		// Now ReImport
+		ImportFile(filesReimport, resourcesToReimport);
+
+		// After reimport, update time of vector of files in filesystem.
+		App->fs->UpdateFilesAsstes();
+		filesReimport.clear();
+		resourcesToReimport.clear();
+		reimportNow = false;
+	}
+
+	return UPDATE_CONTINUE;
+}
+
 bool ModuleResourceManager::CleanUp()
 {
 	//Save();
@@ -120,6 +164,31 @@ void ModuleResourceManager::ImportFile(std::list<const char*>& file)
 			LOG("[error] This file: %s with this format %s is incorrect!", App->fs->FixName_directory(it._Ptr->_Myval).c_str(), App->fs->GetExtension(it._Ptr->_Myval));
 		}
 		it++;
+	}
+	((Project*)App->gui->winManager[WindowName::PROJECT])->UpdateNow();
+	App->fs->UpdateFilesAsstes();
+}
+
+void ModuleResourceManager::ImportFile(std::vector<const char*>& file, std::vector<ReImport>& resourcesToReimport)
+{
+	for (int i = 0; i < file.size(); i++)
+	{
+		// Get Type file
+		Resource::Type dropped_File_type = Resource::Type::UNKNOWN;
+		dropped_File_type = CheckFileType(file[i]);
+
+		if (dropped_File_type != Resource::Type::UNKNOWN)
+		{
+			if (App->importer->Import(file[i], dropped_File_type, resourcesToReimport))
+			{
+				// Copy file to Specify folder in Assets (This folder is the folder active)
+				//App->fs->CopyFileToAssets(it._Ptr->_Myval, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
+			}
+		}
+		else
+		{
+			//LOG("[error] This file: %s with this format %s is incorrect!", App->fs->FixName_directory(file[i]).c_str(), App->fs->GetExtension(file[i]));
+		}
 	}
 	((Project*)App->gui->winManager[WindowName::PROJECT])->UpdateNow();
 	App->fs->UpdateFilesAsstes();

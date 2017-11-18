@@ -34,6 +34,25 @@ void CompMaterial::preUpdate(float dt)
 		{
 			resourceMaterial = nullptr;
 		}
+		if (resourceMaterial->GetState() == Resource::State::REIMPORTED)
+		{
+			uuidResourceReimported = resourceMaterial->GetUUID();
+			resourceMaterial = nullptr;
+		}
+	}
+	else
+	{
+		if (uuidResourceReimported != 0)
+		{
+			resourceMaterial = (ResourceMaterial*)App->resource_manager->GetResource(uuidResourceReimported);
+			resourceMaterial->NumGameObjectsUseMe++;
+			// Check if loaded!
+			if (resourceMaterial->IsLoadedToMemory() == Resource::State::UNLOADED)
+			{
+				App->importer->iMaterial->LoadResource(std::to_string(resourceMaterial->GetUUID()).c_str(), resourceMaterial);
+			}
+			uuidResourceReimported = 0;
+		}
 	}
 }
 

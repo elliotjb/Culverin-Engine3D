@@ -30,7 +30,7 @@ ImportMaterial::~ImportMaterial()
 //	return UPDATE_CONTINUE;
 //}
 
-bool ImportMaterial::Import(const char* file)
+bool ImportMaterial::Import(const char* file, uint uuid)
 {
 	bool ret = false;
 	char* buffer;
@@ -44,7 +44,15 @@ bool ImportMaterial::Import(const char* file)
 		if (size > 0)
 		{
 			data = new ILubyte[size]; // allocate data buffer
-			uint uuid_mesh = App->random->Int();
+			uint uuid_mesh = 0;
+			if (uuid == 0) // if direfent create a new resource with the resource deleted
+			{
+				uuid_mesh = App->random->Int();
+			}
+			else
+			{
+				uuid_mesh = uuid;
+			}
 			ResourceMaterial* res_material = (ResourceMaterial*)App->resource_manager->CreateNewResource(Resource::Type::MATERIAL, uuid_mesh);
 			res_material->InitInfo(App->fs->FixName_directory(file).c_str());
 			App->Json_seria->SaveMaterial(res_material, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory(), file);
