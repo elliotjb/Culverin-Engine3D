@@ -193,6 +193,7 @@ void CompMaterial::ShowInspectorInfo()
 	{
 		ImGui::Text("Name:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", resourceMaterial->name);
+		ImGui::Image((ImTextureID*)resourceMaterial->GetTextureID(), ImVec2(170, 170), ImVec2(-1, 1), ImVec2(0, 0));
 
 		//ImGui::Checkbox("Render", &render);
 	}
