@@ -60,6 +60,7 @@ void Hierarchy::ShowHierarchy()
 		ImGui::PopID();
 	}
 	ImGui::PopStyleVar();
+
 	// Open Window To Delete GameObject
 	if (toDelete != nullptr)
 	{
@@ -70,35 +71,7 @@ void Hierarchy::ShowHierarchy()
 		}
 		else
 		{
-			static int width = 0;
-			static int height = 0;
-			bool active = true;
-			//SDL_GetWindowSize(App->window->window, &width, &height);
-			//ImGui::SetNextWindowPos(ImVec2(width / 2 - 180, height / 2 - 80));
-			ImGui::SetNextWindowPosCenter();
-			ImGui::Begin("Delete GameObject", &active, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse);
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-			ImGui::Checkbox("Don't ask me next time", &wait_toSelect);
-			ImGui::PopStyleVar();
-			if (ImGui::Button("OK", ImVec2(120, 0)))
-			{
-				showconfirmDelete = !wait_toSelect;
-				dont_ask_me_next_time = wait_toSelect;
-				toDelete->SettoDelete();
-				toDelete = nullptr;
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Cancel", ImVec2(120, 0)))
-			{
-				showconfirmDelete = !wait_toSelect;
-				dont_ask_me_next_time = wait_toSelect;
-				toDelete = nullptr;
-			}
-			if (active == false)
-			{
-				toDelete = nullptr;
-			}
-			ImGui::End();
+			ShowDeleteWindow();
 		}
 	}
 
@@ -171,6 +144,33 @@ void Hierarchy::ShowOptions()
 	}
 }
 
+void Hierarchy::ShowDeleteWindow()
+{
+	ImGui::OpenPopup("Delete GameObject");
+	if (ImGui::BeginPopupModal("Delete GameObject", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Are you sure you wan't to delete '%s'", toDelete->GetName());
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+		ImGui::Checkbox("Don't ask me next time", &wait_toSelect);
+		ImGui::PopStyleVar();
+		if (ImGui::Button("OK", ImVec2(120, 0)))
+		{
+			showconfirmDelete = !wait_toSelect;
+			dont_ask_me_next_time = wait_toSelect;
+			toDelete->SettoDelete();
+			toDelete = nullptr;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
+		{
+			showconfirmDelete = !wait_toSelect;
+			dont_ask_me_next_time = wait_toSelect;
+			toDelete = nullptr;
+		}
+	}
+	ImGui::EndPopup();
+}
+
 void Hierarchy::SetGameObjecttoDelete(GameObject* todelete)
 {
 	toDelete = todelete;
@@ -184,7 +184,7 @@ void Hierarchy::SetGameObjectCopy(GameObject* copy_)
 	}
 }
 
-const GameObject * Hierarchy::GetCopied() const
+const GameObject* Hierarchy::GetCopied() const
 {
 	return copy;
 }

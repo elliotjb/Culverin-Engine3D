@@ -20,6 +20,8 @@ public:
 	update_status Update(float dt);
 	void ShowHierarchy();
 	void ShowOptions();
+	void ShowDeleteWindow();
+
 	// GameObjects* -----------
 	void SetGameObjecttoDelete(GameObject* todelete);
 	void SetGameObjectCopy(GameObject* copy);

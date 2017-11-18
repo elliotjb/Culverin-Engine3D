@@ -606,7 +606,6 @@ update_status ModuleGUI::UpdateConfig(float dt)
 	{
 		((Hierarchy*)winManager[HIERARCHY])->ChangeShowConfirmDelete();
 	}
-
 	ImGui::Checkbox("##ConsoleActive", &App->console->console_activated); ImGui::SameLine();
 	ImGui::Text("Console");
 	ImGui::Checkbox("##HardwareActive", &winManager[HARDWARE]->active[0].active); ImGui::SameLine();

@@ -81,16 +81,16 @@ void CompTransform::Update(float dt)
 	if (toUpdate)
 	{
 		App->console->ClearLog();
-		UpdateMatrix();
+		UpdateMatrix(transform_mode);
 		toUpdate = false;
-		//LOG("LOCAL ---------------");
-		//LOG("x:%.3f y:%.3f z:%.3f POSITION ", position.x, position.y, position.z);
-		//LOG("x:%.3f y:%.3f z:%.3f w:%.3f ROTATION", rotation_euler.x, rotation_euler.y, rotation_euler.z);
-		//LOG("x:%.3f y:%.3f z:%.3f SCALE", scale.x, scale.y, scale.z);
-		//LOG("GLOBAL --------------");
-		//LOG("x:%.3f y:%.3f z:%.3f POSITION_G ", position_global.x, position_global.y, position_global.z);
-		//LOG("x:%.3f y:%.3f z:%.3f w:%.3f ROTATION_G ", rotation_euler_global.x, rotation_euler_global.y, rotation_euler_global.z);
-		//LOG("x:%.3f y:%.3f z:%.3f SCALE", scale.x, scale.y, scale.z);
+		LOG("LOCAL ---------------");
+		LOG("x:%.3f y:%.3f z:%.3f POSITION ", position.x, position.y, position.z);
+		LOG("x:%.3f y:%.3f z:%.3f w:%.3f ROTATION", rotation_euler.x, rotation_euler.y, rotation_euler.z);
+		LOG("x:%.3f y:%.3f z:%.3f SCALE", scale.x, scale.y, scale.z);
+		LOG("GLOBAL --------------");
+		LOG("x:%.3f y:%.3f z:%.3f POSITION_G ", position_global.x, position_global.y, position_global.z);
+		LOG("x:%.3f y:%.3f z:%.3f w:%.3f ROTATION_G ", rotation_euler_global.x, rotation_euler_global.y, rotation_euler_global.z);
+		LOG("x:%.3f y:%.3f z:%.3f SCALE", scale.x, scale.y, scale.z);
 	}
 }
 
@@ -127,9 +127,8 @@ void CompTransform::ShowOptions()
 	}
 	if (ImGui::MenuItem("Reset Rotation", NULL, false, false))
 	{
-		//SetRot(math::float3::zero);
-		//rotation_euler = float3::zero;
-		//ImGui::CloseCurrentPopup();
+		SetRot(math::Quat::identity);
+		ImGui::CloseCurrentPopup();
 	}
 	if (ImGui::MenuItem("Reset Scale"))
 	{
@@ -140,11 +139,6 @@ void CompTransform::ShowOptions()
 
 void CompTransform::ShowInspectorInfo()
 {
-	//// Set Size Windows
-	//static int width;
-	//static int height;
-	//SDL_GetWindowSize(App->window->window, &width, &height);
-
 	// Reset Values Button -------------------------------------------
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3, 0));
 	ImGui::SameLine(ImGui::GetWindowWidth() - 26);
@@ -154,128 +148,42 @@ void CompTransform::ShowInspectorInfo()
 	}
 	ImGui::PopStyleVar();
 
-	// Options Button --------------------------------------
+	// Options Button --------------------------------------------------
 	//ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.00f));
 	if (ImGui::BeginPopup("OptionsTransform"))
 	{
 		ShowOptions();
 		ImGui::EndPopup();
 	}
-	//ImGui::PopStyleColor();
 
-	// ORIGINAL -------------------------------------------------------
-	int op = ImGui::GetWindowWidth() / 4;
-
-	/*if (ImGui::RadioButton("Local", transform_mode == ImGuizmo::LOCAL))
+	// SET TRANSFORM MODE -------------------------------------------------------
+	if (ImGui::RadioButton("Local", transform_mode == ImGuizmo::LOCAL))
 	{
-		SetRot(math::float3::zero);
-		rotation_euler = float3::zero;
-		ImGui::CloseCurrentPopup();
-	} ImGui::SameLine(); App->ShowHelpMarker("Doesn't Work!!");
-	if (ImGui::Button("Reset Size"))
-	{
-		SetScale(math::float3(1, 1, 1));
-		ImGui::CloseCurrentPopup();
+		transform_mode = ImGuizmo::LOCAL;
 	}
-	ImGui::PopStyleVar();
-	ImGui::EndPopup();
-}
-ImGui::PopStyleColor();
-ImGui::Spacing();
-
-// ORIGINAL -------------------------------------------------------
-if (ImGui::RadioButton("Local", transform_mode == ImGuizmo::LOCAL))
-{
-	transform_mode = ImGuizmo::LOCAL;
-}
-ImGui::SameLine();
-if (ImGui::RadioButton("World", transform_mode == ImGuizmo::WORLD))
-{
-	transform_mode = ImGuizmo::WORLD;
-}
-
-switch (transform_mode)
-{
-case (ImGuizmo::MODE::LOCAL):
-{
-	ImGui::Text("Position"); ImGui::SameLine(op + 30);
-	if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
+	ImGui::SameLine();
+	if (ImGui::RadioButton("World", transform_mode == ImGuizmo::WORLD))
 	{
-		SetPos(position);
+		transform_mode = ImGuizmo::WORLD;
 	}
-	ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-	if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
-	{
-		SetRot(rotation_euler);
-	}
-	break;
-}
-case (ImGuizmo::MODE::WORLD):
-{
-	ImGui::Text("Position"); ImGui::SameLine(op + 30);
-	if (ImGui::DragFloat3("##pos", &position_global[0], 0.5f))
-	{
-		SetPosGlobal(position_global);
-	default:
-		break;
-	}*/
 
-	//	ImGui::Text("Position"); ImGui::SameLine(op + 30);
-	//	if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
-	//	{
-	//		SetPos(position);
-	//	}
-	//	ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-	//	if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
-	//	{
-	//		SetRot(rotation_euler);
-	//	}
-	//	ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-	//	if (ImGui::DragFloat3("##rot", &rotation_euler_global[0], 0.5f))
-	//	{
-	//		SetRotGlobal(rotation_euler_global);
-	//	}
-	//	break;
-	//}
-	//default:
-	//	break;
-
-		// ------------------------------------------------------------------
-		// This function let mouse trespassing the screen to enter from the opposite side
-		//if (1)
-		//{
-		//	if (App->input->GetMouseXGlobal() <= 1680 &&
-		//		App->input->GetMouseXGlobal() > 1680 - 10)
-		//	{
-		//		SetCursorPos(30, App->input->GetMouseYGlobal());
-		//	}
-		//	if (App->input->GetMouseXGlobal() >= 0 &&
-		//		App->input->GetMouseXGlobal() < 10)
-		//	{
-		//		SetCursorPos(width - 20, App->input->GetMouseYGlobal());
-		//	}
-		//}
-		// -------------------------------------------------------------------------------
-
-	//	ImGui::TreePop();
-	//}
-	if(App->engineState == EngineState::STOP)
+	// SHOW OUTPUT (depending on mode and if transform is freezed) ---------------
+	if (App->engineState == EngineState::STOP)
 	{
-		ShowEditableTransform();
+		ShowTransform(0.5f); // 0.5f = drag speed of editor variables of the transform
 	}
 	else
 	{
 		if (freeze)
 		{
-			ShowFreezedTrasnform();
+			ShowTransform(0.0f);  // 0.0f = no editable
 		}
 		else
 		{
-			ShowEditableTransform();
+			ShowTransform(0.5f);
 		}
 	}
 	// ------------------------------------------------------------------
-
 	// This function let mouse trespassing the screen to enter from the opposite side
 	//if (1)
 	//{
@@ -291,44 +199,56 @@ case (ImGuizmo::MODE::WORLD):
 	//	}
 	//}
 	// -------------------------------------------------------------------------------
-
+//	ImGui::TreePop();
 	ImGui::TreePop();
-
 }
 
-void CompTransform::ShowEditableTransform()
+
+
+void CompTransform::ShowTransform(float drag_speed)
 {
 	int op = ImGui::GetWindowWidth() / 4;
 
-	ImGui::Text("Position"); ImGui::SameLine(op + 30);
-	if (ImGui::DragFloat3("##pos", &position[0], 0.5f))
+	// Depending transform mode, edit local/world matrix.
+	switch (transform_mode)
 	{
-		SetPos(position);
-	}
-	ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-	if (ImGui::DragFloat3("##rot", &rotation_euler[0], 0.5f))
+	case (ImGuizmo::MODE::LOCAL):
 	{
-		SetRot(rotation_euler);
+		ImGui::Text("Position"); ImGui::SameLine(op + 30);
+		if (ImGui::DragFloat3("##pos", &position[0], drag_speed))
+		{
+			SetPos(position);
+		}
+		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
+		if (ImGui::DragFloat3("##rot", &rotation_euler[0], drag_speed))
+		{
+			SetRot(rotation_euler);
+		}
+		break;
 	}
+	case (ImGuizmo::MODE::WORLD):
+	{
+		ImGui::Text("Position"); ImGui::SameLine(op + 30);
+		if (ImGui::DragFloat3("##pos", &position_global[0], drag_speed))
+		{
+			SetPosGlobal(position_global);
+		}
+		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
+		if (ImGui::DragFloat3("##rot", &rotation_euler_global[0], drag_speed))
+		{
+			SetRotGlobal(rotation_euler_global);
+		}
+		break;
+	}
+	default:
+		break;
+	}
+
 	ImGui::Text("Scale"); ImGui::SameLine(op + 30);
-	if (ImGui::DragFloat3("##scal", &scale[0], 0.5f))
+	if (ImGui::DragFloat3("##scal", &scale[0], drag_speed))
 	{
 		SetScale(scale);
 	}
-}
-
-void CompTransform::ShowFreezedTrasnform()
-{
-	int op = ImGui::GetWindowWidth() / 4;
-	PushStyleColor(ImGuiCol_Text, GImGui->Style.Colors[ImGuiCol_TextDisabled]);
-	ImGui::Text("Position"); ImGui::SameLine(op + 30);
-	ImGui::DragFloat3("##pos", &position[0], 0);
-	ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-	ImGui::DragFloat3("##rot", &rotation_euler[0], 0);
-	ImGui::Text("Scale"); ImGui::SameLine(op + 30);
-	ImGui::DragFloat3("##scal", &scale[0], 0);
-
-	PopStyleColor();
 }
 
 void CompTransform::SetPosGlobal(float3 pos)
@@ -390,32 +310,18 @@ void CompTransform::SetGlobalTransform()
 void CompTransform::UpdateLocalTransform()
 {
 	local_transform = float4x4::identity;
-	std::list<const GameObject*> parents;
 	const GameObject* parent_object = parent;
 
-	// Put all parents of the game object to pass from local to global matrix
+	//If it has no parents, local transform is the same as the global transform
 	if (parent_object->GetParent() == nullptr)
 	{
 		local_transform = global_transform;		
 	}
-
+	//If not, apply parent global transform (Inverted) to get it's local transform
 	else
 	{
-		while (parent_object != nullptr)
-		{
-			parents.push_back(parent_object);
-			parent_object = parent_object->GetParent();
-		}
-
-		std::list<const GameObject*>::reverse_iterator item = parents.rbegin();
-
-		// Multiply parents local transforms (inverted) to get the local transform of this game object
-		while (item != parents.crend())
-		{
-			float4x4 matrix = (*item)->GetComponentTransform()->GetGlobalTransform();
-			local_transform = matrix.Inverted() * local_transform;
-			item++;
-		}
+		CompTransform* parent_transform = parent_object->GetParent()->GetComponentTransform();
+		local_transform = parent_transform->GetGlobalTransform().Inverted() * local_transform;
 	}
 
 	// Fill the output variables from the updated matrix
@@ -446,9 +352,9 @@ void CompTransform::UpdateGlobalTransform()
 		item++;
 	}
 
-	////Fill the output variables from the updated matrix
-	//global_transform.Decompose(position_global, rotation_global, scale);
-	//rotation_euler_global = rotation_global.ToEulerXYZ() * RADTODEG;
+	//Fill the output variables from the updated matrix
+	global_transform.Decompose(position_global, rotation_global, scale);
+	rotation_euler_global = rotation_global.ToEulerXYZ() * RADTODEG;
 }
 
 void CompTransform::UpdateGlobalMatrixRecursive()
@@ -457,28 +363,25 @@ void CompTransform::UpdateGlobalMatrixRecursive()
 	parent->UpdateChildsMatrices();
 }
 
-void CompTransform::UpdateMatrix()
+void CompTransform::UpdateMatrix(ImGuizmo::MODE mode)
 {
-	//switch (mode)
-	//{
-	//case (ImGuizmo::MODE::LOCAL):
-	//{
-	//	SetLocalTransform();
-	//	UpdateGlobalTransform();
-	//	break;
-	//}
-	//case (ImGuizmo::MODE::WORLD):
-	//{
-	//	SetGlobalTransform();
-	//	UpdateLocalTransform();
-	//	break;
-	//}
-	//default:
-	//	break;
-	//}
-
-	SetLocalTransform();
-	UpdateGlobalTransform();
+	switch (mode)
+	{
+	case (ImGuizmo::MODE::LOCAL): 
+	{
+		SetLocalTransform(); /*First, set local transform from inspector variables*/
+		UpdateGlobalTransform(); /*Then, update global matrix*/
+		break;
+	}
+	case (ImGuizmo::MODE::WORLD):
+	{
+		SetGlobalTransform(); /*First, set global transform from inspector variables*/
+		UpdateLocalTransform(); /*Then, update local matrix*/
+		break;
+	}
+	default:
+		break;
+	}
 
 	// Update Global matrices of all children
 	parent->UpdateChildsMatrices();

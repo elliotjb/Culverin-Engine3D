@@ -25,8 +25,7 @@ public:
 	void Update(float dt);
 	void ShowOptions();
 	void ShowInspectorInfo();
-	void ShowEditableTransform();
-	void ShowFreezedTrasnform();
+	void ShowTransform(float drag_speed);
 
 	void SetPosGlobal(float3 pos);
 	void SetRotGlobal(float3 rot);
@@ -41,7 +40,7 @@ public:
 	void UpdateGlobalMatrixRecursive();
 
 	void ResetMatrix();
-	void UpdateMatrix();
+	void UpdateMatrix(ImGuizmo::MODE mode);
 	//void MultMatrix(float4x4 matrix);
 
 	float3 GetPos() const;
