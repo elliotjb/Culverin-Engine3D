@@ -60,10 +60,12 @@ public:
 	void UpdateFilesAsstes();
 	void CheckNowfilesAssets();
 
-
+	// Deletes-----
 	void DeleteFiles(std::vector<FilesNew>& files);
 	void DeleteFolders(std::vector<FoldersNew>& folders);
 	void DeleteAllFilesAssets(std::vector<AllFiles>& filesAssets);
+
+	bool DeleteFileLibrary(const char* file, DIRECTORY_IMPORT directory);
 
 	bool CheckIsFileExist(const std::string & name);
 

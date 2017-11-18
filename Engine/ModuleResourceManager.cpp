@@ -34,7 +34,7 @@ bool ModuleResourceManager::Start()
 	perf_timer.Start();
 
 	CreateResourceCube();
-	Load();
+	//Load();
 
 	Start_t = perf_timer.ReadMs();
 	return true;
@@ -131,6 +131,15 @@ update_status ModuleResourceManager::PostUpdate(float dt)
 			it = resources.find(resourcesToReimport[i].uuid);
 			if (it->second->GetState() == Resource::State::REIMPORTED)
 			{
+				// First Delete file save in Library
+				if (it->second->GetType() == Resource::Type::MATERIAL)
+				{
+					App->fs->DeleteFileLibrary(std::to_string(it->second->GetUUID()).c_str(), DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY_MATERIALS);
+				}
+				else if (it->second->GetType() == Resource::Type::MESH)
+				{
+					App->fs->DeleteFileLibrary(std::to_string(it->second->GetUUID()).c_str(), DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY_MESHES);
+				}
 				delete it->second;
 				resources.erase(it);
 			}

@@ -72,11 +72,12 @@ update_status ModuleFS::PreUpdate(float dt)
 		//uint size = LoadFile(files[1].c_str(), &buffer);
 		//int x = 0;
 
-		//CopyFileToAssets("C:\\Users\\elliotjb\\Desktop\\street\\Street environment_V01.FBX", "C:\\Users\\elliotjb\\Desktop\\3D-Engine\\Street environment_V01.FBX");
-
+		//CopyFileToAssets("C:\\Users\\Administrador\\Documents\\GitHub\\3D-Engine\\Engine\\Game\\Assets\\TEST_Time.png", "C:\\Users\\Administrador\\Documents\\GitHub\\3D-Engine\\Engine\\Game\\Library\\TEST_Time.png");
+		//
 		//uint temp = App->random->Int();
 		//LOG("%i", temp);
 	}
+
 	if (checkAssets.ReadSec() > 20)
 	{
 		checkAssets.Start();
@@ -352,6 +353,44 @@ void ModuleFS::DeleteAllFilesAssets(std::vector<AllFiles>& filesAssets)
 		RELEASE_ARRAY(filesAssets[i].file_name);
 	}
 	filesAssets.clear();
+}
+
+bool ModuleFS::DeleteFileLibrary(const char* file, DIRECTORY_IMPORT directory)
+{
+	std::string temp = file;
+	switch (directory)
+	{
+	case IMPORT_DEFAULT:
+	{
+		break;
+	}
+	case IMPORT_DIRECTORY_ASSETS:
+	{
+		temp = DIRECTORY_ASSETS + temp;
+		break;
+	}
+	case IMPORT_DIRECTORY_LIBRARY:
+	{
+		temp = DIRECTORY_LIBRARY + temp;
+		break;
+	}
+	case IMPORT_DIRECTORY_LIBRARY_MESHES:
+	{
+		temp = DIRECTORY_LIBRARY_MESHES + temp;
+		break;
+	}
+	case IMPORT_DIRECTORY_LIBRARY_MATERIALS:
+	{
+		temp = DIRECTORY_LIBRARY_MATERIALS + temp;
+		break;
+	}
+	}
+	if (std::remove(temp.c_str()) == 0)
+	{
+		LOG("File Removed");
+		return true;
+	}
+	return false;
 }
 
 uint ModuleFS::LoadFile(const char* file, char** buffer, DIRECTORY_IMPORT directory)
