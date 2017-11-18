@@ -70,7 +70,7 @@ CompCamera::~CompCamera()
 
 void CompCamera::preUpdate(float dt)
 {
-	if (culling && App->engineState != EngineState::STOP)
+	if (culling)
 	{
 		// Iterate All GameObjects and apply culling
 		DoCulling();
@@ -181,6 +181,7 @@ void CompCamera::ShowInspectorInfo()
 
 	if (ImGui::Checkbox("Culling", &culling))
 	{
+		App->scene->FillStaticObjectsVector();
 		if (!culling)
 		{
 			UnCull();

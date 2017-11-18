@@ -167,18 +167,22 @@ update_status Scene::UpdateConfig(float dt)
 
 		if(ImGui::Button("UPDATE QUADTREE"))	
 		{ 
-			quadtree.root_node->Clear();
-			quadtree.Bake(App->scene->gameobjects);
+			if (App->engineState == EngineState::STOP)
+			{
+				quadtree.root_node->Clear();
+				quadtree.Bake(App->scene->gameobjects);
+			}
+			else
+			{
+				LOG("Update Quadtree not possible while GAME MODE");
+			}
 		}
-
 		ImGui::TreePop();
 	}
 	else
 	{
 		ImGui::PopStyleColor();
 	}
-
-
 	ImGui::PopItemWidth();
 	return UPDATE_CONTINUE;
 }
