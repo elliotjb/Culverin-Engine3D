@@ -136,7 +136,7 @@ void ModuleFS::GetAllFolders(std::experimental::filesystem::path path, std::stri
 				FoldersNew folder_temp;
 
 				folder_temp.directory_name = ConverttoConstChar(iter->path().string());
-				folder_temp.file_name = FixName_directory(iter->path().string()).c_str();
+				folder_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
 				if (folderActive == folder_temp.directory_name)
 				{
 					folder_temp.active = true;
@@ -165,7 +165,7 @@ void ModuleFS::GetAllFoldersChild(std::experimental::filesystem::path path, std:
 		{
 			FoldersNew folder_temp;
 			folder_temp.directory_name = ConverttoConstChar(iter->path().string());
-			folder_temp.file_name = FixName_directory(iter->path().string()).c_str();
+			folder_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
 			if (folderActive == folder_temp.directory_name)
 			{
 				folder_temp.active = true;
@@ -198,7 +198,7 @@ void ModuleFS::GetAllFiles(std::experimental::filesystem::path path, std::vector
 			else
 				files_temp.directory_name_next = nullptr;
 
-			files_temp.file_name = FixName_directory(iter->path().string()).c_str();
+			files_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
 			files_temp.file_type = ((Project*)App->gui->winManager[PROJECT])->SetType(files_temp.file_name);
 			files.push_back(files_temp);
 		}
@@ -225,7 +225,7 @@ void ModuleFS::GetAllFilesAssets(std::experimental::filesystem::path path, std::
 			std::time_t cftime = decltype(temp)::clock::to_time_t(temp);
 			files_temp.ftime = cftime;
 			files_temp.directory_name = ConverttoConstChar(iter->path().string());
-			files_temp.file_name = FixName_directory(iter->path().string()).c_str();
+			files_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
 			files.push_back(files_temp);
 			if (stdfs::is_directory(*iter))
 			{
@@ -581,6 +581,14 @@ std::string ModuleFS::GetExtension(std::string file)
 	size_t EndName = file.find_last_of(".");
 	file = file.substr(EndName + 1);
 	return file;
+}
+
+char* ModuleFS::ConverttoChar(std::string name)
+{
+	char* temp = new char[name.length() + 1];
+	strcpy(temp, name.c_str());
+	temp[name.length()] = '\0';
+	return temp;
 }
 
 const char* ModuleFS::ConverttoConstChar(std::string name)

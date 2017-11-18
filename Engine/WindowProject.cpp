@@ -212,14 +212,7 @@ void Project::Folders_update(std::vector<FoldersNew>& folders)
 			if (ImGui::BeginPopupContextItem("rename context menu"))
 			{
 				ImGui::Text("Edit name:");
-				char name[50];
-				strcpy_s(name, 50, folders[i].file_name);
-				if (ImGui::InputText("", name, 50, ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue))
-				{
-					std::string temp = name;
-					folders[i].file_name = temp.c_str();
-				}
-				//ImGui::InputText("##edit2", folders[i].file_name, 256);
+				ImGui::InputText("##edit2", folders[i].file_name, 256);
 				ImGui::Spacing();
 				if (ImGui::Button("Create New Folder"))
 				{

@@ -26,7 +26,7 @@ struct FilesNew
 {
 	const char* directory_name = nullptr;
 	const char* directory_name_next = nullptr;
-	const char* file_name = nullptr;
+	char* file_name = nullptr;
 	TYPE_FILE file_type;
 };
 
@@ -34,7 +34,7 @@ struct FoldersNew
 {
 	const char* directory_name = nullptr;
 	bool active = false;
-	const char* file_name = nullptr;
+	char* file_name = nullptr;
 	std::vector<FoldersNew> folder_child;
 };
 
