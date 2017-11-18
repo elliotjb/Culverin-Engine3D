@@ -34,7 +34,7 @@ bool ModuleResourceManager::Start()
 	perf_timer.Start();
 
 	CreateResourceCube();
-	//Load();
+	Load();
 
 	Start_t = perf_timer.ReadMs();
 	return true;
@@ -89,10 +89,6 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 		}
 		it++;
 	}
-
-
-
-
 	//static bool waitUpdate = false;
 	//if (waitUpdate)
 	//{
@@ -155,7 +151,7 @@ update_status ModuleResourceManager::PostUpdate(float dt)
 
 bool ModuleResourceManager::CleanUp()
 {
-	//Save();
+	Save();
 	return true;
 }
 
@@ -396,12 +392,13 @@ void ModuleResourceManager::Save()
 		config = json_value_get_object(config_file);
 		config_node = json_object_get_object(config, "Resources");
 		json_object_clear(config_node);
-		json_object_dotset_number_with_std(config_node, "Info.Number of Resources", resources.size());
+		int numResources = resources.size() - ResourcePrimitive;
+		json_object_dotset_number_with_std(config_node, "Info.Number of Resources", numResources);
 
 		// Update Resoruces
 		std::map<uint, Resource*>::iterator it = resources.begin();
-		it++;
-		for (uint i = 0; i < resources.size(); i++)
+		it++; // ++ = Resource "Cube" dont save - ResourcePrimitive
+		for (uint i = 0; i < numResources; i++)
 		{
 			std::string name = "Resource " + std::to_string(i);
 			name += ".";

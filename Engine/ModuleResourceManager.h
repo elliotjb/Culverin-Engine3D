@@ -6,6 +6,8 @@
 #include <list>
 #include "Math\float3.h"
 
+#define ResourcePrimitive 1
+
 struct Vertex;
 
 struct ReImport
