@@ -301,7 +301,8 @@ bool ModuleFS::AnyfileModificated(std::vector<AllFiles>& files)
 bool ModuleFS::IsPermitiveExtension(const char* extension)
 {
 	if (strcmp(extension, "png") == 0 || strcmp(extension, "jpg") == 0 ||
-		strcmp(extension, "fbx") == 0 || strcmp(extension, "obj") == 0)
+		strcmp(extension, "fbx") == 0 || strcmp(extension, "obj") == 0 || 
+		strcmp(extension, "tga") == 0)
 	{
 		return true;
 	}

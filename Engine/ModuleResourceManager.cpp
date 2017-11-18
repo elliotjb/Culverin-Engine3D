@@ -274,7 +274,7 @@ Resource::Type ModuleResourceManager::CheckFileType(const char* filedir)
 			*it = tolower(*it);
 		}
 
-		if (file_type == "png" || file_type == "jpg" || file_type == "dds")
+		if (file_type == "png" || file_type == "jpg" || file_type == "dds" || file_type == "tga")
 		{
 			return Resource::Type::MATERIAL;
 		}

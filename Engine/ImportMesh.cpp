@@ -137,7 +137,9 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 		{
 			aiString str;
 			mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
-			ResourceMaterial* resource_mat = (ResourceMaterial*)App->resource_manager->GetResource(str.C_Str());
+			std::string normalPath = str.C_Str();
+			normalPath = App->fs->FixName_directory(normalPath);
+			ResourceMaterial* resource_mat = (ResourceMaterial*)App->resource_manager->GetResource(normalPath.c_str());
 			if (resource_mat != nullptr)
 			{
 				if (resource_mat->IsLoadedToMemory() == Resource::State::UNLOADED)
