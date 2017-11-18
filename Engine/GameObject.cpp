@@ -25,7 +25,7 @@ GameObject::GameObject(GameObject* parent) :parent(parent)
 	}
 }
 
-GameObject::GameObject(char* nameGameObject, uint uuid)
+GameObject::GameObject(const char* nameGameObject, uint uuid)
 {
 	Enable();
 	SetVisible(true);
@@ -36,9 +36,9 @@ GameObject::GameObject(char* nameGameObject, uint uuid)
 GameObject::GameObject(const GameObject& copy)
 {
 	uid = App->random->Int();
-	std::string nametemp = copy.GetName();
+	std::string nametemp = copy.name;
 	nametemp += " (copy)";
-	name = App->GetCharfromConstChar(nametemp.c_str());
+	name = nametemp.c_str();
 	//TODO ->add "(X)" to the name
 	active = copy.isActive();
 	visible = copy.isVisible();
@@ -183,7 +183,6 @@ bool GameObject::Enable()
 	{
 		active = true;
 	}
-
 	return active;
 }
 
@@ -196,7 +195,7 @@ bool GameObject::Disable()
 	return active;
 }
 
-void GameObject::SetName(char * name)
+void GameObject::SetName(const char* name)
 {
 	this->name = name;
 }
@@ -269,7 +268,6 @@ void GameObject::ShowHierarchy()
 			childs[i]->ShowHierarchy();
 			ImGui::PopID();
 		}
-
 		ImGui::TreePop();
 	}
 	else
@@ -364,6 +362,7 @@ void GameObject::ShowInspectorInfo()
 		
 		static bool window_active = false;
 		static bool static_object = false;
+
 		ImGui::Text(""); ImGui::SameLine(8);
 		if (ImGui::Checkbox("##2", &static_obj))
 		{
@@ -846,7 +845,7 @@ GameObject* GameObject::GetChildbyName(const char* name) const
 	return nullptr;
 }
 
-uint GameObject::GetIndexChildbyName(const char * name) const
+uint GameObject::GetIndexChildbyName(const char* name) const
 {
 	if (childs.size() > 0)
 	{
@@ -894,7 +893,7 @@ void GameObject::AddChildGameObject_Copy(const GameObject* child)
 	temp->uid = App->random->Int();
 	std::string temp_name = temp->name;
 	temp_name += " (1)";
-	temp->name = App->GetCharfromConstChar(temp_name.c_str());
+	temp->name = temp_name.c_str();
 	temp_name.clear();
 	temp->parent = this;
 	childs.push_back(temp);

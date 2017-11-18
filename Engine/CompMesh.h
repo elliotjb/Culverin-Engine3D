@@ -45,7 +45,7 @@ public:
 	void Load(const JSON_Object* object, std::string name);
 
 public:
-	char* name = "MESH NAME";
+	const char* name = "MESH NAME";
 	bool hasNormals = false;
 
 	ResourceMesh* resourceMesh = nullptr;

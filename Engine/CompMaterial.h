@@ -33,7 +33,6 @@ public:
 private:
 	Color color;
 	bool selectMaterial = false;
-	//Texture texture;
 	uint uuid_material = 0;
 	uint uuidResourceReimported = 0;
 };

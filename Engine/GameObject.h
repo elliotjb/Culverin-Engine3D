@@ -15,7 +15,7 @@ class GameObject
 {
 public:
 	GameObject(GameObject* parent);
-	GameObject(char* nameGameObject, uint uuid);
+	GameObject(const char* nameGameObject, uint uuid);
 	GameObject(const GameObject& copy);
 	~GameObject();
 
@@ -25,7 +25,7 @@ public:
 	bool Enable();
 	bool Disable();
 
-	void SetName(char* name);
+	void SetName(const char* name);
 	const char* GetName() const;
 
 	// EDITOR METHODS ------------------
@@ -97,7 +97,7 @@ public:
 
 private:
 	uint uid = 0;
-	char* name = "CHANGE THIS";
+	const char* name = "CHANGE THIS";
 	bool active = false;
 	bool visible = false;
 	bool static_obj = false;
