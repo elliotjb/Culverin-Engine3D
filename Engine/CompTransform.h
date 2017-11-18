@@ -46,6 +46,7 @@ public:
 	//void MultMatrix(float4x4 matrix);
 
 	float3 GetPos() const;
+	float3 GetPosGlobal() const;
 	Quat GetRot() const;
 	float3 GetRotEuler() const;
 	float3 GetScale() const;
@@ -64,6 +65,7 @@ private:
 	Axis axis;
 	bool toUpdate = false;
 	bool freeze = false;
+	bool editing_transform = false;
 
 	// Output Values ----------------------
 	float3 position = { 0, 0, 0 };

@@ -52,15 +52,23 @@ void CompTransform::Init(float3 p, float3 r, float3 s)
 
 void CompTransform::Update(float dt)
 {
-	if (((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected() == parent)
+	if (App->input->GetKey(SDL_BUTTON_LEFT) == KEY_UP)
+	{
+		editing_transform = false;
+	}
+
+	// Show gizmo when object selected
+	if (((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected())
 	{
 		ImGuizmo::Enable(true);
+
+		// Enable modifications through gizmos only if you first clicked the gizmo
 
 		static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
 
 		screen = ((SceneWorld*)App->gui->winManager[SCENEWORLD])->GetWindowParams();
 		ImGuizmo::SetRect(screen.x, screen.y, screen.z, screen.w);
-		
+
 		global_transposed = global_transform.Transposed();
 
 		// SET GUIZMO OPERATION ----------------------------------
@@ -78,15 +86,16 @@ void CompTransform::Update(float dt)
 		}
 
 		ImGuizmo::Manipulate(App->camera->GetViewMatrix(), App->camera->GetProjMatrix(), mCurrentGizmoOperation, transform_mode, global_transposed.ptr());
-		
-		if (ImGuizmo::IsUsing())
+
+		// Only edit transforms with guizmo if it's selected first
+		if (ImGuizmo::IsUsing() && App->input->GetKey(SDL_SCANCODE_LALT) != KEY_REPEAT && !editing_transform && !freeze)
 		{
 			global_transposed.Transpose();
-			
+
 			//If it's a root node, global and local transforms are the same
 			if (parent->GetParent() == nullptr)
 			{
-				local_transform = global_transposed;				
+				local_transform = global_transposed;
 			}
 			else
 			{
@@ -107,25 +116,6 @@ void CompTransform::Update(float dt)
 		App->console->ClearLog();
 		UpdateMatrix(transform_mode);
 		toUpdate = false;
-		LOG("LOCAL ---------------");
-		LOG("x:%.3f y:%.3f z:%.3f POSITION ", position.x, position.y, position.z);
-		LOG("x:%.3f y:%.3f z:%.3f w:%.3f ROTATION", rotation_euler.x, rotation_euler.y, rotation_euler.z);
-		LOG("x:%.3f y:%.3f z:%.3f SCALE", scale.x, scale.y, scale.z);
-		LOG("GLOBAL --------------");
-		LOG("x:%.3f y:%.3f z:%.3f POSITION_G ", position_global.x, position_global.y, position_global.z);
-		LOG("x:%.3f y:%.3f z:%.3f w:%.3f ROTATION_G ", rotation_euler_global.x, rotation_euler_global.y, rotation_euler_global.z);
-		LOG("x:%.3f y:%.3f z:%.3f SCALE", scale.x, scale.y, scale.z);
-		LOG("///////////////////////////////////////")
-		LOG("LOCAL ---------------");
-		LOG("%.3f %.3f %.3f %.3f", local_transform.v[0][0], local_transform.v[0][1], local_transform.v[0][2], local_transform.v[0][3]);
-		LOG("%.3f %.3f %.3f %.3f", local_transform.v[1][0], local_transform.v[1][1], local_transform.v[1][2], local_transform.v[1][3]);
-		LOG("%.3f %.3f %.3f %.3f", local_transform.v[2][0], local_transform.v[2][1], local_transform.v[2][2], local_transform.v[2][3]);
-		LOG("%.3f %.3f %.3f %.3f", local_transform.v[3][0], local_transform.v[3][1], local_transform.v[3][2], local_transform.v[3][3]);
-		LOG("GLOBAL --------------");
-		LOG("%.3f %.3f %.3f %.3f", global_transform.v[0][0], global_transform.v[0][1], global_transform.v[0][2], global_transform.v[0][3]);
-		LOG("%.3f %.3f %.3f %.3f", global_transform.v[1][0], global_transform.v[1][1], global_transform.v[1][2], global_transform.v[1][3]);
-		LOG("%.3f %.3f %.3f %.3f", global_transform.v[2][0], global_transform.v[2][1], global_transform.v[2][2], global_transform.v[2][3]);
-		LOG("%.3f %.3f %.3f %.3f", global_transform.v[3][0], global_transform.v[3][1], global_transform.v[3][2], global_transform.v[3][3]);
 	}
 }
 
@@ -253,16 +243,19 @@ void CompTransform::ShowTransform(float drag_speed)
 		if (ImGui::DragFloat3("##pos", &position[0], drag_speed))
 		{
 			SetPos(position);
+			editing_transform = true;
 		}
 		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
 		if (ImGui::DragFloat3("##rot", &rotation_euler[0], drag_speed))
 		{
 			SetRot(rotation_euler);
+			editing_transform = true;
 		}
 		ImGui::Text("Scale"); ImGui::SameLine(op + 30);
 		if (ImGui::DragFloat3("##scale", &scale[0], drag_speed))
 		{
 			SetScale(scale);
+			editing_transform = true;
 		}
 		break;
 	}
@@ -443,6 +436,11 @@ void CompTransform::UpdateMatrix(ImGuizmo::MODE mode)
 float3 CompTransform::GetPos() const
 {
 	return position;
+}
+
+float3 CompTransform::GetPosGlobal() const
+{
+	return position_global;
 }
 
 Quat CompTransform::GetRot() const
