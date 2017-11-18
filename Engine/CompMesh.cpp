@@ -65,6 +65,25 @@ void CompMesh::preUpdate(float dt)
 		{
 			resourceMesh = nullptr;
 		}
+		if (resourceMesh->GetState() == Resource::State::REIMPORTED)
+		{
+			uuidResourceReimported = resourceMesh->GetUUID();
+			resourceMesh = nullptr;
+		}
+	}
+	else
+	{
+		if (uuidResourceReimported != 0)
+		{
+			resourceMesh = (ResourceMesh*)App->resource_manager->GetResource(uuidResourceReimported);
+			resourceMesh->NumGameObjectsUseMe++;
+			// Check if loaded!
+			if (resourceMesh->IsLoadedToMemory() == Resource::State::UNLOADED)
+			{
+				App->importer->iMesh->LoadResource(std::to_string(resourceMesh->GetUUID()).c_str(), resourceMesh);
+			}
+			uuidResourceReimported = 0;
+		}
 	}
 }
 

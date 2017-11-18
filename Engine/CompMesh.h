@@ -54,5 +54,6 @@ private:
 	bool render = true;
 	bool SelectMesh = false;
 	CompMaterial* material = nullptr;
+	uint uuidResourceReimported = 0;
 
 };
