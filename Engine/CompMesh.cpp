@@ -39,7 +39,10 @@ CompMesh::~CompMesh()
 	//RELEASE_ARRAY(name);
 	if (resourceMesh != nullptr)
 	{
-		resourceMesh->NumGameObjectsUseMe--;
+		if (resourceMesh->NumGameObjectsUseMe > 0)
+		{
+			resourceMesh->NumGameObjectsUseMe--;
+		}
 	}
 	material = nullptr;
 	resourceMesh = nullptr;
@@ -149,7 +152,10 @@ void CompMesh::ShowInspectorInfo()
 		{
 			if (resourceMesh != nullptr)
 			{
-				resourceMesh->NumGameObjectsUseMe--;
+				if (resourceMesh->NumGameObjectsUseMe > 0)
+				{
+					resourceMesh->NumGameObjectsUseMe--;
+				}
 			}
 			resourceMesh = nullptr;
 			ImGui::CloseCurrentPopup();
@@ -198,7 +204,10 @@ void CompMesh::ShowInspectorInfo()
 			{
 				if (resourceMesh != nullptr)
 				{
-					resourceMesh->NumGameObjectsUseMe--;
+					if (resourceMesh->NumGameObjectsUseMe > 0)
+					{
+						resourceMesh->NumGameObjectsUseMe--;
+					}
 				}
 				resourceMesh = temp;
 				resourceMesh->NumGameObjectsUseMe++;
@@ -329,7 +338,10 @@ void CompMesh::SetResource(ResourceMesh* resourse_mesh)
 	{
 		if (resourceMesh != nullptr)
 		{
-			resourceMesh->NumGameObjectsUseMe--;
+			if (resourceMesh->NumGameObjectsUseMe > 0)
+			{
+				resourceMesh->NumGameObjectsUseMe--;
+			}
 		}
 
 		resourceMesh = resourse_mesh;
@@ -368,8 +380,7 @@ void CompMesh::Load(const JSON_Object* object, std::string name)
 		if (resourceMesh != nullptr)
 		{
 			resourceMesh->NumGameObjectsUseMe++;
-			//TODO ELLIOT -> LOAD MESH
-			//const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
+			// LOAD MESH
 			if (resourceMesh->IsLoadedToMemory() == Resource::State::UNLOADED)
 			{
 				App->importer->iMesh->LoadResource(std::to_string(resourceMesh->GetUUID()).c_str(), resourceMesh);			

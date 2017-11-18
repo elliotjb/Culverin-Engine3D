@@ -16,11 +16,27 @@ CompMaterial::CompMaterial(Comp_Type t, GameObject* parent): Component(t, parent
 	color = White;
 }
 
+CompMaterial::CompMaterial(const CompMaterial& copy, GameObject* parent) : Component(Comp_Type::C_CAMERA, parent)
+{
+	uid = App->random->Int();
+	color = copy.color;
+	resourceMaterial = copy.resourceMaterial;
+	if (resourceMaterial != nullptr)
+	{
+		resourceMaterial->NumGameObjectsUseMe++;
+	}
+
+	nameComponent = "Material";
+}
+
 CompMaterial::~CompMaterial()
 {
 	if (resourceMaterial != nullptr)
 	{
-		resourceMaterial->NumGameObjectsUseMe--;
+		if (resourceMaterial->NumGameObjectsUseMe > 0)
+		{
+			resourceMaterial->NumGameObjectsUseMe--;
+		}
 	}
 	resourceMaterial = nullptr;
 }
@@ -152,13 +168,16 @@ void CompMaterial::ShowInspectorInfo()
 		{
 			if (resourceMaterial != nullptr)
 			{
-				resourceMaterial->NumGameObjectsUseMe--;
+				if (resourceMaterial->NumGameObjectsUseMe > 0)
+				{
+					resourceMaterial->NumGameObjectsUseMe--;
+				}
 			}
 			resourceMaterial = nullptr;
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::Separator();
-		if (ImGui::Button("Select Mesh..."))
+		if (ImGui::Button("Select Material..."))
 		{
 			selectMaterial = true;
 			ImGui::CloseCurrentPopup();
@@ -193,7 +212,10 @@ void CompMaterial::ShowInspectorInfo()
 			{
 				if (resourceMaterial != nullptr)
 				{
-					resourceMaterial->NumGameObjectsUseMe--;
+					if (resourceMaterial->NumGameObjectsUseMe > 0)
+					{			
+						resourceMaterial->NumGameObjectsUseMe--;
+					}
 				}
 				resourceMaterial = temp;
 				resourceMaterial->NumGameObjectsUseMe++;
@@ -241,12 +263,14 @@ void CompMaterial::Load(const JSON_Object* object, std::string name)
 	if (resourceID > 0)
 	{
 		resourceMaterial = (ResourceMaterial*)App->resource_manager->GetResource(resourceID);
-		resourceMaterial->NumGameObjectsUseMe++;
-		//TODO ELLIOT -> LOAD MESH
-		//const char* directory = App->GetCharfromConstChar(std::to_string(uuid_mesh).c_str());
-		if (resourceMaterial->IsLoadedToMemory() == Resource::State::UNLOADED)
+		if (resourceMaterial != nullptr)
 		{
-			App->importer->iMaterial->LoadResource(std::to_string(resourceMaterial->GetUUID()).c_str(), resourceMaterial);
+			resourceMaterial->NumGameObjectsUseMe++;
+			// LOAD MATERIAL
+			if (resourceMaterial->IsLoadedToMemory() == Resource::State::UNLOADED)
+			{
+				App->importer->iMaterial->LoadResource(std::to_string(resourceMaterial->GetUUID()).c_str(), resourceMaterial);
+			}
 		}
 	}
 	Enable();

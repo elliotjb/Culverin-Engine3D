@@ -9,6 +9,7 @@ class CompMaterial : public Component
 {
 public:
 	CompMaterial(Comp_Type t, GameObject* parent);
+	CompMaterial(const CompMaterial& copy, GameObject* parent);
 	~CompMaterial();
 
 	void preUpdate(float dt);

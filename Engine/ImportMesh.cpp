@@ -140,9 +140,9 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 			ResourceMaterial* resource_mat = (ResourceMaterial*)App->resource_manager->GetResource(str.C_Str());
 			if (resource_mat != nullptr)
 			{
-				if (resource_mat->IsLoadedToMemory() == false)
+				if (resource_mat->IsLoadedToMemory() == Resource::State::UNLOADED)
 				{
-					std::string temp = str.C_Str();
+					std::string temp = std::to_string(resource_mat->GetUUID());
 					App->importer->iMaterial->LoadResource(temp.c_str(), resource_mat);
 				}
 				materialComp->resourceMaterial = resource_mat;

@@ -400,6 +400,7 @@ void ModuleResourceManager::Save()
 
 		// Update Resoruces
 		std::map<uint, Resource*>::iterator it = resources.begin();
+		it++;
 		for (uint i = 0; i < resources.size(); i++)
 		{
 			std::string name = "Resource " + std::to_string(i);

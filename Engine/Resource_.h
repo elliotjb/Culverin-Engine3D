@@ -27,7 +27,10 @@ public:
 	void SetState(Resource::State state);
 
 	virtual void DeleteToMemory(){}
-	virtual Resource::State IsLoadedToMemory(){}
+	virtual Resource::State IsLoadedToMemory()
+	{
+		return state;
+	}
 
 protected:
 	Type type = Type::UNKNOWN;
@@ -36,6 +39,6 @@ protected:
 
 public:
 	char* name = "Name Resource";
-	int NumGameObjectsUseMe = 0;
+	uint NumGameObjectsUseMe = 0;
 };
 

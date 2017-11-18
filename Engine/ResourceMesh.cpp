@@ -4,6 +4,7 @@
 
 ResourceMesh::ResourceMesh(uint uid) : Resource(uid, Resource::Type::MESH, Resource::State::UNLOADED)
 {
+	NumGameObjectsUseMe = 0;
 }
 
 

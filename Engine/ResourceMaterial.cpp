@@ -4,6 +4,7 @@
 
 ResourceMaterial::ResourceMaterial(uint uuid) : Resource(uuid, Resource::Type::MATERIAL, Resource::State::UNLOADED)
 {
+	NumGameObjectsUseMe = 0;
 }
 
 
