@@ -96,14 +96,15 @@ void Hierarchy::ShowOptions()
 		{
 			if (selected->HaveParent())
 			{
-				// TODO ELLIOT
-				// selected->GetParent()->AddChildGameObject_Copy(copie);
-				// Copied = nullptr;
+				GameObject* copied = new GameObject(*copy);
+				selected->GetParent()->AddChildGameObject_Load(copied);
+				copy = nullptr;
 			}
 			else
 			{
-				// App->scene->gameobjects.push_back(GameObject Copied);
-				// Copied = nullptr;
+				GameObject* copied = new GameObject(*copy);
+				App->scene->gameobjects.push_back(copied);
+				copy = nullptr;
 			}
 		}
 	}

@@ -36,7 +36,9 @@ GameObject::GameObject(char* nameGameObject, uint uuid)
 GameObject::GameObject(const GameObject& copy)
 {
 	uid = App->random->Int();
-	name = App->GetCharfromConstChar(copy.GetName());
+	std::string nametemp = copy.GetName();
+	nametemp += " (copy)";
+	name = App->GetCharfromConstChar(nametemp.c_str());
 	//TODO ->add "(X)" to the name
 	active = copy.isActive();
 	visible = copy.isVisible();
@@ -679,12 +681,32 @@ void GameObject::AddComponentCopy(const Component& copy)
 	{
 		CompMesh* mesh = new CompMesh((CompMesh&)copy, this); //Mesh copy constructor
 		components.push_back(mesh);
+		/* Link Material to the Mesh if exists */
+		CompMaterial* material_link = (CompMaterial*)FindComponentByType(Comp_Type::C_MATERIAL);
+		if (material_link != nullptr)
+		{
+			mesh->LinkMaterial(material_link);
+		}
+		else
+		{
+			LOG("Havent Material");
+		}
 		break;
 	}
 	case (Comp_Type::C_MATERIAL):
 	{
 		CompMaterial* material = new CompMaterial((CompMaterial&)copy, this); //Material copy constructor
 		components.push_back(material);
+		/* Link Material to the Mesh if exists */
+		CompMesh* mesh_to_link = (CompMesh*)FindComponentByType(Comp_Type::C_MESH);
+		if (mesh_to_link != nullptr)
+		{
+			mesh_to_link->LinkMaterial(material);
+		}
+		else
+		{
+			LOG("MATERIAL not linked to any mesh");
+		}
 		break;
 	}
 	case (Comp_Type::C_CAMERA):

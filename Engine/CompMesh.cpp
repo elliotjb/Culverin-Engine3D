@@ -28,8 +28,9 @@ CompMesh::CompMesh(const CompMesh& copy, GameObject* parent) :Component(Comp_Typ
 	{
 		resourceMesh->NumGameObjectsUseMe++;
 	}
-	material = copy.material;
+	//material = material;
 	hasNormals = copy.hasNormals;
+	render = copy.render;
 
 	nameComponent = "Mesh";
 }

@@ -338,6 +338,15 @@ void Scene::DeleteGameObjects(std::vector<GameObject*>& gameobjects, bool isMain
 		}
 		else
 		{
+			// First of all, Set nullptr all pointer to this GameObject
+			if (App->camera->GetFocus() == gameobjects[i])
+			{
+				App->camera->SetFocusNull();
+			}
+			if (((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected() == gameobjects[i])
+			{
+				((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
+			}
 			// First delete all components
 			gameobjects[i]->DeleteAllComponents();
 			// Now Delete GameObject

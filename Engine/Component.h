@@ -51,7 +51,7 @@ public:
 
 private:
 	Comp_Type type = C_UNKNOWN;
-	bool active = false;
+	bool active = true;
 
 
 protected:

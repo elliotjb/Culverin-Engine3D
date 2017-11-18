@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Application.h"
 
-Component::Component(Comp_Type t, GameObject* parent) :type(t), parent(parent)
+Component::Component(Comp_Type t, GameObject* parent) :type(t), parent(parent), active(true)
 {
 }
 

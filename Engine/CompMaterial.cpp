@@ -11,9 +11,9 @@
 
 CompMaterial::CompMaterial(Comp_Type t, GameObject* parent): Component(t, parent)
 {
-	nameComponent = "Material";
 	uid = App->random->Int();
 	color = White;
+	nameComponent = "Material";
 }
 
 CompMaterial::CompMaterial(const CompMaterial& copy, GameObject* parent) : Component(Comp_Type::C_CAMERA, parent)
