@@ -218,7 +218,6 @@ update_status ModuleWindow::UpdateConfig(float dt)
 	if (ImGui::Button("APPLY##win_resolution"))
 	{
 		SetWindowRes(selected_res);
-
 	}
 	const char* win_opt[] = { "Fullscreen", "Full Desktop", "Windowed" };
 	ImGui::Combo("Window Options", &selected_op, win_opt, IM_ARRAYSIZE(win_opt)); ImGui::SameLine();

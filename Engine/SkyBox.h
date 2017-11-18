@@ -19,10 +19,12 @@ public:
 	virtual ~SkyBox();
 
 	void InitSkybox();
-	void DrawSkybox(float size, float3 pos);
+	void DrawSkybox(float size, float3 pos, uint i);
 	void DeleteSkyboxTex();
 
+	uint GetTextureID(uint i) const;
+
 private:
-	uint skybox[6];
+	uint texture[2][6];
 };
 

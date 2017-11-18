@@ -60,9 +60,10 @@ public:
 	GameObject* drag = nullptr;
 	GLuint icon_options_transform;
 	SkyBox* skybox = nullptr;
+	int skybox_index = 0;
+	bool draw_skybox = true;
 
 private:
 	int size_plane = 0;
 	float size_quadtree = 0;
-
 };

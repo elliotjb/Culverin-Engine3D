@@ -206,9 +206,11 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	perf_timer.Start();
 	
-	// Draw Skybox
-	App->scene->skybox->DrawSkybox(500, active_camera->frustum.pos);
-
+	// Draw Skybox (direct mode for now)
+	if (App->scene->draw_skybox)
+	{
+		App->scene->skybox->DrawSkybox(800, active_camera->frustum.pos, App->scene->skybox_index);
+	}
 	//Draw Test Cube
 	//App->scene->DrawCube(5);
 

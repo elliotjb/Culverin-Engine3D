@@ -69,6 +69,8 @@ bool Scene::Start()
 	//Init Skybox
 	skybox = new SkyBox();
 	skybox->InitSkybox();
+	skybox_index = 1;
+	draw_skybox = true;
 
 	Start_t = perf_timer.ReadMs();
 	return true;
@@ -159,8 +161,9 @@ update_status Scene::UpdateConfig(float dt)
 	ImGui::PushItemWidth(ImGui::GetWindowWidth() / 4);
 	ImGui::SliderInt("Plane Size", &size_plane, 5, 1000);
 
+	//QUADTREE EDITOR ----------------------------------
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.00f, 0.761f, 0.00f, 1.00f));
-	if (ImGui::TreeNodeEx("QUADTREE"))
+	if (ImGui::TreeNodeEx("QUADTREE", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::PopStyleColor();
 
@@ -168,7 +171,7 @@ update_status Scene::UpdateConfig(float dt)
 		ImGui::Text("Draw Quadtree");
 		ImGui::SliderFloat("Size", &size_quadtree, 50, 300);
 
-		if(ImGui::Button("UPDATE QUADTREE"))	
+		if(ImGui::Button("UPDATE QUADTREE"))
 		{ 
 			if (App->engineState == EngineState::STOP)
 			{
@@ -186,6 +189,34 @@ update_status Scene::UpdateConfig(float dt)
 			{
 				LOG("Update Quadtree not possible while GAME MODE");
 			}
+		}
+		ImGui::TreePop();
+	}
+	else
+	{
+		ImGui::PopStyleColor();
+	}
+
+	// SKYBOX EDITOR -----------------------------------
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.00f, 0.761f, 0.00f, 1.00f));
+	if (ImGui::TreeNodeEx("SKYBOX", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::PopStyleColor();
+		const char* skybox_selection[] = { "AFTERNOON", "SUNNY DAY", "NONE" };
+		if (ImGui::Combo("Select Skybox", &skybox_index, skybox_selection, IM_ARRAYSIZE(skybox_selection)))
+		{
+			if (skybox_index == 2) // Selected "NONE"
+			{
+				draw_skybox = false;
+			}
+			else
+			{
+				draw_skybox = true;
+			}
+		}
+		if (draw_skybox)
+		{
+			ImGui::Image((ImTextureID*)skybox->GetTextureID(skybox_index), ImVec2(170, 170), ImVec2(1, 1), ImVec2(0, 0));
 		}
 		ImGui::TreePop();
 	}
