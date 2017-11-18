@@ -82,7 +82,6 @@ public:
 	bool SaveConfig();
 
 	static void ShowHelpMarker(const char* desc, const char* icon = "(?)");
-	char* GetCharfromConstChar(const char* name);
 
 	void SetState(EngineState state);
 

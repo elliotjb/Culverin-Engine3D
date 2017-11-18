@@ -600,15 +600,6 @@ void Application::ShowHelpMarker(const char* desc, const char* icon)
 	}
 }
 
-char* Application::GetCharfromConstChar(const char* name)
-{
-	int length = strlen(name);
-	char* temp = new char[length + 1];
-	strcpy(temp, name);
-	temp[length] = '\0';
-	return temp;
-}
-
 void Application::SetState(EngineState state)
 {
 	if (state == EngineState::PLAY)

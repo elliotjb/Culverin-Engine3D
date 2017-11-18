@@ -26,7 +26,7 @@ enum DIRECTORY_IMPORT
 struct AllFiles
 {
 	const char* directory_name = nullptr;
-	char* file_name = nullptr;
+	const char* file_name = nullptr;
 	std::time_t ftime;
 };
 
@@ -77,7 +77,6 @@ public:
 	std::string FixName_directory(std::string files);
 	std::string FixExtension(std::string file, const char* newExtension = nullptr);
 	std::string GetExtension(std::string file);
-	char* ConverttoChar(std::string name);
 	const char* ConverttoConstChar(std::string name);
 	std::string CreateFolder(const char* file_name, bool forceCreate);
 	void CreateFolder(const char * file_name);
