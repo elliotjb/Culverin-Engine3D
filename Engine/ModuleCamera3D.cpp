@@ -25,10 +25,6 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 	Start_enabled = true;
 	Update_enabled = true;
 
-	cam = new CompCamera(C_CAMERA, nullptr);
-	cam->frustum.Translate(float3(10, 10,-10));
-	LookAt(float3::zero);
-
 	haveConfig = true;
 	name = "Camera";
 }
@@ -42,6 +38,11 @@ ModuleCamera3D::~ModuleCamera3D()
 bool ModuleCamera3D::Init(JSON_Object * node)
 {
 	perf_timer.Start();
+
+	// Create Component camera to work with a frustum ---
+	cam = new CompCamera(C_CAMERA, nullptr);
+	cam->frustum.Translate(float3(10, 10, -10));
+	LookAt(float3::zero);
 
 	//Load render config info -------
 	move_speed = json_object_get_number(node, "Movement Speed");

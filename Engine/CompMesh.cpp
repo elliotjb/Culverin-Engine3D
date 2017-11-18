@@ -14,11 +14,24 @@
 #include <vector>
 
 
-CompMesh::CompMesh(Comp_Type t, GameObject* parent_) : Component(t, parent_)
+CompMesh::CompMesh(Comp_Type t, GameObject* parent) : Component(t, parent)
 {
-	nameComponent = "Mesh";
 	uid = App->random->Int();
-	parent = parent_;
+	nameComponent = "Mesh";
+}
+
+CompMesh::CompMesh(const CompMesh& copy, GameObject* parent) :Component(Comp_Type::C_MESH, parent)
+{
+	name = copy.name;
+	resourceMesh = copy.resourceMesh;
+	if (resourceMesh != nullptr)
+	{
+		resourceMesh->NumGameObjectsUseMe++;
+	}
+	material = copy.material;
+	hasNormals = copy.hasNormals;
+
+	nameComponent = "Mesh";
 }
 
 CompMesh::~CompMesh()

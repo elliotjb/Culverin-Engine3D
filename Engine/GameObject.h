@@ -45,7 +45,7 @@ public:
 
 	// Components -----------------------------
 	Component* AddComponent(Comp_Type type);
-	void AddComponent_(Comp_Type type);
+	void AddComponentCopy(const Component& copy);
 	int GetNumComponents() const;
 	Component* FindComponentByType(Comp_Type type) const;
 	CompTransform* GetComponentTransform() const;
@@ -96,16 +96,17 @@ public:
 
 
 private:
+	uint uid = 0;
 	char* name = "CHANGE THIS";
 	bool active = false;
 	bool visible = false;
 	bool static_obj = false;
 	bool toDelete = false; 
+	bool bb_active = false;
 
 	GameObject* parent = nullptr;
 	std::vector<Component*> components;
 	std::vector<GameObject*> childs;
 	
-	bool bb_active = false;
-	uint uid = 0;
+
 };

@@ -37,15 +37,24 @@ GameObject::GameObject(const GameObject& copy)
 {
 	uid = App->random->Int();
 	name = App->GetCharfromConstChar(copy.GetName());
-	//CompTransform* comp_t = new CompTransform(*copy.GetComponentTransform());
-	//components.push_back(comp_t);
-	//CompMesh* comp_m = new CompMesh(*copy.GetComponentMesh());
-	//components.push_back(comp_m);
-	//CompMaterial* comp_ma = new CompMaterial(*copy.GetComponentMaterial());
-	//components.push_back(comp_ma);
-	for (int i = 0; i < copy.GetNumComponents(); i++)
-	{
+	//TODO ->add "(X)" to the name
+	active = copy.isActive();
+	visible = copy.isVisible();
+	static_obj = copy.isStatic();
+	bb_active = copy.isAABBActive();
 
+	//Create all components from copy object with same data
+	for (uint i = 0; i < copy.GetNumComponents(); i++)
+	{
+		AddComponentCopy(*copy.components[i]);
+	}
+
+	//Create childrens from copy object with same data
+	for (uint i = 0; i < copy.GetNumChilds(); i++)
+	{
+		//Create from copy constructor all childs of the game object to copy
+		childs.push_back(new GameObject(*copy.GetChildbyIndex(i))); 
+		childs[i]->parent = this;
 	}
 }
 
@@ -661,56 +670,35 @@ Component* GameObject::AddComponent(Comp_Type type)
 	return nullptr;
 }
 
-void GameObject::AddComponent_(Comp_Type type)
+void GameObject::AddComponentCopy(const Component& copy)
 {
-	bool dupe = false;
-	for (uint i = 0; i < components.size(); i++)
+	switch (copy.GetType())
 	{
-		if (components[i]->GetType() == type) //We need to check if the component is ACTIVE first?¿
-		{
-			dupe = true;
-			LOG("There's already one component of this type in the Game Object.");
-			break;
-		}
+	case (Comp_Type::C_TRANSFORM):
+	{
+		CompTransform* transform = new CompTransform((CompTransform&)copy, this);
+		components.push_back(transform);
+		break;
 	}
-
-	if (!dupe)
+	case (Comp_Type::C_MESH):
 	{
-		if (type == C_MESH)
-		{
-			LOG("Adding MESH COMPONENT.");
-			components.push_back(new CompMesh(type, this));
-		}
+		CompMesh* mesh = new CompMesh((CompMesh&)copy, this);
+		components.push_back(mesh);
+		break;
+	}
+	case (Comp_Type::C_MATERIAL):
+	{
 
-		else if (type == C_TRANSFORM)
-		{
-			LOG("Adding TRANSFORM COMPONENT.");
-			components.push_back(new CompTransform(type, this));
-		}
-
-		else if (type == C_MATERIAL)
-		{
-			LOG("Adding MATERIAL COMPONENT.");
-			CompMaterial* material = new CompMaterial(type, this);
-			components.push_back(material);
-
-			/* Link Material to the Mesh if exists */
-			CompMesh* mesh_to_link = (CompMesh*)FindComponentByType(C_MESH);
-			if (mesh_to_link != nullptr)
-			{
-				mesh_to_link->LinkMaterial(material);
-			}
-			else
-			{
-				LOG("MATERIAL not linked to any mesh");
-			}
-		}
-
-		else if (type == C_CAMERA)
-		{
-			LOG("Adding CAMERA COMPONENT.");
-			components.push_back(new CompCamera(type, this));
-		}
+		break;
+	}
+	case (Comp_Type::C_CAMERA):
+	{
+		CompCamera* transform = new CompCamera((CompCamera&)copy, this);
+		components.push_back(transform);
+		break;
+	}
+	default:
+		break;
 	}
 }
 
@@ -725,7 +713,7 @@ void GameObject::SaveComponents(JSON_Object* object, std::string name, bool save
 
 void GameObject::LoadComponents(const JSON_Object* object, std::string name, uint numComponents)
 {
-	// Frist Add All components by type
+	// First Add All components by type
 	for (int i = 0; i < numComponents; i++)
 	{
 		std::string temp = name + "Component " + std::to_string(i) + ".";
@@ -735,16 +723,16 @@ void GameObject::LoadComponents(const JSON_Object* object, std::string name, uin
 		case C_UNKNOWN:
 			break;
 		case C_TRANSFORM:
-			this->AddComponent_(C_TRANSFORM);
+			this->AddComponent(C_TRANSFORM);
 			break;
 		case C_MESH:
-			this->AddComponent_(C_MESH);
+			this->AddComponent(C_MESH);
 			break;
 		case C_MATERIAL:
-			this->AddComponent_(C_MATERIAL);
+			this->AddComponent(C_MATERIAL);
 			break;
 		case C_CAMERA:
-			this->AddComponent_(C_CAMERA);
+			this->AddComponent(C_CAMERA);
 			break;
 		default:
 			break;

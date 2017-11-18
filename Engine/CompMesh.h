@@ -27,6 +27,7 @@ class CompMesh: public Component
 {
 public:
 	CompMesh(Comp_Type t, GameObject* parent);
+	CompMesh(const CompMesh& copy, GameObject* parent);
 	~CompMesh();
 	
 	void ShowOptions();

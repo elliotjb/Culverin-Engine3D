@@ -13,8 +13,8 @@
 
 CompCamera::CompCamera(Comp_Type t, GameObject* parent) : Component(t, parent)
 {
-	nameComponent = "Camera";
-	//uid = App->random->Int();
+	uid = App->random->Int();
+
 	/* Set camera vars*/
 	width = 16;
 	height = 9;
@@ -34,6 +34,34 @@ CompCamera::CompCamera(Comp_Type t, GameObject* parent) : Component(t, parent)
 	frustum.farPlaneDistance = far_plane;
 	frustum.verticalFov = vertical_fov * DEGTORAD;
 	frustum.horizontalFov = Atan(aspect_ratio*Tan(frustum.verticalFov / 2)) * 2;
+
+	nameComponent = "Camera";
+}
+
+CompCamera::CompCamera(const CompCamera& copy, GameObject* parent) : Component(Comp_Type::C_CAMERA, parent)
+{
+	uid = App->random->Int();
+
+	/* Set camera vars*/
+	width = copy.width;
+	height = copy.height;
+	aspect_ratio = width / height; // We set aspect ratio 16:9 by now
+
+	near_plane = copy.near_plane;
+	far_plane = copy.far_plane;
+	vertical_fov = copy.vertical_fov; /* In degrees */
+
+	/* Set frustum vars */
+	frustum.type = copy.frustum.type;
+	frustum.pos = copy.frustum.pos;
+	frustum.front = copy.frustum.front;
+	frustum.up = copy.frustum.up;
+
+	frustum.nearPlaneDistance = near_plane;
+	frustum.farPlaneDistance = far_plane;
+	frustum.verticalFov = vertical_fov * DEGTORAD;
+	frustum.horizontalFov = Atan(aspect_ratio*Tan(frustum.verticalFov / 2)) * 2;
+	nameComponent = "Camera";
 }
 
 CompCamera::~CompCamera()

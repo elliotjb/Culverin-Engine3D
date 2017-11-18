@@ -18,6 +18,7 @@ class CompTransform :public Component
 {
 public:
 	CompTransform(Comp_Type t, GameObject* parent);
+	CompTransform(const CompTransform& copy, GameObject* parent);
 	~CompTransform();
 
 	void Init(float3 p, float4 r, float3 s);
@@ -45,6 +46,7 @@ public:
 
 	float3 GetPos() const;
 	Quat GetRot() const;
+	float3 GetRotEuler() const;
 	float3 GetScale() const;
 	float4x4 GetLocalTransform() const;
 	float4x4 GetGlobalTransform() const;

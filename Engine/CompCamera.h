@@ -16,6 +16,7 @@ class CompCamera : public Component
 {
 public:
 	CompCamera(Comp_Type t, GameObject* parent);
+	CompCamera(const CompCamera& copy, GameObject* parent);
 	~CompCamera();
 
 	void preUpdate(float dt);

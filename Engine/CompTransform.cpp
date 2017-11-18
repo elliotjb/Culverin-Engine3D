@@ -21,6 +21,16 @@ CompTransform::CompTransform(Comp_Type t, GameObject* parent) :Component(t, pare
 	nameComponent = "Transformation";
 }
 
+CompTransform::CompTransform(const CompTransform& copy, GameObject* parent) : Component(Comp_Type::C_TRANSFORM, parent)
+{
+	freeze = copy.freeze; //If transform is freezed
+	transform_mode = copy.transform_mode; //LOCAL or WORLD
+	
+	Init(copy.GetPos(), copy.GetRotEuler(), copy.GetScale()); //Set Local matrix
+
+	nameComponent = "Transformation";
+}
+
 CompTransform::~CompTransform()
 {
 }
@@ -325,8 +335,8 @@ void CompTransform::UpdateLocalTransform()
 	}
 
 	// Fill the output variables from the updated matrix
-	local_transform.Decompose(position, rotation, scale);
-	rotation_euler = rotation.ToEulerXYZ() * RADTODEG;
+	//local_transform.Decompose(position, rotation, scale);
+	//rotation_euler = rotation.ToEulerXYZ() * RADTODEG;
 }
 
 void CompTransform::UpdateGlobalTransform()
@@ -353,8 +363,8 @@ void CompTransform::UpdateGlobalTransform()
 	}
 
 	//Fill the output variables from the updated matrix
-	global_transform.Decompose(position_global, rotation_global, scale);
-	rotation_euler_global = rotation_global.ToEulerXYZ() * RADTODEG;
+	//global_transform.Decompose(position_global, rotation_global, scale);
+	//rotation_euler_global = rotation_global.ToEulerXYZ() * RADTODEG;
 }
 
 void CompTransform::UpdateGlobalMatrixRecursive()
@@ -395,6 +405,11 @@ float3 CompTransform::GetPos() const
 Quat CompTransform::GetRot() const
 {
 	return rotation;
+}
+
+float3 CompTransform::GetRotEuler() const
+{
+	return rotation_euler;
 }
 
 float3 CompTransform::GetScale() const
