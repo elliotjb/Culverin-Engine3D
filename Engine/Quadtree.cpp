@@ -49,6 +49,7 @@ void QuadtreeNode::Insert(GameObject* obj)
 		(box.HalfSize().LengthSq() <= QUADTREE_MIN_SIZE * QUADTREE_MIN_SIZE)))
 	{
 		objects.push_back(obj);
+		//LOG("Inserting %s into child %i", obj->GetName());
 	}
 
 	else
@@ -59,19 +60,17 @@ void QuadtreeNode::Insert(GameObject* obj)
 			CreateChilds();
 
 			objects.push_back(obj);
-
 			// All gameobjects of the father node have to be inside at least one of the childs
 			DistributeObjects();
-
-			// Clear objects list(only leaf nodes have to contain objects)
-			objects.clear();
 		}
-
-		for (uint i = 0; i < 4; i++)
+		else
 		{
-			if (childs[i]->box.Intersects(obj->box_fixed))
+			for (uint i = 0; i < 4; i++)
 			{
-				childs[i]->Insert(obj);
+				if (childs[i]->box.Intersects(obj->box_fixed))
+				{
+					childs[i]->Insert(obj);
+				}
 			}
 		}
 	}
@@ -173,8 +172,10 @@ void QuadtreeNode::DistributeObjects()
 		uint num_intersections = 0;
 		for (uint i = 0; i < 4; i++)
 		{
-			intersecting[i] = childs[i]->box.Intersects(object->box_fixed);
-			num_intersections++;
+			if (intersecting[i] = childs[i]->box.Intersects(object->box_fixed))
+			{
+				num_intersections++;
+			}
 		}
 
 		if (num_intersections == 4)
@@ -183,6 +184,8 @@ void QuadtreeNode::DistributeObjects()
 		}
 		else
 		{
+			// Erase this game object from the father list to add it to childs nodes
+			it = objects.erase(it); 
 			for (uint i = 0; i < 4; i++)
 			{
 				if (intersecting[i])
