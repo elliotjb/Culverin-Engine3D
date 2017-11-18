@@ -419,12 +419,12 @@ ReImport JSONSerialization::GetUUIDPrefab(const char* file, uint id)
 		config_node = json_object_get_object(config, "Prefab");
 		std::string temp = "Info.Resources";
 		int numResources = json_object_dotget_number_with_std(config_node, temp + ".Number of Resources");
+		info.directoryObj = json_object_dotget_string_with_std(config, "Prefab.Info.Directory Prefab");
 		if (id < numResources)
 		{
-			temp += "Resource " + std::to_string(id);
-			info.uuid = json_object_dotget_number_with_std(config, temp + ".ResourceUUID Resource");
-			info.directoryObj = json_object_dotget_string_with_std(config, "Info.Directory Prefab");
-			info.nameMesh = json_object_dotget_string_with_std(config, temp + ".Name");
+			temp += ".Resource " + std::to_string(id);
+			info.uuid = json_object_dotget_number_with_std(config_node, temp + ".UUID Resource");
+			info.nameMesh = json_object_dotget_string_with_std(config_node, temp + ".Name");
 			if (strcmp(file, info.directoryObj) == 0)
 			{
 				return info;

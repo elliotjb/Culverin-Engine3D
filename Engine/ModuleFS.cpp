@@ -65,6 +65,7 @@ update_status ModuleFS::PreUpdate(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
 	{
+		//App->resource_manager->resourcesToReimport.push_back(App->Json_seria->GetUUIDPrefab(allfilesAsstes[0].directory_name, 0));
 		//char* buffer = nullptr;
 
 		//// Loading File
@@ -212,7 +213,11 @@ void ModuleFS::GetAllFilesAssets(std::experimental::filesystem::path path, std::
 	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
 	{
 		std::string extension = GetExtension(iter->path().string());
-		if (strcmp(extension.c_str(), "json") != 0)
+		for (std::string::iterator it = extension.begin(); it != extension.end(); it++)
+		{
+			*it = tolower(*it);
+		}
+		if (IsPermitiveExtension(extension.c_str()))
 		{
 			AllFiles files_temp;
 			stdfs::file_time_type temp = stdfs::last_write_time(iter->path());

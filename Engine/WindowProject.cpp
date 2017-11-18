@@ -319,6 +319,18 @@ void Project::Files_Update(const std::vector<FilesNew>& files)
 		case OBJ:
 		{
 			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_obj, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
+			if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
+			{
+				if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsMouseHoveringWindow())
+				{
+					std::string directory_prebaf = GetDirectory();
+					directory_prebaf += "/";
+					directory_prebaf += files[i].file_name;
+					directory_prebaf += ".meta.json";
+					App->Json_seria->LoadPrefab(directory_prebaf.c_str());
+					directory_prebaf.clear();
+				}
+			}
 			break;
 		}
 		case PNG:

@@ -122,7 +122,7 @@ GameObject* ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, Game
 	return objChild;
 }
 
-GameObject* ModuleImporter::ProcessNode(aiNode * node, const aiScene * scene, GameObject * obj, std::vector<ReImport>& resourcesToReimport)
+GameObject* ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj, std::vector<ReImport>& resourcesToReimport)
 {
 	static int count = 0;
 	GameObject* objChild = new GameObject(obj);
@@ -163,7 +163,7 @@ GameObject* ModuleImporter::ProcessNode(aiNode * node, const aiScene * scene, Ga
 	// Process children
 	for (uint i = 0; i < node->mNumChildren; i++)
 	{
-		ProcessNode(node->mChildren[i], scene, objChild);
+		ProcessNode(node->mChildren[i], scene, objChild, resourcesToReimport);
 	}
 
 	return objChild;
