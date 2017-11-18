@@ -543,7 +543,6 @@ void Application::SetFpsCap(uint fps)
 	{
 		realTime.capped_ms = 0;
 	}
-
 }
 
 bool Application::SaveConfig()

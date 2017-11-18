@@ -58,10 +58,11 @@ public:
 	Quadtree quadtree;
 	bool quadtree_draw = false;
 	GameObject* drag = nullptr;
-
 	GLuint icon_options_transform;
 	SkyBox* skybox = nullptr;
+
 private:
-	int size_plane;
+	int size_plane = 0;
+	float size_quadtree = 0;
 
 };

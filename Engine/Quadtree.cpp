@@ -232,6 +232,14 @@ Quadtree::~Quadtree()
 {
 }
 
+void Quadtree::Init(float new_size)
+{
+	size = new_size;
+	min_size.Set(-size, -size, -size);
+	max_size.Set(size, size, size);
+	Boundaries(AABB(min_size, max_size));
+}
+
 void Quadtree::Boundaries(AABB limits)
 {
 	Clear();
@@ -242,6 +250,7 @@ void Quadtree::Clear()
 {
 	if (root_node != nullptr)
 	{
+		root_node->Clear();
 		root_node->objects.clear();
 		RELEASE(root_node);
 	}	

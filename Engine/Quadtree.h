@@ -47,6 +47,7 @@ public:
 	Quadtree();
 	virtual ~Quadtree();
 
+	void Init(float new_size);
 	void Boundaries(AABB limits);
 	void Clear();
 	void Bake(const std::vector<GameObject*>& objects);
@@ -62,6 +63,9 @@ public:
 
 public:
 	QuadtreeNode* root_node = nullptr;
+	float size = 0;
+	float3 min_size = float3::zero;
+	float3 max_size = float3::zero;
 };
 
 template<typename TYPE>

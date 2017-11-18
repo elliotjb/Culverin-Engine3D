@@ -56,7 +56,9 @@ bool Scene::Start()
 	perf_timer.Start();
 
 	//Init Quadtree
-	quadtree.Boundaries(AABB(float3(-50.0f, -50.0f, -50.0f), float3(50.0f, 50.0f, 50.0f)));
+	size_quadtree = 50.0f;
+	quadtree.Init(size_quadtree);
+
 
 	size_plane = 50;
 
@@ -164,12 +166,20 @@ update_status Scene::UpdateConfig(float dt)
 
 		ImGui::Checkbox("##quadtreedraw", &quadtree_draw); ImGui::SameLine();
 		ImGui::Text("Draw Quadtree");
+		ImGui::SliderFloat("Size", &size_quadtree, 50, 300);
 
 		if(ImGui::Button("UPDATE QUADTREE"))	
 		{ 
 			if (App->engineState == EngineState::STOP)
 			{
-				quadtree.root_node->Clear();
+				if (size_quadtree != quadtree.size)
+				{
+					quadtree.Init(size_quadtree);
+				}
+				else
+				{
+					quadtree.root_node->Clear();
+				}
 				quadtree.Bake(App->scene->gameobjects);
 			}
 			else
