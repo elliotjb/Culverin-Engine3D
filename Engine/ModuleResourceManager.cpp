@@ -175,6 +175,19 @@ void ModuleResourceManager::ImportFile(std::list<const char*>& file)
 
 		if (dropped_File_type != Resource::Type::UNKNOWN)
 		{
+			if (dropped_File_type == Resource::Type::FOLDER)
+			{
+				App->fs->GetAllFilesFromFolder(it._Ptr->_Myval, file);
+				std::string newDirectory = it._Ptr->_Myval;
+				newDirectory = App->fs->FixName_directory(newDirectory);
+				std::string temp = "\\" + newDirectory;
+				newDirectory = ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory() + temp;
+				((Project*)App->gui->winManager[WindowName::PROJECT])->SetDirectory(App->fs->CreateFolder(newDirectory.c_str(), true).c_str());
+				file.erase(it);
+				i = 0;
+				it = file.begin();
+
+			}
 			if (App->importer->Import(it._Ptr->_Myval, dropped_File_type))
 			{
 				// Copy file to Specify folder in Assets (This folder is the folder active)
@@ -209,7 +222,7 @@ void ModuleResourceManager::ImportFile(std::vector<const char*>& file, std::vect
 		}
 		else
 		{
-			//LOG("[error] This file: %s with this format %s is incorrect!", App->fs->FixName_directory(file[i]).c_str(), App->fs->GetExtension(file[i]));
+			LOG("[error] This file: %s with this format %s is incorrect!", App->fs->FixName_directory(file[i]).c_str(), App->fs->GetExtension(file[i]));
 		}
 	}
 	((Project*)App->gui->winManager[WindowName::PROJECT])->UpdateNow();
@@ -284,7 +297,14 @@ Resource::Type ModuleResourceManager::CheckFileType(const char* filedir)
 		}
 		else
 		{
-			return Resource::Type::UNKNOWN;
+			if (std::experimental::filesystem::is_directory(filedir))
+			{
+				return Resource::Type::FOLDER;
+			}
+			else
+			{
+				return Resource::Type::UNKNOWN;
+			}
 		}
 	}
 }

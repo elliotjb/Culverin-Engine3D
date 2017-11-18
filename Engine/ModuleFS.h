@@ -55,6 +55,7 @@ public:
 
 	// Get Files to check if a file was modificated ---------------------------------
 	void GetAllFilesAssets(std::experimental::filesystem::path path, std::vector<AllFiles>& files);
+	void GetAllFilesFromFolder(std::experimental::filesystem::path path, std::list<const char*>& files);
 	bool AnyfileModificated(std::vector<AllFiles>& files);
 	bool IsPermitiveExtension(const char * extension);
 	void UpdateFilesAsstes();
@@ -78,7 +79,8 @@ public:
 	std::string GetExtension(std::string file);
 	char* ConverttoChar(std::string name);
 	const char* ConverttoConstChar(std::string name);
-	void CreateFolder(const char* file_name);
+	std::string CreateFolder(const char* file_name, bool forceCreate);
+	void CreateFolder(const char * file_name);
 
 	// 
 	bool CheckAssetsIsModify();

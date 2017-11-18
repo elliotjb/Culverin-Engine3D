@@ -7,6 +7,7 @@ class Resource
 public:
 	enum Type {
 		UNKNOWN,
+		FOLDER,
 		MATERIAL,
 		MESH
 	};

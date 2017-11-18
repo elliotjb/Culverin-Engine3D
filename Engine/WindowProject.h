@@ -57,6 +57,7 @@ public:
 	void Files_Update(const std::vector<FilesNew>& files);
 
 	const char* GetDirectory() const;
+	void SetDirectory(const char* newDirectory);
 	void UpdateNow();
 	void SetAllFolderBool(std::vector<FoldersNew>& folders, bool setBoolean);
 	//void AddFile(std::vector<Files>* folderViwe, std::string newFile);

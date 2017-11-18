@@ -235,6 +235,41 @@ void ModuleFS::GetAllFilesAssets(std::experimental::filesystem::path path, std::
 	}
 }
 
+void ModuleFS::GetAllFilesFromFolder(std::experimental::filesystem::path path, std::list<const char*>& files)
+{
+	namespace stdfs = std::experimental::filesystem;
+
+	const stdfs::directory_iterator end{};
+
+	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
+	{
+		std::string extension = GetExtension(iter->path().string());
+		for (std::string::iterator it = extension.begin(); it != extension.end(); it++)
+		{
+			*it = tolower(*it);
+		}
+		if (IsPermitiveExtension(extension.c_str()))
+		{
+			if (App->resource_manager->CheckFileType(extension.c_str()) == Resource::Type::MESH)
+			{
+				files.push_back(ConverttoConstChar(iter->path().string()));
+			}
+			else if (App->resource_manager->CheckFileType(extension.c_str()) == Resource::Type::MATERIAL)
+			{
+				files.push_front(ConverttoConstChar(iter->path().string()));
+			}
+		}
+		else
+		{
+			std::string isFolder = ConverttoConstChar(iter->path().string());
+			if (App->resource_manager->CheckFileType(isFolder.c_str()) == Resource::Type::FOLDER)
+			{
+				files.push_back(ConverttoConstChar(iter->path().string()));
+			}
+		}
+	}
+}
+
 bool ModuleFS::AnyfileModificated(std::vector<AllFiles>& files)
 {
 	namespace stdfs = std::experimental::filesystem;
@@ -600,6 +635,37 @@ std::string ModuleFS::AddDirectorybyType(std::string name, DIRECTORY_IMPORT dire
 	}
 	}
 	return temp;
+}
+
+std::string ModuleFS::CreateFolder(const char* file_name, bool forceCreate)
+{
+	namespace fs = std::experimental::filesystem;
+
+	if (!fs::exists(file_name)) // Check if src folder exists
+	{ 
+		fs::create_directory(file_name); // create src folder
+		return file_name;
+	}
+	else
+	{
+		if (forceCreate)
+		{
+			bool stop = false;
+			int i = 1;
+			std::string force;
+			while (stop == false)
+			{
+				force = file_name;
+				force += " " + std::to_string(i);
+				if (!fs::exists(force.c_str()))
+				{
+					fs::create_directory(force.c_str());
+					return force;
+				}
+				i++;
+			}
+		}
+	}
 }
 
 void ModuleFS::CreateFolder(const char* file_name)

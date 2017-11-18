@@ -162,6 +162,10 @@ update_status ModuleInput::PreUpdate(float dt)
 				{
 					dropedfiles.push_front(e.drop.file);
 				}
+				else if (App->resource_manager->CheckFileType(e.drop.file) == Resource::Type::FOLDER)
+				{
+					dropedfiles.push_back(e.drop.file);
+				}
 			}
 			break;
 

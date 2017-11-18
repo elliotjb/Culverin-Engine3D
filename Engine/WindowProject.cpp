@@ -190,6 +190,7 @@ void Project::Folders_update(std::vector<FoldersNew>& folders)
 {
 	ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.335f, 0.337f, 0.357f, 1.00f));
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 3));
+	ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 12);
 	for (int i = 0; i < folders.size(); i++)
 	{
 		ImGui::PushID(i);
@@ -212,6 +213,15 @@ void Project::Folders_update(std::vector<FoldersNew>& folders)
 			{
 				ImGui::Text("Edit name:");
 				ImGui::InputText("##edit2", folders[i].file_name, 256);
+				ImGui::Spacing();
+				if (ImGui::Button("Create New Folder"))
+				{
+					std::string newFolder = GetDirectory();
+					newFolder += "/";
+					newFolder += "New Folder";
+					App->fs->CreateFolder(newFolder.c_str(), true);
+					UpdateNow();
+				}
 				ImGui::EndPopup();
 			}
 			if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
@@ -234,7 +244,7 @@ void Project::Folders_update(std::vector<FoldersNew>& folders)
 		}
 		ImGui::PopID();
 	}
-	ImGui::PopStyleVar();
+	ImGui::PopStyleVar(2);
 	ImGui::PopStyleColor();
 }
 
@@ -365,6 +375,13 @@ void Project::Files_Update(const std::vector<FilesNew>& files)
 const char* Project::GetDirectory() const
 {
 	return directory_see;
+}
+
+void Project::SetDirectory(const char* newDirectory)
+{
+	directory_see = App->GetCharfromConstChar(newDirectory);
+	updateFoldersNow = true;
+	updateFilesNow = true;
 }
 
 void Project::UpdateNow()
