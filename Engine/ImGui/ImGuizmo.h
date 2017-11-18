@@ -115,9 +115,6 @@ namespace ImGuizmo
 	// call BeginFrame right after ImGui_XXXX_NewFrame();
 	IMGUI_API void BeginFrame();
 
-	// Gizmo adapted for docking
-	IMGUI_API void BeginFrame(float winX, float winY, float winW, float winH);
-
 	// call inside your own window and before Manipulate() in order to draw gizmo to that window.
 	IMGUI_API void SetDrawlist();
 

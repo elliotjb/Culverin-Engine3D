@@ -289,11 +289,11 @@ void ModuleCamera3D::MousePick(float x, float y, float w, float h)
 		// Check intersection ray-traingles
 		CheckGeometryIntersection();
 	}
-	else
+	/*else
 	{
 		if(isMouseOnWindow())
 			((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
-	}
+	}*/
 }
 
 void ModuleCamera3D::CheckAABBIntersection(GameObject* candidate, float& entry_dist, float& exit_dist)

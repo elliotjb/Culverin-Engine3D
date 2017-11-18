@@ -670,16 +670,6 @@ namespace ImGuizmo
       ImGui::End();
    }
 
-   void BeginFrame(float window_x, float window_y, float window_w, float window_h)
-   {
-	   ImGui::Begin("gizmo", NULL, ImVec2(window_w, window_h), 0, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus);
-	   ImGui::SetWindowPos(ImVec2(window_x, window_y));
-	   gContext.mDrawList = ImGui::GetWindowDrawList();
-
-	   ImGui::End();
-   }
-
-
    void SetDrawlist()
    {
 	   gContext.mDrawList = ImGui::GetWindowDrawList();

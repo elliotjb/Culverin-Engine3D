@@ -42,7 +42,7 @@ CompCamera::CompCamera(const CompCamera& copy, GameObject* parent) : Component(C
 {
 	uid = App->random->Int();
 
-	/* Set camera vars*/
+	/* Set camera vars from copy object */
 	width = copy.width;
 	height = copy.height;
 	aspect_ratio = width / height; // We set aspect ratio 16:9 by now
@@ -51,7 +51,7 @@ CompCamera::CompCamera(const CompCamera& copy, GameObject* parent) : Component(C
 	far_plane = copy.far_plane;
 	vertical_fov = copy.vertical_fov; /* In degrees */
 
-	/* Set frustum vars */
+	/* Set frustum vars  from copy object */
 	frustum.type = copy.frustum.type;
 	frustum.pos = copy.frustum.pos;
 	frustum.front = copy.frustum.front;

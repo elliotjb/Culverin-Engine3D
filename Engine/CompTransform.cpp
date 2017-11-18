@@ -5,6 +5,7 @@
 #include "ModuleCamera3D.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleGUI.h"
+#include "ModuleInput.h"
 #include "CompCamera.h"
 #include "ModuleFS.h"
 #include "Scene.h"
@@ -51,42 +52,55 @@ void CompTransform::Init(float3 p, float3 r, float3 s)
 
 void CompTransform::Update(float dt)
 {
-	//if (((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected() == parent)
-	//{
-	//	ImGuizmo::Enable(true);
+	if (((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected() == parent)
+	{
+		ImGuizmo::Enable(true);
 
-	//	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
+		static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
 
-	//	screen = ((SceneWorld*)App->gui->winManager[SCENEWORLD])->GetWindowParams();
-	//	ImGuizmo::SetRect(screen.x, screen.y, screen.z, screen.w);
+		screen = ((SceneWorld*)App->gui->winManager[SCENEWORLD])->GetWindowParams();
+		ImGuizmo::SetRect(screen.x, screen.y, screen.z, screen.w);
+		
+		global_transposed = global_transform.Transposed();
 
-	//	global_transposed = global_transform.Transposed();
+		// SET GUIZMO OPERATION ----------------------------------
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+		{
+			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		{
+			mCurrentGizmoOperation = ImGuizmo::ROTATE;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		{
+			mCurrentGizmoOperation = ImGuizmo::SCALE;
+		}
 
-	//	// SET GUIZMO OPERATION ----------------------------------
-	//	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
-	//	{
-	//		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-	//	}
-	//	else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-	//	{
-	//		mCurrentGizmoOperation = ImGuizmo::ROTATE;
-	//	}
-	//	else if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
-	//	{
-	//		mCurrentGizmoOperation = ImGuizmo::SCALE;
-	//	}
+		ImGuizmo::Manipulate(App->camera->GetViewMatrix(), App->camera->GetProjMatrix(), mCurrentGizmoOperation, transform_mode, global_transposed.ptr());
+		
+		if (ImGuizmo::IsUsing())
+		{
+			global_transposed.Transpose();
+			
+			//If it's a root node, global and local transforms are the same
+			if (parent->GetParent() == nullptr)
+			{
+				local_transform = global_transposed;				
+			}
+			else
+			{
+				//Otherwise, set local matrix from parent global matrix (inverted)
+				CompTransform* transform = parent->GetParent()->GetComponentTransform();
+				local_transform = transform->GetGlobalTransform().Inverted() * global_transposed;
+			}
 
-	//	ImGuizmo::Manipulate(App->camera->GetViewMatrix(), App->camera->GetProjMatrix(), mCurrentGizmoOperation, transform_mode, global_transposed.ptr(), NULL, NULL);
-	//	
-	//	if (ImGuizmo::IsUsing())
-	//	{
-	//		global_transposed.Transpose();
-	//		global_transposed.Decompose(position_global, rotation_global, scale);
-	//		rotation_euler_global = rotation.ToEulerXYZ() * RADTODEG;
-	//			
-	//		toUpdate = true;
-	//	}
-	//}
+			local_transform.Decompose(position, rotation, scale);
+			rotation_euler = rotation.ToEulerXYZ() * RADTODEG;
+			toUpdate = true;
+			//parent->UpdateChildsMatrices();
+		}
+	}
 
 	if (toUpdate)
 	{
@@ -101,6 +115,17 @@ void CompTransform::Update(float dt)
 		LOG("x:%.3f y:%.3f z:%.3f POSITION_G ", position_global.x, position_global.y, position_global.z);
 		LOG("x:%.3f y:%.3f z:%.3f w:%.3f ROTATION_G ", rotation_euler_global.x, rotation_euler_global.y, rotation_euler_global.z);
 		LOG("x:%.3f y:%.3f z:%.3f SCALE", scale.x, scale.y, scale.z);
+		LOG("///////////////////////////////////////")
+		LOG("LOCAL ---------------");
+		LOG("%.3f %.3f %.3f %.3f", local_transform.v[0][0], local_transform.v[0][1], local_transform.v[0][2], local_transform.v[0][3]);
+		LOG("%.3f %.3f %.3f %.3f", local_transform.v[1][0], local_transform.v[1][1], local_transform.v[1][2], local_transform.v[1][3]);
+		LOG("%.3f %.3f %.3f %.3f", local_transform.v[2][0], local_transform.v[2][1], local_transform.v[2][2], local_transform.v[2][3]);
+		LOG("%.3f %.3f %.3f %.3f", local_transform.v[3][0], local_transform.v[3][1], local_transform.v[3][2], local_transform.v[3][3]);
+		LOG("GLOBAL --------------");
+		LOG("%.3f %.3f %.3f %.3f", global_transform.v[0][0], global_transform.v[0][1], global_transform.v[0][2], global_transform.v[0][3]);
+		LOG("%.3f %.3f %.3f %.3f", global_transform.v[1][0], global_transform.v[1][1], global_transform.v[1][2], global_transform.v[1][3]);
+		LOG("%.3f %.3f %.3f %.3f", global_transform.v[2][0], global_transform.v[2][1], global_transform.v[2][2], global_transform.v[2][3]);
+		LOG("%.3f %.3f %.3f %.3f", global_transform.v[3][0], global_transform.v[3][1], global_transform.v[3][2], global_transform.v[3][3]);
 	}
 }
 
@@ -171,11 +196,11 @@ void CompTransform::ShowInspectorInfo()
 	{
 		transform_mode = ImGuizmo::LOCAL;
 	}
-	ImGui::SameLine();
-	if (ImGui::RadioButton("World", transform_mode == ImGuizmo::WORLD))
-	{
-		transform_mode = ImGuizmo::WORLD;
-	}
+	//ImGui::SameLine();
+	//if (ImGui::RadioButton("World", transform_mode == ImGuizmo::WORLD))
+	//{
+	//	transform_mode = ImGuizmo::WORLD;
+	//}
 
 	// SHOW OUTPUT (depending on mode and if transform is freezed) ---------------
 	if (App->engineState == EngineState::STOP)
@@ -234,30 +259,34 @@ void CompTransform::ShowTransform(float drag_speed)
 		{
 			SetRot(rotation_euler);
 		}
+		ImGui::Text("Scale"); ImGui::SameLine(op + 30);
+		if (ImGui::DragFloat3("##scale", &scale[0], drag_speed))
+		{
+			SetScale(scale);
+		}
 		break;
 	}
-	case (ImGuizmo::MODE::WORLD):
+	/*case (ImGuizmo::MODE::WORLD):
 	{
 		ImGui::Text("Position"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##pos", &position_global[0], drag_speed))
+		if (ImGui::DragFloat3("##pos_g", &position_global[0], drag_speed))
 		{
 			SetPosGlobal(position_global);
 		}
 		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##rot", &rotation_euler_global[0], drag_speed))
+		if (ImGui::DragFloat3("##rot_g", &rotation_euler_global[0], drag_speed))
 		{
 			SetRotGlobal(rotation_euler_global);
 		}
+		ImGui::Text("Scale"); ImGui::SameLine(op + 30);
+		if (ImGui::DragFloat3("##scale_g", &scale_global[0], drag_speed))
+		{
+			SetScaleGlobal(scale_global);
+		}
 		break;
-	}
+	}*/
 	default:
 		break;
-	}
-
-	ImGui::Text("Scale"); ImGui::SameLine(op + 30);
-	if (ImGui::DragFloat3("##scal", &scale[0], drag_speed))
-	{
-		SetScale(scale);
 	}
 }
 
@@ -270,6 +299,12 @@ void CompTransform::SetPosGlobal(float3 pos)
 void CompTransform::SetRotGlobal(float3 rot_g)
 {
 	rotation_global = Quat::FromEulerXYZ(rot_g[0] * DEGTORAD, rot_g[1] * DEGTORAD, rot_g[2] * DEGTORAD);
+	toUpdate = true;
+}
+
+void CompTransform::SetScaleGlobal(float3 scale)
+{
+	scale_global = scale;
 	toUpdate = true;
 }
 
@@ -327,15 +362,19 @@ void CompTransform::UpdateLocalTransform()
 	{
 		local_transform = global_transform;		
 	}
-	//If not, apply parent global transform (Inverted) to get it's local transform
+	//If not, apply parent global transform (Inverted) to get its local transform
 	else
 	{
 		CompTransform* parent_transform = parent_object->GetParent()->GetComponentTransform();
-		local_transform = parent_transform->GetGlobalTransform().Inverted() * local_transform;
+		local_transform = global_transform * parent_transform->GetGlobalTransform().Inverted();
 	}
 
 	// Fill the output variables from the updated matrix
-	//local_transform.Decompose(position, rotation, scale);
+	//local_transform.Decompose(position, rotation, scale); // We don't want to get the size
+	//rotation_euler = rotation.ToEulerXYZ() * RADTODEG;
+
+	//position = local_transform.TranslatePart();
+	//rotation = local_transform.RotatePart().ToQuat();
 	//rotation_euler = rotation.ToEulerXYZ() * RADTODEG;
 }
 
@@ -363,7 +402,11 @@ void CompTransform::UpdateGlobalTransform()
 	}
 
 	//Fill the output variables from the updated matrix
-	//global_transform.Decompose(position_global, rotation_global, scale);
+	//global_transform.Decompose(position_global, rotation_global, scale_global); //We don't want to get the size
+	//rotation_euler_global = rotation_global.ToEulerXYZ() * RADTODEG;
+
+	//position_global = global_transform.TranslatePart();
+	//rotation_global = global_transform.RotatePart().ToQuat();
 	//rotation_euler_global = rotation_global.ToEulerXYZ() * RADTODEG;
 }
 

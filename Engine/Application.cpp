@@ -279,7 +279,7 @@ update_status Application::Update()
 	}
 
 	ImGui_ImplSdlGL3_NewFrame(window->window);
-	//ImGuizmo::BeginFrame();
+	ImGuizmo::BeginFrame();
 	//((SceneWorld*)App->gui->winManager[SCENEWORLD])->GetWindowParams(SceneDock.x, SceneDock.y, SceneDock.z, SceneDock.w);
 	//ImGuizmo::BeginFrame(SceneDock.x, SceneDock.y, SceneDock.z, SceneDock.w);
 

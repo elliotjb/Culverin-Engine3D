@@ -42,6 +42,7 @@ GameObject::GameObject(const GameObject& copy)
 	visible = copy.isVisible();
 	static_obj = copy.isStatic();
 	bb_active = copy.isAABBActive();
+	bounding_box = new AABB(*copy.bounding_box);
 
 	//Create all components from copy object with same data
 	for (uint i = 0; i < copy.GetNumComponents(); i++)
@@ -49,7 +50,7 @@ GameObject::GameObject(const GameObject& copy)
 		AddComponentCopy(*copy.components[i]);
 	}
 
-	//Create childrens from copy object with same data
+	//Create childrens from copy object with same data to this new game object
 	for (uint i = 0; i < copy.GetNumChilds(); i++)
 	{
 		//Create from copy constructor all childs of the game object to copy
@@ -238,12 +239,6 @@ void GameObject::ShowHierarchy()
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 6));
 	if (ImGui::BeginPopupContextItem("Create"))
 	{
-		//ImGui::OpenPopup("FilePopup");
-		//if (ImGui::BeginPopup("FilePopup"))
-		// {
-		//	ShowGameObjectOptions();
-		//	ImGui::EndMenu();
-		// }
 		ShowGameObjectOptions();
 		ImGui::EndPopup();
 	}
@@ -676,24 +671,25 @@ void GameObject::AddComponentCopy(const Component& copy)
 	{
 	case (Comp_Type::C_TRANSFORM):
 	{
-		CompTransform* transform = new CompTransform((CompTransform&)copy, this);
+		CompTransform* transform = new CompTransform((CompTransform&)copy, this); //Transform copy constructor
 		components.push_back(transform);
 		break;
 	}
 	case (Comp_Type::C_MESH):
 	{
-		CompMesh* mesh = new CompMesh((CompMesh&)copy, this);
+		CompMesh* mesh = new CompMesh((CompMesh&)copy, this); //Mesh copy constructor
 		components.push_back(mesh);
 		break;
 	}
 	case (Comp_Type::C_MATERIAL):
 	{
-
+		CompMaterial* material = new CompMaterial((CompMaterial&)copy, this); //Material copy constructor
+		components.push_back(material);
 		break;
 	}
 	case (Comp_Type::C_CAMERA):
 	{
-		CompCamera* transform = new CompCamera((CompCamera&)copy, this);
+		CompCamera* transform = new CompCamera((CompCamera&)copy, this); //Camera copy constructor
 		components.push_back(transform);
 		break;
 	}
@@ -738,6 +734,7 @@ void GameObject::LoadComponents(const JSON_Object* object, std::string name, uin
 			break;
 		}
 	}
+
 	// Now Iterate All components and Load variables
 	for (int i = 0; i < components.size(); i++)
 	{

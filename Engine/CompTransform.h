@@ -30,6 +30,7 @@ public:
 
 	void SetPosGlobal(float3 pos);
 	void SetRotGlobal(float3 rot);
+	void SetScaleGlobal(float3 scale);
 	void SetPos(float3 pos);
 	void SetRot(float3 rot);	//"rot" is "rotation_euler" updated, so we don't need to update it inside this method
 	void SetRot(Quat rot);		//"rot" is the quaternion we want to set to our rotation quaternion
@@ -69,6 +70,7 @@ private:
 	float3 rotation_euler = { 0, 0, 0 };
 	
 	float3 scale = { 0, 0, 0 };
+	float3 scale_global = { 0, 0, 0 };
 
 	float3 position_global = { 0, 0, 0 };
 	float3 rotation_euler_global = { 0, 0, 0 };
