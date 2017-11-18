@@ -20,8 +20,9 @@ public:
 	void InitRanges(uint num_vert, uint num_ind, uint num_normals);
 	void InitInfo(const char* name);
 
+	void DeleteToMemory();
 	bool LoadToMemory();
-	bool IsLoadedToMemory();
+	Resource::State IsLoadedToMemory();
 
 public:
 	bool hasNormals = false;
@@ -32,7 +33,7 @@ public:
 	std::vector<float3> vertices_normals;
 	//std::vector<FaceCenter> face_centers;
 
-	uint VAO = 0;				/* Vertex Array Object */
+	//uint VAO = 0;				/* Vertex Array Object */
 	uint vertices_id = 0;		/* VERTICES ID */
 	uint indices_id = 0;		/* INDICES ID */
 	uint vertices_norm_id = 0;	/* NORMALS OF VERTICES ID */

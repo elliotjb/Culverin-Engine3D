@@ -150,6 +150,10 @@ void CompMaterial::ShowInspectorInfo()
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 2));
 		if (ImGui::Button("Reset Material"))
 		{
+			if (resourceMaterial != nullptr)
+			{
+				resourceMaterial->NumGameObjectsUseMe--;
+			}
 			resourceMaterial = nullptr;
 			ImGui::CloseCurrentPopup();
 		}
@@ -187,7 +191,12 @@ void CompMaterial::ShowInspectorInfo()
 			ResourceMaterial* temp = (ResourceMaterial*)App->resource_manager->ShowResources(selectMaterial, Resource::Type::MATERIAL);
 			if (temp != nullptr)
 			{
+				if (resourceMaterial != nullptr)
+				{
+					resourceMaterial->NumGameObjectsUseMe--;
+				}
 				resourceMaterial = temp;
+				resourceMaterial->NumGameObjectsUseMe++;
 				if (resourceMaterial->IsLoadedToMemory() == Resource::State::UNLOADED)
 				{
 					App->importer->iMaterial->LoadResource(std::to_string(resourceMaterial->GetUUID()).c_str(), resourceMaterial);

@@ -147,6 +147,10 @@ void CompMesh::ShowInspectorInfo()
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 2));
 		if (ImGui::Button("Reset Mesh"))
 		{
+			if (resourceMesh != nullptr)
+			{
+				resourceMesh->NumGameObjectsUseMe--;
+			}
 			resourceMesh = nullptr;
 			ImGui::CloseCurrentPopup();
 		}
@@ -192,7 +196,12 @@ void CompMesh::ShowInspectorInfo()
 			ResourceMesh* temp = (ResourceMesh*)App->resource_manager->ShowResources(SelectMesh, Resource::Type::MESH);
 			if (temp != nullptr)
 			{
+				if (resourceMesh != nullptr)
+				{
+					resourceMesh->NumGameObjectsUseMe--;
+				}
 				resourceMesh = temp;
+				resourceMesh->NumGameObjectsUseMe++;
 				if (resourceMesh->IsLoadedToMemory() == Resource::State::UNLOADED)
 				{
 					App->importer->iMesh->LoadResource(std::to_string(resourceMesh->GetUUID()).c_str(), resourceMesh);

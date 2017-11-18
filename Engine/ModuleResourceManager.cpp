@@ -45,7 +45,7 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 {
 	perf_timer.Start();
 
-	if(App->input->dropedfiles.size() > 0)
+	if (App->input->dropedfiles.size() > 0)
 	{
 		ImportFile(App->input->dropedfiles);
 		App->input->dropedfiles.clear();
@@ -74,6 +74,23 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 		}
 		reimportNow = true;
 	}
+
+	// Delete Resource
+	std::map<uint, Resource*>::iterator it = resources.begin();
+	for (int i = 0; i < resources.size(); i++)
+	{
+		if (it->second->NumGameObjectsUseMe == 0)
+		{
+			if (it->second->IsLoadedToMemory() == Resource::State::LOADED)
+			{
+				// LOG("NOW UNLOAD");
+				it->second->DeleteToMemory();
+			}
+		}
+		it++;
+	}
+
+
 
 
 	//static bool waitUpdate = false;

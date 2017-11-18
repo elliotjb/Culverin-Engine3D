@@ -26,6 +26,9 @@ public:
 	uint GetUUID() const;
 	void SetState(Resource::State state);
 
+	virtual void DeleteToMemory(){}
+	virtual Resource::State IsLoadedToMemory(){}
+
 protected:
 	Type type = Type::UNKNOWN;
 	State state = State::UNLOADED;

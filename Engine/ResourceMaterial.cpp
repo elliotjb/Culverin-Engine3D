@@ -22,6 +22,12 @@ void ResourceMaterial::Init(Texture textureloaded)
 	texture.name = textureloaded.name;
 }
 
+void ResourceMaterial::DeleteToMemory()
+{
+	state = Resource::State::UNLOADED;
+	glDeleteTextures(1, &texture.id);
+}
+
 bool ResourceMaterial::LoadToMemory()
 {
 	state = Resource::State::LOADED;
@@ -37,7 +43,7 @@ uint ResourceMaterial::GetTextureID()
 }
 
 
-bool ResourceMaterial::IsLoadedToMemory()
+Resource::State ResourceMaterial::IsLoadedToMemory()
 {
 	return state;
 }

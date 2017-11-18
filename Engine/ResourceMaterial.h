@@ -20,10 +20,11 @@ public:
 
 	void InitInfo(const char* name);
 	void Init(Texture texture);
+	void DeleteToMemory();
 
 	bool LoadToMemory();
 	uint GetTextureID();
-	bool IsLoadedToMemory();
+	Resource::State IsLoadedToMemory();
 
 private:
 	Texture texture;

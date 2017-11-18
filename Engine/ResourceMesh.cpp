@@ -71,6 +71,23 @@ void ResourceMesh::InitInfo(const char* nameResource)
 
 
 
+void ResourceMesh::DeleteToMemory()
+{
+	state = Resource::State::UNLOADED;
+
+	if (vertices_id != NULL)		glDeleteBuffers(1, &vertices_id);
+	if (indices_id != NULL)			glDeleteBuffers(1, &indices_id);
+	if (vertices_norm_id != NULL)	glDeleteBuffers(1, &vertices_norm_id);
+
+	num_vertices = 0;
+	num_indices = 0;
+	hasNormals = false;
+
+	vertices.clear();
+	indices.clear();
+	vertices_normals.clear();
+}
+
 bool ResourceMesh::LoadToMemory()
 {
 	//glGenVertexArrays(1, &VAO);
@@ -107,7 +124,7 @@ bool ResourceMesh::LoadToMemory()
 	return true;
 }
 
-bool ResourceMesh::IsLoadedToMemory()
+Resource::State ResourceMesh::IsLoadedToMemory()
 {
 	return state;
 }
