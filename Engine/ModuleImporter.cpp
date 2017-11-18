@@ -151,12 +151,18 @@ GameObject* ModuleImporter::ProcessNode(aiNode* node, const aiScene* scene, Game
 		}
 
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		bool isReimported = false;
 		for (int i = 0; i < resourcesToReimport.size(); i++)
 		{
 			if (strcmp(node->mName.C_Str(), resourcesToReimport[i].nameMesh) == 0)
 			{
 				iMesh->Import(scene, mesh, newObj, node->mName.C_Str(), resourcesToReimport[i].uuid);
+				isReimported = true;
 			}
+		}
+		if (isReimported == false)
+		{
+			iMesh->Import(scene, mesh, newObj, node->mName.C_Str(), 0);
 		}
 	}
 
