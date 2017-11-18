@@ -33,7 +33,7 @@ public:
 	// --------------------------------------
 
 	// MESH & MATERIAL -------------------------------
-	ReImport GetUUIDPrefab(const char* file);
+	ReImport GetUUIDPrefab(const char * file, uint id);
 	ReImport GetUUIDMaterial(const char* file);
 	// -----------------------------------------------
 

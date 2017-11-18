@@ -402,16 +402,47 @@ void JSONSerialization::SaveMaterial(const ResourceMaterial* material, const cha
 
 // Utilities --------------------------------------------------------------------------
 
-ReImport JSONSerialization::GetUUIDPrefab(const char* file)
+ReImport JSONSerialization::GetUUIDPrefab(const char* file, uint id)
 {
-	return ReImport();
+	JSON_Value* config_file;
+	JSON_Object* config;
+	JSON_Object* config_node;
+
+	std::string nameJson = file;
+	nameJson += ".meta.json";
+	config_file = json_parse_file(nameJson.c_str());
+
+	ReImport info;
+	if (config_file != nullptr)
+	{
+		config = json_value_get_object(config_file);
+		config_node = json_object_get_object(config, "Prefab");
+		std::string temp = "Info.Resources";
+		int numResources = json_object_dotget_number_with_std(config_node, temp + ".Number of Resources");
+		if (id < numResources)
+		{
+			temp += "Resource " + std::to_string(id);
+			info.uuid = json_object_dotget_number_with_std(config, temp + ".ResourceUUID Resource");
+			info.directoryObj = json_object_dotget_string_with_std(config, "Info.Directory Prefab");
+			info.nameMesh = json_object_dotget_string_with_std(config, temp + ".Name");
+			if (strcmp(file, info.directoryObj) == 0)
+			{
+				return info;
+			}
+			else
+			{
+				info.directoryObj = nullptr;
+			}
+
+		}
+	}
+	return info;
 }
 
 ReImport JSONSerialization::GetUUIDMaterial(const char* file)
 {
 	JSON_Value* config_file;
 	JSON_Object* config;
-	JSON_Object* config_node;
 
 	std::string nameJson = file;
 	nameJson += ".meta.json";

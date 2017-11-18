@@ -257,9 +257,32 @@ bool ModuleFS::AnyfileModificated(std::vector<AllFiles>& files)
 				}
 				else
 				{
-					LOG("MODIFICATED");
-
-					App->resource_manager->resourcesToReimport.push_back(App->Json_seria->GetUUIDMaterial(files[i - 1].directory_name));
+					// LOG("MODIFICATED");
+					switch (App->resource_manager->CheckFileType(extension.c_str()))
+					{
+					case Resource::Type::MESH:
+					{
+						bool finish = false; int id = 0;
+						while (finish == false)
+						{
+							ReImport temp = App->Json_seria->GetUUIDPrefab(files[i - 1].directory_name, id++);
+							if (temp.uuid != 0)
+							{
+								App->resource_manager->resourcesToReimport.push_back(temp);
+							}
+							else
+							{
+								finish = true;
+							}
+						}
+						break;
+					}
+					case Resource::Type::MATERIAL:
+					{
+						App->resource_manager->resourcesToReimport.push_back(App->Json_seria->GetUUIDMaterial(files[i - 1].directory_name));
+						break;
+					}
+					}
 				}
 			}
 		}
