@@ -46,6 +46,7 @@ public:
 	void ShowInfoMouse(bool* active);
 	void ShowWindowExit(bool* active);
 	void ShowCameraMissing();
+	void ShowEngineState();
 
 	void ShowStyleEditor(ImGuiStyle* ref = NULL);
 	//void ShowConfig();

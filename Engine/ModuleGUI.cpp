@@ -903,7 +903,8 @@ void ModuleGUI::UpdateWindows(float dt)
 		static GLuint icon_pause = App->textures->LoadTexture("Images/UI/IconPause.png");
 		static GLuint icon_playframe = App->textures->LoadTexture("Images/UI/IconPlayFrame.png");
 		//ImTextureID temp = play;
-		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(150,150,150,0));
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(150, 150, 150, 0));
+		//ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor(255, 0, 0, 255));
 		//ImGui::Image((ImTextureID*)play, ImVec2(300, 60));
 		static ImVec2 pos_icon(20, 20);
 		ImGui::SameLine(width / 2 - 40);
@@ -924,6 +925,12 @@ void ModuleGUI::UpdateWindows(float dt)
 		}
 		ImGui::PopStyleColor(1);
 
+		//Text that indicates the state of the engine (PLAY/PAUSE/PLAYFRAME)
+		if (App->engineState != EngineState::STOP)
+		{
+			ImGui::SameLine(width * 0.5 + 60);
+			ShowEngineState();
+		}
 		if (App->showCameraPopup)
 		{
 			ShowCameraMissing();
@@ -985,7 +992,6 @@ void ModuleGUI::ShowInfoMouse(bool* active)
 		return;
 	}
 	ImGui::Text("Mouse Position: (%.1f,%.1f)", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
-	LOG("Mouse Global Position: (%i,%i)", App->input->GetMouseXMotionGlobal(), App->input->GetMouseYMotionGlobal());
 	ImGui::Text("FPS: %.0f", App->fps_log[App->frame_index - 1]);
 	ImGui::End();
 }
@@ -1053,4 +1059,23 @@ void ModuleGUI::ShowCameraMissing()
 		}
 	}
 	ImGui::EndPopup();
+}
+
+void ModuleGUI::ShowEngineState()
+{
+	ImGui::AlignFirstTextHeightToWidgets();
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 1.00f, 0.00f, 1.00f));
+	if (App->engineState == EngineState::PLAY)
+	{
+		ImGui::Text("PLAY");
+	}
+	else if (App->engineState == EngineState::PAUSE)
+	{
+		ImGui::Text("PAUSE");
+	}
+	else if (App->engineState == EngineState::PLAYFRAME)
+	{
+		ImGui::Text("PLAYFRAME");
+	}
+	ImGui::PopStyleColor();
 }
