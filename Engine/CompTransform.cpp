@@ -123,7 +123,8 @@ void CompTransform::ShowOptions()
 	//ImGui::MenuItem("CREATE", NULL, false, false);
 	if (ImGui::MenuItem("Reset"))
 	{
-		// Not implmented yet.
+		ResetMatrix();
+		ImGui::CloseCurrentPopup();
 	}
 	ImGui::Separator();
 	if (ImGui::MenuItem("Move to Front", NULL, false, false))
@@ -149,14 +150,14 @@ void CompTransform::ShowOptions()
 		SetPos(float3::zero);
 		ImGui::CloseCurrentPopup();
 	}
-	if (ImGui::MenuItem("Reset Rotation", NULL, false, false))
+	if (ImGui::MenuItem("Reset Rotation"))
 	{
 		SetRot(math::Quat::identity);
 		ImGui::CloseCurrentPopup();
 	}
 	if (ImGui::MenuItem("Reset Scale"))
 	{
-		SetScale(math::float3(1, 1, 1));
+		SetScale(math::float3(1.0f, 1.0f, 1.0f));
 		ImGui::CloseCurrentPopup();
 	}
 }
@@ -312,7 +313,6 @@ void CompTransform::ResetMatrix()
 	SetRot(float3::zero);
 	rotation_euler = float3::zero;
 	SetScale(float3(1, 1, 1));
-	toUpdate = true;
 }
 
 void CompTransform::SetLocalTransform()

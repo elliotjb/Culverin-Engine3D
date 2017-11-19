@@ -343,23 +343,29 @@ update_status ModuleGUI::Update(float dt)
 
 		if (ImGui::BeginMenu("Create"))
 		{
-			if (ImGui::BeginMenu("3D Object"))
+			if (ImGui::BeginMenu("Object"))
 			{
 				if (ImGui::MenuItem("Cube"))
 				{
 					// Link inspector to the GameObject Created to call its Inspector window.
 					GameObject* cube = App->scene->CreateCube();
-					((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(cube);
+					App->gui->SetLinkInspector(cube);
 					App->camera->SetFocus(cube);
 				}
-				if (ImGui::MenuItem("Sphere"))
+				if (ImGui::MenuItem("Empty"))
 				{
-					// Link inspector to the GameObject ...
-					GameObject* sphere = App->scene->CreateSphere();
-					((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(sphere);
-					App->camera->SetFocus(sphere);
+					// Link inspector to the GameObject Created to call its Inspector window.
+					GameObject* empty = App->scene->CreateGameObject();
+					App->gui->SetLinkInspector(empty);
+					App->camera->SetFocus(empty);
 				}
-
+				//if (ImGui::MenuItem("Sphere"))
+				//{
+				//	// Link inspector to the GameObject ...
+				//	GameObject* sphere = App->scene->CreateSphere();
+				//	((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(sphere);
+				//	App->camera->SetFocus(sphere);
+				//}	
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenu();

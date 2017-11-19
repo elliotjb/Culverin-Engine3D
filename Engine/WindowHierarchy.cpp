@@ -133,16 +133,16 @@ void Hierarchy::ShowOptions()
 		GameObject* empty = App->scene->CreateGameObject();
 		App->gui->SetLinkInspector(empty);
 	}
-	if (ImGui::MenuItem("Cube"))
+	if (ImGui::MenuItem("Create Cube"))
 	{
 		GameObject* cube = App->scene->CreateCube();
 		App->gui->SetLinkInspector(cube);
 	}
-	if (ImGui::MenuItem("Sphere"))
-	{
-		GameObject* sphere = App->scene->CreateSphere();
-		App->gui->SetLinkInspector(sphere);
-	}
+	//if (ImGui::MenuItem("Create Sphere"))
+	//{
+	//	GameObject* sphere = App->scene->CreateSphere();
+	//	App->gui->SetLinkInspector(sphere);
+	//}
 }
 
 void Hierarchy::ShowDeleteWindow()

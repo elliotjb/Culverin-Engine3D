@@ -40,6 +40,10 @@ void Component::Draw()
 {
 }
 
+void Component::Clear()
+{
+}
+
 void Component::ShowOptions()
 {
 }

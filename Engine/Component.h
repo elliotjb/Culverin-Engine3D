@@ -29,7 +29,7 @@ public:
 	virtual void preUpdate(float dt);
 	virtual void Update(float dt);
 	virtual void Draw();
-
+	virtual void Clear();
 	virtual void ShowOptions();
 
 	virtual void ShowInspectorInfo();

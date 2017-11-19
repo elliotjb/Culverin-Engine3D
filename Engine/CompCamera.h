@@ -25,6 +25,8 @@ public:
 	void Draw();
 	void DebugDraw();
 
+	void Clear();
+
 	void ShowOptions();
 	void ShowInspectorInfo();
 	void ShowCameraPopup();

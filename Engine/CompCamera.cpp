@@ -119,6 +119,14 @@ void CompCamera::DebugDraw()
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
+void CompCamera::Clear()
+{
+	if (is_main)
+	{
+		App->renderer3D->SetGameCamera(nullptr);
+	}
+}
+
 void CompCamera::ShowOptions()
 {
 	//ImGui::MenuItem("CREATE", NULL, false, false);
@@ -499,7 +507,7 @@ void CompCamera::Load(const JSON_Object * object, std::string name)
 
 	near_plane = frustum.nearPlaneDistance;
 	far_plane = frustum.farPlaneDistance;
-	vertical_fov = frustum.verticalFov;
+	vertical_fov = frustum.verticalFov * RADTODEG; /* output variable in Degrees */
 
 	is_main = json_object_dotget_boolean_with_std(object, name + "Main Camera");
 	SetMain(is_main);

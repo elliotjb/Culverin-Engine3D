@@ -620,6 +620,8 @@ void Application::SetState(EngineState state)
 			gameTime.gameStart_time = 0.0f;
 			gameTime.frame_count = 0.0f;
 			ChangeCamera("Scene");
+
+			//To Load all elements saved before entering Game Mode
 			WantToLoad();
 		}
 		else
@@ -629,7 +631,10 @@ void Application::SetState(EngineState state)
 				engineState = EngineState::PLAY;
 				ChangeCamera("Game");
 				scene->FillStaticObjectsVector();
-				WantToSave();
+				scene->sceneBuff->WantRefreshRatio();
+
+				//To Save all elements in the scene to load them correctly when exiting Game Mode
+				WantToSave(); 
 			}
 			else
 			{

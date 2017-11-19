@@ -15,10 +15,11 @@ public:
 	void UnBind(const char* window);
 	void Destroy();
 	void Resize(int Width, int Height);
+	void WantRefreshRatio();
 	unsigned int GetTexture() const;
 
 public:
-
+	bool	refresh = false;
 	uint	frame_id = 0;
 	uint	rbo;
 	uint	texture;

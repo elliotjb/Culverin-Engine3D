@@ -313,16 +313,16 @@ void GameObject::ShowGameObjectOptions()
 		GameObject* empty = App->scene->CreateGameObject(this);
 		((Inspector*)App->gui->winManager[WindowName::INSPECTOR])->LinkObject(empty);
 	}
-	if (ImGui::MenuItem("Cube"))
+	if (ImGui::MenuItem("Create Cube"))
 	{
 		GameObject* cube = App->scene->CreateCube(this);
 		((Inspector*)App->gui->winManager[WindowName::INSPECTOR])->LinkObject(cube);
 	}
-	if (ImGui::MenuItem("Sphere"))
-	{
-		GameObject* sphere = App->scene->CreateSphere(this);
-		((Inspector*)App->gui->winManager[WindowName::INSPECTOR])->LinkObject(sphere);
-	}
+	//if (ImGui::MenuItem("Sphere"))
+	//{
+	//	GameObject* sphere = App->scene->CreateSphere(this);
+	//	((Inspector*)App->gui->winManager[WindowName::INSPECTOR])->LinkObject(sphere);
+	//}
 	ImGui::Separator();
 	ImGui::MenuItem("ADD COMPONENT", NULL, false, false);
 	if (ImGui::MenuItem("Transform"))
@@ -808,6 +808,7 @@ void GameObject::DeleteAllComponents()
 {
 	for (int i = 0; i < components.size(); i++)
 	{
+		components[i]->Clear();
 		delete components[i];
 	}
 	components.clear();
