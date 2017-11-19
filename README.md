@@ -1,4 +1,4 @@
-# 3D Engine
+﻿# 3D Engine
 This is a project consistent of creating a Game Engine,
 that allows you to use tools to create video games.
 
@@ -6,19 +6,48 @@ Last Feature: Move camera without restrictions:
 ![](https://i.gyazo.com/3b8c3ac28bbc3b1ed5355f736fe57458.gif)
 
 # FEATURES
-- Configuration options (App, Window, Audio, Render).
-- Game Objects Structure (with components).
-- Basic GameObject Creation (Cube, Sphere).
-- Main Camera (Frustum geometry).
+- Configuration options (Application, Memory Consumption, Window, Camera, Input, Audio, Scene, GUI, Renderer).
+- Game Objects Structure (with components & following a hierarchy of parent-childrens).
+- Basic GameObject Creation (Cube, Empty object).
+- Main Camera (Frustum geometry with modificable parameters).
 - Game Clock (Play, Pause & Play Frame Modes).
+- In Game Mode, you will se the scene through the main camera you have selected from your gameobjects hierarchy.
 - Model importation (Imports meshes and textures, and creates Game Objects with correct components).
+- You can select game objects that have a bounding box directly from Scene Screen (or you can select them through 
+  hierarchy window).
+- Skybox as background of the scene.
+- Editable quadtree that will contain static objects. 
+- Materials and Meshes components uses Resources to load data only once in memory.
 
-# CAMERA CONTROLS(is Like Unity)
+# CAMERA CONTROLS (Unity-like)
 - Right Mouse Button: look around with static position
 - Left Mouse Button + L-Alt: orbit around a selected object.
 - Mouse Wheel: Zoom in / Zoom out.
 - Middle Mouse Button: drag and move the camera vertically and horitzontally.
 - F: center the Camera on the selected object.
+
+# GIZMOS
+Only enabled when Editor Mode is Active.
+When you select a game object, its gizmo will be activated, to edit its transform.
+Controls:
+ - 1: Translate.
+ - 2: Rotate.
+ - 3: Scale.
+
+# QUADTREE
+In Windows->Configuration->Scene you will see QUADTREE options:
+- You can enable/disable its Debug Draw.
+- You can change the size of the root node with the slider.
+- To implement static objects inside it, first create game objects and set them to 'static'.
+  Then, make sure all of them are inside the quadtree boundaries and click "UPDATE QUADTREE" button (only when Editor Mode is active).
+- The quadtree will correctly be divided and will contain static objects.
+
+#GAME OBJECTS / COMPONENT OPTIONS
+You can right-click a game object or a component to see which options are enabled that will modify the selected element.
+
+# STATIC OBJECTS
+When seting an object 'static', you won't be able to modify its transform when Play Mode is activated.
+
 
 # MODEL/TEXTURES IMPORTING
 To import a model (.fbx/.obj) to the Engine, just drag it inside the window.
@@ -26,6 +55,13 @@ It will create a resource to access its information and operate with it internal
 
 
 # UPDATES
+- 0.7:
+    * Added Gizmos that work well with children objects.
+    * Implemented Skybox (2 different skyboxes for now).
+    * You can update quadtree to collect static games inside it to speed up frustum culling.
+    * Added popups to warn users about Object Deletion, Setting Static an object with childs 
+      and another PopUp to warn that it's impossible to set more than one game camera active.
+    * GameObjects/Components Optionswhen right clicking them
 - 0.6:
     * Added Game Clock (with PLAY/PAUSE/PLAY FREAME buttons).
     * Structured camera with a frustum.
