@@ -57,18 +57,19 @@ bool Scene::Start()
 {
 	perf_timer.Start();
 
-	//Init Quadtree
+	/* Init Quadtree */
 	size_quadtree = 50.0f;
 	quadtree.Init(size_quadtree);
 
-
+	/* Set size of the plane of the scene */
 	size_plane = 50;
 
+	/* Create Default Main Camera Game Object */
 	CreateMainCamera(nullptr);
 	
 	icon_options_transform = App->textures->LoadTexture("Images/UI/icon_options_transform.png");
 
-	//Init Skybox
+	/* Init Skybox */ 
 	skybox = new SkyBox();
 	skybox->InitSkybox();
 	skybox_index = 1;
@@ -103,36 +104,6 @@ update_status Scene::Update(float dt)
 {
 	perf_timer.Start();
 
-	// Draw Ray ----------------------
-	//glBegin(GL_LINES);
-
-	//glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-	//glVertex3f(App->camera->ray.a.x, App->camera->ray.a.y, App->camera->ray.a.z); glVertex3f(App->camera->ray.b.x, App->camera->ray.b.y, App->camera->ray.b.z);
-
-	//glEnd();
-	// -----------------------------
-
-	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	{
-		//gameobjects[0]->AddChildGameObject_Copy(gameobjects[1]);
-		//gameobjects[0]->AddChildGameObject(gameobjects[2]);
-		//SaveScene();
-		//App->Json_seria->LoadPrefab("Assets/BakerHouse.fbx.meta.json");
-		DeleteGameObjects(gameobjects);
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-	{
-		//for (int i = gameobjects.size() - 1; i >= 0; i--)
-		//{
-		//	delete gameobjects[i];
-		//	gameobjects.pop_back();
-		//}
-		//((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
-		
-		//App->Json_seria->LoadScene();
-	}
-
 	// Update GameObjects -----------
 	for (uint i = 0; i < gameobjects.size(); i++)
 	{
@@ -140,12 +111,6 @@ update_status Scene::Update(float dt)
 	}
 	// -------------------------------------------------
 
-	//if (quadtree_draw)
-	//{
-	//	quadtree.DebugDraw();
-	//}
-
-	
 	Update_t = perf_timer.ReadMs();
 	return UPDATE_CONTINUE;
 }
@@ -160,21 +125,41 @@ update_status Scene::Update(float dt)
 
 update_status Scene::UpdateConfig(float dt)
 {
+	/* Edit Plane Size */
 	ImGui::PushItemWidth(ImGui::GetWindowWidth() / 4);
 	ImGui::SliderInt("Plane Size", &size_plane, 5, 1000);
 
-	//QUADTREE EDITOR ----------------------------------
+	/* Quadtree configuration */
+	EditorQuadtree();
+
+	/* Skybox configuration */
+	EditorSkybox();
+	
+	return UPDATE_CONTINUE;
+}
+
+bool Scene::CleanUp()
+{
+	skybox->DeleteSkyboxTex();
+	return true;
+}
+
+void Scene::EditorQuadtree()
+{
+	//QUADTREE EDITOR ---------------------------------------------------------
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.00f, 0.761f, 0.00f, 1.00f));
 	if (ImGui::TreeNodeEx("QUADTREE", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::PopStyleColor();
 
+		/* Enable Debug Draw */
 		ImGui::Checkbox("##quadtreedraw", &quadtree_draw); ImGui::SameLine();
 		ImGui::Text("Draw Quadtree");
 		ImGui::SliderFloat("Size", &size_quadtree, 50, 300);
 
-		if(ImGui::Button("UPDATE QUADTREE"))
-		{ 
+		/* Remake Quadtree with actual static objects*/
+		if (ImGui::Button("UPDATE QUADTREE"))
+		{
 			if (App->engineState == EngineState::STOP)
 			{
 				if (size_quadtree != quadtree.size)
@@ -189,7 +174,7 @@ update_status Scene::UpdateConfig(float dt)
 			}
 			else
 			{
-				LOG("Update Quadtree not possible while GAME MODE");
+				LOG("Update Quadtree not possible while GAME MODE is ON");
 			}
 		}
 		ImGui::TreePop();
@@ -198,13 +183,19 @@ update_status Scene::UpdateConfig(float dt)
 	{
 		ImGui::PopStyleColor();
 	}
+	// --------------------------------------------------------------------------------
+}
 
-	// SKYBOX EDITOR -----------------------------------
+void Scene::EditorSkybox()
+{
+	// SKYBOX EDITOR ------------------------------------------------------------------
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.00f, 0.761f, 0.00f, 1.00f));
 	if (ImGui::TreeNodeEx("SKYBOX", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::PopStyleColor();
 		const char* skybox_selection[] = { "AFTERNOON", "SUNNY DAY", "NONE" };
+		
+		/* To Select your desired Skybox */
 		if (ImGui::Combo("Select Skybox", &skybox_index, skybox_selection, IM_ARRAYSIZE(skybox_selection)))
 		{
 			if (skybox_index == 2) // Selected "NONE"
@@ -227,13 +218,7 @@ update_status Scene::UpdateConfig(float dt)
 		ImGui::PopStyleColor();
 	}
 	ImGui::PopItemWidth();
-	return UPDATE_CONTINUE;
-}
-
-bool Scene::CleanUp()
-{
-	skybox->DeleteSkyboxTex();
-	return true;
+	// ----------------------------------------------------------------------------------------
 }
 
 void Scene::DrawPlane()
@@ -306,12 +291,17 @@ void Scene::DrawCube(float size)
 
 }
 
-// Before Rendering with the game camera, fill a vector with all the static objects 
+// Before Rendering with the game camera (in Game Mode), fill a vector with all the static objects 
 // of the quadtree to iterate them to apply Culling (if activated)
-void Scene::FillStaticObjectsVector()
+// When exiting Game Mode, this function is called again only for clearing this vector
+void Scene::FillStaticObjectsVector(bool fill)
 {
 	static_objects.clear();
-	quadtree.CollectObjects(static_objects);
+
+	if (fill)
+	{
+		quadtree.CollectObjects(static_objects);
+	}
 }
 
 

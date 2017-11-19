@@ -621,6 +621,9 @@ void Application::SetState(EngineState state)
 			gameTime.frame_count = 0.0f;
 			ChangeCamera("Scene");
 
+			// Clear static objects vector
+			scene->FillStaticObjectsVector(false); 
+
 			//To Load all elements saved before entering Game Mode
 			WantToLoad();
 		}
@@ -630,7 +633,10 @@ void Application::SetState(EngineState state)
 			{
 				engineState = EngineState::PLAY;
 				ChangeCamera("Game");
-				scene->FillStaticObjectsVector();
+
+				// Fill static objects vector when play
+				scene->FillStaticObjectsVector(true); 
+
 				scene->sceneBuff->WantRefreshRatio();
 
 				//To Save all elements in the scene to load them correctly when exiting Game Mode

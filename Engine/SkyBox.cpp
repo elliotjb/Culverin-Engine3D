@@ -120,6 +120,7 @@ void SkyBox::DrawSkybox(float size, float3 pos, uint i)
 
 void SkyBox::DeleteSkyboxTex()
 {
+	// Deleting textures from the 2 default skyboxes
 	glDeleteTextures(6, &texture[0][0]);
 	glDeleteTextures(6, &texture[1][0]);
 }
@@ -128,7 +129,7 @@ uint SkyBox::GetTextureID(uint i) const
 {
 	if (i <= NUM_SKYBOX)
 	{
-		return texture[i][1];
+		return texture[i][1]; // Show an iconic image to recognize the skybox
 	}
 	LOG("Invalid skybox index.");
 	return 0;

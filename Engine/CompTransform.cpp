@@ -199,6 +199,7 @@ void CompTransform::ShowInspectorInfo()
 	}
 	else
 	{
+		// In game mode, you can't edit transforms of static objects
 		if (freeze)
 		{
 			ShowTransform(0.0f);  // 0.0f = no editable
@@ -234,6 +235,12 @@ void CompTransform::ShowTransform(float drag_speed)
 {
 	int op = ImGui::GetWindowWidth() / 4;
 
+	// Set color of the disabled text when transform is freezed
+	if(drag_speed == 0)
+	{
+		PushStyleColor(ImGuiCol_Text, GImGui->Style.Colors[ImGuiCol_TextDisabled]);
+	}
+
 	// Depending transform mode, edit local/world matrix (LOCAL by the moment)
 	switch (transform_mode)
 	{
@@ -261,6 +268,11 @@ void CompTransform::ShowTransform(float drag_speed)
 	}
 	default:
 		break;
+	}
+
+	if (drag_speed == 0)
+	{
+		ImGui::PopStyleColor();
 	}
 }
 

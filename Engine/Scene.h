@@ -23,10 +23,16 @@ public:
 	update_status UpdateConfig(float dt);
 	bool CleanUp();
 
+	// Editor outputs ----
+	void EditorQuadtree();
+	void EditorSkybox();
+
+	// DRAWING METHODS ---------
 	void DrawPlane();
 	void DrawCube(float size);
 
-	void FillStaticObjectsVector();
+	// CULLING HELPER FUNCTION -----------
+	void FillStaticObjectsVector(bool fill);
 
 	//OBJECTS CREATION / DELETION ---------------------
 	void Init_IndexVertex(float3* vertex_triangulate, uint num_index, CompMesh* mesh);
@@ -39,30 +45,29 @@ public:
 	// -------------------------------------
 
 public:
-	//GLubyte checkImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
-	//_Cube* test = nullptr;
-
-	//GLuint tex;
-	//GLuint Lenna;
-
-	//Drawing Scene & Game inside a Dock
 	FrameBuffer* sceneBuff = nullptr;
 
 	//Container Vector of all Game Objects
 	std::vector<GameObject*> gameobjects;
 
-	//Container Vector of Static Objects
+	//Container Vector of Static Objects (to speeding searches with quadtree)
 	std::vector<GameObject*> static_objects;
 
+	// Quadtree ----------------
 	Quadtree quadtree;
 	bool quadtree_draw = false;
-	GameObject* drag = nullptr;
-	GLuint icon_options_transform;
+	// -------------------------
+
+	// Skybox --------------------
 	SkyBox* skybox = nullptr;
 	int skybox_index = 0;
 	bool draw_skybox = true;
+	// ---------------------------
+
+	GameObject* drag = nullptr;
+	GLuint icon_options_transform = 0;
 
 private:
 	int size_plane = 0;
-	float size_quadtree = 0;
+	float size_quadtree = 0.0f;
 };

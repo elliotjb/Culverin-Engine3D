@@ -449,7 +449,6 @@ bool ModuleFS::AnyfileModificated(std::vector<AllFiles>& files)
 		}
 		count++;
 	}
-	LOG("%i", count);
 	return true;
 }
 

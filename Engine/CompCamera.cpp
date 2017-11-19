@@ -179,7 +179,16 @@ void CompCamera::ShowInspectorInfo()
 
 	if (ImGui::Checkbox("Main Camera", &is_main))
 	{
-		SetMain(is_main);
+		// Change this only out of Game Mode
+		if (App->engineState == EngineState::STOP) 
+		{
+			SetMain(is_main);
+		}
+		else
+		{
+			is_main = !is_main;
+			LOG("You can't change 'Main Camera' variable when Game Mode is ON.")
+		}
 	}
 
 	if (showPopup)
@@ -200,7 +209,7 @@ void CompCamera::ShowInspectorInfo()
 	{
 		SetNear(near_plane);
 	}
-	if (ImGui::DragFloat("Far Plane", &far_plane, 0.5f, near_plane + 0.01f, 1000.0f))
+	if (ImGui::DragFloat("Far Plane", &far_plane, 0.5f, near_plane + 0.01f, 1000.0f)) // TODO -> Cap min to 700.0f
 	{
 		SetFar(far_plane);
 	}
@@ -334,8 +343,6 @@ void CompCamera::UnCull()
 		// Delete from vector the object already checked
 		candidates_to_cull.pop();
 	}
-
-	App->scene->static_objects.clear();
 }
 
 void CompCamera::LookAt(const float3& position)
