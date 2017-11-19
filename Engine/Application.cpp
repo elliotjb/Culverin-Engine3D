@@ -97,6 +97,7 @@ bool Application::Init()
 	{
 		ret = true;
 
+		// Get editor variables from .json document ------
 		config = json_value_get_object(config_file);
 		config_node = json_object_get_object(config,"Application");
 		appName = json_object_get_string(config_node, "App Name");
@@ -104,7 +105,7 @@ bool Application::Init()
 		maxFPS = json_object_get_number(config_node, "Max FPS");
 		vsync = json_object_get_boolean(config_node, "VSYNC");
 		SetFpsCap(maxFPS);
-		//------------------------------------
+		// ---------------------------------------------------
 
 		// Call Init() in all modules
 		std::list<Module*>::iterator item = list_modules.begin();
@@ -279,10 +280,9 @@ update_status Application::Update()
 		item++;
 	}
 
+	/* ImGui + ImGuizmo Begin Frame */
 	ImGui_ImplSdlGL3_NewFrame(window->window);
 	ImGuizmo::BeginFrame();
-	//((SceneWorld*)App->gui->winManager[SCENEWORLD])->GetWindowParams(SceneDock.x, SceneDock.y, SceneDock.z, SceneDock.w);
-	//ImGuizmo::BeginFrame(SceneDock.x, SceneDock.y, SceneDock.z, SceneDock.w);
 
 	item = list_modules.begin();
 
@@ -292,7 +292,8 @@ update_status Application::Update()
 		{
 			if (item._Ptr->_Myval == camera)
 			{
-				ret = item._Ptr->_Myval->Update(realTime.dt); // Camera can't be affected by Game Time Scale (0 dt = 0 movement)
+				// Camera can't be affected by Game Time Scale (0 dt = 0 movement)
+				ret = item._Ptr->_Myval->Update(realTime.dt); 
 			}
 			else
 			{
@@ -344,7 +345,8 @@ update_status Application::Update()
 		{
 			if (item._Ptr->_Myval == camera)
 			{
-				ret = item._Ptr->_Myval->PostUpdate(realTime.dt); // Camera can't be affected by Game Time Scale (0 dt = 0 movement)
+				// Camera can't be affected by Game Time Scale (0 dt = 0 movement)
+				ret = item._Ptr->_Myval->PostUpdate(realTime.dt); 
 			}
 			else
 			{
@@ -360,9 +362,6 @@ update_status Application::Update()
 		}
 		item++;
 	}
-
-	//CONFIG WINDOW ----------------------------
-	//Config();
 
 	FinishUpdate();
 	return ret;
@@ -385,10 +384,9 @@ void Application::Config()
 		configuration->_BeginWorkspace("ConfigurationWindow");
 		if (stop_conf == false)
 		{
-			//ImGui::Spacing();
-			//ImGui::Begin
 			static bool* temp = NULL;
 
+			// APPLICATION OPTIONS --------------------------------------------------
 			if (!configuration->_BeginDock("Application", temp, 0))
 			{
 				configuration->_EndDock();
@@ -446,6 +444,8 @@ void Application::Config()
 
 				configuration->_EndDock();
 			}
+
+			// MEMORY CONSUMPTION ----------------------------------------------
 			sMStats stats = m_getMemoryStatistics();
 			if (!configuration->_BeginDock("Memory Consumption", temp, 0))
 			{
@@ -614,12 +614,13 @@ void Application::SetState(EngineState state)
 {
 	if (state == EngineState::PLAY)
 	{
+		// If it's already Game Mode, exit and start again Editor Mode
 		if (engineState == EngineState::PLAY)
 		{
 			engineState = EngineState::STOP;
 			gameTime.gameStart_time = 0.0f;
 			gameTime.frame_count = 0.0f;
-			ChangeCamera("Scene");
+			ChangeCamera("Scene"); // To notice renderer3D to change to Scene Camera
 
 			// Clear static objects vector
 			scene->FillStaticObjectsVector(false); 
@@ -632,7 +633,7 @@ void Application::SetState(EngineState state)
 			if (App->renderer3D->game_camera != nullptr)
 			{
 				engineState = EngineState::PLAY;
-				ChangeCamera("Game");
+				ChangeCamera("Game"); // To notice renderer3D to change to Gcene Camera
 
 				// Fill static objects vector when play
 				scene->FillStaticObjectsVector(true); 

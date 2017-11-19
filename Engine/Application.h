@@ -39,16 +39,19 @@ enum EngineState
 	PLAYFRAME
 };
 
+// Game Mode structure to manage the Game Time
 struct GameClock
 {
-	float gameStart_time = 0.0f; 
-	float timeScale = 1.0f; 
-	uint64 frame_count = 0; 
+	float gameStart_time = 0.0f; // To count the time in 
+	float timeScale = 1.0f; // Time multiplier
+	uint64 frame_count = 0;  // Total Updates since Game Mode started
 
+	// Variables to play only for 1 update
 	bool prepare_frame = false;
 	bool play_frame = false;
 };
 
+// Editor Mode structure to manage the Real Time
 struct RealTimeClock
 {
 	Timer engineStart_time;
@@ -67,7 +70,6 @@ struct RealTimeClock
 class Application
 {
 public:
-
 	Application();
 	~Application();
 
@@ -119,8 +121,9 @@ private:
 public:
 	RealTimeClock realTime;
 	GameClock gameTime;
-	EngineState engineState = EngineState::STOP;
+	EngineState engineState = EngineState::STOP; // To manage if we are in Game Mode or not
 
+	/* Performance Variables */
 	int		frame_index = 0;
 	int		ms_index = 0;
 	float	fps_log[70] = { 0 };
@@ -131,10 +134,12 @@ public:
 	// ----------------------------------
 
 public:
+	// Variables for enable different windows ---
 	LCG* random = nullptr;
 	bool showconfig = false;
 	bool showperformance = false;
 	bool showCameraPopup = false;
+	// -------------------------------------------
 
 	float4 SceneDock = { 0, 0, 0, 0 };
 
