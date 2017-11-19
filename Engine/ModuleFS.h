@@ -57,6 +57,7 @@ public:
 	void GetAllFilesAssets(std::experimental::filesystem::path path, std::vector<AllFiles>& files);
 	void GetAllFilesFromFolder(std::experimental::filesystem::path path, std::list<const char*>& files);
 	void GetAllFilesFromFolder(std::experimental::filesystem::path path, std::vector<uint>& files);
+	void GetUUIDFromFile(std::string path, std::vector<uint>& files);
 	bool AnyfileModificated(std::vector<AllFiles>& files);
 	bool IsPermitiveExtension(const char * extension);
 	void UpdateFilesAsstes();

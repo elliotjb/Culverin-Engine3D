@@ -254,7 +254,6 @@ void Project::Folders_update(std::vector<FoldersNew>& folders)
 						SetAllFolderBool(folders, false);
 						directory_see = App->GetCharfromConstChar(App->fs->GetMainDirectory().c_str());
 						ImGui::CloseCurrentPopup();
-						UpdateNow();
 					}
 				}
 				ImGui::EndPopup();
@@ -351,7 +350,7 @@ void Project::Files_Update(const std::vector<FilesNew>& files)
 			{
 				if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsMouseHoveringWindow())
 				{
-					std::string directory_prebaf = GetDirectory(); 
+					std::string directory_prebaf = GetDirectory();
 					directory_prebaf += "/";
 					directory_prebaf += files[i].file_name;
 					directory_prebaf += ".meta.json";
@@ -397,14 +396,40 @@ void Project::Files_Update(const std::vector<FilesNew>& files)
 		}
 		else
 		{
-			if (i + 1 <  files.size())
+			if (i + 1 < files.size())
 				ImGui::SameLine();
 		}
+		if (ImGui::BeginPopupContextItem("rename context menu"))
+		{
+			ImGui::Text("Edit name:");
+			ImGui::InputText("##edit2", files[i].file_name, 50, ImGuiInputTextFlags_ReadOnly);
+			//ImGui::InputText("##edit2", folders[i].file_name, 256);
+			ImGui::Spacing();
+			if (ImGui::Button("Create New Folder"))
+			{
+				std::string newFolder = GetDirectory();
+				newFolder += "/";
+				newFolder += "New Folder";
+				App->fs->CreateFolder(newFolder.c_str(), true);
+				ImGui::CloseCurrentPopup();
+				UpdateNow();
+			}
+			ImGui::Spacing();
 
-
+			if (ImGui::Button("Remove"))
+			{
+				if (folders[i].haveSomething)
+				{
+					App->fs->GetUUIDFromFile(files[i].directory_name, App->resource_manager->filestoDelete);
+				}
+				std::experimental::filesystem::remove_all(files[i].directory_name);
+				UpdateNow();
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::EndPopup();
+		}
 		ImGui::PopID();
 	}
-
 }
 
 const char* Project::GetDirectory() const

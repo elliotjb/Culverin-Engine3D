@@ -341,6 +341,54 @@ void ModuleFS::GetAllFilesFromFolder(std::experimental::filesystem::path path, s
 	}
 }
 
+void ModuleFS::GetUUIDFromFile(std::string path, std::vector<uint>& files)
+{
+	namespace stdfs = std::experimental::filesystem;
+	std::string extension = GetExtension(path);
+	for (std::string::iterator it = extension.begin(); it != extension.end(); it++)
+	{
+		*it = tolower(*it);
+	}
+	if (IsPermitiveExtension(extension.c_str()))
+	{
+		// LOG("MODIFICATED");
+		switch (App->resource_manager->CheckFileType(extension.c_str()))
+		{
+		case Resource::Type::MESH:
+		{
+			bool finish = false; int id = 0;
+			while (finish == false)
+			{
+				ReImport temp = App->Json_seria->GetUUIDPrefab(path.c_str(), id++);
+				if (temp.uuid != 0)
+				{
+					App->resource_manager->filestoDelete.push_back(temp.uuid);
+					//RELEASE_ARRAY(temp.directoryObj);
+					//RELEASE_ARRAY(temp.nameMesh);
+				}
+				else
+				{
+					finish = true;
+				}
+			}
+			break;
+		}
+		case Resource::Type::MATERIAL:
+		{
+			ReImport temp = App->Json_seria->GetUUIDMaterial(path.c_str());
+			if (temp.uuid != 0)
+			{
+				App->resource_manager->filestoDelete.push_back(temp.uuid);
+				//RELEASE_ARRAY(temp.directoryObj);
+				//RELEASE_ARRAY(temp.nameMesh);
+			}
+			break;
+		}
+		}
+	}
+}
+
+
 bool ModuleFS::AnyfileModificated(std::vector<AllFiles>& files)
 {
 	namespace stdfs = std::experimental::filesystem;
