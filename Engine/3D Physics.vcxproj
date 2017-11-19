@@ -114,7 +114,6 @@
     <ClInclude Include="WindowSceneWorld.h" />
     <ClInclude Include="ModuleTextures.h" />
     <ClInclude Include="CompTransform.h" />
-    <ClInclude Include="WindowGame.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
     <ClInclude Include="ImGui\imgui_impl_sdl_gl3.h" />
@@ -225,7 +224,6 @@
     <ClCompile Include="WindowSceneWorld.cpp" />
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="CompTransform.cpp" />
-    <ClCompile Include="WindowGame.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />

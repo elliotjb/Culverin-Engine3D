@@ -47,7 +47,6 @@ public:
 
 	//Drawing Scene & Game inside a Dock
 	FrameBuffer* sceneBuff = nullptr;
-	FrameBuffer* gameBuff = nullptr;
 
 	//Container Vector of all Game Objects
 	std::vector<GameObject*> gameobjects;

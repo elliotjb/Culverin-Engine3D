@@ -4,7 +4,6 @@
 #include "CompCamera.h"
 #include "Scene.h"
 #include "GameObject.h"
-#include "WindowGame.h"
 #include "WindowSceneWorld.h"
 #include "parson.h"
 #include "SkyBox.h"
@@ -166,14 +165,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	perf_timer.Start();
 
-	if (active_camera == scene_camera)
-	{
-		App->scene->sceneBuff->Bind("Scene");
-	}
-	else if (active_camera == game_camera)
-	{
-		App->scene->sceneBuff->Bind("Game");
-	}
+	// 
+	App->scene->sceneBuff->Bind("Scene");
 
 	// Refresh Projection of the camera
 	UpdateProjection(active_camera);
@@ -237,14 +230,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	//glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	//glEnd();
 
-	if (active_camera == scene_camera)
-	{
-		App->scene->sceneBuff->UnBind("Scene");
-	}
-	else if (active_camera == game_camera)
-	{
-		App->scene->sceneBuff->UnBind("Game");
-	}
+	App->scene->sceneBuff->UnBind("Scene");
 
 	//if (game_camera != nullptr)
 	//{

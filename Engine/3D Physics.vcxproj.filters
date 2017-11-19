@@ -348,9 +348,6 @@
     <ClInclude Include="CompCamera.h">
       <Filter>Engine\Modules\Scene\Components</Filter>
     </ClInclude>
-    <ClInclude Include="WindowGame.h">
-      <Filter>Engine\Modules\UI</Filter>
-    </ClInclude>
     <ClInclude Include="ImGui\ImGuizmo.h">
       <Filter>Engine\ImGUI</Filter>
     </ClInclude>
@@ -583,9 +580,6 @@
     </ClCompile>
     <ClCompile Include="CompCamera.cpp">
       <Filter>Engine\Modules\Scene\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowGame.cpp">
-      <Filter>Engine\Modules\UI</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\ImGuizmo.cpp">
       <Filter>Engine\ImGUI</Filter>

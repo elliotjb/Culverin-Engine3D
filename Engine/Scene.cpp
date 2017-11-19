@@ -43,7 +43,6 @@ Scene::~Scene()
 {
 	DeleteGameObjects(gameobjects, true);
 	RELEASE(sceneBuff);
-	RELEASE(gameBuff);
 }
 
 //bool Scene::Init(JSON_Object * node)

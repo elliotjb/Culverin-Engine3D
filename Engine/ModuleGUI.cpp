@@ -11,7 +11,6 @@
 #include "WindowInspector.h"
 #include "WindowHierarchy.h"
 #include "WindowSceneWorld.h"
-#include "WindowGame.h"
 #include "WindowProject.h"
 #include "GameObject.h"
 
@@ -59,22 +58,18 @@ bool ModuleGUI::Start()
 
 	App->scene->sceneBuff = new FrameBuffer();
 	App->scene->sceneBuff->Create(App->window->GetWidth(), App->window->GetHeight());
-	App->scene->gameBuff = new FrameBuffer();
-	App->scene->gameBuff->Create(App->window->GetWidth(), App->window->GetHeight());
 
 	winManager.push_back(new Hardware());		//0---- HARDWARE
 	winManager.push_back(new Inspector());		//1---- INSPECTOR
 	winManager.push_back(new Hierarchy());		//2---- Hierarchy
 	winManager.push_back(new SceneWorld());		//3---- SceneWorld
 	winManager.push_back(new Project());		//4---- Project
-	winManager.push_back(new WindowGame());		//5----- WindowGame
 	
 	//TODO ELLIOT NEED ACTIVE bye JSON, Also Console
 	winManager[INSPECTOR]->active[0].active = true;
 	winManager[HIERARCHY]->active[0].active = true;
 	winManager[SCENEWORLD]->active[0].active = true;
 	winManager[PROJECT]->active[0].active = true;
-	winManager[GAME]->active[0].active = true;
 
 	std::vector<WindowManager*>::iterator window = winManager.begin();
 	for (int i = 0; i < winManager.size(); i++)
@@ -244,11 +239,11 @@ update_status ModuleGUI::Update(float dt)
 				winManager[SCENEWORLD]->active[0].OpenClose();
 				LogOpenCloseWindow(winManager[SCENEWORLD]->active[0].active, winManager[SCENEWORLD]->name);
 			}
-			if (ImGui::MenuItem("Game"))
-			{
-				winManager[GAME]->active[0].OpenClose();
-				LogOpenCloseWindow(winManager[GAME]->active[0].active, winManager[GAME]->name);
-			}
+			//if (ImGui::MenuItem("Game"))
+			//{
+			//	winManager[GAME]->active[0].OpenClose();
+			//	LogOpenCloseWindow(winManager[GAME]->active[0].active, winManager[GAME]->name);
+			//}
 			if (ImGui::MenuItem("Hierarchy"))
 			{
 				winManager[HIERARCHY]->active[0].OpenClose();
