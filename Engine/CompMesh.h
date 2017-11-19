@@ -31,6 +31,7 @@ public:
 	~CompMesh();
 
 	void Draw();
+	void Clear();
 	void preUpdate(float dt);
 	void Update(float dt);
 	void Render(bool render);

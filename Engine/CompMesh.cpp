@@ -316,6 +316,11 @@ void CompMesh::Draw()
 	}
 }
 
+void CompMesh::Clear()
+{
+	resourceMesh = nullptr;
+}
+
 
 void CompMesh::Render(bool render)
 {

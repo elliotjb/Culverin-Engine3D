@@ -13,7 +13,7 @@ public:
 	~CompMaterial();
 
 	void preUpdate(float dt);
-
+	void Clear();
 	void SetColor(float r, float g, float b, float a);
 	void SetUUIDMesh(uint uuid);
 

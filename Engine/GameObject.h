@@ -21,6 +21,7 @@ public:
 
 	void preUpdate(float dt);
 	void Update(float dt);
+	bool CleanUp();
 	void Draw();
 	bool Enable();
 	bool Disable();

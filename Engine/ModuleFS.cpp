@@ -276,10 +276,13 @@ void ModuleFS::GetAllFilesFromFolder(std::experimental::filesystem::path path, s
 			{
 				files.push_back(ConverttoConstChar(iter->path().string()));
 			}
+			isFolder.clear();
 		}
+		extension.clear();
 	}
 }
 
+// This return a vector with uuid the Resource to need ReImport
 void ModuleFS::GetAllFilesFromFolder(std::experimental::filesystem::path path, std::vector<uint>& files)
 {
 	namespace stdfs = std::experimental::filesystem;
@@ -308,8 +311,6 @@ void ModuleFS::GetAllFilesFromFolder(std::experimental::filesystem::path path, s
 					if (temp.uuid != 0)
 					{
 						App->resource_manager->filestoDelete.push_back(temp.uuid);
-						//RELEASE_ARRAY(temp.directoryObj);
-						//RELEASE_ARRAY(temp.nameMesh);
 					}
 					else
 					{
@@ -324,12 +325,11 @@ void ModuleFS::GetAllFilesFromFolder(std::experimental::filesystem::path path, s
 				if (temp.uuid != 0)
 				{
 					App->resource_manager->filestoDelete.push_back(temp.uuid);
-					//RELEASE_ARRAY(temp.directoryObj);
-					//RELEASE_ARRAY(temp.nameMesh);
 				}
 				break;
 			}
 			}
+			directory.clear();
 		}
 		//else
 		//{
@@ -339,6 +339,7 @@ void ModuleFS::GetAllFilesFromFolder(std::experimental::filesystem::path path, s
 		//		files.push_back(ConverttoConstChar(iter->path().string()));
 		//	}
 		//}
+		extension.clear();
 	}
 }
 

@@ -76,6 +76,11 @@ void CompMaterial::preUpdate(float dt)
 	}
 }
 
+void CompMaterial::Clear()
+{
+	resourceMaterial = nullptr;
+}
+
 void CompMaterial::SetColor(float r, float g, float b, float a)
 {
 	color.r = r;

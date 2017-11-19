@@ -196,6 +196,12 @@ update_status ModuleResourceManager::PostUpdate(float dt)
 bool ModuleResourceManager::CleanUp()
 {
 	Save();
+	std::map<uint, Resource*>::iterator it = resources.begin();
+	for (int i = 0; i < resources.size(); i++)
+	{
+		it->second->SetState(Resource::State::WANTDELETE);
+		it++;
+	}
 	return true;
 }
 

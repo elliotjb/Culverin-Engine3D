@@ -157,6 +157,22 @@ void GameObject::Update(float dt)
 	}
 }
 
+bool GameObject::CleanUp()
+{
+	//preUpdate Components --------------------------
+	for (uint i = 0; i < components.size(); i++)
+	{
+		components[i]->Clear();
+	}
+
+	//preUpdate child Game Objects -------------------
+	for (uint i = 0; i < childs.size(); i++)
+	{
+		childs[i]->CleanUp();
+	}
+	return true;
+}
+
 void GameObject::Draw()
 {
 	if (visible)
