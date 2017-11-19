@@ -58,7 +58,7 @@ void CompTransform::Update(float dt)
 	}
 
 	// Show gizmo when object selected
-	if (((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected() == parent)
+	if (((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected() == parent && App->engineState == EngineState::STOP)
 	{
 		ImGuizmo::Enable(true);
 
@@ -72,15 +72,15 @@ void CompTransform::Update(float dt)
 		global_transposed = global_transform.Transposed();
 
 		// SET GUIZMO OPERATION ----------------------------------
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 		{
 			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 		{
 			mCurrentGizmoOperation = ImGuizmo::ROTATE;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		else if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 		{
 			mCurrentGizmoOperation = ImGuizmo::SCALE;
 		}
@@ -116,6 +116,7 @@ void CompTransform::Update(float dt)
 		App->console->ClearLog();
 		UpdateMatrix(transform_mode);
 		toUpdate = false;
+		editing_transform = false;
 	}
 }
 

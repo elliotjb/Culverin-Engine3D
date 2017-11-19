@@ -230,12 +230,12 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	}
 
 	// Draw Mouse Picking Ray
-	glBegin(GL_LINES);
-	glLineWidth(3.0f);
-	glColor4f(1.00f, 0.761f, 0.00f, 1.00f);
-	glVertex3f(App->camera->ray.a.x, App->camera->ray.a.y, App->camera->ray.a.z); glVertex3f(App->camera->ray.b.x, App->camera->ray.b.y, App->camera->ray.b.z);
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	glEnd();
+	//glBegin(GL_LINES);
+	//glLineWidth(3.0f);
+	//glColor4f(1.00f, 0.761f, 0.00f, 1.00f);
+	//glVertex3f(App->camera->ray.a.x, App->camera->ray.a.y, App->camera->ray.a.z); glVertex3f(App->camera->ray.b.x, App->camera->ray.b.y, App->camera->ray.b.z);
+	//glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	//glEnd();
 
 	if (active_camera == scene_camera)
 	{
