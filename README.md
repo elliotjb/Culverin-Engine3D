@@ -61,6 +61,7 @@ Controls:
  - 1: Translate.
  - 2: Rotate.
  - 3: Scale.
+
 If you have problems to select a game object by clicking on the scene screen, tree to move the 
 camera to get a better vision angle.
 
