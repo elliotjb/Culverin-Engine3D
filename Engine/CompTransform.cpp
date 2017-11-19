@@ -58,7 +58,7 @@ void CompTransform::Update(float dt)
 	}
 
 	// Show gizmo when object selected
-	if (((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected())
+	if (((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected() == parent)
 	{
 		ImGuizmo::Enable(true);
 
