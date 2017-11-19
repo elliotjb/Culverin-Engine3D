@@ -5,6 +5,7 @@
 ResourceMesh::ResourceMesh(uint uid) : Resource(uid, Resource::Type::MESH, Resource::State::UNLOADED)
 {
 	NumGameObjectsUseMe = 0;
+	LOG("Recource Mesh Created!");
 }
 
 
@@ -87,6 +88,7 @@ void ResourceMesh::DeleteToMemory()
 	vertices.clear();
 	indices.clear();
 	vertices_normals.clear();
+	LOG("UnLoaded Recource Mesh");
 }
 
 bool ResourceMesh::LoadToMemory()
@@ -122,6 +124,7 @@ bool ResourceMesh::LoadToMemory()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	state = Resource::State::LOADED;
+	LOG("Loaded Recource Material");
 	return true;
 }
 

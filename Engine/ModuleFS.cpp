@@ -237,10 +237,10 @@ void ModuleFS::GetAllFilesAssets(std::experimental::filesystem::path path, std::
 			files_temp.directory_name = ConverttoConstChar(iter->path().string());
 			files_temp.file_name = ConverttoChar(FixName_directory(iter->path().string()));
 			files.push_back(files_temp);
-			if (stdfs::is_directory(*iter))
-			{
-				GetAllFilesAssets(iter->path().string(), files);
-			}
+		}
+		if (stdfs::is_directory(*iter))
+		{
+			GetAllFilesAssets(iter->path().string(), files);
 		}
 	}
 }
@@ -396,8 +396,7 @@ bool ModuleFS::AnyfileModificated(std::vector<AllFiles>& files)
 
 	const stdfs::directory_iterator end{};
 	std::experimental::filesystem::path path = directory_Game;
-	int i = 0;
-	int count = 0;
+	uint idpath = 0;
 	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
 	{
 		if (stdfs::is_directory(*iter) == false)
@@ -412,7 +411,7 @@ bool ModuleFS::AnyfileModificated(std::vector<AllFiles>& files)
 			{
 				stdfs::file_time_type temp = stdfs::last_write_time(iter->path());
 				std::time_t cftime = decltype(temp)::clock::to_time_t(temp);
-				if (files[i++].ftime == cftime)
+				if (files[idpath++].ftime == cftime)
 				{
 					// No Modificated
 				}
@@ -426,7 +425,7 @@ bool ModuleFS::AnyfileModificated(std::vector<AllFiles>& files)
 						bool finish = false; int id = 0;
 						while (finish == false)
 						{
-							ReImport temp = App->Json_seria->GetUUIDPrefab(files[i - 1].directory_name, id++);
+							ReImport temp = App->Json_seria->GetUUIDPrefab(files[idpath - 1].directory_name, id++);
 							if (temp.uuid != 0)
 							{
 								App->resource_manager->resourcesToReimport.push_back(temp);
@@ -440,14 +439,79 @@ bool ModuleFS::AnyfileModificated(std::vector<AllFiles>& files)
 					}
 					case Resource::Type::MATERIAL:
 					{
-						App->resource_manager->resourcesToReimport.push_back(App->Json_seria->GetUUIDMaterial(files[i - 1].directory_name));
+						App->resource_manager->resourcesToReimport.push_back(App->Json_seria->GetUUIDMaterial(files[idpath - 1].directory_name));
 						break;
 					}
 					}
 				}
 			}
 		}
-		count++;
+		else
+		{
+			AnyfileModificatedFolder(iter->path().string(), files, idpath);
+		}
+	}
+	return true;
+}
+
+bool ModuleFS::AnyfileModificatedFolder(std::experimental::filesystem::path path, std::vector<AllFiles>& files, uint& idpath)
+{
+	namespace stdfs = std::experimental::filesystem;
+
+	const stdfs::directory_iterator end{};
+	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
+	{
+		if (stdfs::is_directory(*iter) == false)
+		{
+			std::string extension = GetExtension(iter->path().string());
+			//Set lowercase the extension to normalize it
+			for (std::string::iterator it = extension.begin(); it != extension.end(); it++)
+			{
+				*it = tolower(*it);
+			}
+			if (IsPermitiveExtension(extension.c_str()))
+			{
+				stdfs::file_time_type temp = stdfs::last_write_time(iter->path());
+				std::time_t cftime = decltype(temp)::clock::to_time_t(temp);
+				if (files[idpath++].ftime == cftime)
+				{
+					// No Modificated
+				}
+				else
+				{
+					// LOG("MODIFICATED");
+					switch (App->resource_manager->CheckFileType(extension.c_str()))
+					{
+					case Resource::Type::MESH:
+					{
+						bool finish = false; int id = 0;
+						while (finish == false)
+						{
+							ReImport temp = App->Json_seria->GetUUIDPrefab(files[idpath - 1].directory_name, id++);
+							if (temp.uuid != 0)
+							{
+								App->resource_manager->resourcesToReimport.push_back(temp);
+							}
+							else
+							{
+								finish = true;
+							}
+						}
+						break;
+					}
+					case Resource::Type::MATERIAL:
+					{
+						App->resource_manager->resourcesToReimport.push_back(App->Json_seria->GetUUIDMaterial(files[idpath - 1].directory_name));
+						break;
+					}
+					}
+				}
+			}
+		}
+		else
+		{
+			AnyfileModificatedFolder(iter->path(), files, idpath);
+		}
 	}
 	return true;
 }
