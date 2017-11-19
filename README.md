@@ -73,6 +73,11 @@ In Windows->Configuration->Scene you will see QUADTREE options:
   Then, make sure all of them are inside the quadtree boundaries and click "UPDATE QUADTREE" button (only when Editor Mode is active).
 - The quadtree will correctly be divided and will contain static objects.
 
+# CAMERA CULLING
+- Only enabled in Play Mode.
+- To cull static objects you have to set them 'static' first, then update the quadtree. If they are inside the quadtree, culling for
+  static objects in Play Mode is enabled.
+
 # GAME OBJECTS / COMPONENT OPTIONS
 You can right-click a game object or a component to see which options are enabled that will modify the selected element.
 Warning: for this release, cubes created in the engine hasn't got texture coords, so you won't be able to see the applied texture.
