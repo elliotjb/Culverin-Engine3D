@@ -178,7 +178,16 @@ DockContext::DockContext()
 {
 }
 
-DockContext::~DockContext() {}
+DockContext::~DockContext() 
+{
+	DockContext* temp = getDockContext();
+	for (int i = 0; i < temp->m_docks.size(); ++i)
+	{
+		temp->m_docks[i]->~Dock();
+		MemFree(temp->m_docks[i]);
+	}
+	temp->m_docks.clear();
+}
 
 
 DockContext::Dock& DockContext::getDock(const char* label, bool opened)

@@ -10,6 +10,8 @@ ResourceMaterial::ResourceMaterial(uint uuid) : Resource(uuid, Resource::Type::M
 
 ResourceMaterial::~ResourceMaterial()
 {
+	texture.name.clear();
+	texture.nameExt.clear();
 }
 
 void ResourceMaterial::InitInfo(const char* nameResource)

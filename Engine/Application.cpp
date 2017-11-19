@@ -118,6 +118,7 @@ bool Application::Init()
 			}
 			item++;
 		}
+		json_value_free(config_file);
 
 		// After all Init calls we call Start() in all modules
 		LOG("Application Start --------------");
@@ -582,7 +583,7 @@ bool Application::SaveConfig()
 
 		json_serialize_to_file(config_file, "config.json");
 	}
-
+	json_value_free(config_file);
 
 	return ret;
 }

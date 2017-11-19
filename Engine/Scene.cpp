@@ -41,6 +41,9 @@ Scene::Scene(bool start_enabled) : Module(start_enabled)
 
 Scene::~Scene()
 {
+	DeleteGameObjects(gameobjects, true);
+	RELEASE(sceneBuff);
+	RELEASE(gameBuff);
 }
 
 //bool Scene::Init(JSON_Object * node)

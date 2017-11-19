@@ -7,6 +7,7 @@ Resource::Resource(uint uid, Resource::Type type, Resource::State state) : uuid(
 
 Resource::~Resource()
 {
+	RELEASE_ARRAY(name);
 }
 
 Resource::Type Resource::GetType() const

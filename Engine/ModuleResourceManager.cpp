@@ -393,6 +393,7 @@ void ModuleResourceManager::CreateResourceCube()
 
 	AABB* bounding_box;
 	bounding_box = new AABB(*box);
+	RELEASE(box);
 	float3* vertices_array = new float3[36];
 
 	bounding_box->Triangulate(1, 1, 1, vertices_array, NULL, NULL, false);
@@ -400,6 +401,8 @@ void ModuleResourceManager::CreateResourceCube()
 	std::vector<float3> vertices;
 	Init_IndexVertex(vertices_array, 36, indices, vertices);
 	App->importer->iMesh->Import(8, 36, 0, indices, vertices, 1); // 1 == Cube
+	RELEASE_ARRAY(vertices_array);
+	RELEASE(bounding_box);
 }
 
 Resource*  ModuleResourceManager::ShowResources(bool& active, Resource::Type type)
@@ -482,6 +485,7 @@ void ModuleResourceManager::Save()
 		}
 	}
 	json_serialize_to_file(config_file, "Resources.json");
+	json_value_free(config_file);
 }
 
 void ModuleResourceManager::Load()

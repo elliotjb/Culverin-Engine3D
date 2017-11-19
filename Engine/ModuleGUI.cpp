@@ -638,6 +638,7 @@ void ModuleGUI::LoadDocks()
 	config = json_value_get_object(config_file);
 	config_node = json_object_get_object(config, "Docking");
 	getDockContext()->LoadDock(config_node);
+	json_value_free(config_file);
 }
 
 void ModuleGUI::RevertStyleDocks()
@@ -651,6 +652,7 @@ void ModuleGUI::RevertStyleDocks()
 	config = json_value_get_object(config_file);
 	config_node = json_object_get_object(config, "Docking");
 	getDockContext()->LoadDock(config_node);
+	json_value_free(config_file);
 }
 
 bool ModuleGUI::CleanUp()
