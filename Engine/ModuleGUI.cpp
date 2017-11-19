@@ -39,13 +39,6 @@ ModuleGUI::~ModuleGUI()
 	winManager.clear();
 }
 
-//bool ModuleGUI::Init(JSON_Object * node)
-//{
-//	perf_timer.Start();
-//
-//	Awake_t = perf_timer.ReadMs();
-//	return true;
-//}
 
 bool ModuleGUI::Start()
 {
@@ -174,41 +167,6 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::EndMenu();
 		}
 
-		//if (ImGui::BeginMenu("GameObject"))
-		//{
-		//	//if (ImGui::MenuItem("Create Empty", "Ctrl + Shift + N"))
-		//	//{
-
-		//	//}
-		//	//ImGui::Separator();
-		//	//if (ImGui::BeginMenu("3D Object"))
-		//	//{
-		//	//	if (ImGui::MenuItem("Cube"))
-		//	//	{
-		//	//		//winManager[CREATEOBJETCS]->SpecialFunction("cube");
-		//	//	}
-
-		//	//	if (ImGui::MenuItem("Sphere"))
-		//	//	{
-		//	//		//winManager[CREATEOBJETCS]->SpecialFunction("sphere");
-		//	//	}
-		//	//	if (ImGui::MenuItem("Capsule"))
-		//	//	{
-
-		//	//	}
-		//	//	if (ImGui::MenuItem("Cylinder"))
-		//	//	{
-
-		//	//	}
-		//	//	ImGui::EndMenu();
-		//	//}
-		//	//if (ImGui::MenuItem("Audio"))
-		//	//{
-
-		//	//}
-		//	ImGui::EndMenu();
-		//}
-
 		if (ImGui::BeginMenu("Windows"))
 		{
 			if (ImGui::MenuItem("Inspector"))
@@ -216,14 +174,6 @@ update_status ModuleGUI::Update(float dt)
 				winManager[INSPECTOR]->active[0].OpenClose();
 				LogOpenCloseWindow(winManager[INSPECTOR]->active[0].active, winManager[INSPECTOR]->name);
 			}
-			//if (ImGui::MenuItem("Create Objects"))
-			//{
-			//	winManager[CREATEOBJETCS]->active[CREATE].OpenClose();
-			//}
-			//if (ImGui::MenuItem("Objects in Scene"))
-			//{
-			//	winManager[CREATEOBJETCS]->active[SHOW].OpenClose();
-			//}
 			if (ImGui::MenuItem("Hardware"))
 			{
 				winManager[HARDWARE]->active[0].OpenClose();
@@ -239,11 +189,6 @@ update_status ModuleGUI::Update(float dt)
 				winManager[SCENEWORLD]->active[0].OpenClose();
 				LogOpenCloseWindow(winManager[SCENEWORLD]->active[0].active, winManager[SCENEWORLD]->name);
 			}
-			//if (ImGui::MenuItem("Game"))
-			//{
-			//	winManager[GAME]->active[0].OpenClose();
-			//	LogOpenCloseWindow(winManager[GAME]->active[0].active, winManager[GAME]->name);
-			//}
 			if (ImGui::MenuItem("Hierarchy"))
 			{
 				winManager[HIERARCHY]->active[0].OpenClose();
@@ -316,15 +261,6 @@ update_status ModuleGUI::Update(float dt)
 			{
 				if (ImGui::MenuItem("Revert Style Docking"))
 				{
-					//ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(4 / 7.0f, 0.6f, 0.6f));
-					//ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(4 / 7.0f, 0.8f, 0.8f));
-					//ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(4 / 7.0f, 1.0f, 1.0f));
-					//ImGui::SameLine(150);	if (ImGui::Button("Revert Dock Style"))
-					//{
-					//	RevertStyleDocks();
-					//}
-					//ImGui::SameLine(); App->ShowHelpMarker("If you have problems with style use this revert!", "(?)");
-					//ImGui::PopStyleColor(3);
 					RevertStyleDocks();
 				}
 				if (ImGui::MenuItem("Revert Style Colors and format"))
@@ -354,13 +290,6 @@ update_status ModuleGUI::Update(float dt)
 					App->gui->SetLinkInspector(empty);
 					App->camera->SetFocus(empty);
 				}
-				//if (ImGui::MenuItem("Sphere"))
-				//{
-				//	// Link inspector to the GameObject ...
-				//	GameObject* sphere = App->scene->CreateSphere();
-				//	((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(sphere);
-				//	App->camera->SetFocus(sphere);
-				//}	
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenu();
@@ -544,12 +473,6 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::End();
 	}
 
-	//// Windows to Create Objects ----------------------
-	//if (window_create_objects)
-	//{
-	//	ShowCreateObjects();
-	//}
-
 	//Window Style -----------------------
 	if (window_style)
 	{
@@ -581,14 +504,6 @@ update_status ModuleGUI::Update(float dt)
 	Update_t = perf_timer.ReadMs();
 	return UPDATE_CONTINUE;
 }
-
-//update_status ModuleGUI::PostUpdate(float dt)
-//{
-//	perf_timer.Start();
-//
-//	postUpdate_t = perf_timer.ReadMs();
-//	return UPDATE_CONTINUE;
-//}
 
 //Update Window Configuration -----------------------------
 update_status ModuleGUI::UpdateConfig(float dt)
@@ -946,21 +861,11 @@ void ModuleGUI::UpdateWindows(float dt)
 
 	BeginWorkspace();
 
-	//ImGui::SetNextWindowPos(ImVec2(App->window->GetWidth() - App->window->GetWidth() / 4, 23), 2);
-	//ImGui::SetNextWindowSize(ImVec2(App->window->GetWidth() / 4, App->window->GetHeight() - 23), 2);
-	/*BeginDock("TEST", &show_scene3, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-	ImGui::Text("HELLO");
-	EndDock();*/
-
 	App->Config();
 
 	std::vector<WindowManager*>::iterator window = winManager.begin();
 	for (int i = 0; i < winManager.size(); i++)
 	{
-		/*if (window[i]->IsActive())
-		{
-			window[i]->Update(dt);
-		}*/
 		window[i]->Update(dt);
 	}
 

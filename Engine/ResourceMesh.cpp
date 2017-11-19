@@ -93,6 +93,7 @@ void ResourceMesh::DeleteToMemory()
 
 bool ResourceMesh::LoadToMemory()
 {
+	LOG("Resources: %s, Loaded in Memory!", this->name);
 	//glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &vertices_id);
 	glGenBuffers(1, &indices_id);
@@ -124,7 +125,6 @@ bool ResourceMesh::LoadToMemory()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	state = Resource::State::LOADED;
-	LOG("Loaded Recource Material");
 	return true;
 }
 

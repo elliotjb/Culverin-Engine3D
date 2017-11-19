@@ -22,14 +22,6 @@ ImportMaterial::~ImportMaterial()
 {
 }
 
-//update_status MaterialImporter::Update(float dt)
-//{
-//
-//
-//
-//	return UPDATE_CONTINUE;
-//}
-
 bool ImportMaterial::Import(const char* file, uint uuid)
 {
 	bool ret = false;
@@ -154,6 +146,7 @@ Texture ImportMaterial::Load(const char* file)
 bool ImportMaterial::LoadResource(const char* file, ResourceMaterial* resourceMaterial)
 {
 	Texture texture = Load(file);
+	LOG("Resources: %s, Loaded in Memory!", resourceMaterial->name);
 	if (texture.id > 0)
 	{
 		resourceMaterial->Init(texture);

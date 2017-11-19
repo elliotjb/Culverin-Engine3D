@@ -51,14 +51,6 @@ bool ModuleInput::Init(JSON_Object* node)
 	return ret;
 }
 
-//bool ModuleInput::Start()
-//{
-//	perf_timer.Start();
-//
-//	Start_t = perf_timer.ReadMs();
-//	return true;
-//}
-
 // Called every draw update
 update_status ModuleInput::PreUpdate(float dt)
 {
@@ -86,11 +78,14 @@ update_status ModuleInput::PreUpdate(float dt)
 	}
 
 	Uint32 buttons = SDL_GetMouseState(&mouse_x, &mouse_y);
+
+	// No Restrictios With Move Camera ----------------------------------
 	mouse_x_motion_global = mouse_x_global;
 	mouse_y_motion_global = mouse_y_global;
 	Uint32 buttons_global = SDL_GetGlobalMouseState(&mouse_x_global, &mouse_y_global);
 	mouse_x_motion_global = mouse_x_global - mouse_x_motion_global;
 	mouse_y_motion_global = mouse_y_global - mouse_y_motion_global;
+
 	//Cap Error?
 	if (mouse_x_motion_global > 600 || mouse_x_motion_global < -600)
 	{
@@ -142,28 +137,27 @@ update_status ModuleInput::PreUpdate(float dt)
 			mouse_x = e.motion.x / SCREEN_SIZE;
 			mouse_y = e.motion.y / SCREEN_SIZE;
 
-			//mouse_x_global = e.motion.x / SCREEN_SIZE;
-			//mouse_y_global = e.motion.y / SCREEN_SIZE;
 
 			mouse_x_motion = e.motion.xrel / SCREEN_SIZE;
 			mouse_y_motion = e.motion.yrel / SCREEN_SIZE;
 
-			//mouse_x_motion_global = e.motion.xrel / SCREEN_SIZE;
-			//mouse_y_motion_global = e.motion.yrel / SCREEN_SIZE;
 			break;
 
 			case SDL_DROPFILE:
 			{
 				if (App->resource_manager->CheckFileType(e.drop.file) == Resource::Type::MESH)
 				{
+					LOG("Importing file: %s", e.drop.file);
 					dropedfiles.push_back(e.drop.file);
 				}
 				else if (App->resource_manager->CheckFileType(e.drop.file) == Resource::Type::MATERIAL)
 				{
+					LOG("Importing file: %s", e.drop.file);
 					dropedfiles.push_front(e.drop.file);
 				}
 				else if (App->resource_manager->CheckFileType(e.drop.file) == Resource::Type::FOLDER)
 				{
+					LOG("Importing file: %s", e.drop.file);
 					dropedfiles.push_back(e.drop.file);
 				}
 			}

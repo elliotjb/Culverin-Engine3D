@@ -17,16 +17,6 @@ ModuleImporter::ModuleImporter(bool start_enabled) : Module(start_enabled)
 	Start_enabled = true;
 	preUpdate_enabled = true;
 
-	//char ownPth[MAX_PATH];
-
-	//// Will contain exe path
-	//HMODULE hModule = GetModuleHandle(NULL);
-	//if (hModule != NULL)
-	//{
-	//	// When passing NULL to GetModuleHandle, it returns handle of exe itself
-	//	GetModuleFileName(hModule, ownPth, (sizeof(ownPth)));
-	//}
-
 	name = "Importer";
 }
 

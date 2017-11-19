@@ -252,24 +252,12 @@ void ImportMesh::Import(uint num_vertices, uint num_indices, uint num_normals, s
 	bytes = sizeof(uint) * num_indices;
 	memcpy(cursor, indices_, bytes);
 
-	// Storing Normals
-	//cursor += bytes;
-	//bytes = sizeof(float3) * num_normals;
-	//memcpy(cursor, vert_normals, bytes);
-
-	//// Storing Tex Coords
-	//cursor += bytes;
-	//bytes = sizeof(float2) * num_vertices; //num_tex_coords;
-	//memcpy(cursor, tex_coords, bytes);
-
 	// Release all pointers
 	RELEASE_ARRAY(vertices_);
 	RELEASE_ARRAY(indices_);
 	RELEASE_ARRAY(vert_normals);
 	indices.clear();
 	vertices.clear();
-	//RELEASE_ARRAY(tex_coords);
-	//RELEASE(texture);
 
 	// Create Resource ----------------------
 	ResourceMesh* res_mesh = (ResourceMesh*)App->resource_manager->CreateNewResource(Resource::Type::MESH, uuid);
@@ -406,18 +394,10 @@ bool ImportMesh::Load(const char* file, CompMesh* mesh)
 		tex_coords = new float2[num_vertices];
 		memcpy(tex_coords, cursor, bytes);
 		
-		//GameObject* gameobject = new GameObject();
-		//CompMesh* mesh = (CompMesh*)gameobject->AddComponent(C_MESH);
-		
-		//mesh->InitRanges(num_vertices, num_indices, num_normals);
-		//mesh->Init(vertices, indices, vert_normals, tex_coords);
-		//mesh->SetupMesh();
+
 		mesh->Enable();
 		
-		LOG("Mesh %s Loaded!", file);
-
-		//App->scene->gameobjects.push_back(gameobject);
-		
+		LOG("Mesh %s Loaded!", file);		
 	}
 	return true;
 }

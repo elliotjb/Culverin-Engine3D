@@ -711,7 +711,7 @@ bool ModuleFS::SaveFile(const char* data, std::string name, uint size, DIRECTORY
 	{
 		// write to outfile
 		outfile.write(data, size);
-		LOG("Save Completed");
+		LOG("Save File %s", name.c_str());
 	}
 	else
 	{

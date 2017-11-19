@@ -75,7 +75,7 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 		reimportNow = true;
 	}
 
-	// Delete Resource
+	// Delete Resource from Memory if anyone use it.
 	std::map<uint, Resource*>::iterator it = resources.begin();
 	for (int i = 0; i < resources.size(); i++)
 	{
@@ -83,13 +83,14 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 		{
 			if (it->second->IsLoadedToMemory() == Resource::State::LOADED)
 			{
-				// LOG("NOW UNLOAD");
 				it->second->DeleteToMemory();
+				LOG("Resources: %s, unloaded from memory", it->second->name);
 			}
 		}
 		it++;
 	}
 
+	// Prepare to Delete Resources and File in Library, so first set the resource state to WANTDELETE
 	if (filestoDelete.size() > 0)
 	{
 		std::map<uint, Resource*>::iterator it;
@@ -100,36 +101,10 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 		}
 		deleteNow = true;
 	}
-	//static bool waitUpdate = false;
-	//if (waitUpdate)
-	//{
-	//	std::map<uint, Resource*>::iterator it = resources.begin();
-	//	for (int i = 0; i < resources.size(); i++)
-	//	{
-	//		RELEASE(it->second);
-	//		it++;
-	//	}
-	//	resources.clear();
-	//}
-	//if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
-	//{
-	//	std::map<uint, Resource*>::iterator it = resources.begin();
-	//	for (int i = 0; i < resources.size(); i++)
-	//	{
-	//		it->second->state = Resource::State::WANTDELETE;
-	//		it++;
-	//	}
-	//	waitUpdate = true;
-	//}
 
 	preUpdate_t = perf_timer.ReadMs();
 	return UPDATE_CONTINUE;
 }
-
-//update_status ModuleResourceManager::Update(float dt)
-//{
-//	return UPDATE_CONTINUE;
-//}
 
 update_status ModuleResourceManager::PostUpdate(float dt)
 {
@@ -157,8 +132,9 @@ update_status ModuleResourceManager::PostUpdate(float dt)
 		}
 
 		// Now ReImport
+		LOG("ReImporting...");
 		ImportFile(filesReimport, resourcesToReimport);
-
+		LOG("Finished ReImport.");
 		// After reimport, update time of vector of files in filesystem.
 		App->fs->UpdateFilesAsstes();
 		filesReimport.clear();
@@ -166,8 +142,10 @@ update_status ModuleResourceManager::PostUpdate(float dt)
 		reimportNow = false;
 	}
 
+	// Now Delete Resources and file in Library.
 	if (filestoDelete.size() > 0 && deleteNow)
 	{
+		LOG("Deleting Resources...");
 		std::map<uint, Resource*>::iterator it = resources.begin();
 		for (int i = 0; i < resources.size(); i++)
 		{
@@ -176,6 +154,7 @@ update_status ModuleResourceManager::PostUpdate(float dt)
 				// Delete to memory
 				it->second->DeleteToMemory();
 				// First Delete file save in Library
+				LOG("Delete %s", it->second->name);
 				if (it->second->GetType() == Resource::Type::MATERIAL)
 				{
 					App->fs->DeleteFileLibrary(std::to_string(it->second->GetUUID()).c_str(), DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY_MATERIALS);
@@ -194,8 +173,7 @@ update_status ModuleResourceManager::PostUpdate(float dt)
 				it++;
 			}
 		}
-
-
+		LOG("Finished Delete Resources");
 		filestoDelete.clear();
 		deleteNow = false;
 	}
@@ -220,6 +198,7 @@ void ModuleResourceManager::ImportFile(std::list<const char*>& file)
 
 		if (dropped_File_type != Resource::Type::UNKNOWN)
 		{
+			// Check if a folder!
 			if (dropped_File_type == Resource::Type::FOLDER)
 			{
 				App->fs->GetAllFilesFromFolder(it._Ptr->_Myval, file);
