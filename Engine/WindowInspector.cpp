@@ -41,19 +41,7 @@ void Inspector::ShowInspector()
 		EndDock();
 		return;
 	}
-	if (ImGui::IsMouseHoveringRect(ImGui::GetWindowPos(), ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowSize().x, ImGui::GetWindowPos().y + ImGui::GetWindowSize().y)))
-	{
-		if (ImGui::GetIO().MouseClicked[1] && ImGui::IsMouseHoveringWindow())
-		{
-			ImGui::OpenPopup("OptionsInspector");
-		}
-	}
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 3));
-	if (ImGui::BeginPopup("OptionsInspector"))
-	{
-		ShowOptions();
-		ImGui::EndMenu();
-	}
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
 	if (selected_object != nullptr)
 	{ 
@@ -79,23 +67,6 @@ void Inspector::SetLinkObjectNull()
 GameObject* Inspector::GetSelected() const
 {
 	return selected_object;
-}
-
-void Inspector::ShowOptions()
-{
-	ImGui::MenuItem("ADD COMPONENT", NULL, false, false);
-	if (ImGui::MenuItem("Transform"))
-	{
-		//AddComponent(Comp_Type::C_TRANSFORM);
-	}
-	if (ImGui::MenuItem("Mesh"))
-	{
-		//AddComponent(Comp_Type::C_MESH);
-	}
-	if (ImGui::MenuItem("Material"))
-	{
-		//AddComponent(Comp_Type::C_MATERIAL);
-	}
 }
 
 bool Inspector::CleanUp()

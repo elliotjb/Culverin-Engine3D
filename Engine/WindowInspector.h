@@ -25,10 +25,7 @@ public:
 
 	GameObject* GetSelected() const;
 
-	void ShowOptions();
-	
-	//void OpenClose();
-	//bool IsOpen();
+public:
 
 	bool model_loaded = false;
 
