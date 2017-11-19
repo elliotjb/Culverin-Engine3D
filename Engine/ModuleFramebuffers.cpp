@@ -71,8 +71,6 @@ void FrameBuffer::Bind(const char* window)
 
 void FrameBuffer::UnBind(const char* window)
 {
-	//size = GetSizeDock(window);
-	//glViewport(0, 0, size.x, size.y);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

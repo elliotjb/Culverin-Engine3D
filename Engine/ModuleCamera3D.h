@@ -25,6 +25,7 @@ public:
 	bool SaveConfig(JSON_Object* node);
 	bool CleanUp();
 
+	// Camera Movement/Rotation -----------------------
 	void MoveWithKeyboard(float dt);
 	void MoveWithMouse(int dx, int dy, float dt);
 
@@ -32,26 +33,30 @@ public:
 	void LookAt(const float3& spot);
 	void LookAround(float dx, float dy);
 	void Zoom(float zoom);
+	// --------------------------------------------
 
+	// Picking objects with mouse -----------------------
 	void MousePick(float x, float y, float w, float h);
 	void CheckAABBIntersection(GameObject* candidate, float& entry_dist, float& exit_dist);
 	void CheckGeometryIntersection();
+	// --------------------------------------------
 
-	// Focus -------------------------
+	// Focus (Object selected) methods ----------------------------------
 	void SetFocus(const GameObject* selected);
 	const GameObject* GetFocus() const;
 	void SetFocusNull();
 	void CenterToObject();
+	// --------------------------------------------
 
 	bool isMouseOnWindow();
 
 	float* GetViewMatrix() const;
 	float* GetProjMatrix() const;
-
 	float3 GetPos() const;
 
 private:
 	void CheckOut();
+
 public:
 	bool changecam = false;
 	bool CanMoveCamera = false;

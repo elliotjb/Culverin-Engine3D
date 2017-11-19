@@ -55,7 +55,7 @@ private:
 	int displayIndex = 0;
 	int modeIndex = 0;
 
-	//Window Parameters
+	// Window Parameters -------------
 	int width = SCREEN_WIDTH * SCREEN_SIZE;
 	int height = SCREEN_HEIGHT * SCREEN_SIZE;
 	int scale = SCREEN_SIZE;
@@ -71,9 +71,10 @@ private:
 
 	std::string window_name;
 	char textBuf[256] = "Change Name...";
+	// ------------------------------------
 
 public:
-	bool writing = false;
+	bool writing = false; // To not overlap camera controls when writting
 
 };
 

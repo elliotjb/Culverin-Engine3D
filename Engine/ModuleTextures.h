@@ -8,7 +8,6 @@ class BaseObject;
 class ModuleTextures : public Module
 {
 public:
-
 	ModuleTextures(bool start_enabled = true);
 	virtual ~ModuleTextures();
 
@@ -22,8 +21,4 @@ public:
 
 	GLuint LoadTexture(const char* filename);
 	GLuint LoadSkyboxTexture(const char* filename);
-	//void SetTexPath(char* path, BaseObject* obj);
-
-private:
-
 };

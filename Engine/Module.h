@@ -13,11 +13,9 @@ class Module
 {
 public:
 
-	Module(bool start_enabled = true)
-	{}
+	Module(bool start_enabled = true){}
 
-	virtual ~Module()
-	{}
+	virtual ~Module(){}
 
 	virtual bool Init(JSON_Object* node) 
 	{
@@ -87,8 +85,7 @@ public:
 		return true; 
 	}
 
-	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
-	{}
+	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2){}
 
 	bool IsEnabled() const { return enabled; }
 
@@ -123,6 +120,7 @@ public:
 	bool enabled = true;
 	bool haveConfig = false;
 
+	// PERFORMANCE VARIABLES -------------
 	PerfTimer perf_timer;
 
 	float ms_index = 0;
@@ -141,6 +139,7 @@ public:
 	bool preUpdate_enabled = false;
 	bool Update_enabled = false;
 	bool postUpdate_enabled = false;
+	// ----------------------------------
 
 	ImVec4 color;
 };

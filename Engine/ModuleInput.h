@@ -91,20 +91,18 @@ public:
 private:
 	KEY_STATE* keyboard;
 	KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
-	int mouse_x;
-	int mouse_y;
-	int mouse_z;
-	int mouse_x_motion;
-	int mouse_y_motion;
-	//int mouse_z_motion;
-
+	int mouse_x = 0;
+	int mouse_y = 0;
+	int mouse_z = 0;
+	int mouse_x_motion = 0;
+	int mouse_y_motion = 0;
 
 	bool chek = false;
 
-	int mouse_x_global;
-	int mouse_y_global;
-	int mouse_x_motion_global;
-	int mouse_y_motion_global;
+	int mouse_x_global = 0;
+	int mouse_y_global = 0;
+	int mouse_x_motion_global = 0;
+	int mouse_y_motion_global = 0;
 
 public:
 	std::list<const char*> dropedfiles;

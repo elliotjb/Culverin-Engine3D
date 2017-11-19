@@ -112,12 +112,7 @@ void Console::AddLog(const char* fmt, ...) IM_PRINTFARGS(2)
 
 void Console::Draw(const char* title)
 {
-	//static int width;
-	//static int height;
-	//SDL_GetWindowSize(App->window->window, &width, &height);
-	//ImGui::SetNextWindowPos(ImVec2(0, 700));
-	//ImGui::SetNextWindowSize(ImVec2(width, height - 700));
-	if (!BeginDock(title, /*&console_activated*/NULL, ImGuiWindowFlags_NoCollapse))
+	if (!BeginDock(title, NULL, ImGuiWindowFlags_NoCollapse))
 	{
 		EndDock();
 		return;
@@ -128,7 +123,6 @@ void Console::Draw(const char* title)
 	if (ImGui::SmallButton("Clear")) ClearLog(); ImGui::SameLine();
 	bool copy_to_clipboard = ImGui::SmallButton("Copy"); ImGui::SameLine();
 	if (ImGui::SmallButton("Scroll to bottom")) ScrollToBottom = true;
-	//static float t = 0.0f; if (ImGui::GetTime() - t > 0.02f) { t = ImGui::GetTime(); AddLog("Spam %f", t); }
 
 	ImGui::Separator();
 

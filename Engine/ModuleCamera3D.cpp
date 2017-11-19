@@ -442,6 +442,7 @@ float3 ModuleCamera3D::GetPos() const
 	return cam->frustum.pos;
 }
 
+//Check mouse if is out of the Scene Window
 void ModuleCamera3D::CheckOut()
 {
 	if ((App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN ||

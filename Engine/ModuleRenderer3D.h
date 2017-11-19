@@ -3,7 +3,7 @@
 #include "Globals.h"
 #include "Light.h"
 #include "parson.h"
-#include "GL3W\include\glew.h"
+#include "GL3W/include/glew.h"
 
 #include <gl/GL.h>
 #include <gl/GLU.h>
@@ -40,10 +40,11 @@ public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
-	CompCamera* active_camera = nullptr;
+	CompCamera* active_camera = nullptr; /* Render the scene through the active camera (it can be SCENE camera or GAME camera)*/
 	CompCamera* scene_camera = nullptr;
 	CompCamera* game_camera = nullptr;
 
+	// Configuration Options -----
 	bool depth_test = false;
 	bool cull_face = false;
 	bool lighting = false;
@@ -54,6 +55,6 @@ public:
 	bool fog_active = false;
 	bool normals = false;
 	bool bounding_box = false;
-
 	GLfloat fog_density = 0;
+	// --------------------------
 };

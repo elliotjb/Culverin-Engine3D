@@ -45,7 +45,7 @@ public:
 
 	uint LoadFile(const char* file, char** buffer, DIRECTORY_IMPORT directory = IMPORT_DEFAULT);
 
-	//Name of file NOT DIRECTORY!!!
+	//Name of the file (NOT DIRECTORY)
 	bool SaveFile(const char* data, std::string name, uint size, DIRECTORY_IMPORT directory = IMPORT_DEFAULT);
 
 	// Get Files to Window Project ---------------------------------------------------
@@ -63,7 +63,7 @@ public:
 	void UpdateFilesAsstes();
 	void CheckNowfilesAssets();
 
-	// Deletes-----
+	// Delete Methods -----------------------------------
 	void DeleteFiles(std::vector<FilesNew>& files);
 	void DeleteFolders(std::vector<FoldersNew>& folders);
 	void DeleteAllFilesAssets(std::vector<AllFiles>& filesAssets);
@@ -84,16 +84,15 @@ public:
 	std::string CreateFolder(const char* file_name, bool forceCreate);
 	void CreateFolder(const char * file_name);
 
-	// 
 	bool CheckAssetsIsModify();
 
-	// Functions Serialitzation 
+	// SERIALIZATION METHODS
 	// Special JSON Array -> float3, float2, Color
-	// float3
+	/* float3 */
 	JSON_Status json_array_dotset_float3(JSON_Object *object, std::string name, float3 transform);
-	// float2
+	/* float2 */
 	JSON_Status json_array_dotset_float2(JSON_Object *object, std::string name, float2 transform);
-	// Color - (r,g,b,w) or (x,y,z,w).
+	/* Color - (r,g,b,w) or (x,y,z,w).*/
 	JSON_Status json_array_dotset_float4(JSON_Object *object, std::string name, float4 transform);
 
 	float3 json_array_dotget_float3_string(const JSON_Object* object, std::string name);
@@ -101,7 +100,7 @@ public:
 	float4 json_array_dotget_float4_string(const JSON_Object* object, std::string name);
 
 
-	//Dont use at the moment --------- --------------
+	//Don't used for now -------------------------
 	std::string GetAssetsDirecotry();
 
 	std::string AddDirectorybyType(std::string name, DIRECTORY_IMPORT directory);
@@ -114,6 +113,5 @@ private:
 	char ownPth[MAX_PATH];
 	std::string directory_Game;
 	std::string directory_Assets;
-	//std::vector<FoldersNew> filenames;
 };
 
