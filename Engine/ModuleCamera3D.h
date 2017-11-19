@@ -79,7 +79,6 @@ private:
 	float min_distance = INFINITY;
 	LineSegment ray_local_space = ray;
 	GameObject* best_candidate = nullptr;
-	std::map<float, Triangle> tris_map;
 	std::map<float, GameObject*>::iterator it;
 
 	/* Camera Movement */

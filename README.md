@@ -2,22 +2,47 @@
 This is a project consistent of creating a Game Engine,
 that allows you to use tools to create video games.
 
-Last Feature: Move camera without restrictions:
-![](https://i.gyazo.com/3b8c3ac28bbc3b1ed5355f736fe57458.gif)
-
 # FEATURES
 - Configuration options (Application, Memory Consumption, Window, Camera, Input, Audio, Scene, GUI, Renderer).
 - Game Objects Structure (with components & following a hierarchy of parent-childrens).
 - Basic GameObject Creation (Cube, Empty object).
+- Component options (Select between all loaded meshes(MESH COMPONENT), materials (MATERIAL COMPONENT), reset transforms (TRANSFORM COMPONENT), etc.)
+- GameObject/Components deletion.
 - Main Camera (Frustum geometry with modificable parameters).
 - Game Clock (Play, Pause & Play Frame Modes).
-- In Game Mode, you will se the scene through the main camera you have selected from your gameobjects hierarchy.
-- Model importation (Imports meshes and textures, and creates Game Objects with correct components).
-- You can select game objects that have a bounding box directly from Scene Screen (or you can select them through 
-  hierarchy window).
+- In Game Mode, you will see the scene through the active camera you have selected from your gameobjects hierarchy.
+- Models importation (Imports meshes and textures, and creates Game Objects with correct components, following the correct hierarchy).
+- Models reimportation (You can modify an imported mesh/texture externally and changes will be applied automatically in the engine).
+- You can select game objects that have a bounding box directly from Scene Screen (or you can select them through hierarchy window).
 - Skybox as background of the scene.
 - Editable quadtree that will contain static objects. 
 - Materials and Meshes components uses Resources to load data only once in memory.
+
+# INNOVATIONS
+- Basic GameObject Creation: Cube.
+- Entering Play Mode enables the Active Game Camera to see the scene from it.
+- Copy/Paste of GameObjects: by right clicking them (or Ctrl+C and Ctrl+V).
+- Skybox as background: you can choose between 2 predefined skyboxes in Windows->Configuration->Scene.
+- Resource Management:
+	1) You can import an entire folder in the engine to copy all the files inside it, and see them through "Project" Window.
+	2) Reimporting elements: you can import a model/texture, edit them externally, and changes will be applied automatically.
+	3) Meta files: importing a model/texture will create a .meta file with information about the imported elemend and resources it uses.
+	4) Folders Management: you can create, rename (only for empty folders), and remove folders (it will delete resources if they are inside,
+			       so, components that use these resources will be "empty").
+- Project window like Unity: with resizable icons and same navigation as Unity: folders on the left, files of the folder on the right.
+- Gizmos: enable transform modifications of gameobjects in the scene.
+- Mouse without restrictions: when you are moving the editor camera with right-click, if you reach a screen border, the mouse will
+  reappear on the extreme side of the screen.
+
+# IMPORTING/REIMPORTING FILES
+To import a model (.fbx/.obj), texture (.png/.jpg/.tga) or a folder to the Engine, just drag it inside the window.
+It will create all necessary resources to apply to GameObjects/Components. 
+To load a model into the scene, double-click the icon that has appeared when the file was dragged. It will create a prefab.
+
+Helper videos about resource managing:
+- Importing/Reimporting Models: https://youtu.be/r2dZ5sxbU-U
+- Importing/Reimporting Textures: https://youtu.be/rUXQ10-Nwls
+- Editing Mesh & Material components: https://youtu.be/rsceOFcBO0c
 
 # CAMERA CONTROLS (Unity-like)
 - Right Mouse Button: look around with static position
@@ -33,6 +58,8 @@ Controls:
  - 1: Translate.
  - 2: Rotate.
  - 3: Scale.
+If you have problems to select a game object by clicking on the scene screen, tree to move the 
+camera to get a better vision angle.
 
 # QUADTREE
 In Windows->Configuration->Scene you will see QUADTREE options:
@@ -42,16 +69,12 @@ In Windows->Configuration->Scene you will see QUADTREE options:
   Then, make sure all of them are inside the quadtree boundaries and click "UPDATE QUADTREE" button (only when Editor Mode is active).
 - The quadtree will correctly be divided and will contain static objects.
 
-#GAME OBJECTS / COMPONENT OPTIONS
+# GAME OBJECTS / COMPONENT OPTIONS
 You can right-click a game object or a component to see which options are enabled that will modify the selected element.
+Warning: for this release, cubes created in the engine hasn't got texture coords, so you won't be able to see the applied texture.
 
 # STATIC OBJECTS
-When seting an object 'static', you won't be able to modify its transform when Play Mode is activated.
-
-
-# MODEL/TEXTURES IMPORTING
-To import a model (.fbx/.obj) to the Engine, just drag it inside the window.
-It will create a resource to access its information and operate with it internally.
+When setting an object 'static', you won't be able to modify its transform when Play Mode is activated.
 
 
 # UPDATES
@@ -61,7 +84,10 @@ It will create a resource to access its information and operate with it internal
     * You can update quadtree to collect static games inside it to speed up frustum culling.
     * Added popups to warn users about Object Deletion, Setting Static an object with childs 
       and another PopUp to warn that it's impossible to set more than one game camera active.
-    * GameObjects/Components Optionswhen right clicking them
+    * GameObjects/Components Options when right clicking them.
+    * Resource manager with Import/Reimport functionality.
+    * Camera moving without restrictions (only with right-click).
+    * Correct Save/Load of the scene when entering/exiting Play Mode.
 - 0.6:
     * Added Game Clock (with PLAY/PAUSE/PLAY FREAME buttons).
     * Structured camera with a frustum.
@@ -143,15 +169,6 @@ It will create a resource to access its information and operate with it internal
 - ASSIMP -> http://assimp.sourceforge.net/
 - DevIL -> http://openil.sourceforge.net/
 
-# ScreenShots & Gifs
-- Scene Example:
-![](https://i.gyazo.com/168fc2126497595b762aa51338b36628.jpg)
-
-- Create a GameObject Empty and Add a component Mesh ("Cube"):
-![](https://i.gyazo.com/9842ac7895a6548156948e469976cbfa.gif)
-
-- How to Delete a GameObjects:
-![](https://i.gyazo.com/094a7c24b98ff87a6cb16992953fc99a.gif)
 
 Authors: 
 - Elliot Jimenez: https://github.com/elliotjb

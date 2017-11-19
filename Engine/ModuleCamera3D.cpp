@@ -289,20 +289,15 @@ void ModuleCamera3D::MousePick(float x, float y, float w, float h)
 		// Check intersection ray-traingles
 		CheckGeometryIntersection();
 	}
-	/*else
-	{
-		if(isMouseOnWindow())
-			((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
-	}*/
 }
 
 void ModuleCamera3D::CheckAABBIntersection(GameObject* candidate, float& entry_dist, float& exit_dist)
 {
 	if (candidate->isActive())
 	{
-		box = &candidate->box_fixed;
-		if (box != nullptr)
+		if (candidate->bounding_box != nullptr)
 		{
+			box = &candidate->box_fixed;
 			bool hit = ray.Intersects(*box, entry_dist, exit_dist);
 			if (hit)
 			{
@@ -328,7 +323,6 @@ void ModuleCamera3D::CheckGeometryIntersection()
 	min_distance = INFINITY;
 	ray_local_space = ray;
 	best_candidate = nullptr;
-	tris_map.clear();
 	const CompTransform* trans = nullptr;
 	const CompMesh* mesh = nullptr;
 	Triangle tri;
@@ -354,8 +348,6 @@ void ModuleCamera3D::CheckGeometryIntersection()
 
 				if (hit)
 				{
-					tris_map.insert(std::pair<float, Triangle>(entry_dist, tri));
-
 					if (entry_dist < min_distance)
 					{
 						// Set the Game Objet to be picked

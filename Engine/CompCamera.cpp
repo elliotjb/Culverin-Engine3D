@@ -69,7 +69,8 @@ CompCamera::~CompCamera()
 
 void CompCamera::preUpdate(float dt)
 {
-	if (culling && App->engineState != EngineState::STOP)
+	// Only the main camera will be able to apply culling (Game Mode)
+	if (culling && App->engineState != EngineState::STOP && is_main)
 	{
 		// Iterate All GameObjects and apply culling
 		DoCulling();
@@ -201,9 +202,13 @@ void CompCamera::ShowInspectorInfo()
 	/* Enable-Disable Culling */
 	if (ImGui::Checkbox("Culling", &culling))
 	{
-		if (!culling)
+		if (!culling && is_main) //Disabling culling only available for the active camera
 		{
 			UnCull();
+		}
+		else if (!is_main)
+		{
+			LOG("Culling won't have effect because this camera is not the active camera.");
 		}
 	}
 

@@ -8,7 +8,6 @@ ResourceMesh::ResourceMesh(uint uid) : Resource(uid, Resource::Type::MESH, Resou
 	LOG("Recource Mesh Created!");
 }
 
-
 ResourceMesh::~ResourceMesh()
 {
 	vertices.clear();
@@ -88,7 +87,7 @@ void ResourceMesh::DeleteToMemory()
 	vertices.clear();
 	indices.clear();
 	vertices_normals.clear();
-	LOG("UnLoaded Recource Mesh");
+	LOG("UnLoaded Resource Mesh");
 }
 
 bool ResourceMesh::LoadToMemory()

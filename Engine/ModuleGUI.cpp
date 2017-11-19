@@ -389,7 +389,7 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::Separator();
 		ImGui::Spacing();
 		// Description
-		ImGui::Text("This is a project consistent of creating a Game Engine,\nthat allows you to use tools to create video games.\nAt this moment, this is a Geometry Loader, where you can import your model (.fbx, etc.)\nand see info about it. Also you can change/apply textures to the different meshes\nthat composes the entire model (only .png or .jpg formats).");
+		ImGui::Text("This is a project consistent of creating a Game Engine,\nthat allows you to use tools to create video games.\nAt this moment, this engine works with a similar structure of Unity:\nGameObjects are containers of Components, and they\nhave a parent-children relation.\nYou can add/remove/edit these type of components:\n -Transform,\n -Material,\n -Mesh\n -Material.");
 		ImGui::Spacing();
 		ImGui::Separator();
 		ImGui::Spacing();
@@ -397,7 +397,7 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::Text("Libraries used:");
 		ImGui::Spacing();
 		ImGui::Bullet(); ImGui::SameLine();
-		if (ImGui::MenuItem("SDL - v2.0.3"))
+		if (ImGui::MenuItem("SDL - v2.0.7"))
 		{
 			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
 			{
@@ -484,11 +484,7 @@ update_status ModuleGUI::Update(float dt)
 	// Windows EXIT ---------------------------------
 	if (window_exit)
 	{
-		ShowWindowExit(&window_exit);
-		if (gameSave)
-		{
-			return UPDATE_STOP;
-		}
+		return UPDATE_STOP;
 	}
 
 	// ----------------------------------------------
@@ -923,7 +919,7 @@ void ModuleGUI::ShowWindowExit(bool* active)
 	ImGui::Text("Do you want to save the changes...");
 	ImGui::Spacing();
 	ImGui::Spacing();
-	ImGui::Text("Your changes wiil be lost if you don't save them.");
+	ImGui::Text("Your changes will be lost if you don't save them.");
 	ImGui::Spacing();
 	if (ImGui::Button("Save"))
 	{
