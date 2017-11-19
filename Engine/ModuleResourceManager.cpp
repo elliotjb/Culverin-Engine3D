@@ -89,6 +89,17 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 		}
 		it++;
 	}
+
+	if (filestoDelete.size() > 0)
+	{
+		std::map<uint, Resource*>::iterator it;
+		for (int i = 0; i < filestoDelete.size(); i++)
+		{
+			it = resources.find(filestoDelete[i]);
+			it->second->SetState(Resource::State::WANTDELETE);
+		}
+		deleteNow = true;
+	}
 	//static bool waitUpdate = false;
 	//if (waitUpdate)
 	//{
@@ -155,6 +166,40 @@ update_status ModuleResourceManager::PostUpdate(float dt)
 		reimportNow = false;
 	}
 
+	if (filestoDelete.size() > 0 && deleteNow)
+	{
+		std::map<uint, Resource*>::iterator it = resources.begin();
+		for (int i = 0; i < resources.size(); i++)
+		{
+			if (it->second->GetState() == Resource::State::WANTDELETE)
+			{
+				// Delete to memory
+				it->second->DeleteToMemory();
+				// First Delete file save in Library
+				if (it->second->GetType() == Resource::Type::MATERIAL)
+				{
+					App->fs->DeleteFileLibrary(std::to_string(it->second->GetUUID()).c_str(), DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY_MATERIALS);
+				}
+				else if (it->second->GetType() == Resource::Type::MESH)
+				{
+					App->fs->DeleteFileLibrary(std::to_string(it->second->GetUUID()).c_str(), DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY_MESHES);
+				}
+				delete it->second;
+				resources.erase(it);
+				it = resources.begin();
+				i = -1;
+			}
+			else
+			{
+				it++;
+			}
+		}
+
+
+		filestoDelete.clear();
+		deleteNow = false;
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -184,21 +229,20 @@ void ModuleResourceManager::ImportFile(std::list<const char*>& file)
 				newDirectory = ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory() + temp;
 				((Project*)App->gui->winManager[WindowName::PROJECT])->SetDirectory(App->fs->CreateFolder(newDirectory.c_str(), true).c_str());
 				file.erase(it);
-				i = 0;
+				i = -1;
 				it = file.begin();
-
 			}
-			if (App->importer->Import(it._Ptr->_Myval, dropped_File_type))
+			else if (App->importer->Import(it._Ptr->_Myval, dropped_File_type))
 			{
 				// Copy file to Specify folder in Assets (This folder is the folder active)
 				App->fs->CopyFileToAssets(it._Ptr->_Myval, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory());
+				it++;
 			}
 		}
 		else
 		{
 			LOG("[error] This file: %s with this format %s is incorrect!", App->fs->FixName_directory(it._Ptr->_Myval).c_str(), App->fs->GetExtension(it._Ptr->_Myval));
 		}
-		it++;
 	}
 	((Project*)App->gui->winManager[WindowName::PROJECT])->UpdateNow();
 	App->fs->UpdateFilesAsstes();

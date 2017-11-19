@@ -344,9 +344,10 @@ bool ImportMesh::LoadResource(const char* file, ResourceMesh* resourceMesh)
 		resourceMesh->InitRanges(num_vertices, num_indices, num_normals);
 		resourceMesh->Init(vertices, indices, vert_normals, tex_coords);
 		resourceMesh->LoadToMemory();
-
+		//RELEASE_ARRAY(cursor);
 		LOG("Mesh %s Loaded!", file);
 	}
+	RELEASE_ARRAY(buffer);
 	return true;
 }
 

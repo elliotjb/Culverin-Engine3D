@@ -47,9 +47,10 @@ public:
 
 public:
 	std::vector<ReImport> resourcesToReimport;
-
+	std::vector<uint> filestoDelete;
 private:
 	std::map<uint, Resource*> resources;
 	std::vector<const char*> filesReimport;
 	bool reimportNow = false;
+	bool deleteNow = false;
 };

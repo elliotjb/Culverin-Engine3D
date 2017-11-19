@@ -130,8 +130,8 @@ void ModuleFS::GetAllFolders(std::experimental::filesystem::path path, std::stri
 		if (stdfs::is_directory(*iter))
 		{
 			const char* isdirectA = ConverttoConstChar(iter->path().string());
-			std::string isFolderAssets = FixName_directory(isdirectA);
-			if (isFolderAssets == "Assets")
+			const char* isFolderAssets = ConverttoConstChar(FixName_directory(isdirectA));
+			if (strcmp(isFolderAssets, "Assets") == 0)
 			{
 				FoldersNew folder_temp;
 
@@ -141,14 +141,16 @@ void ModuleFS::GetAllFolders(std::experimental::filesystem::path path, std::stri
 				{
 					folder_temp.active = true;
 				}
-				GetAllFoldersChild(iter->path().string(), folderActive, folder_temp.folder_child);
+				folder_temp.haveSomething = GetAllFoldersChild(iter->path().string(), folderActive, folder_temp.folder_child);
 				folders.push_back(folder_temp);
 			}
+			RELEASE_ARRAY(isFolderAssets);
+			RELEASE_ARRAY(isdirectA);
 		}
 	}
 }
 
-void ModuleFS::GetAllFoldersChild(std::experimental::filesystem::path path, std::string folderActive, std::vector<FoldersNew>& folders)
+bool ModuleFS::GetAllFoldersChild(std::experimental::filesystem::path path, std::string folderActive, std::vector<FoldersNew>& folders)
 {
 	namespace stdfs = std::experimental::filesystem;
 
@@ -159,6 +161,11 @@ void ModuleFS::GetAllFoldersChild(std::experimental::filesystem::path path, std:
 		path = directory_Game;
 	}
 
+	bool have_something = false;
+	if (stdfs::is_empty(path) == false)
+	{
+		have_something = true;
+	}
 	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
 	{
 		if (stdfs::is_directory(*iter))
@@ -170,10 +177,11 @@ void ModuleFS::GetAllFoldersChild(std::experimental::filesystem::path path, std:
 			{
 				folder_temp.active = true;
 			}
-			GetAllFoldersChild(iter->path().string(), folderActive, folder_temp.folder_child);
+			folder_temp.haveSomething = GetAllFoldersChild(iter->path().string(), folderActive, folder_temp.folder_child);
 			folders.push_back(folder_temp);
 		}
 	}
+	return have_something;
 }
 
 void ModuleFS::GetAllFiles(std::experimental::filesystem::path path, std::vector<FilesNew>& files)
@@ -202,6 +210,7 @@ void ModuleFS::GetAllFiles(std::experimental::filesystem::path path, std::vector
 			files_temp.file_type = ((Project*)App->gui->winManager[PROJECT])->SetType(files_temp.file_name);
 			files.push_back(files_temp);
 		}
+		extension.clear();
 	}
 }
 
@@ -267,6 +276,68 @@ void ModuleFS::GetAllFilesFromFolder(std::experimental::filesystem::path path, s
 				files.push_back(ConverttoConstChar(iter->path().string()));
 			}
 		}
+	}
+}
+
+void ModuleFS::GetAllFilesFromFolder(std::experimental::filesystem::path path, std::vector<uint>& files)
+{
+	namespace stdfs = std::experimental::filesystem;
+
+	const stdfs::directory_iterator end{};
+
+	for (stdfs::directory_iterator iter{ path }; iter != end; ++iter)
+	{
+		std::string extension = GetExtension(iter->path().string());
+		for (std::string::iterator it = extension.begin(); it != extension.end(); it++)
+		{
+			*it = tolower(*it);
+		}
+		if (IsPermitiveExtension(extension.c_str()))
+		{
+			std::string directory = ConverttoConstChar(iter->path().string());
+			// LOG("MODIFICATED");
+			switch (App->resource_manager->CheckFileType(extension.c_str()))
+			{
+			case Resource::Type::MESH:
+			{
+				bool finish = false; int id = 0;
+				while (finish == false)
+				{
+					ReImport temp = App->Json_seria->GetUUIDPrefab(directory.c_str(), id++);
+					if (temp.uuid != 0)
+					{
+						App->resource_manager->filestoDelete.push_back(temp.uuid);
+						//RELEASE_ARRAY(temp.directoryObj);
+						//RELEASE_ARRAY(temp.nameMesh);
+					}
+					else
+					{
+						finish = true;
+					}
+				}
+				break;
+			}
+			case Resource::Type::MATERIAL:
+			{
+				ReImport temp = App->Json_seria->GetUUIDMaterial(directory.c_str());
+				if (temp.uuid != 0)
+				{
+					App->resource_manager->filestoDelete.push_back(temp.uuid);
+					//RELEASE_ARRAY(temp.directoryObj);
+					//RELEASE_ARRAY(temp.nameMesh);
+				}
+				break;
+			}
+			}
+		}
+		//else
+		//{
+		//	std::string isFolder = ConverttoConstChar(iter->path().string());
+		//	if (App->resource_manager->CheckFileType(isFolder.c_str()) == Resource::Type::FOLDER)
+		//	{
+		//		files.push_back(ConverttoConstChar(iter->path().string()));
+		//	}
+		//}
 	}
 }
 
@@ -417,7 +488,7 @@ bool ModuleFS::DeleteFileLibrary(const char* file, DIRECTORY_IMPORT directory)
 	}
 	case IMPORT_DIRECTORY_LIBRARY_MATERIALS:
 	{
-		temp = DIRECTORY_LIBRARY_MATERIALS + temp;
+		temp = DIRECTORY_LIBRARY_MATERIALS + temp + ".dds";
 		break;
 	}
 	}
@@ -456,7 +527,7 @@ uint ModuleFS::LoadFile(const char* file, char** buffer, DIRECTORY_IMPORT direct
 	}
 	case IMPORT_DIRECTORY_LIBRARY_MATERIALS:
 	{
-		temp = DIRECTORY_LIBRARY_MATERIALS + temp;
+		temp = DIRECTORY_LIBRARY_MATERIALS + temp + ".dds";
 		break;
 	}
 	}

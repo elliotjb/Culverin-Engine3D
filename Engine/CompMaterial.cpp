@@ -50,7 +50,7 @@ void CompMaterial::preUpdate(float dt)
 		{
 			resourceMaterial = nullptr;
 		}
-		if (resourceMaterial->GetState() == Resource::State::REIMPORTED)
+		else if (resourceMaterial->GetState() == Resource::State::REIMPORTED)
 		{
 			uuidResourceReimported = resourceMaterial->GetUUID();
 			resourceMaterial = nullptr;

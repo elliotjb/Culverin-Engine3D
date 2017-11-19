@@ -4,6 +4,7 @@
 #include "WindowHierarchy.h"
 #include "ModuleCamera3D.h"
 #include "ModuleInput.h"
+#include "ModuleFS.h"
 #include "Scene.h"
 #include "ModuleGUI.h"
 #include "ModuleTextures.h"
@@ -44,7 +45,10 @@ GameObject::GameObject(const GameObject& copy)
 	visible = copy.isVisible();
 	static_obj = copy.isStatic();
 	bb_active = copy.isAABBActive();
-	bounding_box = new AABB(*copy.bounding_box);
+	if (copy.bounding_box != nullptr)
+	{
+		bounding_box = new AABB(*copy.bounding_box);
+	}
 
 	//Create all components from copy object with same data
 	for (uint i = 0; i < copy.GetNumComponents(); i++)
@@ -354,7 +358,13 @@ void GameObject::ShowInspectorInfo()
 		/* NAME OF THE GAMEOBJECT */
 		ImGui::SameLine();
 		ImGui::PopStyleVar();
-		ImGui::InputText("##nameModel", name, 256, ImGuiInputTextFlags_ReadOnly);
+		char namedit[50];
+		strcpy_s(namedit, 50, name);
+		if (ImGui::InputText("##nameModel", namedit, 50, ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue))
+		{
+			name = App->fs->ConverttoChar(std::string(namedit).c_str());
+		}
+		//ImGui::InputText("##nameModel", name, 256, ImGuiInputTextFlags_ReadOnly);
 		ImGui::SameLine(); App->ShowHelpMarker("Hold SHIFT or use mouse to select text.\n" "CTRL+Left/Right to word jump.\n" "CTRL+A or double-click to select all.\n" "CTRL+X,CTRL+C,CTRL+V clipboard.\n" "CTRL+Z,CTRL+Y undo/redo.\n" "ESCAPE to revert.\n");
 		ImGui::PopStyleVar();
 

@@ -19,7 +19,6 @@ enum TYPE_FILE
 	JPG,
 	DDS
 };
-struct Folders;
 
 
 struct FilesNew
@@ -34,6 +33,7 @@ struct FoldersNew
 {
 	const char* directory_name = nullptr;
 	bool active = false;
+	bool haveSomething = false;
 	char* file_name = nullptr;
 	std::vector<FoldersNew> folder_child;
 };

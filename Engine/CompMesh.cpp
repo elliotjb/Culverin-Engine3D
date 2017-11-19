@@ -69,7 +69,7 @@ void CompMesh::preUpdate(float dt)
 		{
 			resourceMesh = nullptr;
 		}
-		if (resourceMesh->GetState() == Resource::State::REIMPORTED)
+		else if (resourceMesh->GetState() == Resource::State::REIMPORTED)
 		{
 			uuidResourceReimported = resourceMesh->GetUUID();
 			resourceMesh = nullptr;

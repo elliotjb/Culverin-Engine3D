@@ -50,12 +50,13 @@ public:
 
 	// Get Files to Window Project ---------------------------------------------------
 	void GetAllFolders(std::experimental::filesystem::path path, std::string folderActive, std::vector<FoldersNew>& folders);
-	void GetAllFoldersChild(std::experimental::filesystem::path path, std::string folderActive, std::vector<FoldersNew>& folders);
+	bool GetAllFoldersChild(std::experimental::filesystem::path path, std::string folderActive, std::vector<FoldersNew>& folders);
 	void GetAllFiles(std::experimental::filesystem::path path, std::vector<FilesNew>& files);
 
 	// Get Files to check if a file was modificated ---------------------------------
 	void GetAllFilesAssets(std::experimental::filesystem::path path, std::vector<AllFiles>& files);
 	void GetAllFilesFromFolder(std::experimental::filesystem::path path, std::list<const char*>& files);
+	void GetAllFilesFromFolder(std::experimental::filesystem::path path, std::vector<uint>& files);
 	bool AnyfileModificated(std::vector<AllFiles>& files);
 	bool IsPermitiveExtension(const char * extension);
 	void UpdateFilesAsstes();

@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleFS.h"
 #include "ModuleTextures.h"
+#include "ModuleResourceManager.h"
 #include "JSONSerialization.h"
 
 Project::Project()
@@ -161,7 +162,7 @@ void Project::ShowProject()
 	//Column 1 LEFT ------------------------
 	ImGui::Spacing();
 	// Folders ---------------------
-	if (timeFolders.ReadSec() > 10 || updateFoldersNow)
+	if (timeFolders.ReadSec() > 30 || updateFoldersNow)
 	{
 		timeFolders.Start();
 		updateFoldersNow = false;
@@ -174,7 +175,7 @@ void Project::ShowProject()
 	ImGui::Separator();
 	//GetAllFiles
 	//files = App->fs->GetAllFilesNew(directory_see);
-	if (timeFiles.ReadSec() > 10 || updateFilesNow)
+	if (timeFiles.ReadSec() > 30 || updateFilesNow)
 	{
 		timeFiles.Start();
 		updateFilesNow = false;
@@ -212,7 +213,23 @@ void Project::Folders_update(std::vector<FoldersNew>& folders)
 			if (ImGui::BeginPopupContextItem("rename context menu"))
 			{
 				ImGui::Text("Edit name:");
-				ImGui::InputText("##edit2", folders[i].file_name, 256);
+				ImGuiInputTextFlags text_flag;
+				if (folders[i].haveSomething)
+				{
+					text_flag = ImGuiInputTextFlags_ReadOnly;
+				}
+				else
+				{
+					text_flag = ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue;
+				}
+				char namedit[50];
+				strcpy_s(namedit, 50, folders[i].file_name);
+				if (ImGui::InputText("##edit2", namedit, 50, text_flag))
+				{
+					folders[i].file_name = App->fs->ConverttoChar(std::string(namedit).c_str());
+					ImGui::CloseCurrentPopup();
+				}
+				//ImGui::InputText("##edit2", folders[i].file_name, 256);
 				ImGui::Spacing();
 				if (ImGui::Button("Create New Folder"))
 				{
@@ -220,7 +237,25 @@ void Project::Folders_update(std::vector<FoldersNew>& folders)
 					newFolder += "/";
 					newFolder += "New Folder";
 					App->fs->CreateFolder(newFolder.c_str(), true);
+					ImGui::CloseCurrentPopup();
 					UpdateNow();
+				}
+				ImGui::Spacing();
+				if (strcmp(folders[i].file_name, "Assets") != 0)
+				{
+					if (ImGui::Button("Remove"))
+					{
+						if (folders[i].haveSomething)
+						{
+							App->fs->GetAllFilesFromFolder(folders[i].directory_name, App->resource_manager->filestoDelete);
+						}
+						std::experimental::filesystem::remove_all(folders[i].directory_name);
+						UpdateNow();
+						SetAllFolderBool(folders, false);
+						directory_see = App->GetCharfromConstChar(App->fs->GetMainDirectory().c_str());
+						ImGui::CloseCurrentPopup();
+						UpdateNow();
+					}
 				}
 				ImGui::EndPopup();
 			}
