@@ -25,7 +25,9 @@ public:
 	// GameObjects* -----------
 	void SetGameObjecttoDelete(GameObject* todelete);
 	void SetGameObjectCopy(GameObject* copy);
+	void CopyGameObject(GameObject * copy_);
 	const GameObject* GetCopied() const;
+	void SetGameObjectSelected(GameObject* select);
 	void ChangeShowConfirmDelete();
 	bool CleanUp();
 

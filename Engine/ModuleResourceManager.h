@@ -53,4 +53,5 @@ private:
 	std::vector<const char*> filesReimport;
 	bool reimportNow = false;
 	bool deleteNow = false;
+	bool loadResources = true;
 };

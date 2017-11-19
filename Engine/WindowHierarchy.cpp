@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Scene.h"
 #include "GameObject.h"
+#include "ModuleInput.h"
 #include "ModuleGUI.h"
 #include "WindowInspector.h"
 
@@ -25,7 +26,28 @@ bool Hierarchy::Start()
 update_status Hierarchy::Update(float dt)
 {
 	if (active[0].active)
+	{
 		ShowHierarchy();
+
+		// Ctr+Copy - Ctr+Paste
+		if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
+		{
+			if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+			{
+				if (selected != nullptr)
+				{
+					copy = selected;
+				}
+			}
+			if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+			{
+				if (selected != nullptr && copy != nullptr)
+				{
+					CopyGameObject(selected);
+				}
+			}
+		}
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -94,18 +116,7 @@ void Hierarchy::ShowOptions()
 	{
 		if (selected != nullptr && copy != nullptr)
 		{
-			if (selected->HaveParent())
-			{
-				GameObject* copied = new GameObject(*copy);
-				selected->GetParent()->AddChildGameObject_Load(copied);
-				copy = nullptr;
-			}
-			else
-			{
-				GameObject* copied = new GameObject(*copy);
-				App->scene->gameobjects.push_back(copied);
-				copy = nullptr;
-			}
+			CopyGameObject(selected);
 		}
 	}
 	ImGui::Separator();
@@ -185,9 +196,36 @@ void Hierarchy::SetGameObjectCopy(GameObject* copy_)
 	}
 }
 
+void Hierarchy::CopyGameObject(GameObject* select)
+{
+	if (select != nullptr && copy != nullptr)
+	{
+		if (select->HaveParent())
+		{
+			GameObject* copied = new GameObject(*copy, true, select->GetParent());
+			select->GetParent()->AddChildGameObject_Load(copied);
+			//copy = nullptr;
+		}
+		else
+		{
+			GameObject* copied = new GameObject(*copy);
+			App->scene->gameobjects.push_back(copied);
+			//copy = nullptr;
+		}
+	}
+}
+
 const GameObject* Hierarchy::GetCopied() const
 {
 	return copy;
+}
+
+void Hierarchy::SetGameObjectSelected(GameObject* select)
+{
+	if (select != nullptr)
+	{
+		selected = select;
+	}
 }
 
 void Hierarchy::ChangeShowConfirmDelete()

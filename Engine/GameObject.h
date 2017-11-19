@@ -16,7 +16,7 @@ class GameObject
 public:
 	GameObject(GameObject* parent);
 	GameObject(char* nameGameObject, uint uuid);
-	GameObject(const GameObject& copy);
+	GameObject(const GameObject& copy, bool haveparent = false, GameObject* parent = nullptr);
 	~GameObject();
 
 	void preUpdate(float dt);
@@ -25,8 +25,10 @@ public:
 	bool Enable();
 	bool Disable();
 
+	// Name
 	void SetName(char* name);
 	const char* GetName() const;
+	void NameNotRepeat(std::string& name, bool haveParent, GameObject* parent);
 
 	// EDITOR METHODS ------------------
 	void ShowHierarchy();

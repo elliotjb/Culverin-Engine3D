@@ -34,11 +34,14 @@ GameObject::GameObject(char* nameGameObject, uint uuid)
 	name = nameGameObject;
 }
 
-GameObject::GameObject(const GameObject& copy)
+GameObject::GameObject(const GameObject& copy, bool haveparent, GameObject* parent_)
 {
 	uid = App->random->Int();
 	std::string nametemp = copy.GetName();
-	nametemp += " (copy)";
+	size_t EndName = nametemp.find_last_of("(");
+	nametemp = nametemp.substr(0, EndName - 1);
+	NameNotRepeat(nametemp, haveparent, parent_);
+	//nametemp += " (copy)";
 	name = App->GetCharfromConstChar(nametemp.c_str());
 	//TODO ->add "(X)" to the name
 	active = copy.isActive();
@@ -60,7 +63,7 @@ GameObject::GameObject(const GameObject& copy)
 	for (uint i = 0; i < copy.GetNumChilds(); i++)
 	{
 		//Create from copy constructor all childs of the game object to copy
-		childs.push_back(new GameObject(*copy.GetChildbyIndex(i))); 
+		childs.push_back(new GameObject(*copy.GetChildbyIndex(i), haveparent, parent_));
 		childs[i]->parent = this;
 	}
 }
@@ -210,6 +213,92 @@ const char* GameObject::GetName() const
 	return name;
 }
 
+void GameObject::NameNotRepeat(std::string& name, bool haveParent, GameObject* parent_)
+{
+	bool stop = false;
+	int i = 0;
+	std::string nameRepeat = name;
+	while (stop == false)
+	{
+		if (haveParent)
+		{
+			if (i < parent_->GetNumChilds())
+			{
+				bool stop_reserch = false;
+				int ds = 0;
+				bool haveRepeat = false;
+				while (stop_reserch == false)
+				{
+					if (ds < parent_->GetNumChilds())
+					{
+						std::string nameChild = parent_->GetChildbyIndex(ds)->GetName();
+						if (nameRepeat == nameChild)
+						{
+							haveRepeat = true;
+						}
+					}
+					else
+					{
+						stop_reserch = true;
+					}
+					ds++;
+				}
+				if (haveRepeat == false)
+				{
+					stop_reserch = true;
+					stop = true;
+					name = nameRepeat;
+				}
+				nameRepeat = name;
+				nameRepeat += " (" + std::to_string(i + 1) + ")";
+			}
+			else
+			{
+				stop = true;
+			}
+		}
+		else
+		{
+			if (i < App->scene->gameobjects.size())
+			{
+				bool stop_reserch = false;
+				int ds = 0;
+				bool haveRepeat = false;
+				while (stop_reserch == false)
+				{
+					if (ds < App->scene->gameobjects.size())
+					{
+						std::string nameChild = App->scene->gameobjects[ds]->GetName();
+						if (nameRepeat == nameChild)
+						{
+							haveRepeat = true;
+						}
+					}
+					else
+					{
+						stop_reserch = true;
+					}
+					ds++;
+				}
+				if (haveRepeat == false)
+				{
+					stop_reserch = true;
+					stop = true;
+					name = nameRepeat;
+				}
+				nameRepeat = name;
+				nameRepeat += " (" + std::to_string(i + 1) + ")";
+			}
+			else
+			{
+				stop = true;
+			}
+		}
+
+		i++;
+	}
+}
+
 void GameObject::ShowHierarchy()
 {
 	if (!isVisible())
@@ -222,7 +311,7 @@ void GameObject::ShowHierarchy()
 	}
 	bool treeNod = false;
 	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow;
-	if (((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected() == this)
+	if (((Inspector*)App->gui->winManager[WindowName::INSPECTOR])->GetSelected() == this)
 	{
 		node_flags |= ImGuiTreeNodeFlags_Selected;
 	}
@@ -238,7 +327,8 @@ void GameObject::ShowHierarchy()
 	if (ImGui::IsItemClicked())
 	{
 		//Set inspector window of this Game Object
-		((Inspector*)App->gui->winManager[INSPECTOR])->LinkObject(this);
+		((Inspector*)App->gui->winManager[WindowName::INSPECTOR])->LinkObject(this);
+		((Hierarchy*)App->gui->winManager[WindowName::HIERARCHY])->SetGameObjectSelected(this);
 		App->camera->SetFocus(this);
 		App->scene->drag = this;
 	}
@@ -289,10 +379,9 @@ void GameObject::ShowGameObjectOptions()
 	{
 		((Hierarchy*)App->gui->winManager[WindowName::HIERARCHY])->SetGameObjectCopy(this);
 	}
-	if (ImGui::MenuItem("Paste", NULL, false, false))
+	if (ImGui::MenuItem("Paste"))
 	{
-		// TODO ELLIOT
-		//parent->AddChildGameObject_Copy(((Hierarchy*)App->gui->winManager[WindowName::HIERARCHY])->GetCopied());
+		((Hierarchy*)App->gui->winManager[WindowName::HIERARCHY])->CopyGameObject(this);
 	}
 	ImGui::Separator();
 	if (ImGui::MenuItem("Rename", NULL, false, false))
@@ -387,6 +476,7 @@ void GameObject::ShowInspectorInfo()
 			{
 				window_active = false;
 				static_obj = !static_obj;
+				LOG("You can't change 'Static' variable when Game Mode is ON.");
 			}
 		}
 

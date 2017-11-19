@@ -470,7 +470,7 @@ void ModuleResourceManager::Save()
 		json_object_clear(config_node);
 		int numResources = resources.size() - ResourcePrimitive;
 		json_object_dotset_number_with_std(config_node, "Info.Number of Resources", numResources);
-
+		json_object_dotset_boolean_with_std(config_node, "Info.Load Resources", loadResources);
 		// Update Resoruces
 		std::map<uint, Resource*>::iterator it = resources.begin();
 		it++; // ++ = Resource "Cube" dont save - ResourcePrimitive
@@ -502,34 +502,38 @@ void ModuleResourceManager::Load()
 		config = json_value_get_object(config_file);
 		config_node = json_object_get_object(config, "Resources");
 		int NumberResources = json_object_dotget_number(config_node, "Info.Number of Resources");
-		if (NumberResources > 0)
+		loadResources = json_object_dotget_boolean(config_node, "Info.Load Resources");
+		if (loadResources)
 		{
-			for (int i = 0; i < NumberResources; i++)
+			if (NumberResources > 0)
 			{
-				std::string name = "Resource " + std::to_string(i);
-				name += ".";
-				Resource::Type type = (Resource::Type)(int)json_object_dotget_number_with_std(config_node, name + "Type");
-				switch (type)
+				for (int i = 0; i < NumberResources; i++)
 				{
-				case Resource::Type::MESH:
-				{
-					uint uid = json_object_dotget_number_with_std(config_node, name + "UUID & UUID Directory");
-					ResourceMesh* mesh = (ResourceMesh*)CreateNewResource(type, uid);
-					mesh->name = App->GetCharfromConstChar(json_object_dotget_string_with_std(config_node, name + "Name"));
-					break;
-				}
-				case Resource::Type::MATERIAL:
-				{
-					uint uid = json_object_dotget_number_with_std(config_node, name + "UUID & UUID Directory");
-					ResourceMaterial* material = (ResourceMaterial*)CreateNewResource(type, uid);
-					material->name = App->GetCharfromConstChar(json_object_dotget_string_with_std(config_node, name + "Name"));
-					break;
-				}
-				case Resource::Type::UNKNOWN:
-				{
-					LOG("Error load resoruce");
-					break;
-				}
+					std::string name = "Resource " + std::to_string(i);
+					name += ".";
+					Resource::Type type = (Resource::Type)(int)json_object_dotget_number_with_std(config_node, name + "Type");
+					switch (type)
+					{
+					case Resource::Type::MESH:
+					{
+						uint uid = json_object_dotget_number_with_std(config_node, name + "UUID & UUID Directory");
+						ResourceMesh* mesh = (ResourceMesh*)CreateNewResource(type, uid);
+						mesh->name = App->GetCharfromConstChar(json_object_dotget_string_with_std(config_node, name + "Name"));
+						break;
+					}
+					case Resource::Type::MATERIAL:
+					{
+						uint uid = json_object_dotget_number_with_std(config_node, name + "UUID & UUID Directory");
+						ResourceMaterial* material = (ResourceMaterial*)CreateNewResource(type, uid);
+						material->name = App->GetCharfromConstChar(json_object_dotget_string_with_std(config_node, name + "Name"));
+						break;
+					}
+					case Resource::Type::UNKNOWN:
+					{
+						LOG("Error load resoruce");
+						break;
+					}
+					}
 				}
 			}
 		}
