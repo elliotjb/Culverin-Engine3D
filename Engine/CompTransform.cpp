@@ -52,7 +52,8 @@ void CompTransform::Init(float3 p, float3 r, float3 s)
 
 void CompTransform::Update(float dt)
 {
-	if (App->input->GetKey(SDL_BUTTON_LEFT) == KEY_UP)
+	// This code is made by disabling gizmos when editing transforms with editor
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
 	{
 		editing_transform = false;
 	}
@@ -107,16 +108,13 @@ void CompTransform::Update(float dt)
 			local_transform.Decompose(position, rotation, scale);
 			rotation_euler = rotation.ToEulerXYZ() * RADTODEG;
 			toUpdate = true;
-			//parent->UpdateChildsMatrices();
 		}
 	}
 
 	if (toUpdate)
 	{
-		App->console->ClearLog();
 		UpdateMatrix(transform_mode);
 		toUpdate = false;
-		editing_transform = false;
 	}
 }
 
@@ -235,7 +233,7 @@ void CompTransform::ShowTransform(float drag_speed)
 {
 	int op = ImGui::GetWindowWidth() / 4;
 
-	// Depending transform mode, edit local/world matrix.
+	// Depending transform mode, edit local/world matrix (LOCAL by the moment)
 	switch (transform_mode)
 	{
 	case (ImGuizmo::MODE::LOCAL):
@@ -260,25 +258,6 @@ void CompTransform::ShowTransform(float drag_speed)
 		}
 		break;
 	}
-	/*case (ImGuizmo::MODE::WORLD):
-	{
-		ImGui::Text("Position"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##pos_g", &position_global[0], drag_speed))
-		{
-			SetPosGlobal(position_global);
-		}
-		ImGui::Text("Rotation"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##rot_g", &rotation_euler_global[0], drag_speed))
-		{
-			SetRotGlobal(rotation_euler_global);
-		}
-		ImGui::Text("Scale"); ImGui::SameLine(op + 30);
-		if (ImGui::DragFloat3("##scale_g", &scale_global[0], drag_speed))
-		{
-			SetScaleGlobal(scale_global);
-		}
-		break;
-	}*/
 	default:
 		break;
 	}
