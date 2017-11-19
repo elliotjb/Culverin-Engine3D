@@ -76,7 +76,7 @@ public:
 	void UpdateChildsMatrices();
 
 	// Parent ----------------
-	GameObject* GetParent() const;
+	GameObject* GetParent() const; //Not const pointer to enable parent variables modification
 	bool HaveParent();
 
 	// Bounding Box -----------------------
@@ -86,7 +86,6 @@ public:
 	AABB  box_fixed;
 	void SetAABBActive(bool active);
 	bool isAABBActive() const;
-
 
 	uint GetUUID() const;
 	void SetUUID(uint uuid);

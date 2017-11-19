@@ -2,7 +2,6 @@
 #include "Globals.h"
 #include "ImGui\imgui.h"
 #include <string>
-//#include "parson.c"
 
 struct json_object_t;
 typedef struct json_object_t JSON_Object;
@@ -30,13 +29,16 @@ public:
 	virtual void Update(float dt);
 	virtual void Draw();
 	virtual void Clear();
-	virtual void ShowOptions();
 
+	// EDITOR METHODS -----------------
+	virtual void ShowOptions();
 	virtual void ShowInspectorInfo();
+	// --------------------------------
 
 	Comp_Type GetType() const;
 	bool isActive() const;
 	uint GetUUID() const;
+
 	const char* GetName() const
 	{
 		return nameComponent;
@@ -46,6 +48,7 @@ public:
 		return toDelete;
 	}
 
+	// LOAD - SAVE METHODS ------------------
 	virtual void Save(JSON_Object* object, std::string name, bool saveScene, uint& countResources) const;
 	virtual void Load(const JSON_Object* object, std::string name);
 
@@ -53,9 +56,8 @@ private:
 	Comp_Type type = C_UNKNOWN;
 	bool active = true;
 
-
 protected:
-	GameObject* parent = nullptr;
+	GameObject* parent = nullptr; // Through this pointer we call some methods that modificate its data
 	uint uid = 0;
 	const char* nameComponent = nullptr;
 	bool toDelete = false;

@@ -44,7 +44,6 @@ public:
 
 	void ResetMatrix();
 	void UpdateMatrix(ImGuizmo::MODE mode);
-	//void MultMatrix(float4x4 matrix);
 
 	float3 GetPos() const;
 	float3 GetPosGlobal() const;

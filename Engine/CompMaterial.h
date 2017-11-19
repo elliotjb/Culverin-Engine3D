@@ -13,27 +13,30 @@ public:
 	~CompMaterial();
 
 	void preUpdate(float dt);
-	void SetColor(float r, float g, float b, float a);
-	Color GetColor() const;
-	
-	//void SetTexture(std::vector<Texture> textures);
-	//void AddTexture(const Texture texture);
-	uint GetTextureID();
 
+	void SetColor(float r, float g, float b, float a);
 	void SetUUIDMesh(uint uuid);
 
+	Color GetColor() const;
+	uint GetTextureID() const;
+
+	// EDITOR METHODS ----------
 	void ShowOptions();
 	void ShowInspectorInfo();
+	// -------------------------
 
+	// SAVE - LOAD METHODS ------------------------
 	void Save(JSON_Object* object, std::string name, bool saveScene, uint& countResources) const;
 	void Load(const JSON_Object* object, std::string name);
+	// --------------------------------------------
 
 public:
 	ResourceMaterial* resourceMaterial = nullptr;
+
 private:
-	Color color;
+	Color color = White;
 	bool selectMaterial = false;
-	//Texture texture;
+
 	uint uuid_material = 0;
 	uint uuidResourceReimported = 0;
 };

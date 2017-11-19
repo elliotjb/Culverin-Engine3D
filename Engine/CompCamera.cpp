@@ -29,7 +29,6 @@ CompCamera::CompCamera(Comp_Type t, GameObject* parent) : Component(t, parent)
 	frustum.pos.Set(0, 0, 0);
 	frustum.front.Set(0, 0, 1);
 	frustum.up.Set(0, 1, 0);
-
 	frustum.nearPlaneDistance = near_plane;
 	frustum.farPlaneDistance = far_plane;
 	frustum.verticalFov = vertical_fov * DEGTORAD;
@@ -56,11 +55,11 @@ CompCamera::CompCamera(const CompCamera& copy, GameObject* parent) : Component(C
 	frustum.pos = copy.frustum.pos;
 	frustum.front = copy.frustum.front;
 	frustum.up = copy.frustum.up;
-
 	frustum.nearPlaneDistance = near_plane;
 	frustum.farPlaneDistance = far_plane;
 	frustum.verticalFov = vertical_fov * DEGTORAD;
 	frustum.horizontalFov = Atan(aspect_ratio*Tan(frustum.verticalFov / 2)) * 2;
+
 	nameComponent = "Camera";
 }
 
@@ -82,6 +81,7 @@ void CompCamera::Update(float dt)
 	UpdateFrustum();
 }
 
+// Update frustum from transform component of the gameobject
 void CompCamera::UpdateFrustum()
 {
 	const CompTransform* transform = parent->GetComponentTransform();
@@ -123,6 +123,7 @@ void CompCamera::Clear()
 {
 	if (is_main)
 	{
+		// Unlink this camera from renderer3D
 		App->renderer3D->SetGameCamera(nullptr);
 	}
 }
@@ -130,7 +131,7 @@ void CompCamera::Clear()
 void CompCamera::ShowOptions()
 {
 	//ImGui::MenuItem("CREATE", NULL, false, false);
-	if (ImGui::MenuItem("Reset"))
+	if (ImGui::MenuItem("Reset", NULL, false, false))
 	{
 		// Not implmented yet.
 	}
@@ -155,7 +156,7 @@ void CompCamera::ShowOptions()
 	{
 		// Not implmented yet.
 	}
-	if (ImGui::MenuItem("Copy Component"))
+	if (ImGui::MenuItem("Copy Component", NULL, false, false))
 	{
 		// Component* Copy = this;
 	}
@@ -191,11 +192,13 @@ void CompCamera::ShowInspectorInfo()
 		}
 	}
 
+	// Show Warning Popup of the camera
 	if (showPopup)
 	{
 		ShowCameraPopup();
 	}
 
+	/* Enable-Disable Culling */
 	if (ImGui::Checkbox("Culling", &culling))
 	{
 		if (!culling)
@@ -204,12 +207,13 @@ void CompCamera::ShowInspectorInfo()
 		}
 	}
 
+	// EDITABLE FRUSTUM VARIABLES ------------------
 	ImGui::PushItemWidth(80);
-	if (ImGui::DragFloat("Near Plane", &near_plane, 0.5f, 0.01f, far_plane - 0.01f))
+	if (ImGui::DragFloat("Near Plane", &near_plane, 0.5f, 0.01f, 699.9f))
 	{
 		SetNear(near_plane);
 	}
-	if (ImGui::DragFloat("Far Plane", &far_plane, 0.5f, near_plane + 0.01f, 1000.0f)) // TODO -> Cap min to 700.0f
+	if (ImGui::DragFloat("Far Plane", &far_plane, 0.5f, 700.0f, 1000.0f)) 
 	{
 		SetFar(far_plane);
 	}
@@ -217,6 +221,7 @@ void CompCamera::ShowInspectorInfo()
 	{
 		SetFov(vertical_fov);
 	}
+	// ------------------------------------------------
 
 	ImGui::PopItemWidth();
 	ImGui::TreePop();
@@ -270,7 +275,7 @@ void CompCamera::CullStaticObjects()
 
 void CompCamera::CullDynamicObjects()
 {
-	AABB* box = nullptr;
+	const AABB* box = nullptr;
 
 	// Push all active elements that are root & active
 	for (uint i = 0; i < App->scene->gameobjects.size(); i++)
@@ -344,7 +349,7 @@ void CompCamera::UnCull()
 		candidates_to_cull.pop();
 	}
 }
-
+ 
 void CompCamera::LookAt(const float3& position)
 {
 	float3 direction = position - frustum.pos;
@@ -393,7 +398,6 @@ Culling CompCamera::ContainsAABox(const AABB& refBox) const
 	{
 		return CULL_IN;
 	}
-	
 
 	return CULL_INTERSECT;
 }
@@ -404,12 +408,14 @@ void CompCamera::SetMain(bool isMain)
 	{
 		if (App->renderer3D->game_camera == nullptr)
 		{
+			// If there isn't any Game camera active, activate this camera
 			App->renderer3D->SetGameCamera(this);
 			is_main = true;
 		}
 		else
 		{
-			// Enable Pop Up of the camera
+			/* Otherwise, enable Pop Up of the camera and turn main  
+			variable to false (not possible to be more than one active cameras at a time) */
 			showPopup = true;
 			is_main = false;
 		}
@@ -428,12 +434,30 @@ void CompCamera::SetPos(float3 pos)
 
 void CompCamera::SetNear(float near_p)
 {
-	frustum.nearPlaneDistance = near_p;
+	// Cap this to not overpas fast plane
+	if (near_p < frustum.farPlaneDistance)
+	{
+		frustum.nearPlaneDistance = near_p;
+	}
+	else
+	{
+		// Recover previous value for the output option
+		near_plane = frustum.nearPlaneDistance;
+	}
 }
 
 void CompCamera::SetFar(float far_p)
 {
-	frustum.farPlaneDistance = far_p;
+	// Cap this to not overpass near plane
+	if (far_p > frustum.nearPlaneDistance)
+	{
+		frustum.farPlaneDistance = far_p;
+	}
+	else
+	{
+		// Recover previous value for the output option
+		far_plane = frustum.farPlaneDistance;
+	}
 }
 
 void CompCamera::SetFov(float vertical)
@@ -488,23 +512,26 @@ float* CompCamera::GetProjectionMatrix() const
 
 void CompCamera::Save(JSON_Object * object, std::string name, bool saveScene, uint& countResources) const
 {
-	// TRANSFORM-----------
 	json_object_dotset_number_with_std(object, name + "Type", C_CAMERA);
-	// Position
+
+	// Transform variables ------
 	App->fs->json_array_dotset_float3(object, name + "Position", frustum.pos);
 	App->fs->json_array_dotset_float3(object, name + "Front", frustum.front);
 	App->fs->json_array_dotset_float3(object, name + "Up", frustum.up);
 
+	// Frustum variables --------
 	json_object_dotset_number_with_std(object, name + "Near Plane", frustum.nearPlaneDistance);
 	json_object_dotset_number_with_std(object, name + "Far Plane", frustum.farPlaneDistance);
 	json_object_dotset_number_with_std(object, name + "Vertical Pov", frustum.verticalFov);
 
+	// Config options variables ---------
 	json_object_dotset_boolean_with_std(object, name + "Main Camera", is_main);
 	json_object_dotset_boolean_with_std(object, name + "Culling", culling);
 }
 
 void CompCamera::Load(const JSON_Object * object, std::string name)
 {
+	// Set frustum variables -------
 	frustum.pos = App->fs->json_array_dotget_float3_string(object, name + "Position");
 	frustum.front = App->fs->json_array_dotget_float3_string(object, name + "Front");
 	frustum.up = App->fs->json_array_dotget_float3_string(object, name + "Up");
@@ -512,10 +539,11 @@ void CompCamera::Load(const JSON_Object * object, std::string name)
 	frustum.farPlaneDistance = json_object_dotget_number_with_std(object, name + "Far Plane");
 	frustum.verticalFov = json_object_dotget_number_with_std(object, name + "Vertical Pov");
 
+	// Set output variables ----
 	near_plane = frustum.nearPlaneDistance;
 	far_plane = frustum.farPlaneDistance;
 	vertical_fov = frustum.verticalFov * RADTODEG; /* output variable in Degrees */
-
+	
 	is_main = json_object_dotget_boolean_with_std(object, name + "Main Camera");
 	SetMain(is_main);
 

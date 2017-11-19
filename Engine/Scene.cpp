@@ -242,7 +242,6 @@ void Scene::DrawPlane()
 
 void Scene::DrawCube(float size)
 {
-
 	float difamb[] = { 1.0f, 0.5f, 0.3f, 1.0f };
 	glBegin(GL_QUADS);
 	//front face
@@ -288,7 +287,6 @@ void Scene::DrawCube(float size)
 	glVertex3f(-size / 2, -size / 2, -size / 2);
 	glVertex3f(size / 2, -size / 2, -size / 2);
 	glEnd();
-
 }
 
 // Before Rendering with the game camera (in Game Mode), fill a vector with all the static objects 
@@ -304,41 +302,10 @@ void Scene::FillStaticObjectsVector(bool fill)
 	}
 }
 
-
-void Scene::Init_IndexVertex(float3 * vertex_triangulate, uint num_index, CompMesh * mesh)
-{
-	std::vector<float3> all_index;
-	uint size = 0;
-	bool temp = false;
-
-	for (int i = 0; i < num_index; i++)
-	{
-		temp = false;
-		size = all_index.size();
-
-		for (int j = 0; j < size; j++)
-		{
-			if (all_index[j] == vertex_triangulate[i])
-			{
-				//mesh->indices.push_back(j);
-				temp = true;
-			}
-		}
-
-		if (temp == false)
-		{
-			Vertex vertex;
-			all_index.push_back(vertex_triangulate[i]);
-			//mesh->indices.push_back(all_index.size() - 1);
-			vertex.pos = vertex_triangulate[i];
-			//mesh->vertices.push_back(vertex);
-		}
-	}
-}
-
 GameObject* Scene::CreateGameObject(GameObject* parent)
 {
 	GameObject* obj = new GameObject(parent);
+
 	// SET NAME -----------------------------------
 	static uint cube_count = 0;
 	std::string name = "Empty ";
@@ -489,29 +456,6 @@ GameObject* Scene::CreateCube(GameObject* parent)
 
 	obj->bounding_box = new AABB(*box);
 
-	/*
-	//MESH COMPONENT -------------------
-	//CompMesh* mesh = (CompMesh*)obj->AddComponent(C_MESH);
-	//mesh->isPrimitive = true;
-	//mesh->TypePrimitive = 2;
-	//mesh->InitRanges(8, 36, 0); // 0 normals by now.
-
-	//OBB* box = new OBB();
-	//box->pos = float3::zero;
-	//box->r = float3::one;
-	//box->axis[0] = float3(1, 0, 0);
-	//box->axis[1] = float3(0, 1, 0);
-	//box->axis[2] = float3(0, 0, 1);
-
-	//obj->bounding_box = new AABB(*box);
-	//float3* vertices_array = new float3[36];
-
-	//obj->bounding_box->Triangulate(1, 1, 1, vertices_array, NULL, NULL, false);
-
-	//Init_IndexVertex(vertices_array, mesh->num_indices, mesh);
-	//mesh->SetupMesh();
-	//mesh->Enable();
-	*/
 	//MATERIAL COMPONENT -------------------
 	CompMaterial* mat = (CompMaterial*)obj->AddComponent(C_MATERIAL);
 	mat->Enable();
@@ -523,66 +467,6 @@ GameObject* Scene::CreateCube(GameObject* parent)
 	}
 
 	LOG("CUBE Created.");
-
-	return obj;
-}
-
-GameObject* Scene::CreateSphere(GameObject* parent)
-{
-	GameObject* obj = new GameObject(parent);
-
-	// SET NAME ----------------------------------
-	static uint sphere_count = 0;
-	std::string name = "Sphere ";
-	name += std::to_string(sphere_count++);
-	char* name_str = new char[name.size() + 1];
-	strcpy(name_str, name.c_str());
-	obj->SetName(name_str);
-
-	/*Predefined Sphere has 2 Base components: Transform, Mesh & Material */
-
-	// TRANSFORM COMPONENT --------------
-	CompTransform* transform = (CompTransform*)obj->AddComponent(C_TRANSFORM); // TRANSFORM WILL ACCUMULATE PARENTS TRANSFORMS
-	transform->Init(float3(0, 0, 0), float3(0, 0, 0), float3(1, 1, 1));
-	transform->Enable();
-
-	// MESH COMPONENT -------------------
-	CompMesh* mesh = (CompMesh*)obj->AddComponent(C_MESH); 
-	//mesh->isPrimitive = true;
-	//mesh->TypePrimitive = 1;
-
-	float3* vertices_array = new float3[SPHERE_DEFINITION];
-	float3* normals = new float3[SPHERE_DEFINITION];
-
-	Sphere* sphere = new Sphere(float3::zero, 1);
-	sphere->Triangulate(vertices_array, normals, NULL, SPHERE_DEFINITION, false);
-	
-	Init_IndexVertex(vertices_array, SPHERE_DEFINITION, mesh);
-	//mesh->InitRanges(mesh->vertices.size(), mesh->indices.size(), 0);
-	//for (int i = 0; i < SPHERE_DEFINITION; i++)
-	//{
-	//	mesh->vertices_normals.push_back(normals[i]);
-	//}
-	//mesh->hasNormals = true;
-	//mesh->SetupMesh();
-	//mesh->Enable();
-
-	///* Set Bounding Box */
-	//obj->bounding_box = new AABB();
-	//obj->bounding_box->SetNegativeInfinity();
-	//obj->bounding_box->Enclose(mesh->vertices, mesh->num_vertices);
-
-	// MATERIAL COMPONENT -------------------
-	CompMaterial* mat = (CompMaterial*)obj->AddComponent(C_MATERIAL);
-	mat->Enable();
-
-	if (parent == nullptr)
-	{
-		// Only add to GameObjects list the Root Game Objects
-		App->scene->gameobjects.push_back(obj);
-	}
-
-	LOG("SPHERE Created.");
 
 	return obj;
 }

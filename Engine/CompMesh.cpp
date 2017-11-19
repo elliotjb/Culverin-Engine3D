@@ -123,7 +123,7 @@ void CompMesh::ShowOptions()
 	{
 		// Not implmented yet.
 	}
-	if (ImGui::MenuItem("Copy Component"))
+	if (ImGui::MenuItem("Copy Component", NULL, false, false))
 	{
 		// Component* Copy = this;
 	}
@@ -324,7 +324,7 @@ bool CompMesh::isRendering() const
 	return render;
 }
 
-void CompMesh::LinkMaterial(CompMaterial* mat)
+void CompMesh::LinkMaterial(const CompMaterial* mat)
 {
 	if (mat != nullptr)
 	{
@@ -344,7 +344,6 @@ void CompMesh::SetResource(ResourceMesh* resourse_mesh)
 				resourceMesh->NumGameObjectsUseMe--;
 			}
 		}
-
 		resourceMesh = resourse_mesh;
 		resourceMesh->NumGameObjectsUseMe++;
 	}
@@ -381,11 +380,13 @@ void CompMesh::Load(const JSON_Object* object, std::string name)
 		if (resourceMesh != nullptr)
 		{
 			resourceMesh->NumGameObjectsUseMe++;
-			// LOAD MESH
+			
+			// LOAD MESH ----------------------------
 			if (resourceMesh->IsLoadedToMemory() == Resource::State::UNLOADED)
 			{
 				App->importer->iMesh->LoadResource(std::to_string(resourceMesh->GetUUID()).c_str(), resourceMesh);			
 			}
+			// Add bounding box ------
 			parent->AddBoundingBox(resourceMesh);
 		}
 	}

@@ -43,7 +43,7 @@ CompMaterial::~CompMaterial()
 
 void CompMaterial::preUpdate(float dt)
 {
-	// Before delete Resource Set this pointer to nullptr
+	// Before delete Resource, Set this pointer to nullptr
 	if (resourceMaterial != nullptr)
 	{
 		if (resourceMaterial->GetState() == Resource::State::WANTDELETE)
@@ -62,7 +62,8 @@ void CompMaterial::preUpdate(float dt)
 		{
 			resourceMaterial = (ResourceMaterial*)App->resource_manager->GetResource(uuidResourceReimported);
 			resourceMaterial->NumGameObjectsUseMe++;
-			// Check if loaded!
+
+			// Check if loaded
 			if (resourceMaterial->IsLoadedToMemory() == Resource::State::UNLOADED)
 			{
 				App->importer->iMaterial->LoadResource(std::to_string(resourceMaterial->GetUUID()).c_str(), resourceMaterial);
@@ -85,24 +86,13 @@ Color CompMaterial::GetColor() const
 	return color;
 }
 
-//void CompMaterial::SetTexture(std::vector<Texture> textures)
-//{
-//	texture = textures;
-//}
-//
-//void CompMaterial::AddTexture(const Texture tex)
-//{
-//	texture.push_back(tex);
-//}
-
-uint CompMaterial::GetTextureID()
+uint CompMaterial::GetTextureID() const
 {
-	//if(texture.size() > 0)
-	//	return texture[0].id;
 	if (resourceMaterial != nullptr)
 	{
 		return resourceMaterial->GetTextureID();
 	}
+
 	return 0;
 }
 
@@ -113,8 +103,7 @@ void CompMaterial::SetUUIDMesh(uint uuid)
 
 void CompMaterial::ShowOptions()
 {
-	//ImGui::MenuItem("CREATE", NULL, false, false);
-	if (ImGui::MenuItem("Reset"))
+	if (ImGui::MenuItem("Reset", NULL, false, false))
 	{
 		// Not implmented yet.
 	}
@@ -139,7 +128,7 @@ void CompMaterial::ShowOptions()
 	{
 		// Not implmented yet.
 	}
-	if (ImGui::MenuItem("Copy Component"))
+	if (ImGui::MenuItem("Copy Component", NULL, false, false))
 	{
 		// Component* Copy = this;
 	}
@@ -159,10 +148,12 @@ void CompMaterial::ShowInspectorInfo()
 	{
 		ImGui::OpenPopup("OptionsMaterial");
 	}
+
 	// Button Options --------------------------------------
 	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.00f));
 	if (ImGui::BeginPopup("OptionsMaterial"))
 	{
+		/* Reset Material */
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 2));
 		if (ImGui::Button("Reset Material"))
 		{
@@ -177,6 +168,7 @@ void CompMaterial::ShowInspectorInfo()
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::Separator();
+		/* Select Material */
 		if (ImGui::Button("Select Material..."))
 		{
 			selectMaterial = true;
@@ -191,12 +183,14 @@ void CompMaterial::ShowInspectorInfo()
 
 	if (resourceMaterial != nullptr)
 	{
+		/* Name of the material */
 		ImGui::Text("Name:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", resourceMaterial->name);
+		
+		/* Image of the texture */
 		ImGui::Image((ImTextureID*)resourceMaterial->GetTextureID(), ImVec2(170, 170), ImVec2(-1, 1), ImVec2(0, 0));
-
-		//ImGui::Checkbox("Render", &render);
 	}
+
 	if(resourceMaterial == nullptr || selectMaterial)
 	{
 		if (resourceMaterial == nullptr)
@@ -240,13 +234,6 @@ void CompMaterial::Save(JSON_Object* object, std::string name, bool saveScene, u
 	json_object_dotset_number_with_std(object, name + "UUID", uid);
 	if (resourceMaterial != nullptr)
 	{
-		//if (saveScene == false) // At the moment we only save info of the Resoruce Mesh
-		//{
-		//	// Save Info of Resource in Prefab (next we use this info for Reimport this prefab)
-		//	std::string temp = std::to_string(countResources++);
-		//	json_object_dotset_number_with_std(object, "Info.Resources.Resource " + temp + ".UUID Resource", resourceMaterial->GetUUID());
-		//	json_object_dotset_string_with_std(object, "Info.Resources.Resource " + temp + ".name", resourceMaterial->name);
-		//}
 		json_object_dotset_number_with_std(object, name + "Resource Material UUID", resourceMaterial->GetUUID());
 	}
 	else
@@ -267,7 +254,8 @@ void CompMaterial::Load(const JSON_Object* object, std::string name)
 		if (resourceMaterial != nullptr)
 		{
 			resourceMaterial->NumGameObjectsUseMe++;
-			// LOAD MATERIAL
+
+			// LOAD MATERIAL -------------------------
 			if (resourceMaterial->IsLoadedToMemory() == Resource::State::UNLOADED)
 			{
 				App->importer->iMaterial->LoadResource(std::to_string(resourceMaterial->GetUUID()).c_str(), resourceMaterial);

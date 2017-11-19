@@ -35,10 +35,8 @@ public:
 	void FillStaticObjectsVector(bool fill);
 
 	//OBJECTS CREATION / DELETION ---------------------
-	void Init_IndexVertex(float3* vertex_triangulate, uint num_index, CompMesh* mesh);
 	GameObject* CreateGameObject(GameObject* parent = nullptr);
 	GameObject* CreateCube(GameObject* parent = nullptr);
-	GameObject* CreateSphere(GameObject* parent = nullptr);
 	GameObject* CreateMainCamera(GameObject* parent = nullptr);
 	void DeleteGameObjects(std::vector<GameObject*>& gameobjects, bool isMain = true);
 	void DeleteGameObject(GameObject* gameobjects);

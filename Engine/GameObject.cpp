@@ -22,6 +22,7 @@ GameObject::GameObject(GameObject* parent) :parent(parent)
 
 	if (parent != nullptr)
 	{
+		// Push this game object into the childs list of its parent
 		parent->childs.push_back(this);
 	}
 }
@@ -36,6 +37,7 @@ GameObject::GameObject(char* nameGameObject, uint uuid)
 
 GameObject::GameObject(const GameObject& copy, bool haveparent, GameObject* parent_)
 {
+	// New UUID and name for this copy
 	uid = App->random->Int();
 	std::string nametemp = copy.GetName();
 	size_t EndName = nametemp.find_last_of("(");
@@ -43,7 +45,8 @@ GameObject::GameObject(const GameObject& copy, bool haveparent, GameObject* pare
 	NameNotRepeat(nametemp, haveparent, parent_);
 	//nametemp += " (copy)";
 	name = App->GetCharfromConstChar(nametemp.c_str());
-	//TODO ->add "(X)" to the name
+
+	// Same data as the 'copy' gameobject
 	active = copy.isActive();
 	visible = copy.isVisible();
 	static_obj = copy.isStatic();
@@ -716,7 +719,7 @@ Component* GameObject::AddComponent(Comp_Type type)
 			CompMesh* mesh = new CompMesh(type, this);
 			components.push_back(mesh);
 			/* Link Material to the Mesh if exists */
-			CompMaterial* material_link = (CompMaterial*)FindComponentByType(Comp_Type::C_MATERIAL);
+			const CompMaterial* material_link = (CompMaterial*)FindComponentByType(Comp_Type::C_MATERIAL);
 			if (material_link != nullptr)
 			{
 				mesh->LinkMaterial(material_link);
@@ -781,7 +784,7 @@ void GameObject::AddComponentCopy(const Component& copy)
 	{
 		CompMesh* mesh = new CompMesh((CompMesh&)copy, this); //Mesh copy constructor
 		components.push_back(mesh);
-		/* Link Material to the Mesh if exists */
+		/* Link Material to the Mesh (if exists) */
 		CompMaterial* material_link = (CompMaterial*)FindComponentByType(Comp_Type::C_MATERIAL);
 		if (material_link != nullptr)
 		{
@@ -797,7 +800,7 @@ void GameObject::AddComponentCopy(const Component& copy)
 	{
 		CompMaterial* material = new CompMaterial((CompMaterial&)copy, this); //Material copy constructor
 		components.push_back(material);
-		/* Link Material to the Mesh if exists */
+		/* Link Mesh to the Material (if exists) */
 		CompMesh* mesh_to_link = (CompMesh*)FindComponentByType(Comp_Type::C_MESH);
 		if (mesh_to_link != nullptr)
 		{

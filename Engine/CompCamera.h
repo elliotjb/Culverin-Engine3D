@@ -62,11 +62,11 @@ public:
 	Frustum frustum;
 
 private:
-	bool culling = false;
-	bool is_main = false;
 	bool showPopup = false;
 
 	// Editor Variables -------------
+	bool culling = false;
+	bool is_main = false;
 	float width = 0.0f;
 	float height = 0.0f;
 	float aspect_ratio = 0.0f;

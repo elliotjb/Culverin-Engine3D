@@ -29,20 +29,25 @@ public:
 	CompMesh(Comp_Type t, GameObject* parent);
 	CompMesh(const CompMesh& copy, GameObject* parent);
 	~CompMesh();
-	
-	void ShowOptions();
-	void ShowInspectorInfo();
+
 	void Draw();
 	void preUpdate(float dt);
 	void Update(float dt);
 	void Render(bool render);
 	bool isRendering() const;
 
-	void LinkMaterial(CompMaterial* mat);
+	// EDITOR METHODS ---------
+	void ShowOptions();
+	void ShowInspectorInfo();
+	// ------------------------
+
+	void LinkMaterial(const CompMaterial* mat);
 	void SetResource(ResourceMesh* resourse_mesh);
 
+	// SAVE - LOAD METHODS ----------------
 	void Save(JSON_Object* object, std::string name, bool saveScene, uint& countResources) const;
 	void Load(const JSON_Object* object, std::string name);
+	// -------------------------------------
 
 public:
 	char* name = "MESH NAME";
@@ -53,7 +58,7 @@ public:
 private:
 	bool render = true;
 	bool SelectMesh = false;
-	CompMaterial* material = nullptr;
+	const CompMaterial* material = nullptr;
 	uint uuidResourceReimported = 0;
 
 };

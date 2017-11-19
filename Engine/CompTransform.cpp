@@ -24,7 +24,7 @@ CompTransform::CompTransform(Comp_Type t, GameObject* parent) :Component(t, pare
 
 CompTransform::CompTransform(const CompTransform& copy, GameObject* parent) : Component(Comp_Type::C_TRANSFORM, parent)
 {
-	freeze = copy.freeze; //If transform is freezed
+	freeze = copy.freeze; //To enable/disable editing transforms
 	transform_mode = copy.transform_mode; //LOCAL or WORLD
 	
 	Init(copy.GetPos(), copy.GetRotEuler(), copy.GetScale()); //Set Local matrix
@@ -36,6 +36,7 @@ CompTransform::~CompTransform()
 {
 }
 
+// Init from Rotation Quaternion
 void CompTransform::Init(float3 p, float4 r, float3 s)
 {
 	SetPos(p);
@@ -43,6 +44,7 @@ void CompTransform::Init(float3 p, float4 r, float3 s)
 	SetScale(s);
 }
 
+// Init from Rotation Euler Angles
 void CompTransform::Init(float3 p, float3 r, float3 s)
 {
 	SetPos(p);
@@ -63,13 +65,11 @@ void CompTransform::Update(float dt)
 	{
 		ImGuizmo::Enable(true);
 
-		// Enable modifications through gizmos only if you first clicked the gizmo
-
 		static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
-
 		screen = ((SceneWorld*)App->gui->winManager[SCENEWORLD])->GetWindowParams();
 		ImGuizmo::SetRect(screen.x, screen.y, screen.z, screen.w);
 
+		// Get global transform of the object and transpose it to edit with Guizmo
 		global_transposed = global_transform.Transposed();
 
 		// SET GUIZMO OPERATION ----------------------------------
@@ -86,6 +86,7 @@ void CompTransform::Update(float dt)
 			mCurrentGizmoOperation = ImGuizmo::SCALE;
 		}
 
+		// EDIT TRANSFORM QITH GUIZMO
 		ImGuizmo::Manipulate(App->camera->GetViewMatrix(), App->camera->GetProjMatrix(), mCurrentGizmoOperation, transform_mode, global_transposed.ptr());
 
 		// Only edit transforms with guizmo if it's selected first
@@ -101,7 +102,7 @@ void CompTransform::Update(float dt)
 			else
 			{
 				//Otherwise, set local matrix from parent global matrix (inverted)
-				CompTransform* transform = parent->GetParent()->GetComponentTransform();
+				const CompTransform* transform = parent->GetParent()->GetComponentTransform();
 				local_transform = transform->GetGlobalTransform().Inverted() * global_transposed;
 			}
 
@@ -120,7 +121,6 @@ void CompTransform::Update(float dt)
 
 void CompTransform::ShowOptions()
 {
-	//ImGui::MenuItem("CREATE", NULL, false, false);
 	if (ImGui::MenuItem("Reset"))
 	{
 		ResetMatrix();
@@ -135,7 +135,7 @@ void CompTransform::ShowOptions()
 	{
 		// Not implmented yet.
 	}
-	if (ImGui::MenuItem("Copy Component"))
+	if (ImGui::MenuItem("Copy Component", NULL, false, false))
 	{
 		// Component* Copy = this;
 	}
@@ -174,7 +174,6 @@ void CompTransform::ShowInspectorInfo()
 	ImGui::PopStyleVar();
 
 	// Options Button --------------------------------------------------
-	//ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.00f));
 	if (ImGui::BeginPopup("OptionsTransform"))
 	{
 		ShowOptions();
@@ -210,22 +209,7 @@ void CompTransform::ShowInspectorInfo()
 		}
 	}
 	// ------------------------------------------------------------------
-	// This function let mouse trespassing the screen to enter from the opposite side
-	//if (1)
-	//{
-	//	if (App->input->GetMouseXGlobal() <= 1680 &&
-	//		App->input->GetMouseXGlobal() > 1680 - 10)
-	//	{
-	//		SetCursorPos(30, App->input->GetMouseYGlobal());
-	//	}
-	//	if (App->input->GetMouseXGlobal() >= 0 &&
-	//		App->input->GetMouseXGlobal() < 10)
-	//	{
-	//		SetCursorPos(width - 20, App->input->GetMouseYGlobal());
-	//	}
-	//}
-	// -------------------------------------------------------------------------------
-//	ImGui::TreePop();
+
 	ImGui::TreePop();
 }
 
@@ -241,7 +225,7 @@ void CompTransform::ShowTransform(float drag_speed)
 		PushStyleColor(ImGuiCol_Text, GImGui->Style.Colors[ImGuiCol_TextDisabled]);
 	}
 
-	// Depending transform mode, edit local/world matrix (LOCAL by the moment)
+	// Depending transform mode, edit local/world matrix (LOCAL for now)
 	switch (transform_mode)
 	{
 	case (ImGuizmo::MODE::LOCAL):
@@ -353,14 +337,6 @@ void CompTransform::UpdateLocalTransform()
 		CompTransform* parent_transform = parent_object->GetParent()->GetComponentTransform();
 		local_transform = global_transform * parent_transform->GetGlobalTransform().Inverted();
 	}
-
-	// Fill the output variables from the updated matrix
-	//local_transform.Decompose(position, rotation, scale); // We don't want to get the size
-	//rotation_euler = rotation.ToEulerXYZ() * RADTODEG;
-
-	//position = local_transform.TranslatePart();
-	//rotation = local_transform.RotatePart().ToQuat();
-	//rotation_euler = rotation.ToEulerXYZ() * RADTODEG;
 }
 
 void CompTransform::UpdateGlobalTransform()
@@ -385,16 +361,9 @@ void CompTransform::UpdateGlobalTransform()
 		global_transform = global_transform * matrix;
 		item++;
 	}
-
-	//Fill the output variables from the updated matrix
-	//global_transform.Decompose(position_global, rotation_global, scale_global); //We don't want to get the size
-	//rotation_euler_global = rotation_global.ToEulerXYZ() * RADTODEG;
-
-	//position_global = global_transform.TranslatePart();
-	//rotation_global = global_transform.RotatePart().ToQuat();
-	//rotation_euler_global = rotation_global.ToEulerXYZ() * RADTODEG;
 }
 
+// Update Global transform and call this function for all its childs
 void CompTransform::UpdateGlobalMatrixRecursive()
 {
 	UpdateGlobalTransform();
@@ -405,18 +374,18 @@ void CompTransform::UpdateMatrix(ImGuizmo::MODE mode)
 {
 	switch (mode)
 	{
-	case (ImGuizmo::MODE::LOCAL): 
+	case (ImGuizmo::MODE::LOCAL): // Local Mode only for now
 	{
 		SetLocalTransform(); /*First, set local transform from inspector variables*/
 		UpdateGlobalTransform(); /*Then, update global matrix*/
 		break;
 	}
-	case (ImGuizmo::MODE::WORLD):
-	{
-		SetGlobalTransform(); /*First, set global transform from inspector variables*/
-		UpdateLocalTransform(); /*Then, update local matrix*/
-		break;
-	}
+	//case (ImGuizmo::MODE::WORLD):
+	//{
+	//	SetGlobalTransform(); /*First, set global transform from inspector variables*/
+	//	UpdateLocalTransform(); /*Then, update local matrix*/
+	//	break;
+	//}
 	default:
 		break;
 	}
@@ -477,7 +446,7 @@ const float* CompTransform::GetMultMatrixForOpenGL() const
 
 void CompTransform::Save(JSON_Object* object, std::string name, bool saveScene, uint& countResources) const
 {
-	// TRANSFORM-----------
+	// TRANSFORM -----------
 	json_object_dotset_number_with_std(object, name + "Type", C_TRANSFORM);
 	// Position
 	App->fs->json_array_dotset_float3(object, name + "Position", GetPos());
