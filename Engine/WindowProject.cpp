@@ -17,6 +17,7 @@ Project::~Project()
 	active.clear();
 	App->fs->DeleteFolders(folders);
 	App->fs->DeleteFiles(files);
+	RELEASE_ARRAY(directory_see);
 }
 
 bool Project::Start()

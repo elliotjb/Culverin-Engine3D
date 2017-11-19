@@ -1,6 +1,7 @@
 #include "JSONSerialization.h"
 #include "Application.h"
 #include "ResourceMaterial.h"
+#include "ModuleFS.h"
 #include "ModuleResourceManager.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -69,6 +70,7 @@ void JSONSerialization::SaveScene()
 	}
 	json_object_dotset_number_with_std(config_node, "Info.Number of GameObjects", count);
 	json_serialize_to_file(config_file, "Scene_1.json");
+	json_value_free(config_file);
 }
 
 void JSONSerialization::SaveChildGameObject(JSON_Object* config_node, const GameObject& gameObject, uint& count, uint& countResources)
@@ -161,6 +163,7 @@ void JSONSerialization::LoadScene()
 			}
 		}
 	}
+	json_value_free(config_file);
 }
 
 void JSONSerialization::LoadChilds(GameObject& parent, GameObject& child, int uuidParent)
@@ -244,6 +247,7 @@ void JSONSerialization::SavePrefab(const GameObject& gameObject, const char* dir
 		json_object_dotset_number_with_std(config, "Prefab.Info.Resources.Number of Resources", countResources);
 		json_serialize_to_file(config_file, nameJson.c_str());
 	}
+	json_value_free(config_file);
 }
 
 void JSONSerialization::SaveChildPrefab(JSON_Object* config_node, const GameObject& gameObject, uint& count, uint& countResources)
@@ -344,6 +348,7 @@ void JSONSerialization::LoadPrefab(const char* prefab)
 			App->scene->gameobjects.push_back(mainParent);
 		}
 	}
+	json_value_free(config_file);
 }
 
 void JSONSerialization::LoadChildLoadPrefab(GameObject& parent, GameObject& child, int uuidParent)
@@ -396,6 +401,7 @@ void JSONSerialization::SaveMaterial(const ResourceMaterial* material, const cha
 		json_object_dotset_string_with_std(config, "Material.Name", material->name);
 		json_serialize_to_file(config_file, nameJson.c_str());
 	}
+	json_value_free(config_file);
 }
 
 
@@ -419,14 +425,15 @@ ReImport JSONSerialization::GetUUIDPrefab(const char* file, uint id)
 		config_node = json_object_get_object(config, "Prefab");
 		std::string temp = "Info.Resources";
 		int numResources = json_object_dotget_number_with_std(config_node, temp + ".Number of Resources");
-		info.directoryObj = json_object_dotget_string_with_std(config, "Prefab.Info.Directory Prefab");
+		info.directoryObj = App->fs->ConverttoConstChar(json_object_dotget_string_with_std(config, "Prefab.Info.Directory Prefab"));
 		if (id < numResources)
 		{
 			temp += ".Resource " + std::to_string(id);
 			info.uuid = json_object_dotget_number_with_std(config_node, temp + ".UUID Resource");
-			info.nameMesh = json_object_dotget_string_with_std(config_node, temp + ".Name");
+			info.nameMesh = App->fs->ConverttoConstChar(json_object_dotget_string_with_std(config_node, temp + ".Name"));
 			if (strcmp(file, info.directoryObj) == 0)
 			{
+				json_value_free(config_file);
 				return info;
 			}
 			else
@@ -436,6 +443,7 @@ ReImport JSONSerialization::GetUUIDPrefab(const char* file, uint id)
 
 		}
 	}
+	json_value_free(config_file);
 	return info;
 }
 
@@ -454,10 +462,11 @@ ReImport JSONSerialization::GetUUIDMaterial(const char* file)
 		config = json_value_get_object(config_file);
 		//config_node = json_object_get_object(config, "Material");
 		info.uuid = json_object_dotget_number_with_std(config, "Material.UUID Resource");
-		info.directoryObj = json_object_dotget_string_with_std(config, "Material.Directory Material");
-		info.nameMesh = json_object_dotget_string_with_std(config, "Material.Name");
+		info.directoryObj = App->fs->ConverttoConstChar(json_object_dotget_string_with_std(config, "Material.Directory Material"));
+		info.nameMesh = App->fs->ConverttoConstChar(json_object_dotget_string_with_std(config, "Material.Name"));
 		if (strcmp(file, info.directoryObj) == 0)
 		{
+			json_value_free(config_file);
 			return info;
 		}
 		else
@@ -465,6 +474,7 @@ ReImport JSONSerialization::GetUUIDMaterial(const char* file)
 			info.directoryObj = nullptr;
 		}
 	}
+	json_value_free(config_file);
 	return info;
 }
 

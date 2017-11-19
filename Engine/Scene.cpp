@@ -43,6 +43,7 @@ Scene::~Scene()
 {
 	DeleteGameObjects(gameobjects, true);
 	RELEASE(sceneBuff);
+	RELEASE(skybox);
 }
 
 //bool Scene::Init(JSON_Object * node)
@@ -350,7 +351,8 @@ void Scene::DeleteGameObjects(std::vector<GameObject*>& gameobjects, bool isMain
 			// First delete all components
 			gameobjects[i]->DeleteAllComponents();
 			// Now Delete GameObject
-			delete gameobjects[i];
+			GameObject* it = gameobjects[i];
+			RELEASE(it);
 		}
 	}
 	gameobjects.clear();
@@ -386,6 +388,7 @@ void Scene::DeleteGameObject(GameObject* gameobject)
 		{
 			gameobject->DeleteAllComponents();
 		}
+		//
 		// Finnaly Check have Parent and remove from childs
 		if (gameobject->GetParent() != nullptr)
 		{
@@ -407,7 +410,10 @@ void Scene::DeleteGameObject(GameObject* gameobject)
 			{
 				if (i == index)
 				{
+					GameObject* it = gameobjects[i];
+					RELEASE(it);
 					gameobjects.erase(item);
+					it = nullptr;
 					break;
 				}
 				item++;
@@ -467,7 +473,7 @@ GameObject* Scene::CreateCube(GameObject* parent)
 	}
 
 	LOG("CUBE Created.");
-
+	RELEASE(box);
 	return obj;
 }
 

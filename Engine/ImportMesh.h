@@ -18,7 +18,6 @@ public:
 	bool Import(const aiScene * scene, const aiMesh* mesh, GameObject* obj, const char* name, uint uuid = 0);
 	void Import(uint num_vertices, uint num_indices, uint num_normals, std::vector<uint> indices, std::vector<float3> vertices, uint uid = 0);
 	bool LoadResource(const char * file, ResourceMesh* resourceMesh);
-	bool Load(const char* name, CompMesh* mesh);
 
 private:
 

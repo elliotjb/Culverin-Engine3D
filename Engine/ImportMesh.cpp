@@ -332,72 +332,13 @@ bool ImportMesh::LoadResource(const char* file, ResourceMesh* resourceMesh)
 		resourceMesh->InitRanges(num_vertices, num_indices, num_normals);
 		resourceMesh->Init(vertices, indices, vert_normals, tex_coords);
 		resourceMesh->LoadToMemory();
+		RELEASE_ARRAY(vertices);
+		RELEASE_ARRAY(indices);
+		RELEASE_ARRAY(vert_normals);
+		RELEASE_ARRAY(tex_coords);
 		//RELEASE_ARRAY(cursor);
 		LOG("Mesh %s Loaded!", file);
 	}
 	RELEASE_ARRAY(buffer);
-	return true;
-}
-
-bool ImportMesh::Load(const char* file, CompMesh* mesh)
-{
-	char* buffer = nullptr;
-	uint num_vertices = 0;
-	uint num_indices = 0;
-	uint num_normals = 0;
-	//uint num_tex_coords = 0;
-
-	float3* vertices = nullptr;
-	uint* indices = nullptr;
-	float3* vert_normals = nullptr;
-	float2* tex_coords = nullptr;
-	//Texture* texture = nullptr;
-	// Loading File
-	uint size = App->fs->LoadFile(file, &buffer, IMPORT_DIRECTORY_LIBRARY_MESHES);
-
-	if (buffer != nullptr && size > 0)
-	{
-		char* cursor = buffer;
-
-		// Amount vertices, amount indices, amount normals
-		uint ranges[3];
-		uint bytes = sizeof(ranges);
-		memcpy(ranges, cursor, bytes);
-
-		// Set Amounts
-		num_vertices = ranges[0];
-		num_indices = ranges[1];
-		num_normals = ranges[2];
-		//num_tex_coords = ranges[3];
-		
-		//Load Vertices
-		cursor += bytes;
-		bytes = sizeof(float3) * num_vertices;
-		vertices = new float3[num_vertices];
-		memcpy(vertices, cursor, bytes);
-		
-		//Load Indices
-		cursor += bytes;
-		bytes = sizeof(uint) * num_indices;
-		indices = new uint[num_indices];
-		memcpy(indices, cursor, bytes);
-
-		//Load Normals
-		cursor += bytes;
-		bytes = sizeof(float3) * num_normals;
-		vert_normals = new float3[num_normals];
-		memcpy(vert_normals, cursor, bytes);
-
-		//Load Tex Coords
-		cursor += bytes;
-		bytes = sizeof(float2) * num_vertices; //num_tex_coords;
-		tex_coords = new float2[num_vertices];
-		memcpy(tex_coords, cursor, bytes);
-		
-
-		mesh->Enable();
-		
-		LOG("Mesh %s Loaded!", file);		
-	}
 	return true;
 }

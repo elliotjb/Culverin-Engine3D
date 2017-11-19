@@ -974,7 +974,10 @@ void GameObject::RemoveChildbyIndex(uint index)
 		{
 			if (i == index)
 			{
+				GameObject* it = childs[i];
+				RELEASE(it);
 				childs.erase(item);
+				it = nullptr;
 				break;
 			}
 			item++;

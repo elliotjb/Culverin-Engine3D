@@ -58,7 +58,7 @@ bool ImportMaterial::Import(const char* file, uint uuid)
 			RELEASE_ARRAY(data);
 		}
 	}
-
+	RELEASE_ARRAY(buffer);
 	//return ret;
 
 	return false;

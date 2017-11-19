@@ -230,6 +230,7 @@ Quadtree::Quadtree()
 
 Quadtree::~Quadtree()
 {
+	RELEASE(root_node);
 }
 
 void Quadtree::Init(float new_size)

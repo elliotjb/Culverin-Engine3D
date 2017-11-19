@@ -74,7 +74,6 @@ Application::~Application()
 		delete item._Ptr->_Myval;
 		item++;
 	}
-
 	RELEASE(configuration);
 	RELEASE(random);
 	RELEASE(Json_seria);

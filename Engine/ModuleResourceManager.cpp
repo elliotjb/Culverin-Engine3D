@@ -21,12 +21,19 @@ ModuleResourceManager::~ModuleResourceManager()
 	std::map<uint, Resource*>::iterator it = resources.begin();
 	for (int i = 0; i < resources.size(); i++)
 	{
+		it->second->DeleteToMemory();
 		RELEASE(it->second);
 		it++;
 	}
 	resources.clear();
 	filesReimport.clear();
+	for (int i = 0; i < resourcesToReimport.size(); i++)
+	{
+		RELEASE_ARRAY(resourcesToReimport[i].directoryObj);
+		RELEASE_ARRAY(resourcesToReimport[i].nameMesh);
+	}
 	resourcesToReimport.clear();
+	filestoDelete.clear();
 }
 
 bool ModuleResourceManager::Start()
@@ -138,6 +145,11 @@ update_status ModuleResourceManager::PostUpdate(float dt)
 		// After reimport, update time of vector of files in filesystem.
 		App->fs->UpdateFilesAsstes();
 		filesReimport.clear();
+		for (int i = 0; i < resourcesToReimport.size(); i++)
+		{
+			RELEASE_ARRAY(resourcesToReimport[i].directoryObj);
+			RELEASE_ARRAY(resourcesToReimport[i].nameMesh);
+		}
 		resourcesToReimport.clear();
 		reimportNow = false;
 	}
@@ -517,4 +529,5 @@ void ModuleResourceManager::Load()
 			}
 		}
 	}
+	json_value_free(config_file);
 }
