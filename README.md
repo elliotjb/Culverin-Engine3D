@@ -3,7 +3,7 @@ This is a project consistent of creating a Game Engine,
 that allows you to use tools to create video games.
 
 ## Example Street scene:
-![](https://i.gyazo.com/2fb46188c5188013b7bd76f6e2278bfc.jpg)]
+![](https://i.gyazo.com/2fb46188c5188013b7bd76f6e2278bfc.jpg)
 
 # FEATURES
 - Configuration options (Application, Memory Consumption, Window, Camera, Input, Audio, Scene, GUI, Renderer).
