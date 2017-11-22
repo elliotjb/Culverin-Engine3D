@@ -108,6 +108,7 @@
     <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="Resource_.h" />
     <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="TextEditor.h" />
     <ClInclude Include="WindowHierarchy.h" />
     <ClInclude Include="ModuleImporter.h" />
     <ClInclude Include="WindowProject.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="Resource_.cpp" />
     <ClCompile Include="SkyBox.cpp" />
+    <ClCompile Include="TextEditor.cpp" />
     <ClCompile Include="WindowHierarchy.cpp" />
     <ClCompile Include="ModuleImporter.cpp" />
     <ClCompile Include="WindowProject.cpp" />
