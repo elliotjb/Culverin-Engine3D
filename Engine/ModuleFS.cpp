@@ -37,6 +37,10 @@ bool ModuleFS::Start()
 	//In release this code: -----------------------------------------
 	//size_t EndName = directory_Game.find_last_of("\\");
 	//directory_Game = directory_Game.substr(0, EndName);
+	//directory_Assets = directory_Game;
+	//directory_Game += "\\Assets"; // "\\Game\\Assets"
+	//LOG("%s", directory_Assets);
+	//LOG("%s", directory_Game);
 
 	//Not release this: ---------------------------------------------
 	size_t EndName = directory_Game.find_last_of("\\");
