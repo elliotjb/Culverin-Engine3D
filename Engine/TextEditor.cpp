@@ -28,6 +28,7 @@ TextEditor::TextEditor()
 {
 	SetPalette(GetDarkPalette());
 	SetLanguageDefinition(LanguageDefinition::HLSL());
+	mLines.push_back(Line());
 }
 
 
@@ -1101,15 +1102,31 @@ void TextEditor::BackSpace()
 	if (mLines.empty())
 		return;
 
+
+	UndoRecord u;
+	u.mBefore = mState;
+
 	if (HasSelection())
+	{
+		u.mRemoved = GetSelectedText();
+		u.mRemovedStart = mState.mSelectionStart;
+		u.mRemovedEnd = mState.mSelectionEnd;
+
 		DeleteSelection();
+	}
 	else
 	{
-		mState.mCursorPosition = GetActualCursorCoordinates();
+		auto pos = GetActualCursorCoordinates();
+		SetCursorPosition(pos);
+
 		if (mState.mCursorPosition.mColumn == 0)
 		{
 			if (mState.mCursorPosition.mLine == 0)
 				return;
+
+			u.mRemoved = '\n';
+			u.mRemovedStart = u.mRemovedEnd = GetActualCursorCoordinates();
+			Advance(u.mRemovedEnd);
 
 			auto& line = mLines[mState.mCursorPosition.mLine];
 			auto& prevLine = mLines[mState.mCursorPosition.mLine - 1];
@@ -1122,6 +1139,11 @@ void TextEditor::BackSpace()
 		else
 		{
 			auto& line = mLines[mState.mCursorPosition.mLine];
+
+			u.mRemoved = line[pos.mColumn - 1].mChar;
+			u.mRemovedStart = u.mRemovedEnd = GetActualCursorCoordinates();
+			--u.mRemovedStart.mColumn;
+
 			--mState.mCursorPosition.mColumn;
 			if (mState.mCursorPosition.mColumn < (int)line.size())
 				line.erase(line.begin() + mState.mCursorPosition.mColumn);
@@ -1129,6 +1151,9 @@ void TextEditor::BackSpace()
 		EnsureCursorVisible();
 		Colorize(mState.mCursorPosition.mLine, 1);
 	}
+
+	u.mAfter = mState;
+	AddUndo(u);
 }
 
 void TextEditor::SelectWordUnderCursor()
@@ -1653,6 +1678,8 @@ TextEditor::LanguageDefinition TextEditor::LanguageDefinition::HLSL()
 			"float1x3","float2x3","float3x3","float4x3","float1x4","float2x4","float3x4","float4x4",
 			"half1x1","half2x1","half3x1","half4x1","half1x2","half2x2","half3x2","half4x2",
 			"half1x3","half2x3","half3x3","half4x3","half1x4","half2x4","half3x4","half4x4",
+			//new
+			"using", "public", "private"
 		};
 		for (auto& k : keywords)
 			langDef.mKeywords.insert(k);

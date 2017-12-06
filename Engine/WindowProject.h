@@ -17,6 +17,7 @@ enum TYPE_FILE
 	OBJ,
 	PNG,
 	JPG,
+	SCRIPT,
 	DDS
 };
 
@@ -77,6 +78,7 @@ private:
 	uint icon_jpg;
 	uint icon_fbx;
 	uint icon_obj;
+	uint icon_script;
 	uint icon_unknown;
 	Timer timeFolders;
 	Timer timeFiles;

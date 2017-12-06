@@ -10,6 +10,7 @@
 class CompTransform;
 class CompMesh;
 class CompMaterial;
+class CompScript;
 
 class GameObject
 {
@@ -47,13 +48,14 @@ public:
 	bool isStatic() const;
 
 	// Components -----------------------------
-	Component* AddComponent(Comp_Type type);
+	Component* AddComponent(Comp_Type type, bool isFromLoader = false);
 	void AddComponentCopy(const Component& copy);
 	int GetNumComponents() const;
 	Component* FindComponentByType(Comp_Type type) const;
 	CompTransform* GetComponentTransform() const;
 	CompMesh* GetComponentMesh() const;
 	CompMaterial* GetComponentMaterial() const;
+	CompScript * GetComponentScript() const;
 	Component* GetComponentbyIndex(uint i) const;
 	void DeleteAllComponents();
 	void DeleteComponent(Component* component);

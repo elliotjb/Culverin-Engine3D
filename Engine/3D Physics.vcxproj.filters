@@ -390,6 +390,12 @@
     <ClInclude Include="TextEditor.h">
       <Filter>Engine\Tools\ImGUI</Filter>
     </ClInclude>
+    <ClInclude Include="Script_editor.h">
+      <Filter>Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CompScript.h">
+      <Filter>Engine\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -625,6 +631,12 @@
     </ClCompile>
     <ClCompile Include="TextEditor.cpp">
       <Filter>Engine\Tools\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Script_editor.cpp">
+      <Filter>Engine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CompScript.cpp">
+      <Filter>Engine\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

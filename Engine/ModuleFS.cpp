@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "ModuleResourceManager.h"
 #include "JSONSerialization.h"
+#include "TextEditor.h"
 
 ModuleFS::ModuleFS(bool start_enabled) : Module(start_enabled)
 {
@@ -726,6 +727,57 @@ bool ModuleFS::SaveFile(const char* data, std::string name, uint size, DIRECTORY
 	outfile.close();
 	// ------------------------------------------------------------
 	return false;
+}
+
+// Only Scripting!!! ------------------------------------------
+bool ModuleFS::SaveScript(std::string name, TextEditor& editor, DIRECTORY_IMPORT directory)
+{
+	// First apply direcotry
+	switch (directory)
+	{
+	case DIRECTORY_IMPORT::IMPORT_DEFAULT:
+	{
+		break;
+	}
+	case DIRECTORY_IMPORT::IMPORT_DIRECTORY_ASSETS:
+	{
+		name = DIRECTORY_ASSETS + name;
+		break;
+	}
+	case DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY:
+	{
+		name = DIRECTORY_LIBRARY + name;
+		break;
+	}
+	case DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY_MESHES:
+	{
+		name = DIRECTORY_LIBRARY_MESHES + name;
+		break;
+	}
+	case DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY_MATERIALS:
+	{
+		name = DIRECTORY_LIBRARY_MATERIALS + name;
+		break;
+	}
+	}
+	// Open or Created ----------------------------------------
+	name = name + ".cpp";
+	std::ofstream outfile(name);
+
+	if (outfile.good())
+	{
+		// write to outfile
+		outfile.write(editor.GetText().c_str(), editor.GetText().size());
+		LOG("Save File %s", name.c_str());
+	}
+	else
+	{
+		LOG("Failed to write the file %s", name.c_str());
+	}
+
+	outfile.close();
+	// ------------------------------------------------------------
+	return true;
 }
 
 bool ModuleFS::CheckIsFileExist(const std::string& name) {

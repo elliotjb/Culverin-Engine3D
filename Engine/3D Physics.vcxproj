@@ -91,6 +91,7 @@
     <ClInclude Include="CompCamera.h" />
     <ClInclude Include="CompMaterial.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="CompScript.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="ImGui\ImGuizmo.h" />
     <ClInclude Include="ImGui\imgui_dock_v2.h" />
@@ -107,6 +108,7 @@
     <ClInclude Include="ResourceMaterial.h" />
     <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="Resource_.h" />
+    <ClInclude Include="Script_editor.h" />
     <ClInclude Include="SkyBox.h" />
     <ClInclude Include="TextEditor.h" />
     <ClInclude Include="WindowHierarchy.h" />
@@ -203,6 +205,7 @@
     <ClCompile Include="CompCamera.cpp" />
     <ClCompile Include="CompMaterial.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="CompScript.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="ImGui\ImGuizmo.cpp" />
     <ClCompile Include="ImGui\imgui_dock_v2.cpp" />
@@ -218,6 +221,7 @@
     <ClCompile Include="ResourceMaterial.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="Resource_.cpp" />
+    <ClCompile Include="Script_editor.cpp" />
     <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="TextEditor.cpp" />
     <ClCompile Include="WindowHierarchy.cpp" />

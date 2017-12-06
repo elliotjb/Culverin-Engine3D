@@ -13,6 +13,7 @@
 #include "CompTransform.h"
 #include "CompMaterial.h"
 #include "CompCamera.h"
+#include "CompScript.h"
 
 GameObject::GameObject(GameObject* parent) :parent(parent)
 {
@@ -445,6 +446,10 @@ void GameObject::ShowGameObjectOptions()
 	{
 		AddComponent(Comp_Type::C_MATERIAL);
 	}
+	if (ImGui::MenuItem("Script"))
+	{
+		AddComponent(Comp_Type::C_SCRIPT);
+	}
 }
 
 void GameObject::ShowInspectorInfo()
@@ -610,6 +615,11 @@ void GameObject::ShowInspectorInfo()
 			AddComponent(Comp_Type::C_CAMERA);
 			add_component = false;
 		}
+		if (ImGui::MenuItem("Script"))
+		{
+			AddComponent(Comp_Type::C_SCRIPT);
+			add_component = false;
+		}
 		ImGui::End();
 		ImGui::PopStyleColor();
 	}
@@ -714,7 +724,7 @@ Component* GameObject::FindComponentByType(Comp_Type type) const
 	return comp;
 }
 
-Component* GameObject::AddComponent(Comp_Type type)
+Component* GameObject::AddComponent(Comp_Type type, bool isFromLoader)
 {
 	bool dupe = false;
 	for (uint i = 0; i < components.size(); i++)
@@ -781,6 +791,18 @@ Component* GameObject::AddComponent(Comp_Type type)
 			components.push_back(camera);
 			return camera;
 		}
+
+		else if (type == Comp_Type::C_SCRIPT)
+		{
+			LOG("Adding SCRIPT COMPONENT.");
+			CompScript* script = new CompScript(type, this);
+			if (isFromLoader == false)
+			{
+				script->Init();
+			}
+			components.push_back(script);
+			return script;
+		}
 	}
 
 	return nullptr;
@@ -830,8 +852,14 @@ void GameObject::AddComponentCopy(const Component& copy)
 	}
 	case (Comp_Type::C_CAMERA):
 	{
-		CompCamera* transform = new CompCamera((CompCamera&)copy, this); //Camera copy constructor
-		components.push_back(transform);
+		CompCamera* camera = new CompCamera((CompCamera&)copy, this); //Camera copy constructor
+		components.push_back(camera);
+		break;
+	}
+	case (Comp_Type::C_SCRIPT):
+	{
+		CompScript* script = new CompScript((CompScript&)copy, this); //Script copy constructor
+		components.push_back(script);
 		break;
 	}
 	default:
@@ -857,19 +885,22 @@ void GameObject::LoadComponents(const JSON_Object* object, std::string name, uin
 		Comp_Type type = (Comp_Type)(int)json_object_dotget_number_with_std(object, temp + "Type");
 		switch (type)
 		{
-		case C_UNKNOWN:
+		case Comp_Type::C_UNKNOWN:
 			break;
-		case C_TRANSFORM:
-			this->AddComponent(C_TRANSFORM);
+		case Comp_Type::C_TRANSFORM:
+			this->AddComponent(Comp_Type::C_TRANSFORM);
 			break;
-		case C_MESH:
-			this->AddComponent(C_MESH);
+		case Comp_Type::C_MESH:
+			this->AddComponent(Comp_Type::C_MESH);
 			break;
-		case C_MATERIAL:
-			this->AddComponent(C_MATERIAL);
+		case Comp_Type::C_MATERIAL:
+			this->AddComponent(Comp_Type::C_MATERIAL);
 			break;
-		case C_CAMERA:
-			this->AddComponent(C_CAMERA);
+		case Comp_Type::C_CAMERA:
+			this->AddComponent(Comp_Type::C_CAMERA);
+			break;
+		case Comp_Type::C_SCRIPT:
+			this->AddComponent(Comp_Type::C_SCRIPT, true);
 			break;
 		default:
 			break;
@@ -902,6 +933,11 @@ CompMesh* GameObject::GetComponentMesh() const
 CompMaterial* GameObject::GetComponentMaterial() const
 {
 	return (CompMaterial*)FindComponentByType(Comp_Type::C_MATERIAL);
+}
+
+CompScript* GameObject::GetComponentScript() const
+{
+	return (CompScript*)FindComponentByType(Comp_Type::C_SCRIPT);
 }
 
 Component* GameObject::GetComponentbyIndex(uint i) const

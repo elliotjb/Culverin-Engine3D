@@ -14,6 +14,8 @@
 #define DIRECTORY_LIBRARY_MESHES "Library\\Meshes\\"
 #define DIRECTORY_LIBRARY_MATERIALS "Library\\Materials\\"
 
+class TextEditor;
+
 enum DIRECTORY_IMPORT
 {
 	IMPORT_DEFAULT,
@@ -47,6 +49,8 @@ public:
 
 	//Name of the file (NOT DIRECTORY)
 	bool SaveFile(const char* data, std::string name, uint size, DIRECTORY_IMPORT directory = IMPORT_DEFAULT);
+	// Only Scripting!!!
+	bool SaveScript(std::string name, TextEditor& editor, DIRECTORY_IMPORT directory = IMPORT_DEFAULT);
 
 	// Get Files to Window Project ---------------------------------------------------
 	void GetAllFolders(std::experimental::filesystem::path path, std::string folderActive, std::vector<FoldersNew>& folders);

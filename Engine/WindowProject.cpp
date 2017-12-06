@@ -27,6 +27,7 @@ bool Project::Start()
 	icon_jpg = App->textures->LoadTexture("Images/UI/icon_jpg.png");
 	icon_fbx = App->textures->LoadTexture("Images/UI/icon_fbx.png");
 	icon_obj = App->textures->LoadTexture("Images/UI/icon_obj.png");
+	icon_script = App->textures->LoadTexture("Images/UI/icon_script.png");
 	icon_unknown = App->textures->LoadTexture("Images/UI/icon_unknown.png");
 
 	//directory_see = App->fs->GetMainDirectory();
@@ -80,36 +81,40 @@ TYPE_FILE Project::SetType(std::string name)
 		// Isn't a Folder
 		if (temp == "png")
 		{
-			return PNG;
+			return TYPE_FILE::PNG;
 		}
 		else if (temp == "jpg")
 		{
-			return JPG;
+			return TYPE_FILE::JPG;
 		}
 		else if (temp == "dds")
 		{
-			return DDS;
+			return TYPE_FILE::DDS;
 		}
 		else if (temp == "fbx")
 		{
-			return FBX;
+			return TYPE_FILE::FBX;
 		}
 		else if (temp == "FBX")
 		{
-			return FBX;
+			return TYPE_FILE::FBX;
 		}
 		else if (temp == "obj")
 		{
-			return OBJ;
+			return TYPE_FILE::OBJ;
+		}
+		else if (temp == "cs" || temp == "cpp" || temp == "c")
+		{
+			return TYPE_FILE::SCRIPT;
 		}
 		else
 		{
-			return NON;
+			return TYPE_FILE::NON;
 		}
 	}
 	else
 	{
-		return FOLDER;
+		return TYPE_FILE::FOLDER;
 	}
 }
 
@@ -322,13 +327,13 @@ void Project::Files_Update(const std::vector<FilesNew>& files)
 
 		switch (files[i].file_type)
 		{
-		case NON:
+		case TYPE_FILE::NON:
 		{
 			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_unknown, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
 
 			break;
 		}
-		case FOLDER:
+		case TYPE_FILE::FOLDER:
 		{
 			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)folder_icon, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
 			if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
@@ -344,7 +349,7 @@ void Project::Files_Update(const std::vector<FilesNew>& files)
 			}
 			break;
 		}
-		case FBX:
+		case TYPE_FILE::FBX:
 		{
 			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_fbx, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
 			if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
@@ -361,7 +366,7 @@ void Project::Files_Update(const std::vector<FilesNew>& files)
 			}
 			break;
 		}
-		case OBJ:
+		case TYPE_FILE::OBJ:
 		{
 			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_obj, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
 			if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
@@ -378,12 +383,17 @@ void Project::Files_Update(const std::vector<FilesNew>& files)
 			}
 			break;
 		}
-		case PNG:
+		case TYPE_FILE::SCRIPT:
+		{
+			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_script, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
+			break;
+		}
+		case TYPE_FILE::PNG:
 		{
 			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_png, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
 			break;
 		}
-		case JPG:
+		case TYPE_FILE::JPG:
 		{
 			ImGui::ImageButtonWithTextDOWN_NoReajust((ImTextureID*)icon_jpg, nameTemp, ImVec2(sizeFiles, sizeFiles), ImVec2(-1, 1), ImVec2(0, 0));
 			break;

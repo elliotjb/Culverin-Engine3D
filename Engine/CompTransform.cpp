@@ -17,7 +17,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-CompTransform::CompTransform(Comp_Type t, GameObject* parent) :Component(t, parent)
+CompTransform::CompTransform(Comp_Type t, GameObject* parent) : Component(t, parent)
 {
 	nameComponent = "Transformation";
 }

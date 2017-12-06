@@ -245,14 +245,14 @@ update_status Application::Update()
 	PrepareUpdate();
 
 	// SAVE / LOAD  keys ---------------------------------------
-	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	{
-		want_to_save = true;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-	{
-		want_to_load = true;
-	}
+	//if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	//{
+	//	want_to_save = true;
+	//}
+	//if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+	//{
+	//	want_to_load = true;
+	//}
 	// ---------------------------------------------------------
 	
 	std::list<Module*>::iterator item = list_modules.begin();

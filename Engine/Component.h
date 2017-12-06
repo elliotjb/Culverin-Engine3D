@@ -14,7 +14,8 @@ enum Comp_Type
 	C_TRANSFORM,
 	C_MESH,
 	C_MATERIAL,
-	C_CAMERA
+	C_CAMERA,
+	C_SCRIPT
 };
 
 class Component

@@ -47,6 +47,7 @@ bool ModuleGUI::Start()
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
+	io.Fonts->AddFontDefault();
 	io.Fonts->AddFontFromFileTTF("Fonts\\Ruda-Bold.ttf", 15);
 
 	App->scene->sceneBuff = new FrameBuffer();
@@ -103,24 +104,25 @@ update_status ModuleGUI::Update(float dt)
 	{
 		if (ImGui::BeginMenu("File"))
 		{
-			//if (ImGui::MenuItem("New Scene", "Ctrl + N"))
-			//{
-
-			//}
-			//if (ImGui::MenuItem("Open Scene", "Ctrl + O"))
-			//{
-
-			//}
-			//ImGui::Separator();
-			//if (ImGui::MenuItem("Save Scene", "Ctrl + S"))
-			//{
-
-			//}
-			//if (ImGui::MenuItem("Save Scene as..."))
-			//{
-
-			//}
-			//ImGui::Separator();
+			if (ImGui::MenuItem("New Scene", "Ctrl + N", false, false))
+			{
+			}
+			if (ImGui::MenuItem("Open Scene", "Ctrl + O", false, false))
+			{
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Save Scene", "Ctrl + S"))
+			{
+				App->WantToSave();
+			}
+			if (ImGui::MenuItem("Save Scene as...", false, false))
+			{
+			}
+			if (ImGui::MenuItem("Load Scene"))
+			{
+				App->WantToLoad();
+			}
+			ImGui::Separator();
 			if (ImGui::MenuItem("Exit", NULL, &window_exit))
 			{
 				if (isSaved)
