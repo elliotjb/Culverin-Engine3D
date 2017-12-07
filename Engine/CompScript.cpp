@@ -26,6 +26,17 @@ void CompScript::Init()
 	editor->SaveScript();
 }
 
+void CompScript::preUpdate(float dt)
+{
+	//Check if have public in script
+	//std::string allscript = editor->editor.GetText();
+	//size_t firstPublic = allscript.find_first_of("public");
+}
+
+void CompScript::Update(float dt)
+{
+}
+
 void CompScript::ShowOptions()
 {
 	if (ImGui::MenuItem("Reset", NULL, false, false))

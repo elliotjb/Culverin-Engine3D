@@ -12,6 +12,8 @@ public:
 	~CompScript();
 
 	void Init();
+	void preUpdate(float dt);
+	void Update(float dt);
 
 	// EDITOR METHODS ----------
 	void ShowOptions();
