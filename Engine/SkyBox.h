@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _SKYBOX_
+#define _SKYBOX_
+
 #include "Math\float3.h"
 #include "Globals.h"
 
@@ -28,3 +30,5 @@ private:
 	uint texture[2][6];
 };
 
+
+#endif

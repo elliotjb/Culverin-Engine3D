@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _IMPORT_
+#define _IMPORT_
+
 #include "Module.h"
 #include "GameObject.h"
 #include "ModuleResourceManager.h"
@@ -51,3 +53,4 @@ public:
 	ImportMaterial* iMaterial = nullptr;
 };
 
+#endif

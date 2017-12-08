@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _TEXTEDITOR_
+#define _TEXTEDITOR_
 
 #include <string>
 #include <vector>
@@ -310,3 +311,4 @@ private:
 	Coordinates mInteractiveStart, mInteractiveEnd;
 };
 
+#endif

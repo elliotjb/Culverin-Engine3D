@@ -1,5 +1,6 @@
 
-#pragma once
+#ifndef _COLOR_
+#define _COLOR_
 
 struct Color
 {
@@ -26,6 +27,8 @@ struct Color
 
 	bool operator == (Color test);
 };
+
+#endif
 
 extern Color Red;
 extern Color Green;

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _JSONSERIALIZATION_
+#define _JSONSERIALIZATION_
+
 #include "parson.h"
 #include "Globals.h"
 #include <vector>
@@ -47,4 +49,6 @@ private:
 private:
 	std::vector<const char*> namesScene;
 };
+
+#endif
 

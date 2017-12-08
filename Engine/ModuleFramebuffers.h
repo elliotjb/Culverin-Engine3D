@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _MODULEFRAMEBUFFER_
+#define _MODULEFRAMEBUFFER_
+
 #include "Module.h"
 #include "Globals.h"
 #include "ImGui/imgui.h"
@@ -29,3 +31,5 @@ public:
 	int		height;
 	float2	size;
 };
+
+#endif

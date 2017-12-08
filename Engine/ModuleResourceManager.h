@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _RESOURCEMANAGER_
+#define _RESOURCEMANAGER_
+
 #include "Module.h"
 #include "Resource_.h"
 #include <map>
@@ -55,3 +57,5 @@ private:
 	bool deleteNow = false;
 	bool loadResources = true;
 };
+
+#endif

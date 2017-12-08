@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _COMPONENT_MESH_
+#define _COMPONENT_MESH_
+
 #include "Component.h"
 #include "Math/float3.h"
 #include "Math/float2.h"
@@ -63,3 +65,6 @@ private:
 	uint uuidResourceReimported = 0;
 
 };
+
+
+#endif

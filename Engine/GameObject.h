@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _GAMEOBJECT_
+#define _GAMEOBJECT_
+
 #include "Globals.h"
 #include "Component.h"
 #include "MathGeoLib.h"
@@ -114,3 +116,6 @@ private:
 	
 
 };
+
+
+#endif

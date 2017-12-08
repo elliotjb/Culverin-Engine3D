@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _MODULE_
+#define _MODULE_
 #include "Globals.h"
 #include "parson.h"
 #include "PerfTimer.h"
@@ -143,3 +144,5 @@ public:
 
 	ImVec4 color;
 };
+
+#endif

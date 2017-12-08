@@ -1,4 +1,3 @@
-#pragma once
 #ifndef __MODULEHARDWARE_H__
 #define __MODULEHARDWARE_H__
 

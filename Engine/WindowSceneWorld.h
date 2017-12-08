@@ -1,4 +1,3 @@
-#pragma once
 #ifndef __MODULESCENEWORLD_H__
 #define __MODULESCENEWORLD_H__
 

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _IMPORT_MATERIAL_
+#define _IMPORT_MATERIAL_
+
 #include "Module.h"
 #include "Application.h"
 #include "ModuleImporter.h"
@@ -20,3 +22,4 @@ public:
 
 };
 
+#endif

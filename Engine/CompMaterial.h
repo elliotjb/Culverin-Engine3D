@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _COMPONENT_MATERIAL_
+#define _COMPONENT_MATERIAL_
+
 #include "Component.h"
 #include "Color.h"
 #include <string>
@@ -40,3 +42,5 @@ private:
 	uint uuid_material = 0;
 	uint uuidResourceReimported = 0;
 };
+
+#endif

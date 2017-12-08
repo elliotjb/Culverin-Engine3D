@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _APPLICATION_
+#define _APPLICATION_
+
 #include "Globals.h"
 #include "Timer.h"
 #include "Module.h"
@@ -158,5 +160,7 @@ private:
 
 	DockContext* configuration = nullptr;
 };
+
+#endif
 
 extern Application* App;

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _COMPONENT_CAMERA_
+#define _COMPONENT_CAMERA_
+
 #include "Component.h"
 #include "Geometry/Frustum.h"
 #include <queue>
@@ -77,3 +79,5 @@ private:
 
 	std::queue<GameObject*> candidates_to_cull;
 };
+
+#endif

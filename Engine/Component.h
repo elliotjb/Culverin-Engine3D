@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _COMPONENT_
+#define _COMPONENT_
+
 #include "Globals.h"
 #include "ImGui\imgui.h"
 #include <string>
@@ -63,3 +65,5 @@ protected:
 	const char* nameComponent = nullptr;
 	bool toDelete = false;
 };
+
+#endif

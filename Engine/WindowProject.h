@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _WINDOWPROJECT_
+#define _WINDOWPROJECT_
+
 #include "Module.h"
 #include "Globals.h"
 #include "ImGui\imgui.h"
@@ -83,3 +85,5 @@ private:
 	Timer timeFolders;
 	Timer timeFiles;
 };
+
+#endif

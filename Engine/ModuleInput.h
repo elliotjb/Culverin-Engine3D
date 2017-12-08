@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _MODULEINPUT_
+#define _MODULEINPUT_
+
 #include "Module.h"
 #include "Globals.h"
 #include "parson.h"
@@ -108,3 +110,5 @@ public:
 	std::list<const char*> dropedfiles;
 
 };
+
+#endif

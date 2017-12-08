@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _MODULERENDERER3D_
+#define _MODULERENDERER3D_
+
 #include "Module.h"
 #include "Globals.h"
 #include "Light.h"
@@ -58,3 +60,5 @@ public:
 	GLfloat fog_density = 0;
 	// --------------------------
 };
+
+#endif

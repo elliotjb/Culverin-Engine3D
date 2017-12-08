@@ -1,4 +1,3 @@
-#pragma once
 #ifndef __MODULEHIERARCHY_H__
 #define __MODULEHIERARCHY_H__
 

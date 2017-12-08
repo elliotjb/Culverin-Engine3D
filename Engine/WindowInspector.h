@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _WINDOWINSPECTOR_
+#define _WINDOWINSPECTOR_
+
 #include "Module.h"
 #include "Globals.h"
 #include "ImGui\imgui.h"
@@ -38,3 +40,5 @@ private:
 
 	ImVec4 color_picker = { 255, 255, 255, 255 };
 };
+
+#endif

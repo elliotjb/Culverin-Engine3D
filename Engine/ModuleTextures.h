@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _MODULETEXTURE_
+#define _MODULETEXTURE_
+
 #include "Module.h"
 #include "Globals.h"
 #include "GL3W/include/glew.h"
@@ -22,3 +24,5 @@ public:
 	GLuint LoadTexture(const char* filename);
 	GLuint LoadSkyboxTexture(const char* filename);
 };
+
+#endif

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _RESOURCEMATERIAL_
+#define _RESOURCEMATERIAL_
+
 #include "Resource_.h"
 #include <string>
 
@@ -30,3 +32,4 @@ private:
 	Texture texture;
 };
 
+#endif

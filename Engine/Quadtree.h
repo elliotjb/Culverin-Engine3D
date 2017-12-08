@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _QUADTREE_
+#define _QUADTREE_
+
 #include "Geometry/AABB.h"
 #include <queue>
 #include <list>
@@ -118,3 +120,5 @@ inline int Quadtree::CollectCandidates(std::queue<GameObject*>& objects, const T
 	return tests;
 }
 
+
+#endif

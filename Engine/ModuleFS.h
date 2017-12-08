@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _MODULEFS_
+#define _MODULEFS_
+
 #include "Globals.h"
 #include "Module.h"
 #include "WindowProject.h"
@@ -120,3 +122,4 @@ private:
 	std::string directory_Assets;
 };
 
+#endif

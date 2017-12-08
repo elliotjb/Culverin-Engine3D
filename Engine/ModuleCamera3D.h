@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _MODULECAMERA_
+#define _MODULECAMERA_
+
 #include "Module.h"
 #include "Globals.h"
 #include "Geometry/LineSegment.h"
@@ -89,3 +91,5 @@ private:
 
 	bool canOut = false;
 };
+
+#endif

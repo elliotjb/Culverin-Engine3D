@@ -1,6 +1,7 @@
-#pragma once
-#include "Globals.h"
+#ifndef _RESOURCE_
+#define _RESOURCE_
 
+#include "Globals.h"
 
 class Resource
 {
@@ -43,3 +44,4 @@ public:
 	uint NumGameObjectsUseMe = 0;
 };
 
+#endif

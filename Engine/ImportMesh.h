@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _IMPORT_MESH_
+#define _IMPORT_MESH_
+
 #include "Module.h"
 #include "Application.h"
 #include "ModuleImporter.h"
@@ -23,3 +25,4 @@ private:
 
 };
 
+#endif

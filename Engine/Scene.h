@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _SCENE_
+#define _SCENE_
+
 #include "Module.h"
 #include "Globals.h"
 #include "ModuleFramebuffers.h"
@@ -69,3 +71,5 @@ private:
 	int size_plane = 0;
 	float size_quadtree = 0.0f;
 };
+
+#endif

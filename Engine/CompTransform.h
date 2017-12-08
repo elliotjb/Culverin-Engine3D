@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _COMPONENT_TRANSFORM_
+#define _COMPONENT_TRANSFORM_
+
 #include "Component.h"
 #include "MathGeoLib.h"
 #include "Assimp/include/matrix4x4.h"
@@ -88,3 +90,5 @@ private:
 	float4x4 global_transposed = float4x4::identity;
 	ImGuizmo::MODE transform_mode = ImGuizmo::LOCAL;
 };
+
+#endif

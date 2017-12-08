@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _LOGC_
+#define _LOGC_
+
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleConsole.h"
@@ -22,3 +24,5 @@ void log(const char file[], int line, const char* format, ...)
 	
 	OutputDebugString(tmp_string2);
 }
+
+#endif
