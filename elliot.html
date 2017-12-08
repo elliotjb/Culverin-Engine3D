@@ -1,0 +1,308 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+
+    <style>
+        p.lead {
+            color: white;
+            font-size: medium;
+        }
+
+        p.important {
+            color: lightsteelblue;
+            font-size: x-large;
+        }
+    </style>
+
+
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="Culverin Engine 3D" content="Culverin Engine 3D">
+
+    <meta name="Culverin" content="">
+
+
+
+    <title>Culverin Engine 3D</title>
+
+
+
+    <!-- Bootstrap Core CSS -->
+
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+
+
+    <!-- Custom CSS -->
+
+    <link href="css/sb-admin.css" rel="stylesheet">
+
+
+
+    <!-- Custom Fonts -->
+
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
+
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <![endif]-->
+
+</head>
+
+
+
+<body>
+
+
+
+    <div id="wrapper">
+
+
+
+        <!-- Navigation -->
+
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+            <!-- Brand and toggle get grouped for better mobile display -->
+
+            <div class="navbar-header">
+
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+
+                    <span class="sr-only">Toggle navigation</span>
+
+                    <span class="icon-bar"></span>
+
+                    <span class="icon-bar"></span>
+
+                    <span class="icon-bar"></span>
+
+                </button>
+
+                <a class="navbar-brand" href="index.html">Culverin Engine 3D</a>
+
+            </div>
+
+            <!-- Top Menu Items -->
+
+            <ul class="nav navbar-right top-nav">
+
+                <li class="dropdown">
+
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Culverin <b class="caret"></b></a>
+
+                    <ul class="dropdown-menu">
+
+                        <li>
+
+                            <a target="_blank" href="https://github.com/elliotjb/3D-Engine"><i class="fa fa-fw fa-github"></i> GitHub </a>
+
+                        </li>
+
+                    </ul>
+
+                </li>
+
+            </ul>
+
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+
+                <ul class="nav navbar-nav side-nav">
+
+                    <li>
+
+                        <a href="index.html"><i class="fa fa-fw fa-home"></i> Home</a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="team.html"><i class="fa fa-users" aria-hidden="true"></i> Team</a>
+                        <ul>                        
+							<li> <a href="jordi.html"><i class="fa fa-user" aria-hidden="true"></i> Jordi Oña </a> </li>
+                            <li class="active"> <a href="elliot.html"><i class="fa fa-user" aria-hidden="true"></i> Elliot Jiménez </a> </li>
+						</ul>
+                    </li>
+					
+                    <li>
+
+                        <a href="wiki.html"><i class="fa fa-book fa-fw" aria-hidden="true"></i> Wiki</a>
+
+                    </li>
+			
+			
+                    <li>
+
+                        <a href="download.html"><i class="fa fa-fw fa-download" aria-hidden="true"></i> Download Engine</a>
+
+                    </li>
+                    
+                    <li>
+
+                        <a href="contact.html"><i class="fa fa-fw fa-desktop" aria-hidden="true"></i> Contact</a>
+
+                    </li>
+                </ul>
+
+            </div>
+
+            <!-- /.navbar-collapse -->
+
+        </nav>
+
+
+
+        <div>
+
+
+
+            <div class="container-fluid">
+
+
+
+                <!-- Page Heading -->
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <h1 class="page-header">
+
+                            <p align="center">Contribution</p>
+
+                        </h1>
+
+                    </div>
+
+                </div>
+
+                <!-- /.row -->
+
+
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <p class="important"> Elliot Jimenez, Lead Programmer </p>
+                        <p class="lead">First of all I focused on making the game engine, and launching all the basic functions such as:</p>
+						<ul style="list-style-type:disc">
+							<li class="lead"> Load and Unload of new maps from the tile and xmls.</li>
+							<li class="lead"> Base of the player.</li>
+							<li class="lead"> Dynamic objects (Bush, chest, door, etc.)</li>
+							<li class="lead"> Animations.</li>
+							<li class="lead"> Objects.</li>
+							<li class="lead"> First Enemy.</li>
+							<li class="lead"> Pokemon Combat.</li>
+						</ul>
+						<p class="lead">All of these component were done for the Vertical Slice. Then I started improving those parts and implementing new elements of the game.</p>
+						<p class="lead">Now let’s highlight some parts of the code, first the loading elements of a level:</p>
+						<ul style="list-style-type:disc">
+							<li class="lead"> To begin, remove all the elements and the map that you were playing.</li>
+							<li class="lead"> Searches and loads the new map from a .tmx (Tiled Map).</li>
+							<li class="lead"> Then all the ingame elements and their position are loaded aswell from the .tmx.</li>
+						</ul>
+						<p class="lead">I also implemented a particle system that I used in different places of the game, you can see it here: <a href="https://elliotjb.github.io/Particle-System-by-ElliotJB/"> <font color="deepskyblue">Link Particle System by ElliotJB</font></a> </p>
+                        <p class="lead">After the first delivery, I focused on having all the game mechanics and functions of the game ready for the Alpha. First I started to finish the Zelda world, then I finished the Pokemon one.</p>
+						<p class="lead">The next thing that i did was the BCTrooper (miniboss from Zelda world).</p>
+						<img class="img-responsive left-block" src="img/bctrooper.png" width="430" height="316">
+						<p class="lead"> </p>
+						<p class="lead">When I finished, I started to fix all the pokemon combat issues and improving the AI of the pokemons, I also did all the abilities of the pokemons. Except from Sceptyle.</p>
+						<p class="lead">Then i worked in the last delivery of the game mostly bugfixing the game.</p>
+                    </div>
+
+
+
+                </div>
+
+                <!-- /.row -->
+
+
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <p class="page-header" align="left">
+
+                            Find us on:
+                            
+                        </p>
+
+                        <!--<a target="_blank" href="https://twitter.com/nontendo_sl"><img class="img-responsive center-block" src="img/twitter.png" align="left" width="80" height="50"></a>-->
+
+                        <!--<a target="_blank" href=""><img class="img-responsive center-block" src="img/youtube.png" align="left" width="140" height="95"></a>-->
+                       
+                        <a target="_blank" href="https://github.com/elliotjb/3D-Engine"><img class="img-responsive center-block" src="img/github.png" align="left" width="200" height="155"></a>
+
+						<!--<a target="_blank" href="https://www.facebook.com/nontendo/"><img class="img-responsive center-block" src="img/fb-art.png" align="left" width="80" height="50"></a>-->
+  
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+            <!-- /.container-fluid -->
+
+
+
+        </div>
+
+        <!-- /#page-wrapper -->
+
+
+
+    </div>
+
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+
+    <script src="js/jquery.js"></script>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+
+    <script src="js/bootstrap.min.js"></script>
+
+
+
+    <!-- Morris Charts JavaScript -->
+
+    <script src="js/plugins/morris/raphael.min.js"></script>
+
+    <script src="js/plugins/morris/morris.min.js"></script>
+
+    <script src="js/plugins/morris/morris-data.js"></script>
+
+
+
+</body>
+
+
+
+</html>
