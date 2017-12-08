@@ -28,6 +28,7 @@ void Script_editor::Start(std::string nameScript, bool isnew)
 	}
 	else
 	{
+		//need function
 		nameScript = "Assets\\" + nameScript + ".cpp";
 		std::ifstream t(nameScript.c_str());
 		std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
@@ -154,8 +155,11 @@ void Script_editor::Show(bool& active)
 	{
 		SetAction(ActionEditor::REUNDO);
 	}
-
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui::PushFont(io.Fonts->Fonts[1]);
 	editor.Render("Render...");
+	ImGui::PopFont();
+
 	ImGui::End();
 }
 
