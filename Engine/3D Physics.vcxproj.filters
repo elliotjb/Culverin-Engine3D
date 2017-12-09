@@ -396,6 +396,12 @@
     <ClInclude Include="CompScript.h">
       <Filter>Engine\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceScript.h">
+      <Filter>Engine\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ImportScript.h">
+      <Filter>Engine\Importer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -637,6 +643,12 @@
     </ClCompile>
     <ClCompile Include="CompScript.cpp">
       <Filter>Engine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceScript.cpp">
+      <Filter>Engine\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ImportScript.cpp">
+      <Filter>Engine\Importer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

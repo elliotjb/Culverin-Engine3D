@@ -26,6 +26,7 @@
 
 #include <direct.h>
 
+//#include "..\..\3D-Engine\ScriptingSystem\ScriptingSystem\ScriptManager.h"
 
 #define SPHERE_DEFINITION 1536
 
@@ -67,6 +68,10 @@ bool Scene::Start()
 
 	/* Create Default Main Camera Game Object */
 	CreateMainCamera(nullptr);
+
+	////TEST 
+	//ScriptManager Jordi;
+	//Jordi.Compile("C:/Users/Administrador/Documents/GitHub/3D-Engine/Engine/Game/Assets/Example_test.cs");
 	
 	icon_options_transform = App->textures->LoadTexture("Images/UI/icon_options_transform.png");
 

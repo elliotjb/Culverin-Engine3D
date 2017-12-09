@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ResourceMaterial.h"
 #include "ResourceMesh.h"
+#include "ResourceScript.h"
 #include "ImportMesh.h"
 #include "ModuleFS.h"
 #include "ModuleInput.h"
@@ -133,6 +134,11 @@ update_status ModuleResourceManager::PostUpdate(float dt)
 				{
 					App->fs->DeleteFileLibrary(std::to_string(it->second->GetUUID()).c_str(), DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY_MESHES);
 				}
+				else if (it->second->GetType() == Resource::Type::SCRIPT)
+				{
+					//need delete
+					//App->fs->DeleteFileLibrary(std::to_string(it->second->GetUUID()).c_str(), DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY_MESHES);
+				}
 				delete it->second;
 				resources.erase(it);
 			}
@@ -174,6 +180,11 @@ update_status ModuleResourceManager::PostUpdate(float dt)
 				else if (it->second->GetType() == Resource::Type::MESH)
 				{
 					App->fs->DeleteFileLibrary(std::to_string(it->second->GetUUID()).c_str(), DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY_MESHES);
+				}
+				else if (it->second->GetType() == Resource::Type::SCRIPT)
+				{
+					//Need delete
+					//App->fs->DeleteFileLibrary(std::to_string(it->second->GetUUID()).c_str(), DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY_MESHES);
 				}
 				delete it->second;
 				resources.erase(it);
@@ -283,6 +294,7 @@ Resource* ModuleResourceManager::CreateNewResource(Resource::Type type, uint uui
 	{
 	case Resource::MATERIAL: ret = (Resource*) new ResourceMaterial(uid); break;
 	case Resource::MESH: ret = (Resource*) new ResourceMesh(uid); break;
+	case Resource::SCRIPT: ret = (Resource*) new ResourceScript(uid); break;
 	}
 	if (ret != nullptr)
 		resources[uid] = ret;
@@ -335,6 +347,10 @@ Resource::Type ModuleResourceManager::CheckFileType(const char* filedir)
 		else if (file_type == "fbx" || file_type == "obj" || file_type == "FBX")
 		{
 			return Resource::Type::MESH;
+		}
+		else if (file_type == "cs")
+		{
+			return Resource::Type::SCRIPT;
 		}
 		else
 		{
@@ -415,6 +431,11 @@ Resource*  ModuleResourceManager::ShowResources(bool& active, Resource::Type typ
 	{
 		nameWindow = "Select Material";
 		subname = "All Materials:";
+	}
+	else if (type == Resource::Type::SCRIPT)
+	{
+		nameWindow = "Select Script";
+		subname = "All Scripts:";
 	}
 	if (!ImGui::Begin(nameWindow, &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders)) //TODO ELLIOT CLOSE Windows example
 	{
@@ -523,6 +544,13 @@ void ModuleResourceManager::Load()
 						uint uid = json_object_dotget_number_with_std(config_node, name + "UUID & UUID Directory");
 						ResourceMaterial* material = (ResourceMaterial*)CreateNewResource(type, uid);
 						material->name = App->GetCharfromConstChar(json_object_dotget_string_with_std(config_node, name + "Name"));
+						break;
+					}
+					case Resource::Type::SCRIPT:
+					{
+						uint uid = json_object_dotget_number_with_std(config_node, name + "UUID & UUID Directory");
+						ResourceScript* script = (ResourceScript*)CreateNewResource(type, uid);
+						script->name = App->GetCharfromConstChar(json_object_dotget_string_with_std(config_node, name + "Name"));
 						break;
 					}
 					case Resource::Type::UNKNOWN:

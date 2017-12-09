@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ImportMesh.h"
 #include "ImportMaterial.h"
+#include "ImportScript.h"
 #include "CompMaterial.h"
 #include "CompTransform.h"
 #include "ModuleFS.h"
@@ -25,6 +26,7 @@ ModuleImporter::~ModuleImporter()
 {
 	RELEASE(iMesh);
 	RELEASE(iMaterial);
+	RELEASE(iScript);
 }
 
 bool ModuleImporter::Init(JSON_Object* node)
@@ -40,6 +42,7 @@ bool ModuleImporter::Init(JSON_Object* node)
 	}
 	iMesh = new ImportMesh();
 	iMaterial = new ImportMaterial();
+	iScript = new ImportScript();
 
 	Awake_t = perf_timer.ReadMs();
 	return true;
@@ -238,6 +241,13 @@ bool ModuleImporter::Import(const char* file, Resource::Type type)
 
 		break;
 	}
+	case Resource::Type::SCRIPT:
+	{
+		LOG("IMPORTING SCRIPT, File Path: %s", file);
+		iScript->Import(file);
+
+		break;
+	}
 	case Resource::Type::UNKNOWN:
 	{
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "UNKNOWN file type dropped on window",
@@ -304,6 +314,26 @@ bool ModuleImporter::Import(const char* file, Resource::Type type, std::vector<R
 		if (isReImport == false)
 		{
 			iMaterial->Import(file);
+		}
+		break;
+	}
+	case Resource::Type::SCRIPT:
+	{
+		LOG("IMPORTING SCRIPT, File Path: %s", file);
+		//
+		bool isReImport = false;
+		for (int i = 0; i < resourcesToReimport.size(); i++)
+		{
+			if (strcmp(file, resourcesToReimport[i].directoryObj) == 0)
+			{
+				iScript->Import(file, resourcesToReimport[i].uuid);
+				isReImport = true;
+				break;
+			}
+		}
+		if (isReImport == false)
+		{
+			iScript->Import(file);
 		}
 		break;
 	}

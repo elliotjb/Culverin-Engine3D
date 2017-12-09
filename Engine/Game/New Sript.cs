@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class New Sript : MonoBehaviour 
+public class NewSript : MonoBehaviour 
 {
 
 	// Use this for initialization

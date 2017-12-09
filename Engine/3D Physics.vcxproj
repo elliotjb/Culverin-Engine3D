@@ -98,6 +98,7 @@
     <ClInclude Include="ImportMesh.h" />
     <ClInclude Include="ImportMaterial.h" />
     <ClInclude Include="CompMesh.h" />
+    <ClInclude Include="ImportScript.h" />
     <ClInclude Include="mmgr\mmgr.h" />
     <ClInclude Include="mmgr\nommgr.h" />
     <ClInclude Include="ModuleFS.h" />
@@ -107,6 +108,7 @@
     <ClInclude Include="JSONSerialization.h" />
     <ClInclude Include="ResourceMaterial.h" />
     <ClInclude Include="ResourceMesh.h" />
+    <ClInclude Include="ResourceScript.h" />
     <ClInclude Include="Resource_.h" />
     <ClInclude Include="Script_editor.h" />
     <ClInclude Include="SkyBox.h" />
@@ -212,6 +214,7 @@
     <ClCompile Include="ImportMesh.cpp" />
     <ClCompile Include="ImportMaterial.cpp" />
     <ClCompile Include="CompMesh.cpp" />
+    <ClCompile Include="ImportScript.cpp" />
     <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="ModuleFS.cpp" />
     <ClCompile Include="ModuleFramebuffers.cpp" />
@@ -220,6 +223,7 @@
     <ClCompile Include="JSONSerialization.cpp" />
     <ClCompile Include="ResourceMaterial.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
+    <ClCompile Include="ResourceScript.cpp" />
     <ClCompile Include="Resource_.cpp" />
     <ClCompile Include="Script_editor.cpp" />
     <ClCompile Include="SkyBox.cpp" />

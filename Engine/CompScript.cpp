@@ -1,5 +1,9 @@
 #include "CompScript.h"
 #include "Application.h"
+#include "ResourceScript.h"
+#include "ModuleResourceManager.h"
+#include "ModuleImporter.h"
+#include "ImportScript.h"
 #include "Scene.h"
 
 CompScript::CompScript(Comp_Type t, GameObject* parent) : Component(t, parent)
@@ -31,6 +35,37 @@ void CompScript::preUpdate(float dt)
 	//Check if have public in script
 	//std::string allscript = editor->editor.GetText();
 	//size_t firstPublic = allscript.find_first_of("public");
+	// Before delete Resource, Set this pointer to nullptr
+	if (resourcescript != nullptr)
+	{
+		if (resourcescript->GetState() == Resource::State::WANTDELETE)
+		{
+			resourcescript = nullptr;
+		}
+		else if (resourcescript->GetState() == Resource::State::REIMPORTED)
+		{
+			uuidResourceReimported = resourcescript->GetUUID();
+			resourcescript = nullptr;
+		}
+	}
+	else
+	{
+		if (uuidResourceReimported != 0)
+		{
+			resourcescript = (ResourceScript*)App->resource_manager->GetResource(uuidResourceReimported);
+			if (resourcescript != nullptr)
+			{
+				resourcescript->NumGameObjectsUseMe++;
+
+				// Check if loaded
+				if (resourcescript->IsLoadedToMemory() == Resource::State::UNLOADED)
+				{
+					//App->importer->iScript->LoadResource(std::to_string(resourcescript->GetUUID()).c_str(), resourceMaterial);
+				}
+				uuidResourceReimported = 0;
+			}
+		}
+	}
 }
 
 void CompScript::Update(float dt)
@@ -93,7 +128,14 @@ void CompScript::ShowInspectorInfo()
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 2));
 		if (ImGui::Button("Reset Script"))
 		{
-
+			if (resourcescript != nullptr)
+			{
+				if (resourcescript->NumGameObjectsUseMe > 0)
+				{
+					resourcescript->NumGameObjectsUseMe--;
+				}
+			}
+			resourcescript = nullptr;
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::PopStyleVar();
@@ -114,6 +156,45 @@ void CompScript::ShowInspectorInfo()
 
 	ImGui::PopStyleColor();
 	ImGui::PopStyleVar();
+
+	if (resourcescript != nullptr)
+	{
+		/* Name of the Script */
+		ImGui::Text("Name:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", resourcescript->name);
+	}
+
+	if (resourcescript == nullptr || selectScript)
+	{
+		if (resourcescript == nullptr)
+		{
+			//if (ImGui::Button("Select Material..."))
+			//{
+			//	selectScript = true;
+			//}
+		}
+		if (selectScript)
+		{
+			ResourceScript* temp = (ResourceScript*)App->resource_manager->ShowResources(selectScript, Resource::Type::MATERIAL);
+			if (temp != nullptr)
+			{
+				if (resourcescript != nullptr)
+				{
+					if (resourcescript->NumGameObjectsUseMe > 0)
+					{
+						resourcescript->NumGameObjectsUseMe--;
+					}
+				}
+				resourcescript = temp;
+				resourcescript->NumGameObjectsUseMe++;
+				if (resourcescript->IsLoadedToMemory() == Resource::State::UNLOADED)
+				{
+					//App->importer->iScript->LoadResource(std::to_string(resourcescript->GetUUID()).c_str(), resourcescript);
+				}
+				Enable();
+			}
+		}
+	}
 
 	if (activeScript)
 	{

@@ -7,6 +7,7 @@
 
 class GameObject;
 class ResourceMaterial;
+class ResourceScript;
 struct ReImport;
 
 class JSONSerialization
@@ -34,9 +35,14 @@ public:
 	//void LoadMaterial(const char* Material); At the moment no need this
 	// --------------------------------------
 
+	// SAVE & LOAD MATERIAL --------------------------
+	void SaveScript(const ResourceScript* script, const char* directory, const char* fileName);
+	// --------------------------------------
+
 	// MESH & MATERIAL -------------------------------
 	ReImport GetUUIDPrefab(const char * file, uint id);
 	ReImport GetUUIDMaterial(const char* file);
+	ReImport GetUUIDScript(const char* file);
 	// -----------------------------------------------
 
 private:

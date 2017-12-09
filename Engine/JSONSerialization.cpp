@@ -1,6 +1,7 @@
 #include "JSONSerialization.h"
 #include "Application.h"
 #include "ResourceMaterial.h"
+#include "ResourceScript.h"
 #include "ModuleFS.h"
 #include "ModuleResourceManager.h"
 #include "Scene.h"
@@ -380,7 +381,7 @@ void JSONSerialization::LoadChildLoadPrefab(GameObject& parent, GameObject& chil
 
 void JSONSerialization::SaveMaterial(const ResourceMaterial* material, const char* directory, const char* fileName)
 {
-	LOG("SAVING PREFAB %s -----", material->name);
+	LOG("SAVING Material %s -----", material->name);
 
 	JSON_Value* config_file;
 	JSON_Object* config;
@@ -407,6 +408,32 @@ void JSONSerialization::SaveMaterial(const ResourceMaterial* material, const cha
 
 
 // Utilities --------------------------------------------------------------------------
+
+void JSONSerialization::SaveScript(const ResourceScript* script, const char * directory, const char * fileName)
+{
+	LOG("SAVING Script %s -----", script->name);
+
+	JSON_Value* config_file;
+	JSON_Object* config;
+
+	std::string nameJson = directory;
+	nameJson += "/";
+	nameJson += script->name;
+	nameJson += ".meta.json";
+	config_file = json_value_init_object();
+
+	uint count = 0;
+	if (config_file != nullptr)
+	{
+		config = json_value_get_object(config_file);
+		json_object_clear(config);
+		json_object_dotset_string_with_std(config, "Material.Directory Script", fileName);
+		json_object_dotset_number_with_std(config, "Material.UUID Resource", script->GetUUID());
+		json_object_dotset_string_with_std(config, "Material.Name", script->name);
+		json_serialize_to_file(config_file, nameJson.c_str());
+	}
+	json_value_free(config_file);
+}
 
 ReImport JSONSerialization::GetUUIDPrefab(const char* file, uint id)
 {
@@ -476,6 +503,11 @@ ReImport JSONSerialization::GetUUIDMaterial(const char* file)
 	}
 	json_value_free(config_file);
 	return info;
+}
+
+ReImport JSONSerialization::GetUUIDScript(const char * file)
+{
+	return ReImport();
 }
 
 void JSONSerialization::ChangeUUIDs(GameObject& gameObject)

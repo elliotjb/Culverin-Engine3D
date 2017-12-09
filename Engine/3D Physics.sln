@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "3D Physics - class4 Handout", "3D Physics.vcxproj", "{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ScriptingSystem", "..\ScriptingSystem\ScriptingSystem\ScriptingSystem.vcxproj", "{28FE746E-8496-4242-9646-4D4AD90798DC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,14 +19,6 @@ Global
 		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}.Release|Win32.ActiveCfg = Release|Win32
 		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}.Release|Win32.Build.0 = Release|Win32
 		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}.Release|x64.ActiveCfg = Release|Win32
-		{28FE746E-8496-4242-9646-4D4AD90798DC}.Debug|Win32.ActiveCfg = Debug|Win32
-		{28FE746E-8496-4242-9646-4D4AD90798DC}.Debug|Win32.Build.0 = Debug|Win32
-		{28FE746E-8496-4242-9646-4D4AD90798DC}.Debug|x64.ActiveCfg = Debug|x64
-		{28FE746E-8496-4242-9646-4D4AD90798DC}.Debug|x64.Build.0 = Debug|x64
-		{28FE746E-8496-4242-9646-4D4AD90798DC}.Release|Win32.ActiveCfg = Release|Win32
-		{28FE746E-8496-4242-9646-4D4AD90798DC}.Release|Win32.Build.0 = Release|Win32
-		{28FE746E-8496-4242-9646-4D4AD90798DC}.Release|x64.ActiveCfg = Release|x64
-		{28FE746E-8496-4242-9646-4D4AD90798DC}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

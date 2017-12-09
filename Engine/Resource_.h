@@ -10,7 +10,8 @@ public:
 		UNKNOWN,
 		FOLDER,
 		MATERIAL,
-		MESH
+		MESH,
+		SCRIPT
 	};
 	enum State {
 		UNLOADED,

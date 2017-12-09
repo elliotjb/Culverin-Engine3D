@@ -4,6 +4,8 @@
 #include "Component.h"
 #include "Script_editor.h"
 
+class ResourceScript;
+
 class CompScript : public Component
 {
 public:
@@ -28,6 +30,11 @@ public:
 public:
 	std::string nameScript;
 	Script_editor* editor;
+	ResourceScript* resourcescript = nullptr;
+
+private:
+	bool selectScript = false;
+	uint uuidResourceReimported = 0;
 };
 
 

@@ -1,4 +1,3 @@
-#pragma once
 #include "CompMaterial.h"
 #include "Color.h"
 #include "GAmeObject.h"
