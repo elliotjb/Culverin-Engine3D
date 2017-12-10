@@ -7,8 +7,12 @@
 #define SCRIPTING_MANAGER __declspec(dllimport)
 #endif
 
-namespace ScriptingManager
+namespace ScriptingSystem
 {
+	SCRIPTING_MANAGER void GetPath();
+	SCRIPTING_MANAGER bool InitSystem();
+	SCRIPTING_MANAGER bool CloseSystem();
 	SCRIPTING_MANAGER bool CompileFile(const char* path);
 }
+
 #endif;
