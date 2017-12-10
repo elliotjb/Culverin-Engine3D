@@ -19,7 +19,7 @@ ModuleFS::ModuleFS(bool start_enabled) : Module(start_enabled)
 ModuleFS::~ModuleFS()
 {
 	DeleteAllFilesAssets(allfilesAsstes);
-	allfilesAsstes.clear(); //
+	allfilesAsstes.clear(); 
 }
 
 bool ModuleFS::Start()
