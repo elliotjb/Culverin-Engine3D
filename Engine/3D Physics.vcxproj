@@ -104,6 +104,7 @@
     <ClInclude Include="ModuleFS.h" />
     <ClInclude Include="ModuleFramebuffers.h" />
     <ClInclude Include="ModuleResourceManager.h" />
+    <ClInclude Include="ModuleScripting.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="JSONSerialization.h" />
     <ClInclude Include="ResourceMaterial.h" />
@@ -219,6 +220,7 @@
     <ClCompile Include="ModuleFS.cpp" />
     <ClCompile Include="ModuleFramebuffers.cpp" />
     <ClCompile Include="ModuleResourceManager.cpp" />
+    <ClCompile Include="ModuleScripting.cpp" />
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="JSONSerialization.cpp" />
     <ClCompile Include="ResourceMaterial.cpp" />

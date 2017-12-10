@@ -30,6 +30,7 @@ class ModuleImporter;
 class ModuleFS;
 class ModuleTextures;
 class ModuleResourceManager;
+class ModuleScripting;
 
 class JSONSerialization;
 
@@ -102,18 +103,19 @@ private:
 
 	// MODULES --------------------------
 public:
-	ModuleWindow* window;
-	ModuleInput* input;
-	ModuleAudio* audio;
-	ModuleRenderer3D* renderer3D;
-	ModuleCamera3D* camera;
-	Scene* scene;
-	Console* console;
-	ModuleGUI* gui;
-	ModuleImporter* importer;
-	ModuleFS* fs;
-	ModuleTextures* textures;
-	ModuleResourceManager* resource_manager;
+	ModuleWindow* window = nullptr;
+	ModuleInput* input = nullptr;
+	ModuleAudio* audio = nullptr;
+	ModuleRenderer3D* renderer3D = nullptr;
+	ModuleCamera3D* camera = nullptr;
+	Scene* scene = nullptr;
+	Console* console = nullptr;
+	ModuleGUI* gui = nullptr;
+	ModuleImporter* importer = nullptr;
+	ModuleFS* fs = nullptr;
+	ModuleTextures* textures = nullptr;
+	ModuleResourceManager* resource_manager = nullptr;
+	ModuleScripting* scripting = nullptr;
 
 private:
 	std::list<Module*> list_modules;

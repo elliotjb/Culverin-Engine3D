@@ -402,6 +402,9 @@
     <ClInclude Include="ImportScript.h">
       <Filter>Engine\Importer</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleScripting.h">
+      <Filter>Engine\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -649,6 +652,9 @@
     </ClCompile>
     <ClCompile Include="ImportScript.cpp">
       <Filter>Engine\Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleScripting.cpp">
+      <Filter>Engine\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

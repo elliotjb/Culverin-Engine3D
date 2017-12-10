@@ -17,6 +17,7 @@ class ImportMaterial;
 class ImportScript;
 class CompTransform;
 struct ReImport;
+
 //enum FileTypeImport
 //{
 //	F_UNKNOWN_i = -1,
