@@ -29,7 +29,7 @@ void Script_editor::Start(std::string nameScript, bool isnew)
 	else
 	{
 		//need function
-		nameScript = "Assets\\" + nameScript + ".cpp";
+		nameScript = "Assets\\" + nameScript + ".cs";
 		std::ifstream t(nameScript.c_str());
 		std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
 		editor.SetText(str);

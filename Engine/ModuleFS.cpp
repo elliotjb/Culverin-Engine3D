@@ -761,7 +761,7 @@ bool ModuleFS::SaveScript(std::string name, TextEditor& editor, DIRECTORY_IMPORT
 	}
 	}
 	// Open or Created ----------------------------------------
-	name = name + ".cpp";
+	name = name + ".cs";
 	std::ofstream outfile(name);
 
 	if (outfile.good())
