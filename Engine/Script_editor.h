@@ -24,6 +24,7 @@ public:
 
 	void Start(std::string nameScript, bool isnew = true);
 	void SetInitInfo(std::string nameScript);
+	void SetExampleInfo();
 	void Show(bool& active);
 
 	void SetAction(ActionEditor action);

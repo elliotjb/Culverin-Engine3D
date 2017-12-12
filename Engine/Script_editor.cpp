@@ -23,7 +23,8 @@ void Script_editor::Start(std::string nameScript, bool isnew)
 	name = nameScript;
 	if (isnew)
 	{
-		SetInitInfo(nameScript);
+		SetExampleInfo();
+		//SetInitInfo(nameScript);
 		//directory = "C:\\Users\\Administrador\\Documents\\GitHub\\3D-Engine\\Engine\\Game";
 	}
 	else
@@ -63,6 +64,38 @@ void Script_editor::SetInitInfo(std::string nameScript)
 	editor.InsertText("	void Update() {\n\n");
 
 	editor.InsertText("	}\n");
+	editor.InsertText("}\n");
+}
+
+void Script_editor::SetExampleInfo()
+{
+	editor.InsertText("using System;\n\n");
+
+	editor.InsertText("public class ");
+	editor.InsertText(" Example");
+	editor.InsertText(" {\n\n");
+
+	editor.InsertText("	private String name;\n\n");
+	
+	editor.InsertText("	public Example(String name) {\n\n");
+	editor.InsertText(" \t\tthis.name = name;\n");
+	editor.InsertText("	}\n\n");
+
+	editor.InsertText("	~Example() {\n\n");
+	editor.InsertText("	}\n\n");
+
+	editor.InsertText("	public String GetName() {\n\n");
+	editor.InsertText(" \t\treturn name;\n");
+	editor.InsertText("	}\n\n");
+
+	editor.InsertText("	public void Process() {\n\n");
+	editor.InsertText(" \t\tthrow new NotImplementedException(\"Not implemented yet\");\n");
+	editor.InsertText("	}\n\n");
+
+	editor.InsertText("	public String Hello() {\n\n");
+	editor.InsertText(" \t\treturn \"Hello World\";\n");
+	editor.InsertText("	}\n\n");
+
 	editor.InsertText("}\n");
 }
 
