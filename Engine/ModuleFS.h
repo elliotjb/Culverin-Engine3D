@@ -11,10 +11,11 @@
 #include <experimental/filesystem>
 #include <fstream>
 
-#define DIRECTORY_ASSETS "Assets\\"
-#define DIRECTORY_LIBRARY "Library\\"
-#define DIRECTORY_LIBRARY_MESHES "Library\\Meshes\\"
-#define DIRECTORY_LIBRARY_MATERIALS "Library\\Materials\\"
+#define DIRECTORY_ASSETS "Assets/"
+#define DIRECTORY_LIBRARY "Library/"
+#define DIRECTORY_LIBRARY_MESHES "Library/Meshes/"
+#define DIRECTORY_LIBRARY_MATERIALS "Library/Materials/"
+#define DIRECTORY_LIBRARY_SCRIPTS "Library/Scripts/"
 
 class TextEditor;
 
@@ -24,7 +25,8 @@ enum DIRECTORY_IMPORT
 	IMPORT_DIRECTORY_ASSETS,
 	IMPORT_DIRECTORY_LIBRARY,
 	IMPORT_DIRECTORY_LIBRARY_MESHES,
-	IMPORT_DIRECTORY_LIBRARY_MATERIALS
+	IMPORT_DIRECTORY_LIBRARY_MATERIALS,
+	IMPORT_DIRECTORY_LIBRARY_SCRIPTS
 };
 
 struct AllFiles
@@ -39,6 +41,7 @@ class ModuleFS : public Module
 public:
 	ModuleFS(bool start_enabled = true);
 	~ModuleFS();
+	bool Init(JSON_Object* node);
 
 	bool Start();
 	update_status PreUpdate(float dt);
@@ -108,7 +111,7 @@ public:
 
 
 	//Don't used for now -------------------------
-	std::string GetAssetsDirecotry();
+	std::string GetAssetsDirectory();
 
 	std::string AddDirectorybyType(std::string name, DIRECTORY_IMPORT directory);
 

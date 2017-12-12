@@ -22,10 +22,8 @@ ModuleFS::~ModuleFS()
 	allfilesAsstes.clear(); 
 }
 
-bool ModuleFS::Start()
+bool ModuleFS::Init(JSON_Object * node)
 {
-	perf_timer.Start();
-
 	// Will contain exe path
 	HMODULE hModule = GetModuleHandle(NULL);
 	if (hModule != NULL)
@@ -51,12 +49,20 @@ bool ModuleFS::Start()
 	directory_Assets = directory_Game + "\\Game";
 	directory_Game += "\\Game\\Assets"; // "\\Game\\Assets"
 
-	// Check if Main Folders exist --------------------
+										// Check if Main Folders exist --------------------
 	CreateFolder("Library");
 	CreateFolder("Library\\Meshes");
 	CreateFolder("Library\\Materials");
-	CreateFolder("Library\\Animations");
+	CreateFolder("Library\\Scripts");
 	CreateFolder("Assets");
+	return true;
+}
+
+bool ModuleFS::Start()
+{
+	perf_timer.Start();
+
+
 	// Get All Files From Assets
 	GetAllFilesAssets(directory_Game, allfilesAsstes);
 	checkAssets.Start();
@@ -585,28 +591,33 @@ bool ModuleFS::DeleteFileLibrary(const char* file, DIRECTORY_IMPORT directory)
 	std::string temp = file;
 	switch (directory)
 	{
-	case IMPORT_DEFAULT:
+	case DIRECTORY_IMPORT::IMPORT_DEFAULT:
 	{
 		break;
 	}
-	case IMPORT_DIRECTORY_ASSETS:
+	case DIRECTORY_IMPORT::IMPORT_DIRECTORY_ASSETS:
 	{
 		temp = DIRECTORY_ASSETS + temp;
 		break;
 	}
-	case IMPORT_DIRECTORY_LIBRARY:
+	case DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY:
 	{
 		temp = DIRECTORY_LIBRARY + temp;
 		break;
 	}
-	case IMPORT_DIRECTORY_LIBRARY_MESHES:
+	case DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY_MESHES:
 	{
 		temp = DIRECTORY_LIBRARY_MESHES + temp;
 		break;
 	}
-	case IMPORT_DIRECTORY_LIBRARY_MATERIALS:
+	case DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY_MATERIALS:
 	{
 		temp = DIRECTORY_LIBRARY_MATERIALS + temp + ".dds";
+		break;
+	}
+	case DIRECTORY_IMPORT::IMPORT_DIRECTORY_LIBRARY_SCRIPTS:
+	{
+		//temp = DIRECTORY_LIBRARY_SCRIPTS + temp + "";
 		break;
 	}
 	}
@@ -839,9 +850,9 @@ const char* ModuleFS::ConverttoConstChar(std::string name)
 	return temp;
 }
 
-std::string ModuleFS::GetAssetsDirecotry()
+std::string ModuleFS::GetAssetsDirectory()
 {
-	return std::string();
+	return directory_Assets;
 }
 
 std::string ModuleFS::AddDirectorybyType(std::string name, DIRECTORY_IMPORT directory)

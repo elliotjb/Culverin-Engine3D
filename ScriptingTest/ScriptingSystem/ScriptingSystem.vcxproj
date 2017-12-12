@@ -73,8 +73,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\Github\3D-Engine\Scripting\Scripting\Mono\include\mono-2.0;C:\Users\Administrador\Documents\GitHub\3D-Engine\ScriptingSystem\ScriptingSystem\Mono\include\mono-2.0;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Github\3D-Engine\Scripting\Scripting\Mono\lib;C:\Users\Administrador\Documents\GitHub\3D-Engine\ScriptingSystem\ScriptingSystem\Mono\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\jordior4\Documents\GitHub\3D-Engine\Scripting\Scripting\Mono\include\mono-2.0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\jordior4\Documents\GitHub\3D-Engine\Scripting\Scripting\Mono\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>D:\Github\3D-Engine\Scripting\Scripting\Mono\include\mono-2.0;D:\Github\3D-Engine\ScriptingSystem\ScriptingSystem\Mono\include\mono-2.0;$(IncludePath)</IncludePath>

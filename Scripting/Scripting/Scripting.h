@@ -10,9 +10,12 @@
 namespace ScriptingSystem
 {
 	SCRIPTING_MANAGER void GetPath();
+	SCRIPTING_MANAGER const char* GetMonoPath();
+
 	SCRIPTING_MANAGER bool InitSystem();
 	SCRIPTING_MANAGER bool CloseSystem();
-	SCRIPTING_MANAGER bool CompileFile(const char* path);
+
+	SCRIPTING_MANAGER const char* CompileFile(const char* path, const char* dest_path);
 }
 
 #endif;
