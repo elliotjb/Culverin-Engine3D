@@ -16,7 +16,7 @@ namespace ScriptingSystem
 
 
 	SCRIPTING_MANAGER const char* CompileFile(const char* path, const char* dest_path);
-	SCRIPTING_MANAGER std::string HelloWorld(const char* path);
+	SCRIPTING_MANAGER const char* HelloWorld(const char* path);
 
 	// UTILITY FUNCTIONS ---------------------------------------------
 	SCRIPTING_MANAGER void GetPath();

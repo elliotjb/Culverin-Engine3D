@@ -10,6 +10,7 @@ public:
 	~ModuleScripting();
 
 	bool Init(JSON_Object* node);
+	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
 
