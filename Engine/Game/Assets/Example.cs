@@ -2,17 +2,17 @@
 
 namespace Example
 {
-    public class Entity
+    public class Example
     {
         private String name;
 
-        public Entity(String name)
+        public Example(String name)
         {
             this.name = name;
             System.Console.WriteLine("Entity " + name + " constructed");
         }
 
-        ~Entity()
+        ~Example()
         {
             System.Console.WriteLine("Entity " + name + " destructed");
         }
@@ -25,6 +25,11 @@ namespace Example
         public String GetName()
         {
             return name;
+        }
+
+        public String Hello()
+        {
+            return "Hello World";
         }
     }
 }

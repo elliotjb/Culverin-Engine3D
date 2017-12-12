@@ -26,5 +26,10 @@ namespace Example
         {
             return name;
         }
+
+        public void Hello()
+        {
+            System.Console.WriteLine("Hello World");
+        }
     }
 }

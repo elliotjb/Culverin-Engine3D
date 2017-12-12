@@ -5,6 +5,7 @@
 #include "ModuleImporter.h"
 #include "ImportScript.h"
 #include "Scene.h"
+#include "ModuleScripting.h"
 
 CompScript::CompScript(Comp_Type t, GameObject* parent) : Component(t, parent)
 {

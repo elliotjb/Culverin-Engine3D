@@ -23,9 +23,10 @@ int main()
 	_getcwd(my_path, FILENAME_MAX);
 
 	std::string mono_path = my_path;
-	mono_path += "../../Scripting/Scripting/Mono";
+	mono_path += "/../../Scripting/Scripting/Mono";
 	
-	std::string script_path = "/Assets/Example.cs";
+	std::string path = my_path;
+	std::string script_path = path + "/Example.cs";
 
 	// Compile the script -------------
 	std::string command = mono_path;
@@ -46,8 +47,8 @@ int main()
 	MonoDomain* domain = mono_jit_init_version("Test", "v4.0.30319");
 
 	// Open the Assembly with your scripts
-	//std::string dll_path = assets_path + "/Example.dll";
-	//assembly = mono_domain_assembly_open(domain, dll_path.c_str());
+	std::string dll_path = path + "/Example.dll";
+	assembly = mono_domain_assembly_open(domain, dll_path.c_str());
 
 	// Get the Image
 	image = mono_assembly_get_image(assembly);

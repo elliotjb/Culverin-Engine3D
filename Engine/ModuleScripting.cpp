@@ -21,10 +21,22 @@ bool ModuleScripting::Init(JSON_Object* node)
 	perf_timer.Start();
 
 	//Init the Mono Domain to work with scripts -----
-	ScriptingSystem::InitSystem();
+	if (ScriptingSystem::InitSystem())
+	{
+		LOG("Mono Domain Init SUCCESS.");
+	}
+	else
+	{
+		LOG("Mono Domain Init FAIL.");
+	}
 
+	// COMPILATION TEST
 	std::string libraryscript = App->fs->GetAssetsDirectory() + "/" + DIRECTORY_LIBRARY_SCRIPTS;
 	const char*  file = ScriptingSystem::CompileFile("C:/Users/jordior4/Documents/GitHub/3D-Engine/Engine/Game/Assets/Example.cs", libraryscript.c_str());
+
+	// EXECUTION A METHOD TEST
+	std::string hello = ScriptingSystem::HelloWorld("C:/Users/jordior4/Documents/GitHub/3D-Engine/Engine/Game/Library/Scripts/Example.dll");
+	LOG("%s", hello.c_str());
 
 	Awake_t = perf_timer.ReadMs();
 	return true;
@@ -32,6 +44,8 @@ bool ModuleScripting::Init(JSON_Object* node)
 
 update_status ModuleScripting::Update(float dt)
 {
+	// This will compile .cs files in runtime
+
 	return UPDATE_CONTINUE;
 }
 
