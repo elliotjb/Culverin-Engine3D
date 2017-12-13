@@ -30,12 +30,11 @@ public:
 	void InitCSharp(std::string CSharpFile);
 	void LoadScript();
 
-
 	MainMonoMethod CreateMainFunction(std::string function, int parameters, FunctionBase type);
 	void DoMainFunction(FunctionBase function);
 	void DoFunction(MonoMethod* function, void ** parameter);
 
-	// Functions set initial info
+	// Functions set initial info ------------------------
 	void SetDomain(MonoDomain* domain);
 	void SetAssembly(MonoAssembly* assembly);
 	void SetImage(MonoImage* image);
@@ -43,8 +42,36 @@ public:
 	void SetClassName(std::string name_);
 	void SetNameSpace(std::string name_space_);
 
+	// Variable setting-getting functions ----------------
+	template<class TYPE>
+	void SetValue(const char* variable_name, TYPE value)
+	{
+		// find the  field in the Entity class
+		MonoClassField* field = mono_class_get_field_from_name(CSClass, variable_name);
+		if (field)
+		{
+			// set the field's value
+			mono_field_set_value(CSObject, field, &value);
+		}
+	}
 
+	template<class TYPE>
+	TYPE GetValue(const char* variable_name)
+	{
+		// find the  field in the Entity class
+		MonoClassField* field = mono_class_get_field_from_name(CSClass, variable_name);
+		if (field)
+		{
+			TYPE value;
 
+			// set the field's value
+			mono_field_get_value(CSObject, field, &value);
+
+			return value;
+		}
+
+		return NULL;
+	}
 
 
 private:
@@ -62,8 +89,8 @@ private:
 	MainMonoMethod Start;
 	MainMonoMethod Update;
 	MainMonoMethod OnGUI;
-	MainMonoMethod	OnEnable;
-	MainMonoMethod	OnDisable;
+	MainMonoMethod OnEnable;
+	MainMonoMethod OnDisable;
 };
 
 #endif

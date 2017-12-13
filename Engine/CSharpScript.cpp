@@ -135,3 +135,4 @@ void CSharpScript::SetNameSpace(std::string name_space_)
 {
 	name_space = name_space_;
 }
+
