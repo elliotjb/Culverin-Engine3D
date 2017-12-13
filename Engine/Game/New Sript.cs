@@ -1,19 +1,31 @@
-// ------- New Script Culverin Engine 3D ------- 
+using System;
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+public class  Example {
 
-public class NewSript : MonoBehaviour 
-{
+	private String name;
 
-	// Use this for initialization
-	void Start() {
+	public Example(String name) {
+
+ 		this.name = name;
+	}
+
+	~Example() {
 
 	}
 
-	// Update is called once per frame
-	void Update() {
+	public String GetName() {
 
+ 		return name;
 	}
+
+	public void Process() {
+
+ 		throw new NotImplementedException("Not implemented yet");
+	}
+
+	public String Hello() {
+
+ 		return "Hello World";
+	}
+
 }

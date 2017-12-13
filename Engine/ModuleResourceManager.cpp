@@ -8,7 +8,6 @@
 #include "ModuleInput.h"
 #include "ModuleGUI.h"
 
-
 ModuleResourceManager::ModuleResourceManager(bool start_enabled): Module(start_enabled)
 {
 	Start_enabled = true;
@@ -41,6 +40,7 @@ bool ModuleResourceManager::Start()
 {
 	perf_timer.Start();
 
+	// Create Resource Cube
 	CreateResourceCube();
 	Load();
 

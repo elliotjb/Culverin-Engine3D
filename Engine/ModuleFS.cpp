@@ -108,15 +108,48 @@ void ModuleFS::CopyFileToAssets(const char* fileNameFrom, const char* fileNameTo
 {
 	//assert(fileExists(fileNameFrom));
 	namespace fs = std::experimental::filesystem;
-	std::string exits = fileNameTo;
-	exits += "/" + FixName_directory(fileNameFrom);
+	std::string exits;
+	if (fileNameTo == "")
+	{
+		exits = GetFullPath("Assets/");
+		exits += FixName_directory(fileNameFrom);
+	}
+	else
+	{
+		exits = fileNameTo;
+		exits += "/" + FixName_directory(fileNameFrom);
+	}
+
 	if (fs::exists(exits) == false)
 	{
-		fs::copy(fileNameFrom, fileNameTo);
+		fs::copy(fileNameFrom, exits);
 	}
 	exits.clear();
 	// Copy Folders
 	//std::filesystem::copy("/dir1", "/dir3", std::filesystem::copy_options::recursive);
+}
+
+std::string ModuleFS::CopyFileToAssetsS(const char* fileNameFrom, const char* fileNameTo)
+{
+	//assert(fileExists(fileNameFrom));
+	namespace fs = std::experimental::filesystem;
+	std::string exits;
+	if (fileNameTo == "")
+	{
+		exits = GetFullPath("Assets/");
+		exits += FixName_directory(fileNameFrom);
+	}
+	else
+	{
+		exits = fileNameTo;
+		exits += "/" + FixName_directory(fileNameFrom);
+	}
+
+	if (fs::exists(exits) == false)
+	{
+		fs::copy(fileNameFrom, exits);
+	}
+	return exits;
 }
 
 bool ModuleFS::CheckAssetsIsModify()
@@ -813,6 +846,10 @@ void ModuleFS::FixNames_directories(std::vector<std::string>& files)
 std::string ModuleFS::FixName_directory(std::string file)
 {
 	size_t EndName = file.find_last_of("\\");
+	if (EndName == 0) // need convert \\ to /! TODO ELLIOT
+	{
+		EndName = file.find_last_of("/");
+	}
 	file = file.substr(EndName + 1);
 	return file;
 }
@@ -851,6 +888,18 @@ char* ModuleFS::ConverttoChar(std::string name)
 	strcpy(temp, name.c_str());
 	temp[name.length()] = '\0';
 	return temp;
+}
+
+std::string ModuleFS::GetOnlyName(std::string file)
+{
+	std::string nameFile = file;
+
+	size_t EndName = nameFile.find_last_of("/");
+	nameFile = nameFile.substr(EndName + 1);
+	EndName = nameFile.find_last_of(".");
+	nameFile = nameFile.substr(0, EndName);
+
+	return nameFile;
 }
 
 const char* ModuleFS::ConverttoConstChar(std::string name)

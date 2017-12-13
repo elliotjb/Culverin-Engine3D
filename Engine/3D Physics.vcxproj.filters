@@ -58,6 +58,9 @@
     <Filter Include="Engine\Components\Light">
       <UniqueIdentifier>{121f8e6b-df36-4ab0-be0d-601ddfc9e503}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Resources\Script">
+      <UniqueIdentifier>{ba62ae01-4435-4755-9343-6cc18c3996e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -408,6 +411,9 @@
     <ClInclude Include="Scripting.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="CSharpScript.h">
+      <Filter>Engine\Resources\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -661,6 +667,9 @@
     </ClCompile>
     <ClCompile Include="Scripting.cpp">
       <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSharpScript.cpp">
+      <Filter>Engine\Resources\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

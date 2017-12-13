@@ -12,6 +12,11 @@
 #include "ModuleWindow.h"
 #include "JSONSerialization.h"
 
+#include <direct.h>
+#include <mono/jit/jit.h>
+#include <mono/metadata/assembly.h>
+#include <mono/metadata/mono-config.h>
+
 ModuleImporter::ModuleImporter(bool start_enabled) : Module(start_enabled)
 {
 	Awake_enabled = true;
@@ -56,8 +61,51 @@ bool ModuleImporter::Start()
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 
+	// Now InitSystem Domain Mono
+	if (InitSystemScript())
+	{
+		LOG("Culverin Assembly Init SUCCESS.");
+	}
+	else
+	{
+		LOG("Culverin Assembly Init FAIL.");
+	}
+
 	Start_t = perf_timer.ReadMs();
 	return true;
+}
+
+bool ModuleImporter::InitSystemScript()
+{
+	char my_path[FILENAME_MAX];
+	// Fill my_path char array with the path of the .dll
+	_getcwd(my_path, FILENAME_MAX);
+
+	// Set where Mono Directory is placed in mono_path
+	mono_path = my_path;
+	mono_path += "/Mono";
+
+	// Use the standard configuration ----
+	mono_config_parse(NULL);
+
+	// Get the correct dirs --------------
+	std::string lib = mono_path;
+	lib += "/lib";
+	std::string etc = mono_path;
+	etc += "/etc";
+
+
+	// Setup the default directories for mono use here for now the directories of your Mono installation
+	mono_set_dirs(lib.c_str(), etc.c_str());
+	domain = mono_jit_init_version("/Game", "v4.0.30319");
+
+	MonoAssembly* culverin_assembly = mono_domain_assembly_open(domain, "./ScriptManager/AssemblyReference/CulverinEditor.dll");
+	if (culverin_assembly)
+	{
+		culverin_mono_image = mono_assembly_get_image(culverin_assembly);
+		return true;
+	}
+	return false;
 }
 
 update_status ModuleImporter::PreUpdate(float dt)
@@ -198,6 +246,21 @@ bool ModuleImporter::CleanUp()
 {
 	aiDetachAllLogStreams();
 	return true;
+}
+
+MonoDomain* ModuleImporter::GetDomain()
+{
+	return domain;
+}
+
+MonoImage* ModuleImporter::GetCulverinImage()
+{
+	return culverin_mono_image;
+}
+
+std::string ModuleImporter::GetMonoPath() const
+{
+	return mono_path;
 }
 
 bool ModuleImporter::Import(const char* file, Resource::Type type)

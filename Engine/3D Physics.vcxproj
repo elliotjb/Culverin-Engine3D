@@ -98,6 +98,7 @@
     <ClInclude Include="CompMaterial.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CompScript.h" />
+    <ClInclude Include="CSharpScript.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="ImGui\ImGuizmo.h" />
     <ClInclude Include="ImGui\imgui_dock_v2.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="CompMaterial.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="CompScript.cpp" />
+    <ClCompile Include="CSharpScript.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="ImGui\ImGuizmo.cpp" />
     <ClCompile Include="ImGui\imgui_dock_v2.cpp" />
