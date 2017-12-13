@@ -1,9 +1,8 @@
 #include "ModuleScripting.h"
-#include "Scripting/Scripting.h"
+#include "Scripting.h"
 #include "Application.h"
 #include "ModuleFS.h"
 
-#pragma comment(lib, "Scripting/Scripting.lib")
 
 ModuleScripting::ModuleScripting(bool start_enabled): Module(start_enabled)
 {
@@ -33,7 +32,7 @@ bool ModuleScripting::Init(JSON_Object* node)
 
 	// COMPILATION TEST
 	std::string libraryscript = App->fs->GetAssetsDirectory() + "/" + DIRECTORY_LIBRARY_SCRIPTS;
-	const char*  file = ScriptingSystem::CompileFile("D:/Github/3D-Engine/Engine/Game/Assets/Example.cs", libraryscript.c_str());
+	const char*  file = ScriptingSystem::CompileFile("C:/Users/elliotjb/Desktop/3D-Engine/Engine/Game/Assets/Example.cs", libraryscript.c_str());
 
 	Awake_t = perf_timer.ReadMs();
 	return true;
@@ -44,7 +43,7 @@ bool ModuleScripting::Start()
 	perf_timer.Start();
 
 	// EXECUTION A METHOD TEST
-	const char* hello = ScriptingSystem::HelloWorld("D:/Github/3D-Engine/Engine/Game/Library/Scripts/Example.dll");
+	const char* hello = ScriptingSystem::HelloWorld("C:/Users/elliotjb/Desktop/3D-Engine/Engine/Game/Library/Scripts/Example.dll");
 	int i = 0;
 	LOG(hello);
 	//LOG("Hola");

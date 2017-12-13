@@ -405,6 +405,9 @@
     <ClInclude Include="ModuleScripting.h">
       <Filter>Engine\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Scripting.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -655,6 +658,9 @@
     </ClCompile>
     <ClCompile Include="ModuleScripting.cpp">
       <Filter>Engine\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
