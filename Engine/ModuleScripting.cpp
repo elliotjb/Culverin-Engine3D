@@ -45,9 +45,9 @@ bool ModuleScripting::Start()
 	const char* ello = ScriptingSystem::Hello("C:/Users/Administrador/Documents/GitHub/3D-Engine/Engine/Game/Library/Scripts/Testelliot.dll");
 
 	// EXECUTION A METHOD TEST
-	const char* hello = ScriptingSystem::HelloWorld("C:/Users/Administrador/Documents/GitHub/3D-Engine/Engine/Game/Library/Scripts/Test.dll");
+	//const char* hello = ScriptingSystem::HelloWorld("C:/Users/Administrador/Documents/GitHub/3D-Engine/Engine/Game/Library/Scripts/Test.dll");
 	int i = 0;
-	LOG(hello);
+	//LOG(hello);
 	//LOG("Hola");
 
 	Start_t = perf_timer.ReadMs();

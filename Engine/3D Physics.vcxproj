@@ -41,7 +41,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>C:\Users\Administrador\Documents\GitHub\3D-Engine\Engine\Game\Mono\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)\Game\Mono\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>$(SolutionDir)\Game\Mono\lib;$(LibraryPath)</LibraryPath>
