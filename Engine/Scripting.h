@@ -12,6 +12,9 @@ namespace ScriptingSystem
 	 const char* CompileFile(const char* path, const char* dest_path);
 	 const char* Hello(const char* path);
 	 const char* HelloWorld(const char* path);
+	 
+	 void AddInternalCall(const char* function_name, const void* link_method);
+	 
 
 	// UTILITY FUNCTIONS ---------------------------------------------
 	 void GetPath();

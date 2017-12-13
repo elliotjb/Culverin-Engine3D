@@ -2,6 +2,8 @@
 #define _SCRIPTING_
 
 #include "Module.h"
+#include <mono/jit/jit.h>
+#include <mono/metadata/assembly.h>
 
 class ModuleScripting: public Module
 {
@@ -14,9 +16,8 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-
-
 private:
+	void AddInternalCalls();
 
 };
 

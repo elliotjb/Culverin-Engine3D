@@ -38,8 +38,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component.cs" />
     <Compile Include="Console.cs" />
     <Compile Include="CulverinEditor.cs" />
+    <Compile Include="GameObject.cs" />
+    <Compile Include="Input.cs" />
+    <Compile Include="KeyCode.cs" />
+    <Compile Include="Math.cs" />
     <Compile Include="Test.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
