@@ -44,7 +44,7 @@
     <LibraryPath>C:\Users\elliotjb\Desktop\3D-Engine\Engine\Game\Mono\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LibraryPath>C:\Users\elliotjb\Desktop\3D-Engine\Engine\Game\Mono\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)\Game\Mono\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
