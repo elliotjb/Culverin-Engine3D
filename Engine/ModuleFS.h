@@ -88,6 +88,7 @@ public:
 	void FixNames_directories(std::vector<std::string>& files);
 	std::string FixName_directory(std::string files);
 	std::string FixExtension(std::string file, const char* newExtension = nullptr);
+	std::string GetFullPath(std::string path);
 	std::string GetExtension(std::string file);
 	char* ConverttoChar(std::string name);
 	const char* ConverttoConstChar(std::string name);

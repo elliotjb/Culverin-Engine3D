@@ -10,6 +10,7 @@ namespace ScriptingSystem
 
 
 	 const char* CompileFile(const char* path, const char* dest_path);
+	 const char* Hello(const char* path);
 	 const char* HelloWorld(const char* path);
 
 	// UTILITY FUNCTIONS ---------------------------------------------

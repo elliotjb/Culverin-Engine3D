@@ -41,7 +41,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>C:\Users\elliotjb\Desktop\3D-Engine\Engine\Game\Mono\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\Administrador\Documents\GitHub\3D-Engine\Engine\Game\Mono\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>$(SolutionDir)\Game\Mono\lib;$(LibraryPath)</LibraryPath>
@@ -298,6 +298,11 @@
     <None Include="Game\config.json" />
     <None Include="Geometry\KDTree.inl" />
     <None Include="Math\Matrix.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CulverinEditor\CulverinEditor\CulverinEditor.csproj">
+      <Project>{cc7b7538-9331-4996-847e-78762c9a8cbc}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

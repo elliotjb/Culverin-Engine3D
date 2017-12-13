@@ -2,16 +2,16 @@
 using CulverinEditor;
 using CulverinEditor.Console;
 
-public class Teste : Culverin
+public class Test : Culverin
 {
     public String name;
-    public Teste(String name)
+    public Test(String name)
     {
         this.name = name;
         //System.Console.WriteLine("Entity " + name + " constructed");
     }
 
-    ~Teste()
+    ~Test()
     {
     }
 
@@ -22,7 +22,7 @@ public class Teste : Culverin
 
     void Update()
     {
-       // int temp = Getvar();
+        // int temp = Getvar();
 
     }
 

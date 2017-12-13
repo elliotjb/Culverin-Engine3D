@@ -827,6 +827,17 @@ std::string ModuleFS::FixExtension(std::string file, const char* newExtension)
 	return file;
 }
 
+std::string ModuleFS::GetFullPath(std::string path)
+{
+	if (path != "")
+	{
+		std::experimental::filesystem::path getpath(path);
+		std::experimental::filesystem::path full_path = std::experimental::filesystem::system_complete(getpath);
+		return full_path.string();
+	}
+	return "";
+}
+
 std::string ModuleFS::GetExtension(std::string file)
 {
 	size_t EndName = file.find_last_of(".");

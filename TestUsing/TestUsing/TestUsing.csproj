@@ -39,10 +39,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Test.cs" />
+    <Compile Include="Testelliot.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CulverinEditor">
-      <HintPath>..\..\Engine\Game\ScriptManager\Assembly Reference\CulverinEditor.dll</HintPath>
+      <HintPath>..\..\Engine\Game\ScriptManager\AssemblyReference\CulverinEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
