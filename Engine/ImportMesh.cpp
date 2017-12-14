@@ -44,6 +44,14 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 	float3* vert_normals = nullptr;
 	float2* tex_coords = nullptr;
 
+	for (uint i = 0; i < mesh->mNumFaces; i++)
+	{
+		if (mesh->mFaces[i].mNumIndices != 3)
+		{
+			return false;
+		}
+	}
+
 	CompMesh* meshComp = (CompMesh*)obj->AddComponent(C_MESH);
 	//ResourceMesh* resourceMesh = App->resource_manager->CreateNewResource(Resource::Type::MESH);
 
@@ -67,6 +75,7 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 				if (mesh->mFaces[i].mNumIndices != 3)
 				{
 					LOG("WARNING, Geometry face with != 3 indices!");
+					return false;
 				}
 				else
 				{
