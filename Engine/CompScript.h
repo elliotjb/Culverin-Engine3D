@@ -17,6 +17,9 @@ public:
 	void preUpdate(float dt);
 	void Update(float dt);
 
+	// Play Engine -------
+	bool CheckScript();
+
 	// EDITOR METHODS ----------
 	void ShowOptions();
 	void ShowInspectorInfo();
@@ -34,6 +37,7 @@ public:
 
 private:
 	bool selectScript = false;
+	bool compiled = false;
 	uint uuidResourceReimported = 0;
 };
 

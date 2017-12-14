@@ -73,6 +73,11 @@ void CompScript::Update(float dt)
 {
 }
 
+bool CompScript::CheckScript()
+{
+	return compiled;
+}
+
 void CompScript::ShowOptions()
 {
 	if (ImGui::MenuItem("Reset", NULL, false, false))
