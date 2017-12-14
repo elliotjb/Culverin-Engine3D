@@ -6,6 +6,6 @@ namespace CulverinEditor.Console
     public class Console
     {
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern string Log(string var);
+        public static extern string Log(string message);
     }
 }

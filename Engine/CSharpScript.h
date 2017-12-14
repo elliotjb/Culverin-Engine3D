@@ -6,6 +6,7 @@
 #define DefaultParam 0
 
 #include <string>
+#include <vector>
 #include <mono/metadata/metadata.h>
 #include <mono/metadata/object.h>
 
@@ -37,9 +38,9 @@ public:
 	void SetDomain(MonoDomain* domain);
 	void SetAssembly(MonoAssembly* assembly);
 	void SetImage(MonoImage* image);
-	void SetClass(MonoClass* class_);
-	void SetClassName(std::string name_);
-	void SetNameSpace(std::string name_space_);
+	void SetClass(MonoClass* klass);
+	void SetClassName(std::string _name);
+	void SetNameSpace(std::string _name_space);
 
 	// Variable setting-getting functions ----------------
 	template<class TYPE>
@@ -72,16 +73,10 @@ public:
 		return NULL;
 	}
 
-	//Get all public variables of a script
-	//gpointer* iter = nullptr;
-	//std::vector<MonoClassField*>	public_variables;
-	//do
-	//{
-	//	public_variables.push_back(mono_class_get_fields(MonoClass* klass, gpointer *iter));
-	//}while(iter != nullptr)
+	void GetScriptVariables();
+
 
 private:
-
 	std::string name;
 	std::string name_space;
 
@@ -90,6 +85,8 @@ private:
 	MonoImage* CSimage = nullptr;
 	MonoClass* CSClass = nullptr;
 	MonoObject* CSObject = nullptr;
+
+	std::vector<MonoClassField*> public_variables;
 	
 	// Main Functions
 	MainMonoMethod Start;

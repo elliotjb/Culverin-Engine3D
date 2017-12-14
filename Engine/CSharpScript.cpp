@@ -123,18 +123,29 @@ void CSharpScript::SetImage(MonoImage* image)
 	CSimage = image;
 }
 
-void CSharpScript::SetClass(MonoClass* class_)
+void CSharpScript::SetClass(MonoClass* klass)
 {
-	CSClass = class_;
+	CSClass = klass;
 }
 
-void CSharpScript::SetClassName(std::string name_)
+void CSharpScript::SetClassName(std::string _name)
 {
-	name = name_;
+	name = _name;
 }
 
-void CSharpScript::SetNameSpace(std::string name_space_)
+void CSharpScript::SetNameSpace(std::string _name_space)
 {
-	name_space = name_space_;
+	name_space = _name_space;
+}
+
+void CSharpScript::GetScriptVariables()
+{
+	void** iter = nullptr;
+
+	std::vector<MonoClassField*> public_variables;
+	do 
+	{
+		public_variables.push_back(mono_class_get_fields(CSClass, iter));
+	} while (iter != nullptr);
 }
 
