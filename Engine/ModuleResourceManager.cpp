@@ -87,7 +87,7 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 	std::map<uint, Resource*>::iterator it = resources.begin();
 	for (int i = 0; i < resources.size(); i++)
 	{
-		if (it->second->NumGameObjectsUseMe == 0)
+		if (it->second->NumGameObjectsUseMe == 0 && it->second->GetType() != Resource::Type::SCRIPT)
 		{
 			if (it->second->IsLoadedToMemory() == Resource::State::LOADED)
 			{

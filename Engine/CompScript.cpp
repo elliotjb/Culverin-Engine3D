@@ -59,9 +59,16 @@ void CompScript::preUpdate(float dt)
 				resourcescript->NumGameObjectsUseMe++;
 
 				// Check if loaded
-				if (resourcescript->IsLoadedToMemory() == Resource::State::UNLOADED)
+				if (resourcescript->IsCompiled() == Resource::State::UNLOADED || resourcescript->IsCompiled() == Resource::State::FAILED)
 				{
-					//App->importer->iScript->LoadResource(std::to_string(resourcescript->GetUUID()).c_str(), resourceMaterial);
+					if (App->importer->iScript->LoadResource(resourcescript->GetPathAssets().c_str(), resourcescript))
+					{
+						resourcescript->SetState(Resource::State::LOADED);
+					}
+					else
+					{
+						resourcescript->SetState(Resource::State::FAILED);
+					}
 				}
 				uuidResourceReimported = 0;
 			}
@@ -79,8 +86,8 @@ void CompScript::Update(float dt)
 
 bool CompScript::CheckScript()
 {
-	//return if(resourcescript->IsCompiled() != resourcescript.;
-	return true;
+	return (resourcescript->IsCompiled() != Resource::State::FAILED && 
+		resourcescript->IsCompiled() != Resource::State::UNLOADED);
 }
 
 void CompScript::ShowOptions()
@@ -189,7 +196,7 @@ void CompScript::ShowInspectorInfo()
 		}
 		if (selectScript)
 		{
-			ResourceScript* temp = (ResourceScript*)App->resource_manager->ShowResources(selectScript, Resource::Type::MATERIAL);
+			ResourceScript* temp = (ResourceScript*)App->resource_manager->ShowResources(selectScript, Resource::Type::SCRIPT);
 			if (temp != nullptr)
 			{
 				if (resourcescript != nullptr)
@@ -201,9 +208,16 @@ void CompScript::ShowInspectorInfo()
 				}
 				resourcescript = temp;
 				resourcescript->NumGameObjectsUseMe++;
-				if (resourcescript->IsLoadedToMemory() == Resource::State::UNLOADED)
+				if (resourcescript->IsCompiled() == Resource::State::UNLOADED || resourcescript->IsCompiled() == Resource::State::FAILED)
 				{
-					App->importer->iScript->LoadResource(std::to_string(resourcescript->GetUUID()).c_str(), resourcescript);
+					if (App->importer->iScript->LoadResource(resourcescript->GetPathAssets().c_str(), resourcescript))
+					{
+						resourcescript->SetState(Resource::State::LOADED);
+					}
+					else
+					{
+						resourcescript->SetState(Resource::State::FAILED);
+					}
 				}
 				Enable();
 			}
@@ -245,7 +259,7 @@ void CompScript::Load(const JSON_Object* object, std::string name)
 			// LOAD MATERIAL -------------------------
 			if (resourcescript->IsLoadedToMemory() == Resource::State::UNLOADED)
 			{
-				//App->importer->iMaterial->LoadResource(std::to_string(resourceMaterial->GetUUID()).c_str(), resourceMaterial);
+				App->importer->iScript->LoadResource(std::to_string(resourcescript->GetUUID()).c_str(), resourcescript);
 			}
 		}
 	}

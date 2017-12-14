@@ -82,7 +82,7 @@ GameObject::~GameObject()
 	childs.clear();
 }
 
-bool GameObject::CheckScripts()
+bool GameObject::CheckScripts(int& numfails)
 {
 	int allScriptsCompiled = 0;
 	if (active)
@@ -107,17 +107,18 @@ bool GameObject::CheckScripts()
 		{
 			if (childs[i]->isActive())
 			{
-				childs[i]->CheckScripts();
+				childs[i]->CheckScripts(numfails);
 			}
 
 		}
 	}
+	numfails = allScriptsCompiled;
 	if (allScriptsCompiled == 0)
 	{
-		LOG("All Scripts are succesfully compiled.");
+		//LOG("All Scripts are succesfully compiled.");
 		return true;
 	}
-	LOG("[error] total scripts failed: %i", allScriptsCompiled);
+	//LOG("[error] total scripts failed: %i", allScriptsCompiled);
 	return false;
 }
 

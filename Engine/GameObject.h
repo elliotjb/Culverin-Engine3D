@@ -22,9 +22,11 @@ public:
 	GameObject(const GameObject& copy, bool haveparent = false, GameObject* parent = nullptr);
 	~GameObject();
 
+
+
 	// Play Engine
 	// Return if all scripts in scene are compilated correctly.
-	bool CheckScripts();
+	bool CheckScripts(int & numfails);
 	void StartComponents();
 
 	void preUpdate(float dt);

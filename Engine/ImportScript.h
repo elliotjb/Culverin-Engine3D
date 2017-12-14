@@ -21,11 +21,11 @@ public:
 	bool InitScriptingSystem();
 
 	bool Import(const char* file, uint uuid = 0);
-	void LoadResource(const char* file, ResourceScript* resourceScript);
-	int CompileScript(const char * file, std::string & libraryScript);
+	bool LoadResource(const char* file, ResourceScript* resourceScript);
+	int CompileScript(const char* file, std::string& libraryScript, const char* uid);
 	CSharpScript* LoadScript_CSharp(std::string);
 	CSharpScript* CreateCSharp(MonoImage* image);
-	MonoClass* GetMonoClassFromImage(MonoImage * image, std::string& name_space, std::string& classname);
+	MonoClass* GetMonoClassFromImage(MonoImage* image, std::string& name_space, std::string& classname);
 
 	MonoDomain* GetDomain() const;
 	MonoImage* GetCulverinImage() const;

@@ -231,6 +231,25 @@ void Scene::EditorSkybox()
 	// ----------------------------------------------------------------------------------------
 }
 
+bool Scene::CheckNoFails()
+{
+	int fails = 0;
+	for (int i = 0; i < gameobjects.size(); i++)
+	{
+		gameobjects[i]->CheckScripts(fails);
+	}
+	if (fails == 0)
+	{
+		LOG("All Scripts are succesfully compiled.");
+		return true;
+	}
+	else
+	{
+		LOG("[error] total scripts failed: %i.", fails);
+	}
+	return false;
+}
+
 void Scene::DrawPlane()
 {
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);

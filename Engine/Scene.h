@@ -29,6 +29,8 @@ public:
 	void EditorQuadtree();
 	void EditorSkybox();
 
+	bool CheckNoFails();
+
 	// DRAWING METHODS ---------
 	void DrawPlane();
 	void DrawCube(float size);

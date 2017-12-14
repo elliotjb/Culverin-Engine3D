@@ -827,7 +827,10 @@ void ModuleGUI::UpdateWindows(float dt)
 		ImGui::SameLine(width / 2 - 40);
 		if (ImGui::ImageButton((ImTextureID*)icon_play, pos_icon))
 		{
-			App->SetState(EngineState::PLAY); // OR STOP
+			if (App->scene->CheckNoFails())
+			{
+				App->SetState(EngineState::PLAY); // OR STOP
+			}
 		}
 		ImGui::SameLine(width / 2 - 10);
 		if (ImGui::ImageButton((ImTextureID*)icon_pause, pos_icon))

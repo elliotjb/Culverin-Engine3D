@@ -19,6 +19,7 @@ public:
 
 	bool Update(float dt);
 
+	std::string GetPathAssets() const;
 	void DeleteToMemory();
 	bool LoadToMemory();
 	Resource::State IsCompiled();

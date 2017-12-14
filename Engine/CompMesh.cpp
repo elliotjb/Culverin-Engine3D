@@ -398,6 +398,5 @@ void CompMesh::Load(const JSON_Object* object, std::string name)
 			parent->AddBoundingBox(resourceMesh);
 		}
 	}
-
 	Enable();
 }

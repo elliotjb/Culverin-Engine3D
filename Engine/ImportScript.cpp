@@ -112,17 +112,18 @@ bool ImportScript::Import(const char* file, uint uuid)
 		std::string fileassets = App->fs->CopyFileToAssetsS(file); //todo no same name!!!
 		std::string path_dll;
 		// First Compile The CSharp
-		if (CompileScript(fileassets.c_str(), path_dll) != 0)
+		if (CompileScript(fileassets.c_str(), path_dll, std::to_string(uuid_mesh).c_str()) != 0)
 		{
 			LOG("[error] Script: %s, Not Compiled", App->fs->GetOnlyName(fileassets).c_str());
 			res_script->InitInfo(path_dll, fileassets);
-			//res_script.
+			res_script->SetState(Resource::State::FAILED);
 			return false;
 		}
 		else
 		{
 			LOG("Script: %s, Compiled without errors", App->fs->GetOnlyName(fileassets).c_str());
 			res_script->InitInfo(path_dll, fileassets);
+			res_script->SetState(Resource::State::LOADED);
 			//now 
 			CSharpScript* newCSharp = LoadScript_CSharp(path_dll);
 			res_script->SetCSharp(newCSharp);
@@ -138,9 +139,39 @@ bool ImportScript::Import(const char* file, uint uuid)
 	return true;
 }
 
-void ImportScript::LoadResource(const char* file, ResourceScript* resourceScript)
+bool ImportScript::LoadResource(const char* file, ResourceScript* resourceScript)
 {
+	if (resourceScript != nullptr)
+	{
+		std::string path = file;
+		path = "Assets/" + path;
+		path = App->fs->GetFullPath(path);
+		std::string path_dll;
+		// First Compile The CSharp
+		if (CompileScript(path.c_str(), path_dll, file) != 0)
+		{
+			LOG("[error] Script: %s, Not Compiled", App->fs->GetOnlyName(path).c_str());
+			resourceScript->InitInfo(path_dll, path);
+			resourceScript->SetState(Resource::State::FAILED);
+			return false;
+		}
+		else
+		{
+			LOG("Script: %s, Compiled without errors", App->fs->GetOnlyName(path).c_str());
+			resourceScript->InitInfo(path_dll, path);
+			resourceScript->SetState(Resource::State::LOADED);
+			//now 
+			CSharpScript* newCSharp = LoadScript_CSharp(path_dll);
+			resourceScript->SetCSharp(newCSharp);
+		}
 
+
+		// Then Create Meta
+		std::string Newdirectory = ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory();
+		Newdirectory += "\\" + App->fs->FixName_directory(file);
+		App->Json_seria->SaveScript(resourceScript, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory(), Newdirectory.c_str());
+	}
+	return true;
 }
 
 
@@ -159,7 +190,7 @@ std::string ImportScript::GetMonoPath() const
 	return mono_path;
 }
 
-int ImportScript::CompileScript(const char* file, std::string& libraryScript)
+int ImportScript::CompileScript(const char* file, std::string& libraryScript, const char* uid)
 {
 	// Get the path of the project ----
 	std::string script_path = file;
@@ -169,7 +200,7 @@ int ImportScript::CompileScript(const char* file, std::string& libraryScript)
 
 	// Save dll to Library Directory --------------------
 	libraryScript = App->fs->GetFullPath("Library/Scripts/");
-	std::string nameFile = App->fs->GetOnlyName(file);
+	std::string nameFile = uid;
 	nameFile += ".dll";
 	libraryScript += nameFile;
 
