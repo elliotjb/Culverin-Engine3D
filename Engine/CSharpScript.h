@@ -73,6 +73,13 @@ public:
 		return NULL;
 	}
 
+	//Get all public variables of a script
+	//gpointer* iter = nullptr;
+	//std::vector<MonoClassField*>	public_variables;
+	//do
+	//{
+	//	public_variables.push_back(mono_class_get_fields(MonoClass* klass, gpointer *iter));
+	//}while(iter != nullptr)
 
 private:
 
