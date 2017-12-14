@@ -93,6 +93,7 @@ public:
 	std::string GetFullPath(std::string path);
 	std::string GetExtension(std::string file);
 	char* ConverttoChar(std::string name);
+	void NormalitzatePath(std::string& path) const;
 	std::string GetOnlyName(std::string file);
 	const char* ConverttoConstChar(std::string name);
 	std::string CreateFolder(const char* file_name, bool forceCreate);

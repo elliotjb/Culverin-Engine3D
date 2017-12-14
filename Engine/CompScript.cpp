@@ -9,6 +9,7 @@
 CompScript::CompScript(Comp_Type t, GameObject* parent) : Component(t, parent)
 {
 	uid = App->random->Int();
+	nameComponent = "Script";
 }
 
 CompScript::CompScript(const CompScript & copy, GameObject * parent) : Component(Comp_Type::C_SCRIPT, parent)
@@ -23,11 +24,11 @@ CompScript::~CompScript()
 
 void CompScript::Init()
 {
-	nameComponent = "New Sript (Script)";
-	nameScript = "New Sript";
-	editor = new Script_editor();
-	editor->Start(nameScript.c_str());
-	editor->SaveScript();
+	//nameComponent = "New Sript (Script)";
+	//nameScript = "New Sript";
+	//editor = new Script_editor();
+	//editor->Start(nameScript.c_str());
+	//editor->SaveScript();
 }
 
 void CompScript::preUpdate(float dt)
@@ -70,11 +71,16 @@ void CompScript::preUpdate(float dt)
 
 void CompScript::Update(float dt)
 {
+	if (resourcescript != nullptr && App->engineState == EngineState::PLAY)
+	{
+		resourcescript->Update(dt);
+	}
 }
 
 bool CompScript::CheckScript()
 {
-	return compiled;
+	//return if(resourcescript->IsCompiled() != resourcescript.;
+	return true;
 }
 
 void CompScript::ShowOptions()
@@ -155,7 +161,10 @@ void CompScript::ShowInspectorInfo()
 		//LOG("%.2f - %.2f  / /  %.2f - %.2f", ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y, ImGui::GetItemRectMax().x, ImGui::GetItemRectMax().y);
 		if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsMouseHoveringWindow())
 		{
-			activeScript = !activeScript;
+			if (resourcescript != nullptr)
+			{
+				activeScript = !activeScript;
+			}
 		}
 	}
 
@@ -173,10 +182,10 @@ void CompScript::ShowInspectorInfo()
 	{
 		if (resourcescript == nullptr)
 		{
-			//if (ImGui::Button("Select Material..."))
-			//{
-			//	selectScript = true;
-			//}
+			if (ImGui::Button("Select Material..."))
+			{
+				selectScript = true;
+			}
 		}
 		if (selectScript)
 		{
@@ -194,7 +203,7 @@ void CompScript::ShowInspectorInfo()
 				resourcescript->NumGameObjectsUseMe++;
 				if (resourcescript->IsLoadedToMemory() == Resource::State::UNLOADED)
 				{
-					//App->importer->iScript->LoadResource(std::to_string(resourcescript->GetUUID()).c_str(), resourcescript);
+					App->importer->iScript->LoadResource(std::to_string(resourcescript->GetUUID()).c_str(), resourcescript);
 				}
 				Enable();
 			}
@@ -213,6 +222,7 @@ void CompScript::Save(JSON_Object* object, std::string name, bool saveScene, uin
 {
 	json_object_dotset_number_with_std(object, name + "Type", Comp_Type::C_SCRIPT);
 	json_object_dotset_number_with_std(object, name + "UUID", uid);
+	json_object_dotset_number_with_std(object, name + "Resource Script UUID", resourcescript->GetUUID());
 	json_object_dotset_string_with_std(object, name + "Name Script", nameScript.c_str());
 }
 
@@ -220,9 +230,24 @@ void CompScript::Load(const JSON_Object* object, std::string name)
 {
 	uid = json_object_dotget_number_with_std(object, name + "UUID");
 	nameScript = json_object_dotget_string_with_std(object, name + "Name Script");
-	std::string temp = nameScript + " (Script)";
-	nameComponent = "Script";
-	editor = new Script_editor();
-	editor->Start(nameScript.c_str(), false);
+	uint resourceID = uid = json_object_dotget_number_with_std(object, name + "Resource Script UUID");
+	//std::string temp = nameScript + " (Script)";
+	//nameComponent = "Script";
+	//editor = new Script_editor();
+	//editor->Start(nameScript.c_str(), false);
+	if (resourceID > 0)
+	{
+		resourcescript = (ResourceScript*)App->resource_manager->GetResource(resourceID);
+		if (resourcescript != nullptr)
+		{
+			resourcescript->NumGameObjectsUseMe++;
+
+			// LOAD MATERIAL -------------------------
+			if (resourcescript->IsLoadedToMemory() == Resource::State::UNLOADED)
+			{
+				//App->importer->iMaterial->LoadResource(std::to_string(resourceMaterial->GetUUID()).c_str(), resourceMaterial);
+			}
+		}
+	}
 	Enable();
 }

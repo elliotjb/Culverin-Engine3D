@@ -2,7 +2,7 @@
 #include "CSharpScript.h"
 
 
-ResourceScript::ResourceScript(uint uid) : Resource(uuid, Resource::Type::MATERIAL, Resource::State::UNLOADED)
+ResourceScript::ResourceScript(uint uid) : Resource(uid, Resource::Type::MATERIAL, Resource::State::UNLOADED)
 {
 	NumGameObjectsUseMe = 0;
 	LOG("Recource Material Created!");
@@ -23,6 +23,12 @@ void ResourceScript::SetCSharp(CSharpScript* csharp_)
 	csharp = csharp_;
 }
 
+bool ResourceScript::Update(float dt)
+{
+	csharp->DoMainFunction(FunctionBase::CS_Update);
+	return false;
+}
+
 void ResourceScript::DeleteToMemory()
 {
 	state = Resource::State::UNLOADED;
@@ -37,7 +43,7 @@ bool ResourceScript::LoadToMemory()
 	return true;
 }
 
-Resource::State ResourceScript::IsLoadedToMemory()
+Resource::State ResourceScript::IsCompiled()
 {
 	return state;
 }

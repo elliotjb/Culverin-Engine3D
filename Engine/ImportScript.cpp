@@ -76,7 +76,7 @@ void ImportScript::LinkFunctions()
 	mono_add_internal_call("CulverinEditor.GameObject::GetComponent",(const void*)GetComponent);*/
 
 	//CONSOLE FUNCTIONS ------------------
-	mono_add_internal_call("CulverinEditor.Console.Console::Log",(const void*)ConsoleLog);
+	mono_add_internal_call("CulverinEditor.Debug.Debug::Log",(const void*)ConsoleLog);
 
 	//INPUT FUNCTIONS -------------------
 	/*mono_add_internal_call("CulverinEditor.Input::KeyDown",(const void*)KeyDown);
@@ -115,11 +115,14 @@ bool ImportScript::Import(const char* file, uint uuid)
 		if (CompileScript(fileassets.c_str(), path_dll) != 0)
 		{
 			LOG("[error] Script: %s, Not Compiled", App->fs->GetOnlyName(fileassets).c_str());
+			res_script->InitInfo(path_dll, fileassets);
+			//res_script.
 			return false;
 		}
 		else
 		{
 			LOG("Script: %s, Compiled without errors", App->fs->GetOnlyName(fileassets).c_str());
+			res_script->InitInfo(path_dll, fileassets);
 			//now 
 			CSharpScript* newCSharp = LoadScript_CSharp(path_dll);
 			res_script->SetCSharp(newCSharp);
@@ -133,6 +136,11 @@ bool ImportScript::Import(const char* file, uint uuid)
 
 	}
 	return true;
+}
+
+void ImportScript::LoadResource(const char* file, ResourceScript* resourceScript)
+{
+
 }
 
 

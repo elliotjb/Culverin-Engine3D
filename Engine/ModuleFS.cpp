@@ -838,18 +838,16 @@ void ModuleFS::FixNames_directories(std::vector<std::string>& files)
 {
 	for (int i = 0; i < files.size(); i++)
 	{
-		size_t EndName = files[i].find_last_of("\\");
+		NormalitzatePath(files[i]);
+		size_t EndName = files[i].find_last_of("/");
 		files[i] = files[i].substr(EndName + 1);
 	}
 }
 
 std::string ModuleFS::FixName_directory(std::string file)
 {
-	size_t EndName = file.find_last_of("\\");
-	if (EndName == 0) // need convert \\ to /! TODO ELLIOT
-	{
-		EndName = file.find_last_of("/");
-	}
+	NormalitzatePath(file);
+	size_t EndName = file.find_last_of("/");
 	file = file.substr(EndName + 1);
 	return file;
 }
@@ -890,10 +888,21 @@ char* ModuleFS::ConverttoChar(std::string name)
 	return temp;
 }
 
+void ModuleFS::NormalitzatePath(std::string& path) const
+{
+	for (std::string::iterator temp = path.begin(); temp != path.end(); temp++)
+	{
+		if (*temp == '\\')
+		{
+			*temp = '/';
+		}
+	}
+}
+
 std::string ModuleFS::GetOnlyName(std::string file)
 {
 	std::string nameFile = file;
-
+	NormalitzatePath(nameFile);
 	size_t EndName = nameFile.find_last_of("/");
 	nameFile = nameFile.substr(EndName + 1);
 	EndName = nameFile.find_last_of(".");

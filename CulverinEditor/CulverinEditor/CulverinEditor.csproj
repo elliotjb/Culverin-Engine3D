@@ -39,7 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Component.cs" />
-    <Compile Include="Console.cs" />
+    <Compile Include="Debug.cs" />
     <Compile Include="CulverinEditor.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Input.cs" />

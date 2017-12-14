@@ -153,5 +153,5 @@ bool ImportMaterial::LoadResource(const char* file, ResourceMaterial* resourceMa
 		resourceMaterial->LoadToMemory();
 		return true;
 	}
-	return false;
+	return true;
 }

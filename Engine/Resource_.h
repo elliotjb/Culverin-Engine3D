@@ -17,7 +17,8 @@ public:
 		UNLOADED,
 		LOADED,
 		REIMPORTED,
-		WANTDELETE
+		WANTDELETE,
+		FAILED
 	};
 
 public:

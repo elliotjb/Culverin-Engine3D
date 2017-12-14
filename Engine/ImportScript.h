@@ -10,6 +10,7 @@
 #include <mono/metadata/assembly.h>
 
 class CSharpScript;
+class ResourceScript;
 
 class ImportScript
 {
@@ -20,6 +21,7 @@ public:
 	bool InitScriptingSystem();
 
 	bool Import(const char* file, uint uuid = 0);
+	void LoadResource(const char* file, ResourceScript* resourceScript);
 	int CompileScript(const char * file, std::string & libraryScript);
 	CSharpScript* LoadScript_CSharp(std::string);
 	CSharpScript* CreateCSharp(MonoImage* image);

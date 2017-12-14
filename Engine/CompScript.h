@@ -32,12 +32,11 @@ public:
 
 public:
 	std::string nameScript;
-	Script_editor* editor;
+	Script_editor* editor = nullptr;
 	ResourceScript* resourcescript = nullptr;
 
 private:
 	bool selectScript = false;
-	bool compiled = false;
 	uint uuidResourceReimported = 0;
 };
 

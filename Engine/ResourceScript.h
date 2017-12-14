@@ -17,9 +17,11 @@ public:
 	void InitInfo(std::string path_dll_, std::string path_assets_);
 	void SetCSharp(CSharpScript* csharp_);
 
+	bool Update(float dt);
+
 	void DeleteToMemory();
 	bool LoadToMemory();
-	Resource::State IsLoadedToMemory();
+	Resource::State IsCompiled();
 
 private:
 	// 
