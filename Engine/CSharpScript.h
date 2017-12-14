@@ -36,7 +36,7 @@ struct VarValue
 class ScriptVariable
 {
 public:
-	ScriptVariable();
+	ScriptVariable(const char* name, VarType type, VarValue val);
 	virtual ~ScriptVariable();
 
 	template<class TYPE>
@@ -162,8 +162,11 @@ public:
 		return NULL;
 	}
 
+	//Pass from csharp to c++ variables
 	void GetScriptVariables();
 
+	VarType GetTypeFromMono(MonoType* mtype);
+	VarValue GetValueFromMono(MonoClassField* mfield);
 
 
 private:
@@ -176,10 +179,9 @@ private:
 	MonoClass* CSClass = nullptr;
 	MonoObject* CSObject = nullptr;
 
-	std::vector<MonoClassField*> public_variables;
+	std::vector<ScriptVariable*> variables;
 	
-	std::map<const char*, void*> pv_name_type;
-
+	std::map<MonoClassField*, MonoType*> field_type;
 	std::vector<const char*> pv_name;
 	std::vector<MonoType*> pv_type;
 	

@@ -4,15 +4,14 @@
 #include "ModuleImporter.h"
 #include "ImportScript.h"
 
-//SCRIPT VARIABLE UTILITY METHODS -----
-ScriptVariable::ScriptVariable()
+//SCRIPT VARIABLE UTILITY METHODS ------
+ScriptVariable::ScriptVariable(const char* name, VarType type, VarValue val):name(name),type(type),value(val)
 {
 }
 
 ScriptVariable::~ScriptVariable()
 {
 }
-
 
 
 //CSHARP SCRIPT FUNCTIONS ---------------
@@ -152,27 +151,49 @@ void CSharpScript::SetNameSpace(std::string _name_space)
 
 void CSharpScript::GetScriptVariables()
 {
-
+	MonoClassField* field = nullptr;
+	MonoType* type = nullptr;
 	void* iter = nullptr;
+
 	int num_fields = mono_class_num_fields(CSClass);
 	int num_methods = mono_class_num_methods(CSClass);
 	int num_properties = mono_class_num_properties(CSClass);
-
 	const char* class_name = mono_class_get_name(CSClass);
+	
+	//Fill field & type map from the script (variable info)
 	int count = 0;
 	do
 	{
-		public_variables.push_back(mono_class_get_fields(CSClass, &iter));
+		field = mono_class_get_fields(CSClass, &iter);
+		type = mono_field_get_type(field);
+
+		field_type.insert(std::pair<MonoClassField*, MonoType*>(field, type));
+		
 		count++;
 	} while (count < num_fields);
 
-	for (uint i = 0; i < public_variables.size(); i++)
+	for (std::map<MonoClassField*, MonoType*>::iterator it = field_type.begin(); it != field_type.end(); ++it)
 	{
+		VarType type = GetTypeFromMono(it->second);
+		VarValue value = GetValueFromMono(it->first);
+
+		variables.push_back(new ScriptVariable(mono_field_get_name(it->first), type, value));
+
 		/*int value = -1;
 		mono_field_get_value(CSObject, public_variables[i], &value);
 		pv_name_type.insert(std::pair<const char*, ScriptVariable>(mono_field_get_name(public_variables[i]), (void*)value));*/
 		//pv_name.push_back(mono_field_get_name(public_variables[i]));
 		//pv_type.push_back(mono_field_get_type(public_variables[i]));
 	}
+}
+
+VarType CSharpScript::GetTypeFromMono(MonoType * mtype)
+{
+	return VarType();
+}
+
+VarValue CSharpScript::GetValueFromMono(MonoClassField * mfield)
+{
+	return VarValue();
 }
 
