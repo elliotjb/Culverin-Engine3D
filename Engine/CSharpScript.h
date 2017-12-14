@@ -16,6 +16,94 @@ enum FunctionBase
 	CS_Start, CS_Update, CS_OnGUI, CS_OnEnable, CS_OnDisable
 };
 
+enum VarType
+{
+	Var_UNKNOWN = -1,
+	Var_INT = 0,
+	Var_FLOAT = 1,
+	Var_BOOL = 2,
+	Var_STRING = 3,
+};
+
+struct VarValue
+{
+	int iVal = 0;
+	float fVal = 0.0f;
+	bool bVal = false;
+	const char* strVal = nullptr;
+};
+
+class ScriptVariable
+{
+public:
+	ScriptVariable();
+	virtual ~ScriptVariable();
+
+	template<class TYPE>
+	TYPE GetValue() const;
+
+	template<class TYPE>
+	void SetValue(TYPE new_value);
+
+public:
+	const char* name = nullptr;
+	VarType type = Var_UNKNOWN;
+
+private:
+	VarValue value;
+};
+
+template<class TYPE>
+inline TYPE ScriptVariable::GetValue() const
+{
+	if (type == VarType::Var_INT)
+	{
+		return (int)value.iVal;
+	}
+	else if (type == VarType::Var_FLOAT)
+	{
+		return (float)value.fVal;
+	}
+	else if (type == VarType::Var_BOOL)
+	{
+		return (bool)value.bVal;
+	}
+	else if (type == VarType::Var_STRING)
+	{
+		return (const char*)value.strVal;
+	}
+	else 
+	{
+		LOG("Unknown variable type of '%s'", name.c_str());
+		return NULL;
+	}
+}
+
+template<class TYPE>
+inline void ScriptVariable::SetValue(TYPE new_value)
+{
+	if (type == VarType::Var_INT)
+	{
+		value.iVal = (int)new_value;
+	}
+	else if (type == VarType::Var_FLOAT)
+	{
+		value.fVal = (float)new_value;
+	}
+	else if (type == VarType::Var_BOOL)
+	{
+		value.bVal = (bool)new_value;
+	}
+	else if (type == VarType::Var_STRING)
+	{
+		value.strVal = (const char*)new_value;
+	}
+	else
+	{
+		LOG("Unknown variable type of '%s'",name.c_str());
+	}
+}
+
 struct MainMonoMethod
 {
 	FunctionBase type;
@@ -104,3 +192,4 @@ private:
 };
 
 #endif
+
