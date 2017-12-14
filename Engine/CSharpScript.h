@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <mono/metadata/metadata.h>
 #include <mono/metadata/object.h>
 
@@ -76,6 +77,7 @@ public:
 	void GetScriptVariables();
 
 
+
 private:
 	std::string name;
 	std::string name_space;
@@ -87,6 +89,11 @@ private:
 	MonoObject* CSObject = nullptr;
 
 	std::vector<MonoClassField*> public_variables;
+	
+	std::map<const char*, void*> pv_name_type;
+
+	std::vector<const char*> pv_name;
+	std::vector<MonoType*> pv_type;
 	
 	// Main Functions
 	MainMonoMethod Start;

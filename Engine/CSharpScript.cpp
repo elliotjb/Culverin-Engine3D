@@ -4,7 +4,35 @@
 #include "ModuleImporter.h"
 #include "ImportScript.h"
 
+enum VarType
+{
+	Var_UNKNOWN = -1,
+	Var_INT = 0,
+	Var_FLOAT = 1,
+	Var_BOOL = 2,
+	Var_STRING = 3,
+};
 
+struct VarValue
+{
+	int iVal = 0;
+	float fVal = 0.0f;
+	bool bVal = false;
+	const char* strVal = nullptr;
+};
+
+class ScriptVariable
+{
+public:
+	//ScriptVariable();
+	//virtual ~ScriptVariable();
+
+public:
+	const char* name = nullptr;
+	VarType type = Var_UNKNOWN;
+private:
+	VarValue value;
+};
 
 CSharpScript::CSharpScript()
 {
@@ -64,6 +92,8 @@ void CSharpScript::DoMainFunction(FunctionBase function)
 	}
 	case FunctionBase::CS_Update:
 	{
+		//GetScriptVariables();
+
 		if (Update.method != nullptr)
 		{
 			DoFunction(Update.method, nullptr);
@@ -140,12 +170,50 @@ void CSharpScript::SetNameSpace(std::string _name_space)
 
 void CSharpScript::GetScriptVariables()
 {
-	void** iter = nullptr;
 
-	std::vector<MonoClassField*> public_variables;
-	do 
+	void* iter = nullptr;
+	int num_fields = mono_class_num_fields(CSClass);
+	int num_methods = mono_class_num_methods(CSClass);
+	int num_properties = mono_class_num_properties(CSClass);
+
+	const char* class_name = mono_class_get_name(CSClass);
+	int count = 0;
+	do
 	{
-		public_variables.push_back(mono_class_get_fields(CSClass, iter));
-	} while (iter != nullptr);
+		public_variables.push_back(mono_class_get_fields(CSClass, &iter));
+		count++;
+	} while (count < num_fields);
+
+	for (uint i = 0; i < public_variables.size(); i++)
+	{
+		/*int value = -1;
+		mono_field_get_value(CSObject, public_variables[i], &value);
+		pv_name_type.insert(std::pair<const char*, ScriptVariable>(mono_field_get_name(public_variables[i]), (void*)value));*/
+		//pv_name.push_back(mono_field_get_name(public_variables[i]));
+		//pv_type.push_back(mono_field_get_type(public_variables[i]));
+	}
 }
+
+//void CSharpScript::GetScriptVariables()
+//{
+//	void* iter = nullptr;
+//	int num_fields = mono_class_num_fields(CSClass);
+//	int num_methods = mono_class_num_methods(CSClass);
+//	int num_properties = mono_class_num_properties(CSClass);
+//
+//	const char* class_name = mono_class_get_name(CSClass);
+//	int count = 0;
+//	do 
+//	{
+//		public_variables.push_back(mono_class_get_fields(CSClass, &iter));
+//		count++;
+//	} while (count < num_fields);
+//
+//	for (uint i = 0; i < public_variables.size(); i++)
+//	{
+//		pv_name_type.insert(std::pair<const char*,TYPE>(mono_field_get_name(public_variables[i]), mono_field_get(public_variables[i])));
+//		//pv_name.push_back(mono_field_get_name(public_variables[i]));
+//		//pv_type.push_back(mono_field_get_type(public_variables[i]));
+//	}
+//}
 
