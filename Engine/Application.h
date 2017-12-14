@@ -30,7 +30,6 @@ class ModuleImporter;
 class ModuleFS;
 class ModuleTextures;
 class ModuleResourceManager;
-class ModuleScripting;
 
 class JSONSerialization;
 
@@ -115,7 +114,6 @@ public:
 	ModuleFS* fs = nullptr;
 	ModuleTextures* textures = nullptr;
 	ModuleResourceManager* resource_manager = nullptr;
-	ModuleScripting* scripting = nullptr;
 
 private:
 	std::list<Module*> list_modules;

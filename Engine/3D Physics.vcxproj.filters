@@ -405,12 +405,6 @@
     <ClInclude Include="ImportScript.h">
       <Filter>Engine\Importer</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleScripting.h">
-      <Filter>Engine\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripting.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="CSharpScript.h">
       <Filter>Engine\Resources\Script</Filter>
     </ClInclude>
@@ -661,12 +655,6 @@
     </ClCompile>
     <ClCompile Include="ImportScript.cpp">
       <Filter>Engine\Importer</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleScripting.cpp">
-      <Filter>Engine\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripting.cpp">
-      <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="CSharpScript.cpp">
       <Filter>Engine\Resources\Script</Filter>

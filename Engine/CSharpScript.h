@@ -6,7 +6,6 @@
 #define DefaultParam 0
 
 #include <string>
-
 #include <mono/metadata/metadata.h>
 #include <mono/metadata/object.h>
 

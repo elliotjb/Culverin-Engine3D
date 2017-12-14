@@ -9,18 +9,75 @@
 #include "CSharpScript.h"
 #include "Globals.h"
 
-#include <mono/metadata/assembly.h>
-#include <mono/metadata/mono-config.h>
-#include <mono/jit/jit.h>
-
+#include <direct.h>
+#pragma comment(lib, "mono-2.0-sgen.lib")
 
 ImportScript::ImportScript()
 {
+
 }
 
 
 ImportScript::~ImportScript()
 {
+}
+
+bool ImportScript::InitScriptingSystem()
+{
+	char my_path[FILENAME_MAX];
+	// Fill my_path char array with the path of the .dll
+	_getcwd(my_path, FILENAME_MAX);
+
+	// Set where Mono Directory is placed in mono_path
+	mono_path = my_path;
+	mono_path += "/Mono";
+
+	// Use the standard configuration ----
+	mono_config_parse(NULL);
+
+	// Get the correct dirs --------------
+	std::string lib = mono_path;
+	lib += "/lib";
+	std::string etc = mono_path;
+	etc += "/etc";
+
+
+	// Setup the default directories for mono use here for now the directories of your Mono installation
+	mono_set_dirs(lib.c_str(), etc.c_str());
+	domain = mono_jit_init_version("Scripting", "v4.0.30319");
+
+	MonoAssembly* culverin_assembly = mono_domain_assembly_open(domain, "./ScriptManager/AssemblyReference/CulverinEditor.dll");
+	if (culverin_assembly)
+	{
+		culverin_mono_image = mono_assembly_get_image(culverin_assembly);
+		return true;
+	}
+	return false;
+}
+
+void ImportScript::AddInternalCalls(const char * function_name, const void * link_method)
+{
+	////GAMEOBJECT FUNCTIONS ---------------
+	//mono_add_internal_call("CulverinEditor.GameObject::CreateGameObject",(const void*)CreateGameObject);
+	//mono_add_internal_call("CulverinEditor.GameObject::Destroy",(const void*)DestroyGameObject);
+	//mono_add_internal_call("CulverinEditor.GameObject::SetActive",(const void*)SetActive);
+	//mono_add_internal_call("CulverinEditor.GameObject::IsActive",(const void*)IsActive);
+	//mono_add_internal_call("CulverinEditor.GameObject::SetParent",(const void*)SetParent);
+	//mono_add_internal_call("CulverinEditor.GameObject::SetName",(const void*)SetName);
+	//mono_add_internal_call("CulverinEditor.GameObject::GetName",(const void*)GetName);
+	//mono_add_internal_call("CulverinEditor.GameObject::AddComponent",(const void*)AddComponent);
+	//mono_add_internal_call("CulverinEditor.GameObject::GetComponent",(const void*)GetComponent);
+
+	////CONSOLE FUNCTIONS ------------------
+	//mono_add_internal_call("CulverinEditor.Console.Console::Log",(const void*)ConsoleLog);
+
+	////INPUT FUNCTIONS -------------------
+	//mono_add_internal_call("CulverinEditor.Input::KeyDown",(const void*)KeyDown);
+	//mono_add_internal_call("CulverinEditor.Input::KeyUp",(const void*)KeyUp);
+	//mono_add_internal_call("CulverinEditor.Input::KeyRepeat",(const void*)KeyRepeat);
+	//mono_add_internal_call("CulverinEditor.Input::MouseButtonDown",(const void*)MouseButtonDown);
+	//mono_add_internal_call("CulverinEditor.Input::MouseButtonUp",(const void*)MouseButtonUp);
+	//mono_add_internal_call("CulverinEditor.Input::MouseButtonRepeat",(const void*)MouseButtonRepeat);
 }
 
 bool ImportScript::Import(const char* file, uint uuid)
@@ -63,13 +120,29 @@ bool ImportScript::Import(const char* file, uint uuid)
 	return true;
 }
 
+
+MonoDomain * ImportScript::GetDomain()
+{
+	return domain;
+}
+
+MonoImage* ImportScript::GetCulverinImage()
+{
+	return culverin_mono_image;
+}
+
+std::string ImportScript::GetMonoPath() const
+{
+	return mono_path;
+}
+
 int ImportScript::CompileScript(const char* file, std::string& libraryScript)
 {
 	// Get the path of the project ----
 	std::string script_path = file;
 
 	// Get mono directory -------------
-	std::string command = App->importer->GetMonoPath();
+	std::string command = GetMonoPath();
 
 	// Save dll to Library Directory --------------------
 	libraryScript = App->fs->GetFullPath("Library/Scripts/");
@@ -92,7 +165,7 @@ CSharpScript* ImportScript::LoadScript_CSharp(std::string file)
 {
 	if (file != "")
 	{
-		MonoAssembly* assembly = mono_domain_assembly_open(App->importer->GetDomain(), file.c_str());
+		MonoAssembly* assembly = mono_domain_assembly_open(GetDomain(), file.c_str());
 		if (assembly)
 		{
 			// First Get the Image
@@ -131,7 +204,7 @@ CSharpScript* ImportScript::CreateCSharp(MonoImage* image)
 		if (entity)
 		{
 			CSharpScript* csharp = new CSharpScript();
-			csharp->SetDomain(App->importer->GetDomain());
+			csharp->SetDomain(GetDomain());
 			csharp->SetImage(image);
 			csharp->SetClass(entity);
 			csharp->SetClassName(classname);

@@ -10,7 +10,6 @@
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/cfileio.h"
 
-#include <mono/metadata/metadata.h>
 
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
 
@@ -35,7 +34,6 @@ public:
 
 	bool Init(JSON_Object* node);
 	bool Start();
-	bool InitSystemScript();
 	update_status PreUpdate(float dt);
 	//update_status Update(float dt);
 	//update_status PostUpdate(float dt);
@@ -45,10 +43,6 @@ public:
 	void ProcessTransform(CompTransform* trans);
 	bool CleanUp();
 
-	//Mono --------
-	MonoDomain* GetDomain();
-	MonoImage* GetCulverinImage();
-	std::string GetMonoPath() const;
 
 	bool Import(const char* file, Resource::Type type);
 	bool Import(const char* file, Resource::Type type, std::vector<ReImport>& resourcesToReimport);
@@ -65,10 +59,6 @@ public:
 
 private:
 
-	//MONO ---------------------------
-	std::string mono_path;
-	MonoDomain* domain = nullptr;
-	MonoImage* culverin_mono_image = nullptr;
 };
 
 #endif

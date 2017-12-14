@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleFS.h"
 #include "ModuleImporter.h"
+#include "ImportScript.h"
+
 
 
 CSharpScript::CSharpScript()
@@ -23,7 +25,7 @@ void CSharpScript::LoadScript()
 {
 	if (CSClass)
 	{
-		CSObject = mono_object_new(App->importer->GetDomain(), CSClass);
+		CSObject = mono_object_new(App->importer->iScript->GetDomain(), CSClass);
 	}
 	if (CSObject)
 	{
