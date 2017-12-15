@@ -12,6 +12,8 @@
 #include "WindowHierarchy.h"
 #include "WindowSceneWorld.h"
 #include "WindowProject.h"
+#include "ModuleImporter.h"
+#include "ImportScript.h"
 #include "GameObject.h"
 
 #include "ImGui\imgui.h"
@@ -293,7 +295,12 @@ update_status ModuleGUI::Update(float dt)
 					App->gui->SetLinkInspector(empty);
 					App->camera->SetFocus(empty);
 				}
+				// CreateNewScript
 				ImGui::EndMenu();
+			}
+			if (ImGui::MenuItem("C# Script"))
+			{
+				window_CreateNewScript = !window_CreateNewScript;
 			}
 			ImGui::EndMenu();
 		}
@@ -373,7 +380,11 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::End();
 	}
 	
-
+	// Create New Script ------------------
+	if (window_CreateNewScript)
+	{
+		App->importer->iScript->CreateNewScript(window_CreateNewScript);
+	}
 	//----------------------------------------------
 	// Window About Us... ---------------------------------
 	if (window_about_us)

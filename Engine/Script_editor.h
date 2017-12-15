@@ -29,8 +29,7 @@ public:
 	void Show(bool& active);
 
 	void SetAction(ActionEditor action);
-
-	void SaveScript();
+	void SaveScript(bool ReImport = false);
 
 public:
 	TextEditor editor;

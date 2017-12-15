@@ -8,6 +8,7 @@
 #include "JSONSerialization.h"
 #include "CSharpScript.h"
 #include "Globals.h"
+#include "Timer.h"
 
 #include <direct.h>
 #pragma comment(lib, "mono-2.0-sgen.lib")
@@ -96,14 +97,14 @@ void ImportScript::ConsoleLog(MonoString* string)
 
 bool ImportScript::Import(const char* file, uint uuid)
 {
-	uint uuid_mesh = 0;
+	uint uuid_script = 0;
 	if (uuid == 0) // if direfent create a new resource with the resource deleted
 	{
-		uuid_mesh = App->random->Int();
+		uuid_script = App->random->Int();
 	}
 	else
 	{
-		uuid_mesh = uuid;
+		uuid_script = uuid;
 	}
 	if (IsNameUnique(App->fs->GetOnlyName(file)) == false)
 	{
@@ -116,7 +117,7 @@ bool ImportScript::Import(const char* file, uint uuid)
 		nameScripts.push_back(App->fs->GetOnlyName(file));
 
 		// Now create Resource and Import C#
-		ResourceScript* res_script = (ResourceScript*)App->resource_manager->CreateNewResource(Resource::Type::SCRIPT, uuid_mesh);
+		ResourceScript* res_script = (ResourceScript*)App->resource_manager->CreateNewResource(Resource::Type::SCRIPT, uuid_script);
 		if (res_script != nullptr)
 		{
 			std::string fileassets = App->fs->CopyFileToAssetsS(file);
@@ -125,7 +126,7 @@ bool ImportScript::Import(const char* file, uint uuid)
 
 			// First Compile The CSharp
 			std::string path_dll;
-			if (CompileScript(fileassets.c_str(), path_dll, std::to_string(uuid_mesh).c_str()) != 0)
+			if (CompileScript(fileassets.c_str(), path_dll, std::to_string(uuid_script).c_str()) != 0)
 			{
 				LOG("[error] Script: %s, Not Compiled", App->fs->GetOnlyName(fileassets).c_str());
 				res_script->InitInfo(path_dll, fileassets);
@@ -210,13 +211,87 @@ bool ImportScript::ReImportScript(std::string fileAssets, std::string uid_script
 	//std::string Newdirectory = ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory();
 	//Newdirectory += "\\" + App->fs->FixName_directory(file);
 	//App->Json_seria->SaveScript(resourceScript, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory(), Newdirectory.c_str());
+	return true;
 }
 
 bool ImportScript::CreateNewScript(bool& active)
 {
 	//ImGui::PushStyleVar() // Center
-	ImGui::Begin("Create New Script", &active);
+	ImGui::Begin("Create New Script", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders);
+	static Timer timeshowResult;
+	static int result = 0;
+	ImGui::Text("Put Name Name Class: ");
+	char namedit[50];
+	strcpy_s(namedit, 50, nameNewScript.c_str());
+	ImGui::Bullet();
+	if (ImGui::InputText("##nameModel", namedit, 50, ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue))
+	{
+		if (result == 0)
+		{
+			nameNewScript = App->fs->ConverttoChar(std::string(namedit).c_str());
+			if (nameNewScript.compare("") != 0)
+			{
+				if (IsNameUnique(nameNewScript) == false)
+				{
+					result = 1;
+					timeshowResult.Start();
+					LOG("[error] This name is already used! Change name!");
+				}
+				else
+				{
+					nameScripts.push_back(nameNewScript);
+					result = 2;
+					timeshowResult.Start();
+					uint uuid_script = App->random->Int();
+					ResourceScript* res_script = (ResourceScript*)App->resource_manager->CreateNewResource(Resource::Type::SCRIPT, uuid_script);
+					res_script->CreateNewScript(nameNewScript);
+					// First Compile The CSharp
+					std::string fileassets = nameNewScript;
+					fileassets = "Assets/" + fileassets + ".cs";
+					std::string path_dll;
+					if (CompileScript(App->fs->GetFullPath(fileassets).c_str(), path_dll, std::to_string(uuid_script).c_str()) != 0)
+					{
+						LOG("[error] Script: %s, Not Compiled", App->fs->GetOnlyName(fileassets).c_str());
+						res_script->InitInfo(path_dll, fileassets);
+						res_script->SetState(Resource::State::FAILED);
+						return false;
+					}
+					else
+					{
+						LOG("Script: %s, Compiled without errors", App->fs->GetOnlyName(fileassets).c_str());
+						res_script->InitInfo(path_dll, fileassets);
+						res_script->SetState(Resource::State::LOADED);
+						//now 
+						CSharpScript* newCSharp = LoadScript_CSharp(path_dll);
+						res_script->SetCSharp(newCSharp);
+					}
 
+
+					// Then Create Meta
+					std::string Newdirectory = ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory();
+					Newdirectory += "/" + App->fs->GetOnlyName(fileassets) + ".cs";
+					App->Json_seria->SaveScript(res_script, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory(), Newdirectory.c_str());
+				}
+			}
+		}
+	}
+	ImGui::Text("Press 'Enter' to create a new Script");
+	if (timeshowResult.ReadSec() < 2)
+	{
+		if (result == 1)
+		{
+			ImGui::TextColored(ImVec4(0.933, 0, 0, 1), "[error] This name is already used! Change name!");
+		}
+		else if (result == 2)
+		{
+			ImGui::TextColored(ImVec4(0.109, 0.933, 0, 1), "Script: %s, Compiled without errors", nameNewScript.c_str());
+		}
+	}
+	else if (result != 0)
+	{
+		nameNewScript = "";
+		result = 0;
+	}
 
 	ImGui::End();
 	return true;

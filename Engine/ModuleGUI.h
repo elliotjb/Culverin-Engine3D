@@ -84,6 +84,7 @@ private:
 	bool window_infoMouse = false;
 	bool window_exit = false;
 	bool window_style = false;
+	bool window_CreateNewScript = false;
 
 	int menu_height = 0;
 

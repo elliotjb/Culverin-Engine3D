@@ -28,6 +28,7 @@ void ResourceScript::InitInfo(std::string path_dll_, std::string path_assets_)
 void ResourceScript::CreateNewScript(std::string nameScript)
 {
 	editor->Start(nameScript, true);
+	editor->SaveScript();
 }
 
 void ResourceScript::SetScriptEditor(std::string nameScript)

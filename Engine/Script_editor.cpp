@@ -193,18 +193,21 @@ void Script_editor::SetAction(ActionEditor action)
 	}
 }
 
-void Script_editor::SaveScript()
+void Script_editor::SaveScript(bool ReImport)
 {
 	App->fs->SaveScript(name, editor, DIRECTORY_IMPORT::IMPORT_DIRECTORY_ASSETS);
-	parent->FreeMono();
-	if (App->importer->iScript->ReImportScript(parent->GetPathAssets(), std::to_string(parent->GetUUID()), parent))
+	if (ReImport)
 	{
-		parent->SetState(Resource::State::LOADED);
-		LOG("ReImported Succesfully Script: %s", App->fs->GetOnlyName(parent->GetPathAssets()).c_str());
-	}
-	else
-	{
-		parent->SetState(Resource::State::FAILED);
-		LOG("[error] ReImported Failed Script: %s", App->fs->GetOnlyName(parent->GetPathAssets()).c_str());
+		parent->FreeMono();
+		if (App->importer->iScript->ReImportScript(parent->GetPathAssets(), std::to_string(parent->GetUUID()), parent))
+		{
+			parent->SetState(Resource::State::LOADED);
+			LOG("ReImported Succesfully Script: %s", App->fs->GetOnlyName(parent->GetPathAssets()).c_str());
+		}
+		else
+		{
+			parent->SetState(Resource::State::FAILED);
+			LOG("[error] ReImported Failed Script: %s", App->fs->GetOnlyName(parent->GetPathAssets()).c_str());
+		}
 	}
 }

@@ -43,6 +43,7 @@ private:
 	static void ConsoleLog(MonoString* string);
 
 private:
+	std::string nameNewScript;
 	std::string mono_path;
 	MonoDomain* domain = nullptr;
 	MonoImage* culverin_mono_image = nullptr;
