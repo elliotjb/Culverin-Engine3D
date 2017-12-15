@@ -158,16 +158,13 @@ void CSharpScript::GetScriptVariables()
 	int num_fields = mono_class_num_fields(CSClass);
 	
 	//Fill field-type map from the script to after get its respective info
-	int count = 0;
-	do
+	for (uint i = 0; i < num_fields; i++)
 	{
 		field = mono_class_get_fields(CSClass, &iter);
 		type = mono_field_get_type(field);
 
 		field_type.insert(std::pair<MonoClassField*, MonoType*>(field, type));
-		
-		count++;
-	} while (count < num_fields);
+	}
 
 	// From the previous map, fill VariablesScript vector that will contain info (name, type, value) of each variable
 	for (std::map<MonoClassField*, MonoType*>::iterator it = field_type.begin(); it != field_type.end(); ++it)
@@ -177,11 +174,11 @@ void CSharpScript::GetScriptVariables()
 		//Create variable
 		ScriptVariable* new_var = new ScriptVariable(mono_field_get_name(it->first), type);
 	
-		//Put it in variables vector
-		variables.push_back(new_var);
-
 		//Set its value
 		GetValueFromMono(new_var, it->first, it->second);
+
+		//Put it in variables vector
+		variables.push_back(new_var);
 	}
 }
 

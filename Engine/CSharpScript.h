@@ -39,8 +39,6 @@ public:
 	template<class TYPE>
 	void SetValue(TYPE new_value);
 
-	void SetValueFromMono(void* val);
-
 public:
 	const char* name = nullptr;
 	VarType type = Var_UNKNOWN;
