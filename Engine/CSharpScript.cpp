@@ -5,14 +5,13 @@
 #include "ImportScript.h"
 
 //SCRIPT VARIABLE UTILITY METHODS ------
-ScriptVariable::ScriptVariable(const char* name, VarType type, VarValue val):name(name),type(type),value(val)
+ScriptVariable::ScriptVariable(const char* name, VarType type):name(name),type(type)
 {
 }
 
 ScriptVariable::~ScriptVariable()
 {
 }
-
 
 //CSHARP SCRIPT FUNCTIONS ---------------
 CSharpScript::CSharpScript()
@@ -39,6 +38,7 @@ void CSharpScript::LoadScript()
 	if (CSObject)
 	{
 		mono_runtime_object_init(CSObject);
+
 		// Create main Functions
 		Start = CreateMainFunction("Start", DefaultParam, FunctionBase::CS_Start);
 		Update = CreateMainFunction("Update", DefaultParam, FunctionBase::CS_Update);
@@ -156,11 +156,8 @@ void CSharpScript::GetScriptVariables()
 	void* iter = nullptr;
 
 	int num_fields = mono_class_num_fields(CSClass);
-	int num_methods = mono_class_num_methods(CSClass);
-	int num_properties = mono_class_num_properties(CSClass);
-	const char* class_name = mono_class_get_name(CSClass);
 	
-	//Fill field & type map from the script (variable info)
+	//Fill field-type map from the script to after get its respective info
 	int count = 0;
 	do
 	{
@@ -172,18 +169,19 @@ void CSharpScript::GetScriptVariables()
 		count++;
 	} while (count < num_fields);
 
+	// From the previous map, fill VariablesScript vector that will contain info (name, type, value) of each variable
 	for (std::map<MonoClassField*, MonoType*>::iterator it = field_type.begin(); it != field_type.end(); ++it)
 	{
 		VarType type = GetTypeFromMono(it->second);
-		VarValue value = GetValueFromMono(it->first);
 
-		variables.push_back(new ScriptVariable(mono_field_get_name(it->first), type, value));
+		//Create variable
+		ScriptVariable* new_var = new ScriptVariable(mono_field_get_name(it->first), type);
+	
+		//Put it in variables vector
+		variables.push_back(new_var);
 
-		/*int value = -1;
-		mono_field_get_value(CSObject, public_variables[i], &value);
-		pv_name_type.insert(std::pair<const char*, ScriptVariable>(mono_field_get_name(public_variables[i]), (void*)value));*/
-		//pv_name.push_back(mono_field_get_name(public_variables[i]));
-		//pv_type.push_back(mono_field_get_type(public_variables[i]));
+		//Set its value
+		GetValueFromMono(new_var, it->first, it->second);
 	}
 }
 
@@ -193,13 +191,46 @@ void CSharpScript::FreeMono()
 	//mono_free(CSdomain);
 }
 
-VarType CSharpScript::GetTypeFromMono(MonoType * mtype)
+VarType CSharpScript::GetTypeFromMono(MonoType* mtype)
 {
-	return VarType();
+	std::string name = mono_type_get_name(mtype);
+
+	if (name == "System.Int32")
+	{
+		return VarType::Var_INT;
+	}
+		
+	if (name == "System.Single")
+	{
+		return VarType::Var_FLOAT;
+	}
+
+	if (name == "System.Boolean")
+	{
+		return VarType::Var_BOOL;
+	}
+
+	if (name == "System.String")
+	{
+		return VarType::Var_STRING;
+	}
+	else
+	{
+		LOG("Unknown variable type");
+		return VarType::Var_UNKNOWN;
+	}
 }
 
-VarValue CSharpScript::GetValueFromMono(MonoClassField * mfield)
+void CSharpScript::GetValueFromMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype)
 {
-	return VarValue();
+	//Free memory
+	RELEASE(variable->value);
+	variable->value = nullptr;
+
+	//Allocate memory
+	variable->value = new char[mono_type_stack_size(mtype, NULL)];
+
+	//Set value of the script into its respective variable
+	mono_field_get_value(CSObject, mfield, variable->value);
 }
 

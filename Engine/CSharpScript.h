@@ -23,20 +23,14 @@ enum VarType
 	Var_FLOAT = 1,
 	Var_BOOL = 2,
 	Var_STRING = 3,
+	Var_CLASS = 4
 };
 
-struct VarValue
-{
-	int iVal = 0;
-	float fVal = 0.0f;
-	bool bVal = false;
-	const char* strVal = nullptr;
-};
 
 class ScriptVariable
 {
 public:
-	ScriptVariable(const char* name, VarType type, VarValue val);
+	ScriptVariable(const char* name, VarType type);
 	virtual ~ScriptVariable();
 
 	template<class TYPE>
@@ -45,12 +39,12 @@ public:
 	template<class TYPE>
 	void SetValue(TYPE new_value);
 
+	void SetValueFromMono(void* val);
+
 public:
 	const char* name = nullptr;
 	VarType type = Var_UNKNOWN;
-
-private:
-	VarValue value;
+	void* value = nullptr;
 };
 
 template<class TYPE>
@@ -58,19 +52,19 @@ inline TYPE ScriptVariable::GetValue() const
 {
 	if (type == VarType::Var_INT)
 	{
-		return (int)value.iVal;
+		return (int)value;
 	}
 	else if (type == VarType::Var_FLOAT)
 	{
-		return (float)value.fVal;
+		return (float)value;
 	}
 	else if (type == VarType::Var_BOOL)
 	{
-		return (bool)value.bVal;
+		return (bool)value;
 	}
 	else if (type == VarType::Var_STRING)
 	{
-		return (const char*)value.strVal;
+		return (const char*)value;
 	}
 	else 
 	{
@@ -84,19 +78,19 @@ inline void ScriptVariable::SetValue(TYPE new_value)
 {
 	if (type == VarType::Var_INT)
 	{
-		value.iVal = (int)new_value;
+		value = (int)new_value;
 	}
 	else if (type == VarType::Var_FLOAT)
 	{
-		value.fVal = (float)new_value;
+		value = (float)new_value;
 	}
 	else if (type == VarType::Var_BOOL)
 	{
-		value.bVal = (bool)new_value;
+		value = (bool)new_value;
 	}
 	else if (type == VarType::Var_STRING)
 	{
-		value.strVal = (const char*)new_value;
+		value = (const char*)new_value;
 	}
 	else
 	{
@@ -167,7 +161,7 @@ public:
 	void FreeMono();
 
 	VarType GetTypeFromMono(MonoType* mtype);
-	VarValue GetValueFromMono(MonoClassField* mfield);
+	void GetValueFromMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype);
 
 
 private:
@@ -180,11 +174,9 @@ private:
 	MonoClass* CSClass = nullptr;
 	MonoObject* CSObject = nullptr;
 
+	// Variables/Info containers
 	std::vector<ScriptVariable*> variables;
-	
 	std::map<MonoClassField*, MonoType*> field_type;
-	std::vector<const char*> pv_name;
-	std::vector<MonoType*> pv_type;
 	
 	// Main Functions
 	MainMonoMethod Start;
