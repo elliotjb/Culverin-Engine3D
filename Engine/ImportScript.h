@@ -8,6 +8,7 @@
 #include <mono/jit/jit.h>
 #include <mono/metadata/mono-config.h>
 #include <mono/metadata/assembly.h>
+#include <list>
 
 class CSharpScript;
 class ResourceScript;
@@ -22,6 +23,8 @@ public:
 
 	bool Import(const char* file, uint uuid = 0);
 	bool LoadResource(const char* file, ResourceScript* resourceScript);
+	bool ReImportScript(std::string fileAssets, std::string uid_script, ResourceScript * resourceScript);
+	bool CreateNewScript(bool & active);
 	int CompileScript(const char* file, std::string& libraryScript, const char* uid);
 	CSharpScript* LoadScript_CSharp(std::string);
 	CSharpScript* CreateCSharp(MonoImage* image);
@@ -30,6 +33,8 @@ public:
 	MonoDomain* GetDomain() const;
 	MonoImage* GetCulverinImage() const;
 	std::string GetMonoPath() const;
+
+	bool IsNameUnique(std::string name) const;
 
 private:
 	void LinkFunctions();
@@ -41,6 +46,7 @@ private:
 	std::string mono_path;
 	MonoDomain* domain = nullptr;
 	MonoImage* culverin_mono_image = nullptr;
+	std::list<std::string> nameScripts;
 };
 
 #endif

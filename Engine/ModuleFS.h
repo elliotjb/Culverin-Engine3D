@@ -53,11 +53,13 @@ public:
 	//update_status UpdateConfig(float dt);
 
 	uint LoadFile(const char* file, char** buffer, DIRECTORY_IMPORT directory = IMPORT_DEFAULT);
-
-	//Name of the file (NOT DIRECTORY)
+	
+	//Name of the file (NOT DIRECTORY) ------------------
 	bool SaveFile(const char* data, std::string name, uint size, DIRECTORY_IMPORT directory = IMPORT_DEFAULT);
-	// Only Scripting!!!
+	// Only Scripting!!! ---------------
 	bool SaveScript(std::string name, TextEditor& editor, DIRECTORY_IMPORT directory = IMPORT_DEFAULT);
+	// Load Script From Assets ------------
+	std::string LoadScript(std::string file);
 
 	// Get Files to Window Project ---------------------------------------------------
 	void GetAllFolders(std::experimental::filesystem::path path, std::string folderActive, std::vector<FoldersNew>& folders);

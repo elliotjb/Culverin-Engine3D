@@ -164,6 +164,7 @@ public:
 
 	//Pass from csharp to c++ variables
 	void GetScriptVariables();
+	void FreeMono();
 
 	VarType GetTypeFromMono(MonoType* mtype);
 	VarValue GetValueFromMono(MonoClassField* mfield);

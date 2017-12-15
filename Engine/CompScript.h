@@ -32,7 +32,7 @@ public:
 
 public:
 	std::string nameScript;
-	Script_editor* editor = nullptr;
+	//Script_editor* editor = nullptr;
 	ResourceScript* resourcescript = nullptr;
 
 private:

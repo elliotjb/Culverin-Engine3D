@@ -44,7 +44,7 @@ bool ImportScript::InitScriptingSystem()
 
 	// Setup the mono directories to start working with
 	mono_set_dirs(lib.c_str(), etc.c_str());
-	domain = mono_jit_init_version("Scripting", "v4.0.30319");
+	domain = mono_jit_init("CulverinEngine");
 
 	MonoAssembly* culverin_assembly = mono_domain_assembly_open(domain, "./ScriptManager/AssemblyReference/CulverinEditor.dll");
 	if (culverin_assembly)
@@ -53,7 +53,6 @@ bool ImportScript::InitScriptingSystem()
 
 		//Register internal calls to set Scripting functions to work with .cs files
 		LinkFunctions();
-
 		return true;
 	}
 
@@ -106,35 +105,50 @@ bool ImportScript::Import(const char* file, uint uuid)
 	{
 		uuid_mesh = uuid;
 	}
-	ResourceScript* res_script = (ResourceScript*)App->resource_manager->CreateNewResource(Resource::Type::SCRIPT, uuid_mesh);
-	if (res_script != nullptr)
+	if (IsNameUnique(App->fs->GetOnlyName(file)) == false)
 	{
-		std::string fileassets = App->fs->CopyFileToAssetsS(file); //todo no same name!!!
-		std::string path_dll;
-		// First Compile The CSharp
-		if (CompileScript(fileassets.c_str(), path_dll, std::to_string(uuid_mesh).c_str()) != 0)
+		LOG("[error] Script: %s, The Name of Script must be unique, there is already a script with that name.", App->fs->GetOnlyName(file).c_str());
+		return false;
+	}
+	else
+	{
+		// First add name into nameScripts in ImportScript
+		nameScripts.push_back(App->fs->GetOnlyName(file));
+
+		// Now create Resource and Import C#
+		ResourceScript* res_script = (ResourceScript*)App->resource_manager->CreateNewResource(Resource::Type::SCRIPT, uuid_mesh);
+		if (res_script != nullptr)
 		{
-			LOG("[error] Script: %s, Not Compiled", App->fs->GetOnlyName(fileassets).c_str());
-			res_script->InitInfo(path_dll, fileassets);
-			res_script->SetState(Resource::State::FAILED);
-			return false;
+			std::string fileassets = App->fs->CopyFileToAssetsS(file);
+			// Create TextEditor from the script.
+			res_script->SetScriptEditor(App->fs->GetOnlyName(fileassets));
+
+			// First Compile The CSharp
+			std::string path_dll;
+			if (CompileScript(fileassets.c_str(), path_dll, std::to_string(uuid_mesh).c_str()) != 0)
+			{
+				LOG("[error] Script: %s, Not Compiled", App->fs->GetOnlyName(fileassets).c_str());
+				res_script->InitInfo(path_dll, fileassets);
+				res_script->SetState(Resource::State::FAILED);
+				return false;
+			}
+			else
+			{
+				LOG("Script: %s, Compiled without errors", App->fs->GetOnlyName(fileassets).c_str());
+				res_script->InitInfo(path_dll, fileassets);
+				res_script->SetState(Resource::State::LOADED);
+				//now 
+				CSharpScript* newCSharp = LoadScript_CSharp(path_dll);
+				res_script->SetCSharp(newCSharp);
+			}
+
+
+			// Then Create Meta
+			std::string Newdirectory = ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory();
+			Newdirectory += "\\" + App->fs->FixName_directory(file);
+			App->Json_seria->SaveScript(res_script, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory(), Newdirectory.c_str());
+
 		}
-		else
-		{
-			LOG("Script: %s, Compiled without errors", App->fs->GetOnlyName(fileassets).c_str());
-			res_script->InitInfo(path_dll, fileassets);
-			res_script->SetState(Resource::State::LOADED);
-			//now 
-			CSharpScript* newCSharp = LoadScript_CSharp(path_dll);
-			res_script->SetCSharp(newCSharp);
-		}
-
-
-		// Then Create Meta
-		std::string Newdirectory = ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory();
-		Newdirectory += "\\" + App->fs->FixName_directory(file);
-		App->Json_seria->SaveScript(res_script, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory(), Newdirectory.c_str());
-
 	}
 	return true;
 }
@@ -174,8 +188,42 @@ bool ImportScript::LoadResource(const char* file, ResourceScript* resourceScript
 	return true;
 }
 
+bool ImportScript::ReImportScript(std::string fileAssets, std::string uid_script, ResourceScript* resourceScript)
+{
+	// First ReCompile The CSharp
+	std::string path_dll;
+	//if (CompileScript(fileAssets.c_str(), path_dll, uid_script.c_str()) != 0)
+	//{
+	//	LOG("[error] Script: %s, Not Compiled", App->fs->GetOnlyName(fileAssets).c_str());
+	//	return false;
+	//}
+	//else
+	//{
+	//	LOG("Script: %s, Compiled without errors", App->fs->GetOnlyName(fileAssets).c_str());
+	//	//now 
+	//	//CSharpScript* newCSharp = LoadScript_CSharp(path_dll);
+	//	//resourceScript->SetCSharp(newCSharp);
+	//}
 
-MonoDomain * ImportScript::GetDomain() const
+
+	// Then Create Meta
+	//std::string Newdirectory = ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory();
+	//Newdirectory += "\\" + App->fs->FixName_directory(file);
+	//App->Json_seria->SaveScript(resourceScript, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory(), Newdirectory.c_str());
+}
+
+bool ImportScript::CreateNewScript(bool& active)
+{
+	//ImGui::PushStyleVar() // Center
+	ImGui::Begin("Create New Script", &active);
+
+
+	ImGui::End();
+	return true;
+}
+
+
+MonoDomain* ImportScript::GetDomain() const
 {
 	return domain;
 }
@@ -188,6 +236,22 @@ MonoImage* ImportScript::GetCulverinImage() const
 std::string ImportScript::GetMonoPath() const
 {
 	return mono_path;
+}
+
+bool ImportScript::IsNameUnique(std::string name) const
+{
+	if (name != "")
+	{
+		
+		for (std::list<std::string>::const_iterator it = nameScripts.begin(); it != nameScripts.end(); it++)
+		{
+			if (it._Ptr->_Myval.compare(name) == 0)
+			{
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 int ImportScript::CompileScript(const char* file, std::string& libraryScript, const char* uid)
@@ -230,6 +294,7 @@ CSharpScript* ImportScript::LoadScript_CSharp(std::string file)
 				if (csharp != nullptr)
 				{
 					csharp->LoadScript();
+					csharp->SetAssembly(assembly);
 					return csharp;
 				}
 				else

@@ -19,7 +19,7 @@ CompScript::CompScript(const CompScript & copy, GameObject * parent) : Component
 
 CompScript::~CompScript()
 {
-	RELEASE(editor);
+	//RELEASE(editor);
 }
 
 void CompScript::Init()
@@ -59,7 +59,7 @@ void CompScript::preUpdate(float dt)
 				resourcescript->NumGameObjectsUseMe++;
 
 				// Check if loaded
-				if (resourcescript->IsCompiled() == Resource::State::UNLOADED || resourcescript->IsCompiled() == Resource::State::FAILED)
+				if (resourcescript->IsCompiled() == Resource::State::UNLOADED)
 				{
 					if (App->importer->iScript->LoadResource(resourcescript->GetPathAssets().c_str(), resourcescript))
 					{
@@ -208,7 +208,7 @@ void CompScript::ShowInspectorInfo()
 				}
 				resourcescript = temp;
 				resourcescript->NumGameObjectsUseMe++;
-				if (resourcescript->IsCompiled() == Resource::State::UNLOADED || resourcescript->IsCompiled() == Resource::State::FAILED)
+				if (resourcescript->IsCompiled() == Resource::State::UNLOADED)
 				{
 					if (App->importer->iScript->LoadResource(resourcescript->GetPathAssets().c_str(), resourcescript))
 					{
@@ -223,10 +223,9 @@ void CompScript::ShowInspectorInfo()
 			}
 		}
 	}
-
 	if (activeScript)
 	{
-		editor->Show(activeScript);
+		resourcescript->ShowEditor(activeScript);
 	}
 
 	ImGui::TreePop();

@@ -824,6 +824,17 @@ bool ModuleFS::SaveScript(std::string name, TextEditor& editor, DIRECTORY_IMPORT
 	return true;
 }
 
+std::string ModuleFS::LoadScript(std::string file)
+{
+	std::ifstream fil(file.c_str());
+	if (fil.good())
+	{
+		std::string str((std::istreambuf_iterator<char>(fil)), std::istreambuf_iterator<char>());
+		return str;
+	}
+	return "";
+}
+
 bool ModuleFS::CheckIsFileExist(const std::string& name) {
 	std::ifstream fil(name.c_str());
 	return fil.good();

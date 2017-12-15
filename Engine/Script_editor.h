@@ -7,6 +7,8 @@
 #include "WindowManager.h"
 #include "TextEditor.h"
 
+class ResourceScript;
+
 enum ActionEditor
 {
 	COPY,
@@ -19,12 +21,11 @@ enum ActionEditor
 class Script_editor
 {
 public:
-	Script_editor();
+	Script_editor(ResourceScript* parent);
 	~Script_editor();
 
 	void Start(std::string nameScript, bool isnew = true);
 	void SetInitInfo(std::string nameScript);
-	void SetExampleInfo();
 	void Show(bool& active);
 
 	void SetAction(ActionEditor action);
@@ -36,6 +37,9 @@ public:
 	std::string textSelected;
 	std::string name;
 	std::string directory;
+
+private:
+	ResourceScript* parent;
 };
 
 

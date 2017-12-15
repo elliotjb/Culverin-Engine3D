@@ -2,6 +2,10 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleFS.h"
+#include "ModuleImporter.h"
+#include "ImportScript.h"
+#include "Resource_.h"
+#include "ResourceScript.h"
 
 #include <filesystem>
 #include <iostream>
@@ -9,7 +13,7 @@
 #include <fstream>
 
 
-Script_editor::Script_editor()
+Script_editor::Script_editor(ResourceScript* parent) : parent(parent)
 {
 }
 
@@ -23,24 +27,17 @@ void Script_editor::Start(std::string nameScript, bool isnew)
 	name = nameScript;
 	if (isnew)
 	{
-		SetExampleInfo();
-		//SetInitInfo(nameScript);
-		//directory = "C:\\Users\\Administrador\\Documents\\GitHub\\3D-Engine\\Engine\\Game";
+		// Create new Script with base -----
+		SetInitInfo(nameScript);
 	}
 	else
 	{
-		//need function
+		// Get All string ----
 		nameScript = "Assets\\" + nameScript + ".cs";
-		std::ifstream t(nameScript.c_str());
-		std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
-		editor.SetText(str);
+		editor.SetText(App->fs->LoadScript(nameScript));
 	}
 
 	editor.SetLanguageDefinition(TextEditor::LanguageDefinition::CPlusPlus());
-	//directory = "C:\\Users\\Administrador\\Documents\\GitHub\\3D-Engine\\Engine\\zTestScript.cpp";
-	//std::ifstream t(directory.c_str());
-	//std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
-	//editor.SetText(str);
 }
 
 void Script_editor::SetInitInfo(std::string nameScript)
@@ -48,11 +45,11 @@ void Script_editor::SetInitInfo(std::string nameScript)
 	editor.InsertText("// ------- New Script Culverin Engine 3D ------- \n\n");
 	editor.InsertText("using System.Collections;\n");
 	editor.InsertText("using System.Collections.Generic;\n");
-	editor.InsertText("using UnityEngine;\n\n");
+	editor.InsertText("using CulverinEditor;\n\n");
 
 	editor.InsertText("public class ");
 	editor.InsertText(nameScript);
-	editor.InsertText(" : MonoBehaviour \n");
+	//editor.InsertText(" : CulverinEditor\n");
 	editor.InsertText("{\n\n");
 
 	editor.InsertText("	// Use this for initialization\n");
@@ -64,38 +61,6 @@ void Script_editor::SetInitInfo(std::string nameScript)
 	editor.InsertText("	void Update() {\n\n");
 
 	editor.InsertText("	}\n");
-	editor.InsertText("}\n");
-}
-
-void Script_editor::SetExampleInfo()
-{
-	editor.InsertText("using System;\n\n");
-
-	editor.InsertText("public class ");
-	editor.InsertText(" Example");
-	editor.InsertText(" {\n\n");
-
-	editor.InsertText("	private String name;\n\n");
-	
-	editor.InsertText("	public Example(String name) {\n\n");
-	editor.InsertText(" \t\tthis.name = name;\n");
-	editor.InsertText("	}\n\n");
-
-	editor.InsertText("	~Example() {\n\n");
-	editor.InsertText("	}\n\n");
-
-	editor.InsertText("	public String GetName() {\n\n");
-	editor.InsertText(" \t\treturn name;\n");
-	editor.InsertText("	}\n\n");
-
-	editor.InsertText("	public void Process() {\n\n");
-	editor.InsertText(" \t\tthrow new NotImplementedException(\"Not implemented yet\");\n");
-	editor.InsertText("	}\n\n");
-
-	editor.InsertText("	public String Hello() {\n\n");
-	editor.InsertText(" \t\treturn \"Hello World\";\n");
-	editor.InsertText("	}\n\n");
-
 	editor.InsertText("}\n");
 }
 
@@ -231,4 +196,15 @@ void Script_editor::SetAction(ActionEditor action)
 void Script_editor::SaveScript()
 {
 	App->fs->SaveScript(name, editor, DIRECTORY_IMPORT::IMPORT_DIRECTORY_ASSETS);
+	parent->FreeMono();
+	if (App->importer->iScript->ReImportScript(parent->GetPathAssets(), std::to_string(parent->GetUUID()), parent))
+	{
+		parent->SetState(Resource::State::LOADED);
+		LOG("ReImported Succesfully Script: %s", App->fs->GetOnlyName(parent->GetPathAssets()).c_str());
+	}
+	else
+	{
+		parent->SetState(Resource::State::FAILED);
+		LOG("[error] ReImported Failed Script: %s", App->fs->GetOnlyName(parent->GetPathAssets()).c_str());
+	}
 }

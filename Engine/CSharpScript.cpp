@@ -187,6 +187,12 @@ void CSharpScript::GetScriptVariables()
 	}
 }
 
+void CSharpScript::FreeMono()
+{
+	mono_assembly_close(CSassembly);
+	//mono_free(CSdomain);
+}
+
 VarType CSharpScript::GetTypeFromMono(MonoType * mtype)
 {
 	return VarType();
