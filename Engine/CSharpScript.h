@@ -10,6 +10,7 @@
 #include <map>
 #include <mono/metadata/metadata.h>
 #include <mono/metadata/object.h>
+#include <mono/metadata/attrdefs.h>
 
 enum FunctionBase
 {
@@ -26,11 +27,16 @@ enum VarType
 	Var_CLASS = 4
 };
 
+enum VarAccess
+{
+	Var_PUBLIC = 0,
+	Var_PRIVATE,
+};
 
 class ScriptVariable
 {
 public:
-	ScriptVariable(const char* name, VarType type);
+	ScriptVariable(const char* name, VarType type, VarAccess access);
 	virtual ~ScriptVariable();
 
 	template<class TYPE>
@@ -43,6 +49,7 @@ public:
 	const char* name = nullptr;
 	VarType type = Var_UNKNOWN;
 	void* value = nullptr;
+	VarAccess access = VarAccess::Var_PRIVATE;
 };
 
 template<class TYPE>

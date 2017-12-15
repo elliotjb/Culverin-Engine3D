@@ -5,7 +5,7 @@
 #include "ImportScript.h"
 
 //SCRIPT VARIABLE UTILITY METHODS ------
-ScriptVariable::ScriptVariable(const char* name, VarType type):name(name),type(type)
+ScriptVariable::ScriptVariable(const char* name, VarType type, VarAccess access): name(name), type(type), access(access)
 {
 }
 
@@ -73,7 +73,7 @@ void CSharpScript::DoMainFunction(FunctionBase function)
 	}
 	case FunctionBase::CS_Update:
 	{
-		//GetScriptVariables();
+		GetScriptVariables();
 
 		if (Update.method != nullptr)
 		{
@@ -151,6 +151,9 @@ void CSharpScript::SetNameSpace(std::string _name_space)
 
 void CSharpScript::GetScriptVariables()
 {
+	static uint32_t field_attr_public = 0x0006;
+	static uint32_t flags;
+
 	MonoClassField* field = nullptr;
 	MonoType* type = nullptr;
 	void* iter = nullptr;
@@ -170,9 +173,21 @@ void CSharpScript::GetScriptVariables()
 	for (std::map<MonoClassField*, MonoType*>::iterator it = field_type.begin(); it != field_type.end(); ++it)
 	{
 		VarType type = GetTypeFromMono(it->second);
+		VarAccess access = VarAccess::Var_PRIVATE;
+
+		//Set info about accessibility of the variable -> DOESN'T WORK!!!
+		flags = mono_field_get_flags(field);
+		if ((flags & MONO_FIELD_ATTR_PUBLIC))
+		{
+			access = VarAccess::Var_PUBLIC;
+		}
+		else if ((flags & MONO_FIELD_ATTR_PRIVATE))
+		{
+			access = VarAccess::Var_PRIVATE;
+		}
 
 		//Create variable
-		ScriptVariable* new_var = new ScriptVariable(mono_field_get_name(it->first), type);
+		ScriptVariable* new_var = new ScriptVariable(mono_field_get_name(it->first), type, access);
 	
 		//Set its value
 		GetValueFromMono(new_var, it->first, it->second);
@@ -191,7 +206,6 @@ void CSharpScript::FreeMono()
 VarType CSharpScript::GetTypeFromMono(MonoType* mtype)
 {
 	std::string name = mono_type_get_name(mtype);
-
 	if (name == "System.Int32")
 	{
 		return VarType::Var_INT;
