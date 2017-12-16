@@ -14,7 +14,7 @@ ResourceScript::ResourceScript(uint uid) : Resource(uid, Resource::Type::SCRIPT,
 ResourceScript::~ResourceScript()
 {
 	path_dll.clear();
-	//path_assets.clear();
+	path_assets.clear();
 	RELEASE(editor);
 }
 
@@ -22,7 +22,7 @@ void ResourceScript::InitInfo(std::string path_dll_, std::string path_assets_)
 {
 	name = App->GetCharfromConstChar(App->fs->GetOnlyName(path_assets_).c_str());
 	path_dll = path_dll_;
-	//path_assets = path_assets_;
+	path_assets = path_assets_;
 }
 
 void ResourceScript::CreateNewScript(std::string nameScript)

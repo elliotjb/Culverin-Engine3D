@@ -360,12 +360,23 @@ bool CSharpScript::GetValueFromMono(ScriptVariable* variable, MonoClassField* mf
 			variable->value = nullptr;
 		}
 
-		//Allocate memory
-		variable->value = new char[mono_type_stack_size(mtype, NULL)];
+		if (variable->type != VarType::Var_STRING)
+		{
+			//Allocate memory
+			variable->value = new char[mono_type_stack_size(mtype, NULL)];
 
-		//Set value of the variable by passing it as a reference in this function
-		mono_field_get_value(CSObject, mfield, variable->value);
-		
+			//Set value of the variable by passing it as a reference in this function
+			mono_field_get_value(CSObject, mfield, variable->value);
+		}
+		else
+		{
+			MonoString* str = nullptr;
+			//Set value of the variable by passing it as a reference in this function
+			mono_field_get_value(CSObject, mfield, &str);
+
+			//Copy string into str_value (specific for strings)
+			variable->str_value = mono_string_to_utf8(str);
+		}
 		return true;
 	}
 	else
@@ -379,9 +390,22 @@ bool CSharpScript::UpdateValueFromMono(ScriptVariable * variable, MonoClassField
 {
 	if (variable != nullptr && mfield != nullptr && mtype != nullptr)
 	{
-		//Set value of the variable by passing it as a reference in this function
-		mono_field_get_value(CSObject, mfield, variable->value);
+		if (variable->type != VarType::Var_STRING)
+		{
+			//Set value of the variable by passing it as a reference in this function
+			mono_field_get_value(CSObject, mfield, variable->value);
+		}
 
+		else
+		{
+			MonoString* str = nullptr;
+
+			//Set value of the variable by passing it as a reference in this function
+			mono_field_get_value(CSObject, mfield, &str);
+
+			//Copy string into str_value (specific for strings)
+			variable->str_value = mono_string_to_utf8(str);
+		}
 		return true;
 	}
 	else

@@ -257,21 +257,28 @@ void CompScript::ShowInspectorInfo()
 
 void CompScript::ShowVariablesInfo()
 {
-	//Access chsharp script, it contains a vector of all variables with their respective info
-	for (uint i = 0; i < resourcescript->GetCSharpScript()->variables.size(); i++)
+	if (resourcescript->GetState() == Resource::State::LOADED)
 	{
-		ImGui::PushID(i);
+		//Access chsharp script, it contains a vector of all variables with their respective info
+		for (uint i = 0; i < resourcescript->GetCSharpScript()->variables.size(); i++)
+		{
+			ImGui::PushID(i);
 
-		//Show variable TYPE --------------------------
-		ShowVarType(resourcescript->GetCSharpScript()->variables[i]); ImGui::SameLine();
-		
-		//Show variable NAME --------------------------
-		ImGui::Text(" %s", resourcescript->GetCSharpScript()->variables[i]->name); ImGui::SameLine();
+			//Show variable TYPE --------------------------
+			ShowVarType(resourcescript->GetCSharpScript()->variables[i]); ImGui::SameLine();
 
-		//Show variable VALUE -------------------------
-		ShowVarValue(resourcescript->GetCSharpScript()->variables[i]);
+			//Show variable NAME --------------------------
+			ImGui::Text(" %s", resourcescript->GetCSharpScript()->variables[i]->name); ImGui::SameLine();
 
-		ImGui::PopID();
+			//Show variable VALUE -------------------------
+			ShowVarValue(resourcescript->GetCSharpScript()->variables[i]);
+
+			ImGui::PopID();
+		}
+	}
+	else
+	{
+		ImGui::TextColored(ImVec4(1.0f,0.223f,0.233f,1.0f),"SCRIPT NOT COMPILED CORRECTLY");
 	}
 }
 
@@ -332,6 +339,7 @@ void CompScript::ShowVarValue(ScriptVariable* var)
 		//{
 		//	var->SetMonoValue((char*)var->value);
 		//}
+		ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f),"%s", var->str_value.c_str());
 	}
 	else
 	{
@@ -363,7 +371,7 @@ void CompScript::Load(const JSON_Object* object, std::string name)
 		{
 			resourcescript->NumGameObjectsUseMe++;
 
-			// LOAD MATERIAL -------------------------
+			// LOAD SCRIPT -------------------------
 			if (resourcescript->IsLoadedToMemory() == Resource::State::UNLOADED)
 			{
 				App->importer->iScript->LoadResource(std::to_string(resourcescript->GetUUID()).c_str(), resourcescript);

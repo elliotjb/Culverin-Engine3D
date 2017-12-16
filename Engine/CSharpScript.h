@@ -50,6 +50,7 @@ public:
 	const char* name = nullptr;
 	VarType type = Var_UNKNOWN;
 	void* value = nullptr;
+	std::string str_value;
 	VarAccess access = VarAccess::Var_PRIVATE;
 
 private:
