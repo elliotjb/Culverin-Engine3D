@@ -528,7 +528,7 @@ void ModuleResourceManager::ShowAllResources(bool& active)
 				{
 					ImGui::TextColored(ImVec4(0.933, 0, 0, 1), "%i", it->second->NumGameObjectsUseMe);
 				}
-				ImGui::Text("UID of Resource"); ImGui::SameLine();
+				ImGui::Text("UID of Resource:"); ImGui::SameLine();
 				ImGui::TextColored(ImVec4(0, 0.666, 1, 1), "%i", it->second->GetUUID());
 				if (it->second->GetType() == Resource::Type::SCRIPT)
 				{
