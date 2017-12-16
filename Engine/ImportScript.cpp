@@ -41,7 +41,7 @@ bool ImportScript::InitScriptingSystem()
 	lib += "/lib";
 	std::string etc = mono_path;
 	etc += "/etc";
-	
+
 	// Setup the mono directories to start working with
 	mono_set_dirs(lib.c_str(), etc.c_str());
 	domain = mono_jit_init("CulverinEngine");
@@ -78,7 +78,7 @@ void ImportScript::LinkFunctions()
 	mono_add_internal_call("CulverinEditor.GameObject::GetComponent",(const void*)GetComponent);*/
 
 	//CONSOLE FUNCTIONS ------------------
-	mono_add_internal_call("CulverinEditor.Debug.Debug::Log",(const void*)ConsoleLog);
+	mono_add_internal_call("CulverinEditor.Debug.Debug::Log", (const void*)ConsoleLog);
 
 	//INPUT FUNCTIONS -------------------
 	/*mono_add_internal_call("CulverinEditor.Input::KeyDown",(const void*)KeyDown);
@@ -164,6 +164,7 @@ bool ImportScript::LoadResource(const char* file, ResourceScript* resourceScript
 		path = "Assets/" + path;
 		path = App->fs->GetFullPath(path);
 		std::string path_dll;
+
 		// First Compile The CSharp
 		if (CompileScript(path.c_str(), path_dll, file) != 0)
 		{
@@ -364,7 +365,7 @@ bool ImportScript::IsNameUnique(std::string name) const
 {
 	if (name != "")
 	{
-		
+
 		for (std::list<std::string>::const_iterator it = nameScripts.begin(); it != nameScripts.end(); it++)
 		{
 			if (it._Ptr->_Myval.compare(name) == 0)
@@ -415,8 +416,8 @@ CSharpScript* ImportScript::LoadScript_CSharp(std::string file)
 				CSharpScript* csharp = CreateCSharp(image);
 				if (csharp != nullptr)
 				{
-					csharp->LoadScript();
 					csharp->SetAssembly(assembly);
+					csharp->LoadScript();
 					return csharp;
 				}
 				else

@@ -5,7 +5,7 @@
 #include "ImportScript.h"
 
 //SCRIPT VARIABLE UTILITY METHODS ------
-ScriptVariable::ScriptVariable(const char* name, VarType type, VarAccess access): name(name), type(type), access(access)
+ScriptVariable::ScriptVariable(const char* name, VarType type, VarAccess access) : name(name), type(type), access(access)
 {
 }
 
@@ -23,11 +23,6 @@ CSharpScript::~CSharpScript()
 {
 }
 
-void CSharpScript::InitCSharp(std::string CSharpFile)
-{
-
-}
-
 
 void CSharpScript::LoadScript()
 {
@@ -39,12 +34,15 @@ void CSharpScript::LoadScript()
 	{
 		mono_runtime_object_init(CSObject);
 
-		// Create main Functions
+		//Create main Functions
 		Start = CreateMainFunction("Start", DefaultParam, FunctionBase::CS_Start);
 		Update = CreateMainFunction("Update", DefaultParam, FunctionBase::CS_Update);
 		OnGUI = CreateMainFunction("OnGUI", DefaultParam, FunctionBase::CS_OnGUI);
 		OnEnable = CreateMainFunction("OnEnable", DefaultParam, FunctionBase::CS_OnEnable);
 		OnDisable = CreateMainFunction("OnDisable", DefaultParam, FunctionBase::CS_OnDisable);
+
+		//Get Script Variables info (from c# to c++)
+		//GetScriptVariables();
 	}
 }
 
@@ -73,8 +71,6 @@ void CSharpScript::DoMainFunction(FunctionBase function)
 	}
 	case FunctionBase::CS_Update:
 	{
-		GetScriptVariables();
-
 		if (Update.method != nullptr)
 		{
 			DoFunction(Update.method, nullptr);
@@ -165,7 +161,10 @@ bool CSharpScript::ReImport(std::string pathdll)
 				SetClass(entity_);
 				SetClassName(classname_);
 				SetNameSpace(name_space_);
+
+				//Set script info and functionality
 				LoadScript();
+
 				SetAssembly(assembly_);
 				SetDomain(App->importer->iScript->GetDomain());
 			}
@@ -189,8 +188,23 @@ bool CSharpScript::ReImport(std::string pathdll)
 	return true;
 }
 
+//Release memory allocated from old variables
+void CSharpScript::ResetScriptVariables()
+{
+	for (uint i = 0; i < variables.size(); i++)
+	{
+		RELEASE(variables[i]);
+	}
+
+	variables.clear();
+	field_type.clear();
+}
+
 void CSharpScript::GetScriptVariables()
 {
+	//Reset previour info
+	ResetScriptVariables();
+
 	static uint32_t field_attr_public = 0x0006;
 	static uint32_t flags;
 
@@ -199,13 +213,14 @@ void CSharpScript::GetScriptVariables()
 	void* iter = nullptr;
 
 	int num_fields = mono_class_num_fields(CSClass);
-	
+
 	//Fill field-type map from the script to after get its respective info
 	for (uint i = 0; i < num_fields; i++)
 	{
 		field = mono_class_get_fields(CSClass, &iter);
 		type = mono_field_get_type(field);
 
+		//Insert this info pair into the map
 		field_type.insert(std::pair<MonoClassField*, MonoType*>(field, type));
 	}
 
@@ -228,7 +243,7 @@ void CSharpScript::GetScriptVariables()
 
 		//Create variable
 		ScriptVariable* new_var = new ScriptVariable(mono_field_get_name(it->first), type, access);
-	
+
 		//Set its value
 		GetValueFromMono(new_var, it->first, it->second);
 
@@ -239,43 +254,61 @@ void CSharpScript::GetScriptVariables()
 
 VarType CSharpScript::GetTypeFromMono(MonoType* mtype)
 {
-	std::string name = mono_type_get_name(mtype);
-	if (name == "System.Int32")
+	if (mtype != nullptr)
 	{
-		return VarType::Var_INT;
-	}
-		
-	if (name == "System.Single")
-	{
-		return VarType::Var_FLOAT;
-	}
+		std::string name = mono_type_get_name(mtype);
+		if (name == "System.Int32")
+		{
+			return VarType::Var_INT;
+		}
 
-	if (name == "System.Boolean")
-	{
-		return VarType::Var_BOOL;
-	}
+		if (name == "System.Single")
+		{
+			return VarType::Var_FLOAT;
+		}
 
-	if (name == "System.String")
-	{
-		return VarType::Var_STRING;
+		if (name == "System.Boolean")
+		{
+			return VarType::Var_BOOL;
+		}
+
+		if (name == "System.String")
+		{
+			return VarType::Var_STRING;
+		}
+		else
+		{
+			LOG("Unknown variable type");
+			return VarType::Var_UNKNOWN;
+		}
 	}
 	else
 	{
-		LOG("Unknown variable type");
+		LOG("MonoType* mtype was nullptr");
 		return VarType::Var_UNKNOWN;
 	}
 }
 
 void CSharpScript::GetValueFromMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype)
 {
-	//Free memory
-	RELEASE(variable->value);
-	variable->value = nullptr;
+	if (variable != nullptr && mfield != nullptr && mtype != nullptr)
+	{
+		//Free memory
+		if (variable->value != nullptr)
+		{
+			RELEASE(variable->value);
+			variable->value = nullptr;
+		}
 
-	//Allocate memory
-	variable->value = new char[mono_type_stack_size(mtype, NULL)];
+		//Allocate memory
+		variable->value = new char[mono_type_stack_size(mtype, NULL)];
 
-	//Set value of the script into its respective variable
-	mono_field_get_value(CSObject, mfield, variable->value);
+		//Set value of the variable by passing it as a reference in this function
+		mono_field_get_value(CSObject, mfield, variable->value);
+	}
+	else
+	{
+		LOG("[error] Ther is some null pointer.");
+	}
 }
 

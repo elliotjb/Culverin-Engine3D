@@ -1,6 +1,6 @@
 ﻿using System;
 using CulverinEditor;
-using CulverinEditor.Console;
+using CulverinEditor.Debug;
 
 public class Teste : Culverin
 {

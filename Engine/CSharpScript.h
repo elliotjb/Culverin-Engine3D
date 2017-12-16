@@ -71,7 +71,7 @@ inline TYPE ScriptVariable::GetValue() const
 	{
 		return (const char*)value;
 	}
-	else 
+	else
 	{
 		LOG("Unknown variable type of '%s'", name.c_str());
 		return NULL;
@@ -99,7 +99,7 @@ inline void ScriptVariable::SetValue(TYPE new_value)
 	}
 	else
 	{
-		LOG("Unknown variable type of '%s'",name.c_str());
+		LOG("Unknown variable type of '%s'", name.c_str());
 	}
 }
 
@@ -111,12 +111,13 @@ struct MainMonoMethod
 
 class CSharpScript
 {
-public: 
+public:
 	CSharpScript();
 	~CSharpScript();
 
-	void InitCSharp(std::string CSharpFile);
+	//Importing/Reimporting/Initializing --------
 	void LoadScript();
+	bool ReImport(std::string pathdll);
 
 	MainMonoMethod CreateMainFunction(std::string function, int parameters, FunctionBase type);
 	void DoMainFunction(FunctionBase function);
@@ -129,9 +130,6 @@ public:
 	void SetClass(MonoClass* klass);
 	void SetClassName(std::string _name);
 	void SetNameSpace(std::string _name_space);
-
-	// ReIMport
-	bool ReImport(std::string pathdll);
 
 	// Variable setting-getting functions ----------------
 	template<class TYPE>
@@ -165,6 +163,7 @@ public:
 	}
 
 	//Pass from csharp to c++ variables
+	void ResetScriptVariables();
 	void GetScriptVariables();
 
 	VarType GetTypeFromMono(MonoType* mtype);
@@ -184,7 +183,7 @@ private:
 	// Variables/Info containers
 	std::vector<ScriptVariable*> variables;
 	std::map<MonoClassField*, MonoType*> field_type;
-	
+
 	// Main Functions
 	MainMonoMethod Start;
 	MainMonoMethod Update;
@@ -194,4 +193,5 @@ private:
 };
 
 #endif
+
 
