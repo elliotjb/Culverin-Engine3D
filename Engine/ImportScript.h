@@ -8,6 +8,8 @@
 #include <mono/jit/jit.h>
 #include <mono/metadata/mono-config.h>
 #include <mono/metadata/assembly.h>
+#include <mono/metadata/debug-helpers.h>
+#include <mono/metadata/mono-gc.h>
 #include <list>
 
 class CSharpScript;
@@ -24,6 +26,8 @@ public:
 	bool Import(const char* file, uint uuid = 0);
 	bool LoadResource(const char* file, ResourceScript* resourceScript);
 	bool ReImportScript(std::string fileAssets, std::string uid_script, ResourceScript * resourceScript);
+	MonoDomain * Load_domain();
+	void Unload_domain();
 	bool CreateNewScript(bool & active);
 	int CompileScript(const char* file, std::string& libraryScript, const char* uid);
 	CSharpScript* LoadScript_CSharp(std::string);
@@ -46,6 +50,7 @@ private:
 	std::string nameNewScript;
 	std::string mono_path;
 	MonoDomain* domain = nullptr;
+	MonoDomain* childDomain = nullptr;
 	MonoImage* culverin_mono_image = nullptr;
 	std::list<std::string> nameScripts;
 };

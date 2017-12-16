@@ -77,7 +77,7 @@ void Script_editor::Show(bool& active)
 			}
 			if (ImGui::MenuItem("Save"))
 			{
-				SaveScript();
+				SaveScript(true);
 			}
 			if (ImGui::MenuItem("Close", NULL, &active))
 			{
@@ -198,7 +198,6 @@ void Script_editor::SaveScript(bool ReImport)
 	App->fs->SaveScript(name, editor, DIRECTORY_IMPORT::IMPORT_DIRECTORY_ASSETS);
 	if (ReImport)
 	{
-		parent->FreeMono();
 		if (App->importer->iScript->ReImportScript(parent->GetPathAssets(), std::to_string(parent->GetUUID()), parent))
 		{
 			parent->SetState(Resource::State::LOADED);

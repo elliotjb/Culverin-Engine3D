@@ -130,6 +130,9 @@ public:
 	void SetClassName(std::string _name);
 	void SetNameSpace(std::string _name_space);
 
+	// ReIMport
+	bool ReImport(std::string pathdll);
+
 	// Variable setting-getting functions ----------------
 	template<class TYPE>
 	void SetValue(const char* variable_name, TYPE value)
@@ -163,7 +166,6 @@ public:
 
 	//Pass from csharp to c++ variables
 	void GetScriptVariables();
-	void FreeMono();
 
 	VarType GetTypeFromMono(MonoType* mtype);
 	void GetValueFromMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype);

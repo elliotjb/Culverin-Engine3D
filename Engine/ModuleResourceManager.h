@@ -43,6 +43,7 @@ public:
 	void CreateResourceCube();
 
 	Resource* ShowResources(bool& active, Resource::Type type);
+	bool ReImportAllScripts();
 
 	void Save();
 	void Load();

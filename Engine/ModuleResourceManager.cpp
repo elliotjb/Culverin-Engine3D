@@ -42,7 +42,7 @@ bool ModuleResourceManager::Start()
 
 	// Create Resource Cube
 	CreateResourceCube();
-	Load();
+	//Load();
 
 	Start_t = perf_timer.ReadMs();
 	return true;
@@ -381,8 +381,8 @@ void ModuleResourceManager::Init_IndexVertex(float3* vertex_triangulate, uint nu
 		{
 			if (all_index[j] == vertex_triangulate[i])
 			{
-				indices.push_back(j);
-				temp = true;
+			indices.push_back(j);
+			temp = true;
 			}
 		}
 
@@ -469,6 +469,24 @@ Resource*  ModuleResourceManager::ShowResources(bool& active, Resource::Type typ
 		ImGui::End();
 	}
 	return nullptr;
+}
+
+bool ModuleResourceManager::ReImportAllScripts()
+{
+	bool ret = true;
+	std::map<uint, Resource*>::iterator it = resources.begin();
+	for (int i = 0; i < resources.size(); i++)
+	{
+		if (Resource::Type::SCRIPT == it->second->GetType())
+		{
+			if (((ResourceScript*)it->second)->ReImportScript(((ResourceScript*)it->second)->GetPathdll()) == false)
+			{
+				ret = false;
+			}
+		}
+		it++;
+	}
+	return ret;
 }
 
 void ModuleResourceManager::Save()

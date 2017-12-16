@@ -41,19 +41,21 @@ bool ImportScript::InitScriptingSystem()
 	lib += "/lib";
 	std::string etc = mono_path;
 	etc += "/etc";
-
-
+	
 	// Setup the mono directories to start working with
 	mono_set_dirs(lib.c_str(), etc.c_str());
 	domain = mono_jit_init("CulverinEngine");
 
-	MonoAssembly* culverin_assembly = mono_domain_assembly_open(domain, "./ScriptManager/AssemblyReference/CulverinEditor.dll");
+	//Register internal calls to set Scripting functions to work with .cs files
+	LinkFunctions();
+
+	// childDomain
+	childDomain = Load_domain();
+
+	MonoAssembly* culverin_assembly = mono_domain_assembly_open(childDomain, "./ScriptManager/AssemblyReference/CulverinEditor.dll");
 	if (culverin_assembly)
 	{
 		culverin_mono_image = mono_assembly_get_image(culverin_assembly);
-
-		//Register internal calls to set Scripting functions to work with .cs files
-		LinkFunctions();
 		return true;
 	}
 
@@ -191,27 +193,72 @@ bool ImportScript::LoadResource(const char* file, ResourceScript* resourceScript
 
 bool ImportScript::ReImportScript(std::string fileAssets, std::string uid_script, ResourceScript* resourceScript)
 {
-	// First ReCompile The CSharp
-	std::string path_dll;
-	//if (CompileScript(fileAssets.c_str(), path_dll, uid_script.c_str()) != 0)
-	//{
-	//	LOG("[error] Script: %s, Not Compiled", App->fs->GetOnlyName(fileAssets).c_str());
-	//	return false;
-	//}
-	//else
-	//{
-	//	LOG("Script: %s, Compiled without errors", App->fs->GetOnlyName(fileAssets).c_str());
-	//	//now 
-	//	//CSharpScript* newCSharp = LoadScript_CSharp(path_dll);
-	//	//resourceScript->SetCSharp(newCSharp);
-	//}
+	// UnloadDomain
+	Unload_domain();
 
+	// ReCompile The CSharp
+	std::string path_dll;
+	if (CompileScript(fileAssets.c_str(), path_dll, uid_script.c_str()) != 0)
+	{
+		LOG("[error] Script: %s, Not Compiled", App->fs->GetOnlyName(fileAssets).c_str());
+		return false;
+	}
+	else
+	{
+		LOG("Script: %s, Compiled without errors", App->fs->GetOnlyName(fileAssets).c_str());
+	}
+	// childDomain
+	childDomain = Load_domain();
+	MonoAssembly* culverin_assembly = mono_domain_assembly_open(childDomain, "./ScriptManager/AssemblyReference/CulverinEditor.dll");
+	if (culverin_assembly)
+	{
+		culverin_mono_image = mono_assembly_get_image(culverin_assembly);
+	}
+	if (App->resource_manager->ReImportAllScripts() == false)
+	{
+		LOG("[error] Error With ReImport Script");
+	}
+	//CSharpScript* newCSharp = LoadScript_CSharp(path_dll);
+	//resourceScript->SetCSharp(newCSharp);
 
 	// Then Create Meta
 	//std::string Newdirectory = ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory();
-	//Newdirectory += "\\" + App->fs->FixName_directory(file);
+	//Newdirectory += "\\" + App->fs->FixName_directory(fileAssets);
 	//App->Json_seria->SaveScript(resourceScript, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory(), Newdirectory.c_str());
 	return true;
+}
+
+MonoDomain* ImportScript::Load_domain()
+{
+	MonoDomain* newDomain = mono_domain_create_appdomain("CulverinEngine_Child", NULL);
+	if (!newDomain) {
+		LOG("[error] Error creating domain\n");
+		return nullptr;
+	}
+
+	//mono_thread_push_appdomain_ref(newDomain);
+
+	if (!mono_domain_set(newDomain, false)) {
+		LOG("[error] Error setting domain\n");
+		return nullptr;
+	}
+
+	return mono_domain_get();
+}
+
+void ImportScript::Unload_domain()
+{
+	MonoDomain* old_domain = mono_domain_get();
+	if (old_domain && old_domain != mono_get_root_domain()) {
+		if (!mono_domain_set(mono_get_root_domain(), false))
+			LOG("[error] Error setting domain\n");
+
+		//mono_thread_pop_appdomain_ref();
+		mono_domain_unload(old_domain);
+	}
+
+	//unloading a domain is also a nice point in time to have the GC run.
+	mono_gc_collect(mono_gc_max_generation());
 }
 
 bool ImportScript::CreateNewScript(bool& active)
@@ -300,7 +347,7 @@ bool ImportScript::CreateNewScript(bool& active)
 
 MonoDomain* ImportScript::GetDomain() const
 {
-	return domain;
+	return childDomain;
 }
 
 MonoImage* ImportScript::GetCulverinImage() const
@@ -404,6 +451,10 @@ CSharpScript* ImportScript::CreateCSharp(MonoImage* image)
 			csharp->SetClassName(classname);
 			csharp->SetNameSpace(name_space);
 			return csharp;
+		}
+		else
+		{
+			LOG("[error]Failed loading class %s\n", classname.c_str());
 		}
 	}
 	return nullptr;

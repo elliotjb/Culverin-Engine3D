@@ -21,12 +21,12 @@ public:
 	// Name Class = name Script
 	void CreateNewScript(std::string nameScript);
 	void SetScriptEditor(std::string nameScript);
-
-	void FreeMono();
+	bool ReImportScript(std::string path_dll_);
 
 	bool Update(float dt);
 
 	std::string GetPathAssets() const;
+	std::string GetPathdll() const;
 	void ShowEditor(bool & active);
 	void DeleteToMemory();
 	bool LoadToMemory();

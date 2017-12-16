@@ -86,8 +86,12 @@ void CompScript::Update(float dt)
 
 bool CompScript::CheckScript()
 {
-	return (resourcescript->IsCompiled() != Resource::State::FAILED && 
-		resourcescript->IsCompiled() != Resource::State::UNLOADED);
+	if (resourcescript != nullptr)
+	{
+		return (resourcescript->IsCompiled() != Resource::State::FAILED &&
+			resourcescript->IsCompiled() != Resource::State::UNLOADED);
+	}
+	return true;
 }
 
 void CompScript::ShowOptions()

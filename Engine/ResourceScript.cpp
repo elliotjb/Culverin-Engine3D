@@ -36,9 +36,9 @@ void ResourceScript::SetScriptEditor(std::string nameScript)
 	editor->Start(nameScript, false);
 }
 
-void ResourceScript::FreeMono()
+bool ResourceScript::ReImportScript(std::string path_dll_)
 {
-	csharp->FreeMono();
+	return csharp->ReImport(path_dll_);
 }
 
 void ResourceScript::SetCSharp(CSharpScript* csharp_)
@@ -58,6 +58,11 @@ bool ResourceScript::Update(float dt)
 std::string ResourceScript::GetPathAssets() const
 {
 	return path_assets;
+}
+
+std::string ResourceScript::GetPathdll() const
+{
+	return path_dll;
 }
 
 void ResourceScript::ShowEditor(bool& active)

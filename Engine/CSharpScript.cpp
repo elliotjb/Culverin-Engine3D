@@ -149,6 +149,46 @@ void CSharpScript::SetNameSpace(std::string _name_space)
 	name_space = _name_space;
 }
 
+bool CSharpScript::ReImport(std::string pathdll)
+{
+	MonoAssembly* assembly_ = mono_domain_assembly_open(App->importer->iScript->GetDomain(), pathdll.c_str());
+	if (assembly_)
+	{
+		MonoImage* image_ = mono_assembly_get_image(assembly_);
+		if (image_)
+		{
+			std::string classname_, name_space_;
+			MonoClass* entity_ = App->importer->iScript->GetMonoClassFromImage(image_, name_space_, classname_);
+			if (entity_)
+			{
+				SetImage(image_);
+				SetClass(entity_);
+				SetClassName(classname_);
+				SetNameSpace(name_space_);
+				LoadScript();
+				SetAssembly(assembly_);
+				SetDomain(App->importer->iScript->GetDomain());
+			}
+			else
+			{
+				LOG("[error]Failed loading class %s\n", classname_.c_str());
+				return false;
+			}
+		}
+		else
+		{
+			LOG("[error] Error with Image");
+			return false;
+		}
+	}
+	else
+	{
+		LOG("[error] Error with Assembly");
+		return false;
+	}
+	return true;
+}
+
 void CSharpScript::GetScriptVariables()
 {
 	static uint32_t field_attr_public = 0x0006;
@@ -195,12 +235,6 @@ void CSharpScript::GetScriptVariables()
 		//Put it in variables vector
 		variables.push_back(new_var);
 	}
-}
-
-void CSharpScript::FreeMono()
-{
-	mono_assembly_close(CSassembly);
-	//mono_free(CSdomain);
 }
 
 VarType CSharpScript::GetTypeFromMono(MonoType* mtype)
