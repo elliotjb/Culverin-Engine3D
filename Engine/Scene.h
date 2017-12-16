@@ -29,7 +29,9 @@ public:
 	void EditorQuadtree();
 	void EditorSkybox();
 
+	// Scripting utility functions
 	bool CheckNoFails();
+	void StartScripts();
 
 	// DRAWING METHODS ---------
 	void DrawPlane();

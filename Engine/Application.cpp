@@ -640,7 +640,7 @@ void Application::SetState(EngineState state)
 				scene->sceneBuff->WantRefreshRatio();
 
 				//To Save all elements in the scene to load them correctly when exiting Game Mode
-				WantToSave(); 
+				Json_seria->SaveScene();
 			}
 			else
 			{

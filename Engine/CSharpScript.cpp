@@ -5,12 +5,50 @@
 #include "ImportScript.h"
 
 //SCRIPT VARIABLE UTILITY METHODS ------
-ScriptVariable::ScriptVariable(const char* name, VarType type, VarAccess access) : name(name), type(type), access(access)
+ScriptVariable::ScriptVariable(const char* name, VarType type, VarAccess access, CSharpScript* script) : name(name), type(type), access(access), script(script)
 {
 }
 
 ScriptVariable::~ScriptVariable()
 {
+}
+
+void ScriptVariable::SetMonoValue(void* newVal)
+{
+	if (newVal != nullptr)
+	{
+		mono_field_set_value(script->GetMonoObject(), monoField, newVal);
+	}
+
+	else
+	{
+		LOG("[error] new value to set was nullptr");
+	}
+
+}
+
+void ScriptVariable::SetMonoField(MonoClassField* mfield)
+{
+	if (mfield != nullptr)
+	{
+		monoField = mfield;
+	}
+	else
+	{
+		LOG("[error] MonoClassField* pointer was nullptr");
+	}
+}
+
+void ScriptVariable::SetMonoType(MonoType* mtype)
+{
+	if (mtype != nullptr)
+	{
+		monoType = mtype;
+	}
+	else
+	{
+		LOG("[error] MonoType* pointer was nullptr");
+	}
 }
 
 //CSHARP SCRIPT FUNCTIONS ---------------
@@ -113,6 +151,11 @@ void CSharpScript::DoFunction(MonoMethod* function, void ** parameter)
 	{
 		mono_print_unhandled_exception(exception);
 	}
+}
+
+MonoObject * CSharpScript::GetMonoObject() const
+{
+	return CSObject;
 }
 
 void CSharpScript::SetDomain(MonoDomain* domain)
@@ -242,10 +285,13 @@ void CSharpScript::GetScriptVariables()
 		}
 
 		//Create variable
-		ScriptVariable* new_var = new ScriptVariable(mono_field_get_name(it->first), type, access);
+		ScriptVariable* new_var = new ScriptVariable(mono_field_get_name(it->first), type, access, this);
 
 		//Set its value
 		GetValueFromMono(new_var, it->first, it->second);
+
+		//Link to Mono properties
+		LinkVarToMono(new_var, it->first, it->second);
 
 		//Put it in variables vector
 		variables.push_back(new_var);
@@ -290,7 +336,7 @@ VarType CSharpScript::GetTypeFromMono(MonoType* mtype)
 	}
 }
 
-void CSharpScript::GetValueFromMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype)
+bool CSharpScript::GetValueFromMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype)
 {
 	if (variable != nullptr && mfield != nullptr && mtype != nullptr)
 	{
@@ -306,10 +352,34 @@ void CSharpScript::GetValueFromMono(ScriptVariable* variable, MonoClassField* mf
 
 		//Set value of the variable by passing it as a reference in this function
 		mono_field_get_value(CSObject, mfield, variable->value);
+		
+		return true;
 	}
 	else
 	{
-		LOG("[error] Ther is some null pointer.");
+		LOG("[error] There is some null pointer.");
+		return false;
 	}
+}
+
+bool CSharpScript::LinkVarToMono(ScriptVariable* variable, MonoClassField * mfield, MonoType * mtype)
+{
+	if (variable != nullptr && mfield != nullptr && mtype != nullptr)
+	{
+		variable->SetMonoField(mfield);
+		variable->SetMonoType(mtype);
+
+		return true;
+	}
+	else
+	{
+		LOG("[error] There is some null pointer.");
+		return false;
+	}
+}
+
+void CSharpScript::SetVarValue(ScriptVariable * variable, void * new_val)
+{
+
 }
 

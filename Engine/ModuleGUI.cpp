@@ -238,8 +238,6 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::EndMenu();
 		}
 
-		
-
 		if (ImGui::BeginMenu("Help"))
 		{
 			if (ImGui::MenuItem("About Culverin..."))
@@ -249,6 +247,7 @@ update_status ModuleGUI::Update(float dt)
 			}
 
 			ImGui::Separator();
+
 			if (ImGui::MenuItem("Documentation 'GitHub'"))
 			{
 				ShellExecuteA(NULL, "open", "https://github.com/elliotjb/3D-Engine/", NULL, NULL, SW_SHOWNORMAL);
@@ -261,7 +260,9 @@ update_status ModuleGUI::Update(float dt)
 			{
 				ShellExecuteA(NULL, "open", "https://github.com/elliotjb/3D-Engine/issues/new", NULL, NULL, SW_SHOWNORMAL);
 			}
+
 			ImGui::Separator();
+
 			if (ImGui::MenuItem("README"))
 			{
 				ShellExecuteA(NULL, "open", "https://github.com/elliotjb/3D-Engine/blob/master/README.md", NULL, NULL, SW_SHOWNORMAL);
@@ -851,6 +852,9 @@ void ModuleGUI::UpdateWindows(float dt)
 			if (App->scene->CheckNoFails())
 			{
 				App->SetState(EngineState::PLAY); // OR STOP
+
+				//Start all scripts
+				App->scene->StartScripts();
 			}
 		}
 		ImGui::SameLine(width / 2 - 10);

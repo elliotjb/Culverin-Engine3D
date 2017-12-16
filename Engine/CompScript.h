@@ -16,6 +16,8 @@ public:
 
 	void Init();
 	void preUpdate(float dt);
+
+	void Start();
 	void Update(float dt);
 
 	// Play Engine -------
@@ -25,7 +27,8 @@ public:
 	void ShowOptions();
 	void ShowInspectorInfo();
 	void ShowVariablesInfo();
-	void SetOutputValueType(ScriptVariable* var);
+	void ShowVarType(ScriptVariable* var);
+	void ShowVarValue(ScriptVariable* var);
 	// -------------------------
 
 	// SAVE - LOAD METHODS ----------------

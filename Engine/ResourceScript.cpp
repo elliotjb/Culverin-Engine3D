@@ -47,6 +47,15 @@ void ResourceScript::SetCSharp(CSharpScript* csharp_)
 	csharp = csharp_;
 }
 
+bool ResourceScript::Start()
+{
+	if (csharp != nullptr)
+	{
+		csharp->DoMainFunction(FunctionBase::CS_Start);
+	}
+	return false;
+}
+
 bool ResourceScript::Update(float dt)
 {
 	if (csharp != nullptr)

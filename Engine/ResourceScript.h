@@ -23,6 +23,7 @@ public:
 	void SetScriptEditor(std::string nameScript);
 	bool ReImportScript(std::string path_dll_);
 
+	bool Start();
 	bool Update(float dt);
 
 	std::string GetPathAssets() const;

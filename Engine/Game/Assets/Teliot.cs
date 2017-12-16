@@ -1,18 +1,24 @@
-﻿using CulverinEditor;
+﻿using System;
+using CulverinEditor;
 using CulverinEditor.Debug;
 
-public class Test
+public class Teste : Culverin
 {
-    private int Jordi = 10;
-    private float Elliot = 12.45f;
-    public string Sergio = "What the hell man";
-    private float a = 1.0f;
+    public int a = 1;
+    public int b = 2;
+    public int c = 4;
+
+    void Start()
+    {
+        a = 11;
+        b = 3;
+    }
 
     void Update()
     {
-        // int temp = Getvar();
-        Debug.Log("hi");
+        c = a + b;
 
+        Debug.Log(c.ToString());
     }
 
 }

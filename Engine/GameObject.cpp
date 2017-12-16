@@ -87,7 +87,7 @@ bool GameObject::CheckScripts(int& numfails)
 	int allScriptsCompiled = 0;
 	if (active)
 	{
-		//preUpdate Components --------------------------
+		//Check compilation errors --------------------------
 		for (uint i = 0; i < components.size(); i++)
 		{
 			if (components[i]->isActive())
@@ -102,14 +102,13 @@ bool GameObject::CheckScripts(int& numfails)
 			}
 		}
 
-		//preUpdate child Game Objects -------------------
+		//Check child Game Objects -------------------
 		for (uint i = 0; i < childs.size(); i++)
 		{
 			if (childs[i]->isActive())
 			{
 				childs[i]->CheckScripts(numfails);
 			}
-
 		}
 	}
 	numfails = allScriptsCompiled;
@@ -122,8 +121,31 @@ bool GameObject::CheckScripts(int& numfails)
 	return false;
 }
 
-void GameObject::StartComponents()
+void GameObject::StartScripts()
 {
+	if (active)
+	{
+		//Start Active scripts --------------------------
+		for (uint i = 0; i < components.size(); i++)
+		{
+			if (components[i]->isActive())
+			{
+				if (components[i]->GetType() == Comp_Type::C_SCRIPT)
+				{
+					((CompScript*)components[i])->Start();
+				}
+			}
+		}
+
+		//Check child Game Objects -------------------
+		for (uint i = 0; i < childs.size(); i++)
+		{
+			if (childs[i]->isActive())
+			{
+				childs[i]->StartScripts();
+			}
+		}
+	}
 }
 
 void GameObject::preUpdate(float dt)

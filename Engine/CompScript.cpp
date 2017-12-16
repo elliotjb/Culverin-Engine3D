@@ -84,6 +84,14 @@ void CompScript::preUpdate(float dt)
 	}
 }
 
+void CompScript::Start()
+{
+	if (resourcescript != nullptr && App->engineState == EngineState::PLAY)
+	{
+		resourcescript->Start();
+	}
+}
+
 void CompScript::Update(float dt)
 {
 	if (resourcescript != nullptr && App->engineState == EngineState::PLAY)
@@ -252,44 +260,82 @@ void CompScript::ShowVariablesInfo()
 	//Access chsharp script, it contains a vector of all variables with their respective info
 	for (uint i = 0; i < resourcescript->GetCSharpScript()->variables.size(); i++)
 	{
+		ImGui::PushID(i);
 
-		//Depending on its type, GUI modifier will be diferent
-		SetOutputValueType(resourcescript->GetCSharpScript()->variables[i]); ImGui::SameLine();
+		//Show variable TYPE --------------------------
+		ShowVarType(resourcescript->GetCSharpScript()->variables[i]); ImGui::SameLine();
 		
-		//Show variable name --------------------------
-		ImGui::Text(" %s", resourcescript->GetCSharpScript()->variables[i]->name); 
+		//Show variable NAME --------------------------
+		ImGui::Text(" %s", resourcescript->GetCSharpScript()->variables[i]->name); ImGui::SameLine();
 
+		//Show variable VALUE -------------------------
+		ShowVarValue(resourcescript->GetCSharpScript()->variables[i]);
+
+		ImGui::PopID();
 	}
 }
 
-void CompScript::SetOutputValueType(ScriptVariable* var)
+void CompScript::ShowVarType(ScriptVariable* var)
 {
 	if (var->type == VarType::Var_INT)
 	{
-		static int intVal = 0;
-		//ImGui::InputInt("", &*(int*)var->value, 1, 0, 1); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f),"INT");
 	}
 	else if (var->type == VarType::Var_FLOAT)
 	{
-		static float floatVal = 0;
-		//ImGui::InputInt("", &*(int*)var->value, 1, 0, 1); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "FLOAT");
 	}
 	else if (var->type == VarType::Var_BOOL)
 	{
-		static bool bVal = false;
-		//ImGui::InputInt("", &*(int*)var->value, 1, 0, 1); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "BOOL");
 	}
 	else if (var->type == VarType::Var_STRING)
 	{	
-		//ImGui::InputInt("", &*(int*)var->value, 1, 0, 1); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "STRING");
 	}
 	else
 	{
-		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "UNKNOWN");
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "UNKNOWN TYPE");
+	}
+}
+
+void CompScript::ShowVarValue(ScriptVariable* var)
+{
+	if (var->type == VarType::Var_INT)
+	{
+		if (ImGui::InputInt("##iVal", &*(int*)var->value))
+		{
+			int val = *(int*)var->value;
+			var->SetMonoValue((int*)var->value);
+		}
+	}
+	else if (var->type == VarType::Var_FLOAT)
+	{
+		if (ImGui::InputFloat("##fVal", &*(float*)var->value, 0, 0, 4))
+		{
+			float val = *(float*)var->value;
+			var->SetMonoValue((float*)var->value);
+		}
+	}
+	else if (var->type == VarType::Var_BOOL)
+	{
+		if (ImGui::Checkbox("##bVal", &*(bool*)var->value))
+		{
+			bool val = *(bool*)var->value;
+			var->SetMonoValue((bool*)var->value);
+		}
+	}
+	else if (var->type == VarType::Var_STRING)
+	{
+		//std::string strval = (const char*)var->value;
+		//if (ImGui::InputText("##strVal", &*(char*)var->value, 50))
+		//{
+		//	var->SetMonoValue((char*)var->value);
+		//}
+	}
+	else
+	{
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "UNKNOWN VALUE");
 	}
 }
 

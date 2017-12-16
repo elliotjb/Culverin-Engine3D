@@ -4,26 +4,21 @@ using CulverinEditor.Debug;
 
 public class Teste : Culverin
 {
-    public String name;
-    public Teste(String name)
-    {
-        this.name = name;
-        //System.Console.WriteLine("Entity " + name + " constructed");
-    }
+    public int a = 1;
+    public int b = 2;
+    public int c = 4;
 
-    ~Teste()
+    void Start()
     {
-    }
-
-    public String Testsd()
-    {
-        return Getvar().ToString();
+        a = 4;
+        b = 3;
     }
 
     void Update()
     {
-       // int temp = Getvar();
+        c = a + b;
 
+        Debug.Log(c.ToString());
     }
 
 }

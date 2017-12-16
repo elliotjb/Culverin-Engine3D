@@ -27,7 +27,7 @@ public:
 	// Play Engine
 	// Return if all scripts in scene are compilated correctly.
 	bool CheckScripts(int & numfails);
-	void StartComponents();
+	void StartScripts();
 
 	void preUpdate(float dt);
 	void Update(float dt);

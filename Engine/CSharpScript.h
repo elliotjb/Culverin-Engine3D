@@ -12,6 +12,8 @@
 #include <mono/metadata/object.h>
 #include <mono/metadata/attrdefs.h>
 
+class CSharpScript;
+
 enum FunctionBase
 {
 	CS_Start, CS_Update, CS_OnGUI, CS_OnEnable, CS_OnDisable
@@ -36,72 +38,29 @@ enum VarAccess
 class ScriptVariable
 {
 public:
-	ScriptVariable(const char* name, VarType type, VarAccess access);
+	ScriptVariable(const char* name, VarType type, VarAccess access, CSharpScript* script);
 	virtual ~ScriptVariable();
 
-	template<class TYPE>
-	TYPE GetValue() const;
+	void SetMonoValue(void* newVal);
 
-	template<class TYPE>
-	void SetValue(TYPE new_value);
+	void SetMonoField(MonoClassField* mfield);
+	void SetMonoType(MonoType* mtype);
 
 public:
 	const char* name = nullptr;
 	VarType type = Var_UNKNOWN;
 	void* value = nullptr;
 	VarAccess access = VarAccess::Var_PRIVATE;
+
+private:
+	//Mono properties to link with he script
+	MonoClassField * monoField = nullptr;
+	MonoType* monoType = nullptr;
+
+	//To access the script
+	CSharpScript* script = nullptr;
 };
 
-template<class TYPE>
-inline TYPE ScriptVariable::GetValue() const
-{
-	if (type == VarType::Var_INT)
-	{
-		return (int)value;
-	}
-	else if (type == VarType::Var_FLOAT)
-	{
-		return (float)value;
-	}
-	else if (type == VarType::Var_BOOL)
-	{
-		return (bool)value;
-	}
-	else if (type == VarType::Var_STRING)
-	{
-		return (const char*)value;
-	}
-	else
-	{
-		LOG("Unknown variable type of '%s'", name.c_str());
-		return NULL;
-	}
-}
-
-template<class TYPE>
-inline void ScriptVariable::SetValue(TYPE new_value)
-{
-	if (type == VarType::Var_INT)
-	{
-		value = (int)new_value;
-	}
-	else if (type == VarType::Var_FLOAT)
-	{
-		value = (float)new_value;
-	}
-	else if (type == VarType::Var_BOOL)
-	{
-		value = (bool)new_value;
-	}
-	else if (type == VarType::Var_STRING)
-	{
-		value = (const char*)new_value;
-	}
-	else
-	{
-		LOG("Unknown variable type of '%s'", name.c_str());
-	}
-}
 
 struct MainMonoMethod
 {
@@ -123,6 +82,9 @@ public:
 	void DoMainFunction(FunctionBase function);
 	void DoFunction(MonoMethod* function, void ** parameter);
 
+	//GET functions ------------------------------------
+	MonoObject* GetMonoObject() const;
+
 	// Functions set initial info ------------------------
 	void SetDomain(MonoDomain* domain);
 	void SetAssembly(MonoAssembly* assembly);
@@ -131,43 +93,16 @@ public:
 	void SetClassName(std::string _name);
 	void SetNameSpace(std::string _name_space);
 
-	// Variable setting-getting functions ----------------
-	template<class TYPE>
-	void SetValue(const char* variable_name, TYPE value)
-	{
-		// find the  field in the Entity class
-		MonoClassField* field = mono_class_get_field_from_name(CSClass, variable_name);
-		if (field)
-		{
-			// set the field's value
-			mono_field_set_value(CSObject, field, &value);
-		}
-	}
 
-	template<class TYPE>
-	TYPE GetValue(const char* variable_name)
-	{
-		// find the  field in the Entity class
-		MonoClassField* field = mono_class_get_field_from_name(CSClass, variable_name);
-		if (field)
-		{
-			TYPE value;
-
-			// set the field's value
-			mono_field_get_value(CSObject, field, &value);
-
-			return value;
-		}
-
-		return NULL;
-	}
-
-	//Pass from csharp to c++ variables
+	//Variables METHODS -------------------------------------------------
 	void ResetScriptVariables();
 	void GetScriptVariables();
 
 	VarType GetTypeFromMono(MonoType* mtype);
-	void GetValueFromMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype);
+	bool GetValueFromMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype);
+	bool LinkVarToMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype);
+	void SetVarValue(ScriptVariable* variable, void* new_val);
+	// ------------------------------------------------------------------
 
 public:
 	//Variables/Info containers (public to have access through other modules)

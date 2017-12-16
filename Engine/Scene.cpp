@@ -250,6 +250,15 @@ bool Scene::CheckNoFails()
 	return false;
 }
 
+void Scene::StartScripts()
+{
+	//Iterate all GameObjects and, if they have scripts, call their start
+	for (int i = 0; i < gameobjects.size(); i++)
+	{
+		gameobjects[i]->StartScripts();
+	}
+}
+
 void Scene::DrawPlane()
 {
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
