@@ -3,6 +3,7 @@
 #include "ModuleFS.h"
 #include "ModuleImporter.h"
 #include "ModuleGUI.h"
+#include "ModuleInput.h"
 #include "ResourceScript.h"
 #include "ModuleResourceManager.h"
 #include "JSONSerialization.h"
@@ -12,6 +13,8 @@
 
 #include <direct.h>
 #pragma comment(lib, "mono-2.0-sgen.lib")
+
+CSharpScript* ImportScript::current = nullptr;
 
 ImportScript::ImportScript()
 {
@@ -60,41 +63,6 @@ bool ImportScript::InitScriptingSystem()
 	}
 
 	return false;
-}
-
-//This method is called once Mono domain is init to Link C# functions 
-//that users will use in their scripts with C++ functions of the application
-void ImportScript::LinkFunctions()
-{
-	//GAMEOBJECT FUNCTIONS ---------------
-	/*mono_add_internal_call("CulverinEditor.GameObject::CreateGameObject",(const void*)CreateGameObject);
-	mono_add_internal_call("CulverinEditor.GameObject::Destroy",(const void*)DestroyGameObject);
-	mono_add_internal_call("CulverinEditor.GameObject::SetActive",(const void*)SetActive);
-	mono_add_internal_call("CulverinEditor.GameObject::IsActive",(const void*)IsActive);
-	mono_add_internal_call("CulverinEditor.GameObject::SetParent",(const void*)SetParent);
-	mono_add_internal_call("CulverinEditor.GameObject::SetName",(const void*)SetName);
-	mono_add_internal_call("CulverinEditor.GameObject::GetName",(const void*)GetName);
-	mono_add_internal_call("CulverinEditor.GameObject::AddComponent",(const void*)AddComponent);
-	mono_add_internal_call("CulverinEditor.GameObject::GetComponent",(const void*)GetComponent);*/
-
-	//CONSOLE FUNCTIONS ------------------
-	mono_add_internal_call("CulverinEditor.Debug.Debug::Log", (const void*)ConsoleLog);
-
-	//INPUT FUNCTIONS -------------------
-	/*mono_add_internal_call("CulverinEditor.Input::KeyDown",(const void*)KeyDown);
-	mono_add_internal_call("CulverinEditor.Input::KeyUp",(const void*)KeyUp);
-	mono_add_internal_call("CulverinEditor.Input::KeyRepeat",(const void*)KeyRepeat);
-	mono_add_internal_call("CulverinEditor.Input::MouseButtonDown",(const void*)MouseButtonDown);
-	mono_add_internal_call("CulverinEditor.Input::MouseButtonUp",(const void*)MouseButtonUp);
-	mono_add_internal_call("CulverinEditor.Input::MouseButtonRepeat",(const void*)MouseButtonRepeat);*/
-}
-
-//Log messages into Engine Console
-void ImportScript::ConsoleLog(MonoString* string)
-{
-	//Pass from MonoString to const char*
-	const char* message = mono_string_to_utf8(string);
-	LOG(message);
 }
 
 bool ImportScript::Import(const char* file, uint uuid)
@@ -361,6 +329,11 @@ std::string ImportScript::GetMonoPath() const
 	return mono_path;
 }
 
+void ImportScript::SetCurrentScript(CSharpScript* current_)
+{
+	current = current_;
+}
+
 bool ImportScript::IsNameUnique(std::string name) const
 {
 	if (name != "")
@@ -482,4 +455,124 @@ MonoClass* ImportScript::GetMonoClassFromImage(MonoImage* image, std::string& na
 		}
 	}
 	return entity;
+}
+
+//This method is called once Mono domain is init to Link C# functions 
+//that users will use in their scripts with C++ functions of the application
+void ImportScript::LinkFunctions()
+{
+	//GAMEOBJECT FUNCTIONS ---------------
+	mono_add_internal_call("CulverinEditor.GameObject::CreateGameObject",(const void*)CreateGameObject);
+	/*mono_add_internal_call("CulverinEditor.GameObject::Destroy",(const void*)DestroyGameObject);
+	mono_add_internal_call("CulverinEditor.GameObject::SetActive",(const void*)SetActive);
+	mono_add_internal_call("CulverinEditor.GameObject::IsActive",(const void*)IsActive);
+	mono_add_internal_call("CulverinEditor.GameObject::SetParent",(const void*)SetParent);
+	mono_add_internal_call("CulverinEditor.GameObject::SetName",(const void*)SetName);
+	mono_add_internal_call("CulverinEditor.GameObject::GetName",(const void*)GetName);
+	mono_add_internal_call("CulverinEditor.GameObject::AddComponent",(const void*)AddComponent);*/
+	mono_add_internal_call("CulverinEditor.GameObject::GetComponent",(const void*)GetComponent);
+	mono_add_internal_call("CulverinEditor.Tranform::GetPosition", (const void*)GetPosition);
+	mono_add_internal_call("CulverinEditor.Tranform::SetPosition", (const void*)SetPosition);
+
+	//CONSOLE FUNCTIONS ------------------
+	mono_add_internal_call("CulverinEditor.Debug.Debug::Log", (const void*)ConsoleLog);
+
+	//INPUT FUNCTIONS -------------------
+	mono_add_internal_call("CulverinEditor.Input::KeyDown", (const void*)KeyDown);
+	mono_add_internal_call("CulverinEditor.Input::KeyUp", (const void*)KeyUp);
+	mono_add_internal_call("CulverinEditor.Input::KeyRepeat", (const void*)KeyRepeat);
+	mono_add_internal_call("CulverinEditor.Input::MouseButtonDown", (const void*)MouseButtonDown);
+	mono_add_internal_call("CulverinEditor.Input::MouseButtonUp", (const void*)MouseButtonUp);
+	mono_add_internal_call("CulverinEditor.Input::MouseButtonRepeat", (const void*)MouseButtonRepeat);
+}
+
+//Log messages into Engine Console
+void ImportScript::ConsoleLog(MonoString* string)
+{
+	//Pass from MonoString to const char*
+	const char* message = mono_string_to_utf8(string);
+	LOG(message);
+}
+
+mono_bool ImportScript::KeyDown(MonoString* string)
+{
+	const char* key_ = mono_string_to_utf8(string);
+	SDL_Scancode key = App->input->GetKeyFromName(key_);
+	if (App->input->GetKey(key) == KEY_STATE::KEY_DOWN)
+	{
+		return true;
+	}
+	LOG("[error]Error with key pressed!");
+	return false;
+}
+
+mono_bool ImportScript::KeyUp(MonoString* string)
+{
+	const char* key_ = mono_string_to_utf8(string);
+	SDL_Scancode key = App->input->GetKeyFromName(key_);
+	if (App->input->GetKey(key) == KEY_STATE::KEY_UP)
+	{
+		return true;
+	}
+	LOG("[error]Error with key pressed!");
+	return false;
+}
+
+mono_bool ImportScript::KeyRepeat(MonoString* string)
+{
+	const char* key_ = mono_string_to_utf8(string);
+	SDL_Scancode key = App->input->GetKeyFromName(key_);
+	if (App->input->GetKey(key) == KEY_STATE::KEY_REPEAT)
+	{
+		return true;
+	}
+	LOG("[error]Error with key pressed!");
+	return false;
+}
+
+mono_bool ImportScript::MouseButtonDown(int buttonmouse)
+{
+	if (buttonmouse >= 0 && buttonmouse < 4)
+	{
+		return (App->input->GetMouseButton(buttonmouse) == KEY_STATE::KEY_DOWN);
+	}
+	return false;
+}
+
+mono_bool ImportScript::MouseButtonUp(int buttonmouse)
+{
+	if (buttonmouse >= 0 && buttonmouse < 4)
+	{
+		return (App->input->GetMouseButton(buttonmouse) == KEY_STATE::KEY_UP);
+	}
+	return false;
+}
+
+mono_bool ImportScript::MouseButtonRepeat(int buttonmouse)
+{
+	if (buttonmouse >= 0 && buttonmouse < 4)
+	{
+		return (App->input->GetMouseButton(buttonmouse) == KEY_STATE::KEY_REPEAT);
+	}
+	return false;
+}
+
+void ImportScript::CreateGameObject(MonoObject* object)
+{
+	current->CreateGameObject(object);
+}
+
+MonoObject* ImportScript::GetComponent(MonoObject* object, MonoReflectionType* type)
+{
+	return current->GetComponent(object, type);
+}
+
+MonoObject* ImportScript::GetPosition()
+{
+	return current->GetPosition();
+}
+
+void ImportScript::SetPosition(MonoObject* vector3)
+{
+	current->SetPosition(vector3);
 }

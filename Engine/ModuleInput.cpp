@@ -253,3 +253,7 @@ bool ModuleInput::CleanUp()
 	return true;
 }
 
+SDL_Scancode ModuleInput::GetKeyFromName(const char* name)
+{
+	return SDL_GetScancodeFromName(name);
+}

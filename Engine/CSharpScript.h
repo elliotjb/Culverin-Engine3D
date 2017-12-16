@@ -13,6 +13,7 @@
 #include <mono/metadata/attrdefs.h>
 
 class CSharpScript;
+class GameObject;
 
 enum FunctionBase
 {
@@ -26,7 +27,8 @@ enum VarType
 	Var_FLOAT = 1,
 	Var_BOOL = 2,
 	Var_STRING = 3,
-	Var_CLASS = 4
+	Var_CLASS = 4,
+	Var_GAMEOBJECT = 5
 };
 
 enum VarAccess
@@ -51,6 +53,7 @@ public:
 	VarType type = Var_UNKNOWN;
 	void* value = nullptr;
 	std::string str_value;
+	GameObject* gameObject = nullptr;
 	VarAccess access = VarAccess::Var_PRIVATE;
 
 private:
@@ -83,6 +86,8 @@ public:
 	void DoMainFunction(FunctionBase function);
 	void DoFunction(MonoMethod* function, void ** parameter);
 
+	bool MonoObjectIsValid(MonoObject* object);
+
 	//GET functions ------------------------------------
 	MonoObject* GetMonoObject() const;
 
@@ -106,6 +111,14 @@ public:
 	bool LinkVarToMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype);
 	void SetVarValue(ScriptVariable* variable, void* new_val);
 	// ------------------------------------------------------------------
+	void SetCurrentGameObject(GameObject* current);
+
+	void CreateGameObject(MonoObject* object);
+
+	MonoObject* GetComponent(MonoObject* object, MonoReflectionType* type);
+
+	MonoObject* GetPosition();
+	void SetPosition(MonoObject* vector3);
 
 public:
 	//Variables/Info containers (public to have access through other modules)
@@ -129,6 +142,10 @@ private:
 	MainMonoMethod OnGUI;
 	MainMonoMethod OnEnable;
 	MainMonoMethod OnDisable;
+
+	GameObject* currentGameObject = nullptr;
+	std::map<MonoObject*, GameObject*> gameObjects;
+
 };
 
 #endif

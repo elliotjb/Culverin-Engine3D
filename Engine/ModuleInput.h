@@ -29,6 +29,8 @@ public:
 	update_status UpdateConfig(float dt);
 	bool CleanUp();
 
+	SDL_Scancode GetKeyFromName(const char* name);
+
 	KEY_STATE GetKey(int id) const
 	{
 		return keyboard[id];

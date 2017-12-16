@@ -33,6 +33,8 @@ public:
 	bool CheckNoFails();
 	void StartScripts();
 
+	GameObject* GetGameObjectfromScene(bool& active);
+
 	// DRAWING METHODS ---------
 	void DrawPlane();
 	void DrawCube(float size);

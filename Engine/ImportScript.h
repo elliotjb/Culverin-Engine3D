@@ -38,13 +38,29 @@ public:
 	MonoImage* GetCulverinImage() const;
 	std::string GetMonoPath() const;
 
+	void SetCurrentScript(CSharpScript* current);
+
 	bool IsNameUnique(std::string name) const;
 
 private:
 	void LinkFunctions();
 
-	//CONSOLE FUNCTIONS ---------
+	// FUNCTIONS ---------
+	// Debug - Console ------
 	static void ConsoleLog(MonoString* string);
+
+	// Input ------------
+	static mono_bool KeyDown(MonoString* string);
+	static mono_bool KeyUp(MonoString* string);
+	static mono_bool KeyRepeat(MonoString* string);
+	static mono_bool MouseButtonDown(int buttonmouse);
+	static mono_bool MouseButtonUp(int buttonmouse);
+	static mono_bool MouseButtonRepeat(int buttonmouse);
+
+	static void CreateGameObject(MonoObject* object);
+	static MonoObject* GetComponent(MonoObject* object, MonoReflectionType* type);
+	static MonoObject* GetPosition();
+	static void SetPosition(MonoObject* vector3);
 
 private:
 	std::string nameNewScript;
@@ -53,6 +69,7 @@ private:
 	MonoDomain* childDomain = nullptr;
 	MonoImage* culverin_mono_image = nullptr;
 	std::list<std::string> nameScripts;
+	static CSharpScript* current;
 };
 
 #endif

@@ -259,6 +259,31 @@ void Scene::StartScripts()
 	}
 }
 
+GameObject* Scene::GetGameObjectfromScene(bool& active)
+{
+	if (!ImGui::Begin("GameObjects in Scene", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders))
+	{
+		ImGui::End();
+	}
+	else
+	{
+		for (int i = 0; i < gameobjects.size(); i++)
+		{
+			ImGui::PushID(i);
+			if(ImGui::Selectable(gameobjects[i]->GetName()))
+			{
+				ImGui::PopID();
+				ImGui::End();
+				active = false;
+				return gameobjects[i];
+			}
+			ImGui::PopID();
+		}
+		ImGui::End();
+	}
+	return nullptr;
+}
+
 void Scene::DrawPlane()
 {
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);

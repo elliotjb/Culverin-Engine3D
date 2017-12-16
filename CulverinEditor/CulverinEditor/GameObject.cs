@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
+using System;
 
 namespace CulverinEditor
 {
@@ -13,6 +9,28 @@ namespace CulverinEditor
         {
             CreateGameObject(this);
         }
+        //public GameObject gameObject
+        //{
+        //    get
+        //    {
+        //        return GetGameObject();
+        //    }
+        //}
+
+        public string name
+        {
+            get
+            {
+                return GetName();
+            }
+            set
+            {
+                SetName(value);
+            }
+        }
+
+        //[MethodImpl(MethodImplOptions.InternalCall)]
+        //private extern GameObject GetGameObject();
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         private extern void CreateGameObject(GameObject go);
@@ -24,7 +42,7 @@ namespace CulverinEditor
         public extern void SetActive(bool go_active);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern void IsActive();
+        public extern bool IsActive();
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern void SetParent(GameObject go_parent);
@@ -33,7 +51,7 @@ namespace CulverinEditor
         public extern void SetName(string go_name);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern void GetName();
+        public extern string GetName();
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern Component AddComponent(Type componentType);

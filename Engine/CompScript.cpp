@@ -96,6 +96,8 @@ void CompScript::Update(float dt)
 {
 	if (resourcescript != nullptr && App->engineState == EngineState::PLAY)
 	{
+		App->importer->iScript->SetCurrentScript(resourcescript->GetCSharpScript());
+		resourcescript->SetCurrentGameObject(parent);
 		resourcescript->Update(dt);
 	}
 }
@@ -267,7 +269,7 @@ void CompScript::ShowVariablesInfo()
 			//Show variable TYPE --------------------------
 			ShowVarType(resourcescript->GetCSharpScript()->variables[i]); ImGui::SameLine();
 
-			//Show variable NAME --------------------------
+			//Show variable NAME -------------------------
 			ImGui::Text(" %s", resourcescript->GetCSharpScript()->variables[i]->name); ImGui::SameLine();
 
 			//Show variable VALUE -------------------------
@@ -299,6 +301,10 @@ void CompScript::ShowVarType(ScriptVariable* var)
 	else if (var->type == VarType::Var_STRING)
 	{	
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "STRING");
+	}
+	else if (var->type == VarType::Var_GAMEOBJECT)
+	{
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "GO");
 	}
 	else
 	{
@@ -340,6 +346,31 @@ void CompScript::ShowVarValue(ScriptVariable* var)
 		//	var->SetMonoValue((char*)var->value);
 		//}
 		ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f),"%s", var->str_value.c_str());
+	}
+	else if (var->type == VarType::Var_GAMEOBJECT)
+	{
+		if (var->gameObject == nullptr)
+		{
+			static bool selectGameObject = false;
+			if (ImGui::Button("Select GO..."))
+			{
+				selectGameObject = true;
+			}
+
+			if (selectGameObject)
+			{
+				GameObject* temp = App->scene->GetGameObjectfromScene(selectGameObject);
+				if (temp != nullptr)
+				{
+					var->gameObject = temp;
+					var->SetMonoValue((GameObject*)var->gameObject);
+				}
+			}
+		}
+		else
+		{
+			ImGui::Text("%s", var->gameObject->GetName());
+		}
 	}
 	else
 	{

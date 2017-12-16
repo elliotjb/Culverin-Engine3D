@@ -471,7 +471,7 @@ Resource*  ModuleResourceManager::ShowResources(bool& active, Resource::Type typ
 	return nullptr;
 }
 
-void ModuleResourceManager::ShowAllResources(bool& active)
+void ModuleResourceManager::ShowAllResources(bool& active) 
 {
 	if (!ImGui::Begin("Resources", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders))
 	{
@@ -518,6 +518,7 @@ void ModuleResourceManager::ShowAllResources(bool& active)
 				if (ImGui::InputText("##nameModel", namedit, 50, ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue))
 				{
 					it->second->name = App->fs->ConverttoChar(std::string(namedit).c_str());
+					//TODO ELLIOT SaveMeta
 				}
 				ImGui::Text("Number of GameObjects Use this Resource: "); ImGui::SameLine();
 				if (it->second->NumGameObjectsUseMe > 0)
@@ -535,7 +536,6 @@ void ModuleResourceManager::ShowAllResources(bool& active)
 					ImGui::Text("Directory in Assets: "); ImGui::SameLine();
 					ImGui::TextColored(ImVec4(0, 0.933, 0, 1), "%s", it->second->path_assets.c_str());
 				}
-				//ImGui::Text("Name: ", it->second->name);
 			}
 			it++;
 			ImGui::PopID();

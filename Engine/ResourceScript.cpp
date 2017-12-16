@@ -2,6 +2,7 @@
 #include "CSharpScript.h"
 #include "Application.h"
 #include "ModuleFS.h"
+#include "GameObject.h"
 #include "Script_editor.h"
 
 ResourceScript::ResourceScript(uint uid) : Resource(uid, Resource::Type::SCRIPT, Resource::State::UNLOADED)
@@ -45,6 +46,11 @@ bool ResourceScript::ReImportScript(std::string path_dll_)
 void ResourceScript::SetCSharp(CSharpScript* csharp_)
 {
 	csharp = csharp_;
+}
+
+void ResourceScript::SetCurrentGameObject(GameObject* current)
+{
+	csharp->SetCurrentGameObject(current);
 }
 
 bool ResourceScript::Start()
