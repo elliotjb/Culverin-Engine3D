@@ -26,7 +26,7 @@ public:
 	bool Import(const char* file, uint uuid = 0);
 	bool LoadResource(const char* file, ResourceScript* resourceScript);
 	bool ReImportScript(std::string fileAssets, std::string uid_script, ResourceScript * resourceScript);
-	MonoDomain * Load_domain();
+	MonoDomain* Load_domain();
 	void Unload_domain();
 	bool CreateNewScript(bool & active);
 	int CompileScript(const char* file, std::string& libraryScript, const char* uid);
@@ -46,10 +46,10 @@ private:
 	void LinkFunctions();
 
 	// FUNCTIONS ---------
-	// Debug - Console ------
+	/* Debug - Console */
 	static void ConsoleLog(MonoString* string);
 
-	// Input ------------
+	/* Input */
 	static mono_bool KeyDown(MonoString* string);
 	static mono_bool KeyUp(MonoString* string);
 	static mono_bool KeyRepeat(MonoString* string);
@@ -57,9 +57,14 @@ private:
 	static mono_bool MouseButtonUp(int buttonmouse);
 	static mono_bool MouseButtonRepeat(int buttonmouse);
 
+	/* Time */
+	static float GetDeltaTime();
+
+	/* GameObject */
+	static MonoString* GetName(MonoObject* object);
 	static void CreateGameObject(MonoObject* object);
 	static MonoObject* GetComponent(MonoObject* object, MonoReflectionType* type);
-	static MonoObject* GetPosition();
+	static MonoObject* GetPosition(MonoObject* object);
 	static void SetPosition(MonoObject* vector3);
 
 private:

@@ -62,6 +62,11 @@ bool Component::isActive() const
 	return active;
 }
 
+void Component::SetActive(bool active)
+{
+	this->active = active;
+}
+
 uint Component::GetUUID() const
 {
 	return uid;

@@ -467,9 +467,9 @@ void ImportScript::LinkFunctions()
 	mono_add_internal_call("CulverinEditor.GameObject::SetActive",(const void*)SetActive);
 	mono_add_internal_call("CulverinEditor.GameObject::IsActive",(const void*)IsActive);
 	mono_add_internal_call("CulverinEditor.GameObject::SetParent",(const void*)SetParent);
-	mono_add_internal_call("CulverinEditor.GameObject::SetName",(const void*)SetName);
+	mono_add_internal_call("CulverinEditor.GameObject::SetName",(const void*)SetName);*/
 	mono_add_internal_call("CulverinEditor.GameObject::GetName",(const void*)GetName);
-	mono_add_internal_call("CulverinEditor.GameObject::AddComponent",(const void*)AddComponent);*/
+	//mono_add_internal_call("CulverinEditor.GameObject::AddComponent",(const void*)AddComponent);
 	mono_add_internal_call("CulverinEditor.GameObject::GetComponent",(const void*)GetComponent);
 	mono_add_internal_call("CulverinEditor.Tranform::GetPosition", (const void*)GetPosition);
 	mono_add_internal_call("CulverinEditor.Tranform::SetPosition", (const void*)SetPosition);
@@ -484,14 +484,20 @@ void ImportScript::LinkFunctions()
 	mono_add_internal_call("CulverinEditor.Input::MouseButtonDown", (const void*)MouseButtonDown);
 	mono_add_internal_call("CulverinEditor.Input::MouseButtonUp", (const void*)MouseButtonUp);
 	mono_add_internal_call("CulverinEditor.Input::MouseButtonRepeat", (const void*)MouseButtonRepeat);
+
+	//TIME FUNCTIONS -------------------
+	mono_add_internal_call("CulverinEditor.Time::DeltaTime", (const void*)GetDeltaTime);
 }
 
 //Log messages into Engine Console
 void ImportScript::ConsoleLog(MonoString* string)
 {
-	//Pass from MonoString to const char*
-	const char* message = mono_string_to_utf8(string);
-	LOG(message);
+	if (string != nullptr)
+	{
+		//Pass from MonoString to const char*
+		const char* message = mono_string_to_utf8(string);
+		LOG(message);
+	}
 }
 
 mono_bool ImportScript::KeyDown(MonoString* string)
@@ -502,7 +508,10 @@ mono_bool ImportScript::KeyDown(MonoString* string)
 	{
 		return true;
 	}
-	LOG("[error]Error with key pressed!");
+	if(key == SDL_SCANCODE_UNKNOWN)
+	{
+		LOG("[error]Error with key pressed!");
+	}
 	return false;
 }
 
@@ -514,7 +523,10 @@ mono_bool ImportScript::KeyUp(MonoString* string)
 	{
 		return true;
 	}
-	LOG("[error]Error with key pressed!");
+	if (key == SDL_SCANCODE_UNKNOWN)
+	{
+		LOG("[error]Error with key pressed!");
+	}
 	return false;
 }
 
@@ -526,7 +538,10 @@ mono_bool ImportScript::KeyRepeat(MonoString* string)
 	{
 		return true;
 	}
-	LOG("[error]Error with key pressed!");
+	if (key == SDL_SCANCODE_UNKNOWN)
+	{
+		LOG("[error]Error with key pressed!");
+	}
 	return false;
 }
 
@@ -557,6 +572,16 @@ mono_bool ImportScript::MouseButtonRepeat(int buttonmouse)
 	return false;
 }
 
+float ImportScript::GetDeltaTime()
+{
+	return App->gameTime.timeScale;
+}
+
+MonoString* ImportScript::GetName(MonoObject * object)
+{
+	return current->GetName(object);
+}
+
 void ImportScript::CreateGameObject(MonoObject* object)
 {
 	current->CreateGameObject(object);
@@ -567,9 +592,9 @@ MonoObject* ImportScript::GetComponent(MonoObject* object, MonoReflectionType* t
 	return current->GetComponent(object, type);
 }
 
-MonoObject* ImportScript::GetPosition()
+MonoObject* ImportScript::GetPosition(MonoObject * object)
 {
-	return current->GetPosition();
+	return current->GetPosition(object);
 }
 
 void ImportScript::SetPosition(MonoObject* vector3)

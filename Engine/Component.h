@@ -40,6 +40,7 @@ public:
 
 	Comp_Type GetType() const;
 	bool isActive() const;
+	void SetActive(bool active);
 	uint GetUUID() const;
 
 	const char* GetName() const

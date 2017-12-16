@@ -58,6 +58,7 @@ bool ResourceScript::Start()
 	if (csharp != nullptr)
 	{
 		csharp->DoMainFunction(FunctionBase::CS_Start);
+		return true;
 	}
 	return false;
 }
@@ -67,6 +68,7 @@ bool ResourceScript::Update(float dt)
 	if (csharp != nullptr)
 	{
 		csharp->DoMainFunction(FunctionBase::CS_Update);
+		return true;
 	}
 	return false;
 }

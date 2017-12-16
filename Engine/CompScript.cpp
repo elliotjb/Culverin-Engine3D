@@ -86,7 +86,7 @@ void CompScript::preUpdate(float dt)
 
 void CompScript::Start()
 {
-	if (resourcescript != nullptr && App->engineState == EngineState::PLAY)
+	if (resourcescript != nullptr && (App->engineState == EngineState::PLAY || App->engineState == EngineState::PLAYFRAME))
 	{
 		resourcescript->Start();
 	}
@@ -94,7 +94,7 @@ void CompScript::Start()
 
 void CompScript::Update(float dt)
 {
-	if (resourcescript != nullptr && App->engineState == EngineState::PLAY)
+	if (resourcescript != nullptr && (App->engineState == EngineState::PLAY || App->engineState == EngineState::PLAYFRAME))
 	{
 		App->importer->iScript->SetCurrentScript(resourcescript->GetCSharpScript());
 		resourcescript->SetCurrentGameObject(parent);
@@ -202,12 +202,34 @@ void CompScript::ShowInspectorInfo()
 
 	if (resourcescript != nullptr)
 	{
+		static bool active = isActive();
+		if (ImGui::Checkbox("Active", &active))
+		{
+			SetActive(active);
+		}
+
 		/* Name of the Script */
-		ImGui::Text("Name:"); ImGui::SameLine();
+		ImGui::Text("NAME:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", resourcescript->name);
-	
+
+		ImGui::Spacing();
+
+		ImGui::Text("VARIABLES:");
+
 		//Show info of each variable of the script
 		ShowVariablesInfo();
+
+		ImGui::Spacing();
+
+		//Info about ACTIVE/INACTIVE ---------------------------------
+		if (isActive())
+		{
+			ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "SCRIPT ACTIVE");
+		}
+		else
+		{
+			ImGui::TextColored(ImVec4(0.0f, 0.837f, 0.453f, 1.0f), "SCRIPT INACTIVE");
+		}
 
 	}
 
