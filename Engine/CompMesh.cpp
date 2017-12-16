@@ -341,7 +341,7 @@ void CompMesh::LinkMaterial(const CompMaterial* mat)
 	}
 }
 
-void CompMesh::SetResource(ResourceMesh* resourse_mesh)
+void CompMesh::SetResource(ResourceMesh* resourse_mesh, bool isImport)
 {
 	if (resourceMesh != resourse_mesh)
 	{
@@ -353,7 +353,15 @@ void CompMesh::SetResource(ResourceMesh* resourse_mesh)
 			}
 		}
 		resourceMesh = resourse_mesh;
-		resourceMesh->NumGameObjectsUseMe++;
+		if (isImport)
+		{
+			// Fix Bug with Delete Import -----
+			resourceMesh->NumGameObjectsUseMe = 0;
+		}
+		else
+		{
+			resourceMesh->NumGameObjectsUseMe++;
+		}
 	}
 }
 

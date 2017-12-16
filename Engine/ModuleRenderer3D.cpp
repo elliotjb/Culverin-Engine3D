@@ -55,7 +55,7 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 	{
 		//Use Vsync
 		if(App->GetVSYNC() && SDL_GL_SetSwapInterval(1) < 0)
-			LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+			LOG("[error]Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
 		//Initialize Projection Matrix
 		glMatrixMode(GL_PROJECTION);
@@ -65,7 +65,7 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		GLenum error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			LOG("[error]Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
 
@@ -77,14 +77,14 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			LOG("[error]Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
 
 		error = glewInit();
 		if (error != GL_NO_ERROR)
 		{
-			LOG("Error initializing GL3W! %s\n", gluErrorString(error));
+			LOG("[error]Error initializing GL3W! %s\n", gluErrorString(error));
 			ret = false;
 		}
 		
@@ -99,7 +99,7 @@ bool ModuleRenderer3D::Init(JSON_Object* node)
 		error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			LOG("[error]Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
 		

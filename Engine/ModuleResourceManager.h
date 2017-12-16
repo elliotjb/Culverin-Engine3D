@@ -36,13 +36,14 @@ public:
 	
 	Resource* CreateNewResource(Resource::Type type, uint uuid = 0);
 	Resource* GetResource(uint id);
-	Resource* GetResource(const char* material); //Only Use in ImportMesh -> Add recourceMaterial
+	Resource* GetResource(const char* material); //Only Use in ImportMesh -> Add ResourceMaterial
 	Resource::Type CheckFileType(const char* filedir);
 
 	void Init_IndexVertex(float3* vertex_triangulate, uint num_index, std::vector<uint>& indices, std::vector<float3>& vertices);
 	void CreateResourceCube();
 
 	Resource* ShowResources(bool& active, Resource::Type type);
+	void ShowAllResources(bool& active);
 	bool ReImportAllScripts();
 
 	void Save();

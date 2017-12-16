@@ -157,6 +157,7 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 					App->importer->iMaterial->LoadResource(temp.c_str(), resource_mat);
 				}
 				materialComp->resourceMaterial = resource_mat;
+				resource_mat->path_assets = normalPath;
 			}
 		}
 	}
@@ -173,7 +174,7 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 		uuid_mesh = uuid;
 	}
 	ResourceMesh* res_mesh = (ResourceMesh*)App->resource_manager->CreateNewResource(Resource::Type::MESH, uuid_mesh);
-	meshComp->SetResource(res_mesh);
+	meshComp->SetResource(res_mesh, true);
 
 
 	// ALLOCATING DATA INTO BUFFER ------------------------
@@ -219,6 +220,8 @@ bool ImportMesh::Import(const aiScene* scene, const aiMesh* mesh, GameObject* ob
 	// Set Info ResoruceMesh
 	std::string fileName = std::to_string(uuid_mesh);
 	res_mesh->InitInfo(name);
+	//std::string path_assets = name;
+	//res_mesh->path_assets = App->fs->GetFullPath(path_assets);
 
 	//Save Mesh
 	App->fs->SaveFile(data, fileName, size, IMPORT_DIRECTORY_LIBRARY_MESHES);

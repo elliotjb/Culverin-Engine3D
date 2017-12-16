@@ -34,7 +34,6 @@ public:
 
 private:
 	// 
-	std::string path_assets;
 	std::string path_dll;
 	CSharpScript* csharp = nullptr;
 	Script_editor* editor = nullptr;

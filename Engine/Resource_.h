@@ -2,6 +2,7 @@
 #define _RESOURCE_
 
 #include "Globals.h"
+#include <string>
 
 class Resource
 {
@@ -43,6 +44,7 @@ protected:
 
 public:
 	char* name = "Name Resource";
+	std::string path_assets;
 	uint NumGameObjectsUseMe = 0;
 };
 

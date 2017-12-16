@@ -85,6 +85,7 @@ private:
 	bool window_exit = false;
 	bool window_style = false;
 	bool window_CreateNewScript = false;
+	bool window_ShowAllResources = false;
 
 	int menu_height = 0;
 

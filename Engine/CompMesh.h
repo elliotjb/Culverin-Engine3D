@@ -45,7 +45,7 @@ public:
 	// ------------------------
 
 	void LinkMaterial(const CompMaterial* mat);
-	void SetResource(ResourceMesh* resourse_mesh);
+	void SetResource(ResourceMesh * resourse_mesh, bool isImport = false);
 
 	// SAVE - LOAD METHODS ----------------
 	void Save(JSON_Object* object, std::string name, bool saveScene, uint& countResources) const;

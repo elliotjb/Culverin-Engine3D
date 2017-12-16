@@ -397,7 +397,7 @@ void Scene::DeleteGameObjects(std::vector<GameObject*>& gameobjects, bool isMain
 	}
 }
 
-void Scene::DeleteGameObject(GameObject* gameobject)
+void Scene::DeleteGameObject(GameObject* gameobject, bool isImport)
 {
 	if (gameobject != nullptr)
 	{
@@ -427,7 +427,7 @@ void Scene::DeleteGameObject(GameObject* gameobject)
 			int index = gameobject->GetParent()->GetIndexChildbyName(gameobject->GetName());
 			gameobject->GetParent()->RemoveChildbyIndex(index);
 		}
-		else
+		else if (isImport == false)
 		{
 			int index = 0;
 			for (int i = 0; i < gameobjects.size(); i++)
@@ -450,6 +450,11 @@ void Scene::DeleteGameObject(GameObject* gameobject)
 				}
 				item++;
 			}
+		}
+		else
+		{
+			gameobject->GetChildsPtr()->clear();
+			RELEASE(gameobject);
 		}
 	}
 }

@@ -177,59 +177,63 @@ update_status ModuleGUI::Update(float dt)
 			if (ImGui::MenuItem("Inspector"))
 			{
 				winManager[INSPECTOR]->active[0].OpenClose();
-				LogOpenCloseWindow(winManager[INSPECTOR]->active[0].active, winManager[INSPECTOR]->name);
+				//LogOpenCloseWindow(winManager[INSPECTOR]->active[0].active, winManager[INSPECTOR]->name);
 			}
 			if (ImGui::MenuItem("Hardware"))
 			{
 				winManager[HARDWARE]->active[0].OpenClose();
-				LogOpenCloseWindow(winManager[HARDWARE]->active[0].active, winManager[HARDWARE]->name);
+				//LogOpenCloseWindow(winManager[HARDWARE]->active[0].active, winManager[HARDWARE]->name);
 			}
 			if (ImGui::MenuItem("Console", "º"))
 			{
 				App->console->OpenClose();
-				LogOpenCloseWindow(App->console->console_activated, App->console->name);
+				//LogOpenCloseWindow(App->console->console_activated, App->console->name);
 			}
 			if (ImGui::MenuItem("Scene"))
 			{
 				winManager[SCENEWORLD]->active[0].OpenClose();
-				LogOpenCloseWindow(winManager[SCENEWORLD]->active[0].active, winManager[SCENEWORLD]->name);
+				//LogOpenCloseWindow(winManager[SCENEWORLD]->active[0].active, winManager[SCENEWORLD]->name);
 			}
 			if (ImGui::MenuItem("Hierarchy"))
 			{
 				winManager[HIERARCHY]->active[0].OpenClose();
-				LogOpenCloseWindow(winManager[HIERARCHY]->active[0].active, winManager[HIERARCHY]->name);
+				//LogOpenCloseWindow(winManager[HIERARCHY]->active[0].active, winManager[HIERARCHY]->name);
 			}
 			if (ImGui::MenuItem("Project"))
 			{
 				winManager[PROJECT]->active[0].OpenClose();
-				LogOpenCloseWindow(winManager[PROJECT]->active[0].active, winManager[PROJECT]->name);
+				//LogOpenCloseWindow(winManager[PROJECT]->active[0].active, winManager[PROJECT]->name);
 			}
 			ImGui::Separator();
 
 			if (ImGui::MenuItem("Info Mouse", NULL, &window_infoMouse))
 			{
-				LogOpenCloseWindow(window_infoMouse, std::string("Info Mouse"));
+				//LogOpenCloseWindow(window_infoMouse, std::string("Info Mouse"));
 			}
 			if (ImGui::MenuItem("Style Editor"))
 			{
 				window_style = !window_style;
-				LogOpenCloseWindow(window_style, std::string("Style Editor"));
+				//LogOpenCloseWindow(window_style, std::string("Style Editor"));
 			}
 			if (ImGui::MenuItem("Random Generator"))
 			{
 				window_Random_generator = !window_Random_generator;
-				LogOpenCloseWindow(window_Random_generator, std::string("Random Generator"));
+				//LogOpenCloseWindow(window_Random_generator, std::string("Random Generator"));
 			}
 			ImGui::Separator();
+			if (ImGui::MenuItem("Resources"))
+			{
+				window_ShowAllResources = !window_ShowAllResources;
+			}
 			if (ImGui::MenuItem("Performance"))
 			{
 				App->showperformance = !App->showperformance;
-				LogOpenCloseWindow(App->showperformance, std::string("Performance"));
+				//LogOpenCloseWindow(App->showperformance, std::string("Performance"));
 			}
 			if (ImGui::MenuItem("Configuration"))
 			{
 				App->showconfig = !App->showconfig;
-				LogOpenCloseWindow(App->showconfig, std::string("Configuration"));
+				//LogOpenCloseWindow(App->showconfig, std::string("Configuration"));
 			}
 			ImGui::EndMenu();
 		}
@@ -485,6 +489,12 @@ update_status ModuleGUI::Update(float dt)
 		}
 
 		ImGui::End();
+	}
+
+	// Show All Resources ------------------
+	if (window_ShowAllResources)
+	{
+		App->resource_manager->ShowAllResources(window_ShowAllResources);
 	}
 
 	//Window Style -----------------------

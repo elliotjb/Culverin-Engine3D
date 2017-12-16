@@ -239,7 +239,7 @@ bool ModuleImporter::Import(const char* file, Resource::Type type)
 			App->Json_seria->SavePrefab(*obj, ((Project*)App->gui->winManager[WindowName::PROJECT])->GetDirectory(), Newdirectory.c_str());
 
 			//App->scene->gameobjects.push_back(obj);
-			App->scene->DeleteGameObject(obj);
+			App->scene->DeleteGameObject(obj, true);
 		}
 		else
 		{
