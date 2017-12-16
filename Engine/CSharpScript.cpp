@@ -42,7 +42,7 @@ void CSharpScript::LoadScript()
 		OnDisable = CreateMainFunction("OnDisable", DefaultParam, FunctionBase::CS_OnDisable);
 
 		//Get Script Variables info (from c# to c++)
-		//GetScriptVariables();
+		GetScriptVariables();
 	}
 }
 
@@ -251,6 +251,7 @@ void CSharpScript::GetScriptVariables()
 		variables.push_back(new_var);
 	}
 }
+
 
 VarType CSharpScript::GetTypeFromMono(MonoType* mtype)
 {

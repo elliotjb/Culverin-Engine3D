@@ -23,6 +23,8 @@ public:
 	// EDITOR METHODS ----------
 	void ShowOptions();
 	void ShowInspectorInfo();
+	void ShowVariablesInfo();
+	void SetOutputValueType(ScriptVariable* var);
 	// -------------------------
 
 	// SAVE - LOAD METHODS ----------------

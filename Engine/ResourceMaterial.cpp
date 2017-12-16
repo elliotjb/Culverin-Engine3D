@@ -5,7 +5,7 @@
 ResourceMaterial::ResourceMaterial(uint uuid) : Resource(uuid, Resource::Type::MATERIAL, Resource::State::UNLOADED)
 {
 	NumGameObjectsUseMe = 0;
-	LOG("Recource Material Created!");
+	LOG("Resource Material Created!");
 }
 
 
@@ -30,13 +30,13 @@ void ResourceMaterial::DeleteToMemory()
 {
 	state = Resource::State::UNLOADED;
 	glDeleteTextures(1, &texture.id);
-	LOG("UnLoaded Recource Material");
+	LOG("UnLoaded Resource Material");
 }
 
 bool ResourceMaterial::LoadToMemory()
 {
 	state = Resource::State::LOADED;
-	LOG("Loaded Recource Material");
+	LOG("Loaded Resource Material");
 	return true;
 }
 

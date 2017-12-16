@@ -4,6 +4,7 @@
 #include "ModuleResourceManager.h"
 #include "ModuleImporter.h"
 #include "ImportScript.h"
+#include "CSharpScript.h"
 #include "Scene.h"
 
 CompScript::CompScript(Comp_Type t, GameObject* parent) : Component(t, parent)
@@ -19,7 +20,14 @@ CompScript::CompScript(const CompScript & copy, GameObject * parent) : Component
 
 CompScript::~CompScript()
 {
-	//RELEASE(editor);
+	if (resourcescript != nullptr)
+	{
+		if (resourcescript->NumGameObjectsUseMe > 0)
+		{
+			resourcescript->NumGameObjectsUseMe--;
+		}
+	}
+	resourcescript = nullptr;
 }
 
 void CompScript::Init()
@@ -187,13 +195,17 @@ void CompScript::ShowInspectorInfo()
 		/* Name of the Script */
 		ImGui::Text("Name:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "%s", resourcescript->name);
+	
+		//Show info of each variable of the script
+		ShowVariablesInfo();
+
 	}
 
 	if (resourcescript == nullptr || selectScript)
 	{
 		if (resourcescript == nullptr)
 		{
-			if (ImGui::Button("Select Material..."))
+			if (ImGui::Button("Select Script..."))
 			{
 				selectScript = true;
 			}
@@ -233,6 +245,52 @@ void CompScript::ShowInspectorInfo()
 	}
 
 	ImGui::TreePop();
+}
+
+void CompScript::ShowVariablesInfo()
+{
+	//Access chsharp script, it contains a vector of all variables with their respective info
+	for (uint i = 0; i < resourcescript->GetCSharpScript()->variables.size(); i++)
+	{
+
+		//Depending on its type, GUI modifier will be diferent
+		SetOutputValueType(resourcescript->GetCSharpScript()->variables[i]); ImGui::SameLine();
+		
+		//Show variable name --------------------------
+		ImGui::Text(" %s", resourcescript->GetCSharpScript()->variables[i]->name); 
+
+	}
+}
+
+void CompScript::SetOutputValueType(ScriptVariable* var)
+{
+	if (var->type == VarType::Var_INT)
+	{
+		static int intVal = 0;
+		//ImGui::InputInt("", &*(int*)var->value, 1, 0, 1); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f),"INT");
+	}
+	else if (var->type == VarType::Var_FLOAT)
+	{
+		static float floatVal = 0;
+		//ImGui::InputInt("", &*(int*)var->value, 1, 0, 1); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "FLOAT");
+	}
+	else if (var->type == VarType::Var_BOOL)
+	{
+		static bool bVal = false;
+		//ImGui::InputInt("", &*(int*)var->value, 1, 0, 1); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "BOOL");
+	}
+	else if (var->type == VarType::Var_STRING)
+	{	
+		//ImGui::InputInt("", &*(int*)var->value, 1, 0, 1); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "STRING");
+	}
+	else
+	{
+		ImGui::TextColored(ImVec4(0.25f, 1.00f, 0.00f, 1.00f), "UNKNOWN");
+	}
 }
 
 void CompScript::Save(JSON_Object* object, std::string name, bool saveScene, uint& countResources) const

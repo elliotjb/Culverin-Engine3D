@@ -27,13 +27,16 @@ public:
 
 	std::string GetPathAssets() const;
 	std::string GetPathdll() const;
+
+	//To access script thorug extern modules
+	CSharpScript* GetCSharpScript();
+
 	void ShowEditor(bool & active);
 	void DeleteToMemory();
 	bool LoadToMemory();
 	Resource::State IsCompiled();
 
 private:
-	// 
 	std::string path_dll;
 	CSharpScript* csharp = nullptr;
 	Script_editor* editor = nullptr;

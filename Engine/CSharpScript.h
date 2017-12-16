@@ -169,8 +169,13 @@ public:
 	VarType GetTypeFromMono(MonoType* mtype);
 	void GetValueFromMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype);
 
+public:
+	//Variables/Info containers (public to have access through other modules)
+	std::vector<ScriptVariable*> variables;
 
 private:
+	//Auxiliar map to fill variables vector with info
+	std::map<MonoClassField*, MonoType*> field_type;
 	std::string name;
 	std::string name_space;
 
@@ -179,10 +184,6 @@ private:
 	MonoImage* CSimage = nullptr;
 	MonoClass* CSClass = nullptr;
 	MonoObject* CSObject = nullptr;
-
-	// Variables/Info containers
-	std::vector<ScriptVariable*> variables;
-	std::map<MonoClassField*, MonoType*> field_type;
 
 	// Main Functions
 	MainMonoMethod Start;
