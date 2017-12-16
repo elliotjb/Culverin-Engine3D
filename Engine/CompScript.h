@@ -5,6 +5,7 @@
 #include "Script_editor.h"
 
 class ResourceScript;
+class ScriptVariable;
 
 class CompScript : public Component
 {

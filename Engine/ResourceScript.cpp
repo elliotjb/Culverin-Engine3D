@@ -8,6 +8,7 @@ ResourceScript::ResourceScript(uint uid) : Resource(uid, Resource::Type::SCRIPT,
 {
 	NumGameObjectsUseMe = 0;
 	editor = new Script_editor(this);
+	LOG("Resource Script Created!");
 }
 
 ResourceScript::~ResourceScript()
