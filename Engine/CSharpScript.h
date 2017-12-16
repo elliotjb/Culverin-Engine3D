@@ -97,9 +97,11 @@ public:
 	//Variables METHODS -------------------------------------------------
 	void ResetScriptVariables();
 	void GetScriptVariables();
+	void UpdateScriptVariables();
 
 	VarType GetTypeFromMono(MonoType* mtype);
 	bool GetValueFromMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype);
+	bool UpdateValueFromMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype);
 	bool LinkVarToMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype);
 	void SetVarValue(ScriptVariable* variable, void* new_val);
 	// ------------------------------------------------------------------

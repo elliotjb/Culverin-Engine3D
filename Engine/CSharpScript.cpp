@@ -104,6 +104,7 @@ void CSharpScript::DoMainFunction(FunctionBase function)
 		if (Start.method != nullptr)
 		{
 			DoFunction(Start.method, nullptr);
+			UpdateScriptVariables();
 		}
 		break;
 	}
@@ -112,6 +113,7 @@ void CSharpScript::DoMainFunction(FunctionBase function)
 		if (Update.method != nullptr)
 		{
 			DoFunction(Update.method, nullptr);
+			UpdateScriptVariables();
 		}
 		break;
 	}
@@ -298,6 +300,17 @@ void CSharpScript::GetScriptVariables()
 	}
 }
 
+void CSharpScript::UpdateScriptVariables()
+{
+	uint count = 0;
+	// From the map, update the value of each script
+	for (std::map<MonoClassField*, MonoType*>::iterator it = field_type.begin(); it != field_type.end(); ++it)
+	{
+		//Set its value
+		UpdateValueFromMono(variables[count++], it->first, it->second);
+	}
+}
+
 
 VarType CSharpScript::GetTypeFromMono(MonoType* mtype)
 {
@@ -353,6 +366,22 @@ bool CSharpScript::GetValueFromMono(ScriptVariable* variable, MonoClassField* mf
 		//Set value of the variable by passing it as a reference in this function
 		mono_field_get_value(CSObject, mfield, variable->value);
 		
+		return true;
+	}
+	else
+	{
+		LOG("[error] There is some null pointer.");
+		return false;
+	}
+}
+
+bool CSharpScript::UpdateValueFromMono(ScriptVariable * variable, MonoClassField * mfield, MonoType * mtype)
+{
+	if (variable != nullptr && mfield != nullptr && mtype != nullptr)
+	{
+		//Set value of the variable by passing it as a reference in this function
+		mono_field_get_value(CSObject, mfield, variable->value);
+
 		return true;
 	}
 	else
