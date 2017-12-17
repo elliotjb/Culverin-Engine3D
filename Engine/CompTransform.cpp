@@ -290,9 +290,9 @@ void CompTransform::SetPos(float3 pos_g)
 
 void CompTransform::IncrementRot(float3 rot)
 {
-	float3 new_rot = rotation_euler + rot;
-	rotation = Quat::FromEulerXYZ(new_rot[0] * DEGTORAD, new_rot[1] * DEGTORAD, new_rot[2] * DEGTORAD);
-
+	rotation_euler += rot;
+	rotation = Quat::FromEulerXYZ(rotation_euler[0] * DEGTORAD, rotation_euler[1] * DEGTORAD, rotation_euler[2] * DEGTORAD);
+	toUpdate = true;
 }
 
 void CompTransform::SetRot(Quat rot)

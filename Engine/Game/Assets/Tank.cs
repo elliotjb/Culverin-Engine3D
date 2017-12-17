@@ -10,12 +10,12 @@ public class myTank
         if (Input.MouseButtonRepeat(1))
         {
             Debug.Log("LEFT");
-            tank.GetComponent<Transform>().IncrementRotation(Vector3.Left);
+            tank.GetComponent<Transform>().IncrementRotation(Vector3.Up);
         }
-        if (Input.MouseButtonRepeat(2))
+        if (Input.MouseButtonRepeat(3))
         {
             Debug.Log("RIGHT");
-            tank.GetComponent<Transform>().IncrementRotation(Vector3.Right);
+            tank.GetComponent<Transform>().IncrementRotation(Vector3.Down);
         }
         if (Input.KeyRepeat("Up"))
         {
