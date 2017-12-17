@@ -1,4 +1,4 @@
-﻿using CulverinEditor;
+using CulverinEditor;
 using CulverinEditor.Debug;
 
 //Attach this script to the camera and set target the tank parent GameObject
@@ -9,7 +9,7 @@ public class CameraController
 
     void Start()
     {
-        GameObject.gameObject.GetComponent<Transform>().RotateAboutAxis(15 * Vector3.Left);
+        GameObject.gameObject.GetComponent<Transform>().RotateAboutAxis(30 * Vector3.Right);
     }
 
     void Update()

@@ -92,6 +92,8 @@ void CompScript::Start()
 {
 	if (resourcescript != nullptr && (App->engineState == EngineState::PLAY || App->engineState == EngineState::PLAYFRAME))
 	{
+		App->importer->iScript->SetCurrentScript(resourcescript->GetCSharpScript());
+		resourcescript->SetCurrentGameObject(parent);
 		resourcescript->Start();
 	}
 }
