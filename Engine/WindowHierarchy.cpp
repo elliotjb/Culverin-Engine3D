@@ -133,9 +133,13 @@ void Hierarchy::ShowOptions()
 	}
 	if (ImGui::MenuItem("Delete"))
 	{
-		if (selected != nullptr)
+		if (selected != nullptr && App->engineState == EngineState::STOP)
 		{
 			SetGameObjecttoDelete(selected);
+		}
+		else
+		{
+			LOG("Deleting a GameObject while PlayMode may cause crashes... you can't delete now.");
 		}
 	}
 	ImGui::Separator();

@@ -81,6 +81,9 @@ In your scripts, you can call this specific functions to:
 4) TIME:
  - FLOAT Time.DeltaTime(): return delta time of the game (real dt modified by time scale).
 
+## SCENE SETUP
+
+
 # INNOVATIONS
 - Basic GameObject Creation: Cube.
 - Entering Play Mode enables the Active Game Camera to see the scene from it.

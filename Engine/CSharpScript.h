@@ -109,6 +109,7 @@ public:
 	void CreateOwnGameObject();
 	void GetScriptVariables();
 	void UpdateScriptVariables();
+	void RemoveReferences(GameObject* go);
 
 	VarType GetTypeFromMono(MonoType* mtype);
 	bool GetValueFromMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype);

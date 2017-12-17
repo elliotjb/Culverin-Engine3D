@@ -269,6 +269,14 @@ void Scene::ClearAllVariablesScript()
 	}
 }
 
+void Scene::SetScriptVariablesToNull(GameObject * go)
+{
+	for (uint i = 0; i < gameobjects.size(); i++)
+	{
+		gameobjects[i]->RemoveScriptReference(go);
+	}
+}
+
 GameObject* Scene::GetGameObjectfromScene(bool& active)
 {
 	if (!ImGui::Begin("GameObjects in Scene", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders))
@@ -472,6 +480,9 @@ void Scene::DeleteGameObject(GameObject* gameobject, bool isImport)
 		{
 			App->camera->SetFocusNull();
 		}
+
+		SetScriptVariablesToNull(gameobject);
+
 		if (((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected() == gameobject)
 		{
 			((Inspector*)App->gui->winManager[INSPECTOR])->SetLinkObjectNull();
@@ -486,13 +497,14 @@ void Scene::DeleteGameObject(GameObject* gameobject, bool isImport)
 		{
 			gameobject->DeleteAllComponents();
 		}
-		//
+
 		// Finnaly Check have Parent and remove from childs
 		if (gameobject->GetParent() != nullptr)
 		{
 			int index = gameobject->GetParent()->GetIndexChildbyName(gameobject->GetName());
 			gameobject->GetParent()->RemoveChildbyIndex(index);
 		}
+
 		else if (isImport == false)
 		{
 			int index = 0;

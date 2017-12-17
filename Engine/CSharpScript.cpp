@@ -382,6 +382,19 @@ void CSharpScript::UpdateScriptVariables()
 	}
 }
 
+void CSharpScript::RemoveReferences(GameObject* go)
+{
+	//Set to null all references of the gameobject to be deleted
+	for (uint i = 0; i < variables.size(); i++)
+	{
+		if (variables[i]->type == VarType::Var_GAMEOBJECT && variables[i]->gameObject == go)
+		{
+			variables[i]->gameObject = nullptr;
+		}
+	}
+}
+
+
 
 VarType CSharpScript::GetTypeFromMono(MonoType* mtype)
 {

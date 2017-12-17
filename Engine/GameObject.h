@@ -110,8 +110,9 @@ public:
 	// Delete -----------------
 	bool WanttoDelete() const;
 	void SettoDelete();
+	void RemoveScriptReference(GameObject* go);
 
-
+	bool beingUsedByScript = false;
 private:
 	uint uid = 0;
 	char* name = "CHANGE THIS";

@@ -6,6 +6,7 @@
 #include "ImportScript.h"
 #include "CSharpScript.h"
 #include "Scene.h"
+#include "ModuleFS.h"
 
 CompScript::CompScript(Comp_Type t, GameObject* parent) : Component(t, parent)
 {
@@ -127,6 +128,11 @@ bool CompScript::CheckAllVariables()
 		}
 	}
 	return true;
+}
+
+void CompScript::RemoveReferences(GameObject* go)
+{
+	resourcescript->GetCSharpScript()->RemoveReferences(go);
 }
 
 void CompScript::ClearVariables()
@@ -439,13 +445,16 @@ void CompScript::ShowVarValue(ScriptVariable* var, int pushi)
 		}
 		else
 		{
-			ImGui::Text("%s", var->gameObject->GetName()); ImGui::SameLine();
-			if (App->engineState != EngineState::PLAY)
+			if (!var->gameObject->WanttoDelete())
 			{
-				if (ImGui::ImageButton((ImTextureID*)App->scene->icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
+				ImGui::Text("%s", var->gameObject->GetName()); ImGui::SameLine();
+				if (App->engineState != EngineState::PLAY)
 				{
-					var->EreaseMonoValue(var->gameObject);
-					var->selectGameObject = true;
+					if (ImGui::ImageButton((ImTextureID*)App->scene->icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
+					{
+						var->EreaseMonoValue(var->gameObject);
+						var->selectGameObject = true;
+					}
 				}
 			}
 		}
@@ -488,7 +497,7 @@ void CompScript::Load(const JSON_Object* object, std::string name)
 			// LOAD SCRIPT -------------------------
 			if (resourcescript->IsLoadedToMemory() == Resource::State::UNLOADED)
 			{
-				App->importer->iScript->LoadResource(std::to_string(resourcescript->GetUUID()).c_str(), resourcescript);
+				App->importer->iScript->LoadResource(resourcescript->GetPathAssets().c_str(), resourcescript);
 			}
 			resourcescript->Load(object, name);
 			if (resourcescript->GetState() != Resource::State::FAILED)

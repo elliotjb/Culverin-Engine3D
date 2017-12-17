@@ -570,7 +570,14 @@ void GameObject::ShowGameObjectOptions()
 	}
 	if (ImGui::MenuItem("Delete"))
 	{
-		((Hierarchy*)App->gui->winManager[WindowName::HIERARCHY])->SetGameObjecttoDelete(this);
+		if (App->engineState == EngineState::STOP)
+		{
+			((Hierarchy*)App->gui->winManager[WindowName::HIERARCHY])->SetGameObjecttoDelete(this);
+		}
+		else
+		{
+			LOG("Deleting a GameObject while PlayMode may cause crashes... you can't delete now.");
+		}
 	}
 	ImGui::Separator();
 	if (ImGui::MenuItem("Create Empty"))
@@ -1310,4 +1317,13 @@ bool GameObject::WanttoDelete() const
 void GameObject::SettoDelete()
 {
 	toDelete = true;
+}
+
+void GameObject::RemoveScriptReference(GameObject* go)
+{
+	CompScript* script = (CompScript*)FindComponentByType(Comp_Type::C_SCRIPT);
+	if (script != nullptr)
+	{
+		script->RemoveReferences(go);
+	}
 }

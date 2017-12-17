@@ -23,6 +23,7 @@ public:
 	// Play Engine -------
 	bool CheckScript();
 	bool CheckAllVariables();
+	void RemoveReferences(GameObject* go);
 
 	// EDITOR METHODS ----------
 	void ShowOptions();
