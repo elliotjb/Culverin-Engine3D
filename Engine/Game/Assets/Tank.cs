@@ -1,11 +1,11 @@
-﻿using CulverinEditor;
+using CulverinEditor;
 using CulverinEditor.Debug;
 
 //Attach this script to the tank parent object if you want to see it rotate
 public class myTank
 {
-    public float movSpeed = 0.0f;
-    public float rotSpeed = 0.0f;
+    public float movSpeed = 20.0f;
+    public float rotSpeed = 50.0f;
     public Vector3 final_mov;
     public Vector3 final_rot;
 

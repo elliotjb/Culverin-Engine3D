@@ -81,8 +81,21 @@ In your scripts, you can call this specific functions to:
 4) TIME:
  - FLOAT Time.DeltaTime(): return delta time of the game (real dt modified by time scale).
 
-## SCENE SETUP
+# SCENE SETUP
+1) From "Models" folder, drag and drop "tank.obj" into the Engine Window. It will be imported.
+2) Double click it to load into scene. Delete the "g_default" child objects (they are unnecessary).
+3) Now, drag and drop from "Scripts" folder the 3 .cs files (one by one). They will be compiled successfully.
+4) Select "tank.obj" (parent object) and attach it the "Tank" script. You can change the values of rotation speed and movement speed.(Add Component->script, Select script...-> Tank).
+5) Select "gTower" child game object and attach it the "myTurret" script. You can change its rotation speed.
+6) Select "MainCamera" object and attach it the "CameraController" script.
+7) In "target" variable, yot have to set "tank.obj" to follow the tank.
+8) Now, you are ready to enjoy! (Hit PLAY button).
 
+- CONTROLS:
+
+	-W/A/S/D: move the tank.
+	-Left MouseButton/Right MouseButton: rotate the turret.
+	-Spacebar: SHOOT!. (Console message "SHOOT!").
 
 # INNOVATIONS
 - Basic GameObject Creation: Cube.

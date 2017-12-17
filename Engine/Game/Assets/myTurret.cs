@@ -4,7 +4,7 @@ using CulverinEditor.Debug;
 //Attach this script to the turret parent object if you want to see it rotate
 public class myTurret
 {
-    public float rotSpeed = 0.0f;
+    public float rotSpeed = 50.0f;
     public Vector3 final_rot;
 
     void Update()
