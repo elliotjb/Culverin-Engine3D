@@ -136,24 +136,22 @@ bool ImportScript::LoadResource(const char* file, ResourceScript* resourceScript
 {
 	if (resourceScript != nullptr)
 	{
-		std::string path = file;
-		path = "Assets/" + path;
-		path = App->fs->GetFullPath(path);
 		std::string path_dll;
 
 		// First Compile The CSharp
-		if (CompileScript(path.c_str(), path_dll, file) != 0)
+		if (CompileScript(file, path_dll, std::to_string(resourceScript->GetUUID()).c_str()) != 0)
 		{
-			LOG("[error] Script: %s, Not Compiled", App->fs->GetOnlyName(path).c_str());
-			resourceScript->InitInfo(path_dll, path);
+			LOG("[error] Script: %s, Not Compiled", App->fs->GetOnlyName(file).c_str());
+			resourceScript->InitInfo(path_dll, file);
 			resourceScript->SetState(Resource::State::FAILED);
 			return false;
 		}
 		else
 		{
-			LOG("Script: %s, Compiled without errors", App->fs->GetOnlyName(path).c_str());
-			resourceScript->InitInfo(path_dll, path);
+			LOG("Script: %s, Compiled without errors", App->fs->GetOnlyName(file).c_str());
+			resourceScript->InitInfo(path_dll, file);
 			resourceScript->SetState(Resource::State::LOADED);
+			resourceScript->SetScriptEditor(App->fs->GetOnlyName(App->fs->GetOnlyName(file).c_str()));
 			//now 
 			CSharpScript* newCSharp = LoadScript_CSharp(path_dll);
 			resourceScript->SetCSharp(newCSharp);
@@ -378,12 +376,13 @@ int ImportScript::CompileScript(const char* file, std::string& libraryScript, co
 	libraryScript += nameFile;
 
 	// Compile the script -----------------------------
-	command += "/monobin/mcs -debug -target:library -out:" + libraryScript + " ";
+	command += "/monobin/mcs -target:library -out:" + libraryScript + " ";
 	std::string CulverinEditorpath = App->fs->GetFullPath("ScriptManager/AssemblyReference/CulverinEditor.dll");
 	command += "-r:" + CulverinEditorpath + " ";
 	command += "-lib:" + CulverinEditorpath + " ";
 	command += script_path;
 	//ShowWindow(FindWindowA("ConsoleWindowClass", NULL), false); -> Hide console (good or bad?)
+	LOG("%s", command.c_str());
 	return system(command.c_str());
 	//system("pause");
 }
