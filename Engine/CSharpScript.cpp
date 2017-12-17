@@ -647,44 +647,50 @@ MonoObject* CSharpScript::GetComponent(MonoObject* object, MonoReflectionType* t
 
 MonoObject* CSharpScript::GetPosition(MonoObject* object)
 {
-	MonoClass* c = mono_class_from_name(App->importer->iScript->GetCulverinImage(), "CulverinEditor", "Vector3");
-	if (c)
+	if (currentGameObject != nullptr)
 	{
-		MonoObject* new_object = mono_object_new(App->importer->iScript->GetDomain(), c);
-		if (new_object)
+		MonoClass* c = mono_class_from_name(App->importer->iScript->GetCulverinImage(), "CulverinEditor", "Vector3");
+		if (c)
 		{
-			MonoClassField* x_field = mono_class_get_field_from_name(c, "x");
-			MonoClassField* y_field = mono_class_get_field_from_name(c, "y");
-			MonoClassField* z_field = mono_class_get_field_from_name(c, "z");
+			MonoObject* new_object = mono_object_new(App->importer->iScript->GetDomain(), c);
+			if (new_object)
+			{
+				MonoClassField* x_field = mono_class_get_field_from_name(c, "x");
+				MonoClassField* y_field = mono_class_get_field_from_name(c, "y");
+				MonoClassField* z_field = mono_class_get_field_from_name(c, "z");
 
-			CompTransform* transform = (CompTransform*)currentGameObject->GetComponentTransform();
-			float3 new_pos;
-			new_pos = transform->GetPos();
+				CompTransform* transform = (CompTransform*)currentGameObject->GetComponentTransform();
+				float3 new_pos;
+				new_pos = transform->GetPos();
 
-			if (x_field) mono_field_set_value(new_object, x_field, &new_pos.x);
-			if (y_field) mono_field_set_value(new_object, y_field, &new_pos.y);
-			if (z_field) mono_field_set_value(new_object, z_field, &new_pos.z);
+				if (x_field) mono_field_set_value(new_object, x_field, &new_pos.x);
+				if (y_field) mono_field_set_value(new_object, y_field, &new_pos.y);
+				if (z_field) mono_field_set_value(new_object, z_field, &new_pos.z);
 
-			return new_object;
+				return new_object;
+			}
 		}
+		return nullptr;
 	}
-	return nullptr;
 }
 
 // We need to pass the MonoObject* to get a reference on act
 void CSharpScript::SetPosition(MonoObject* object, MonoObject* vector3)
 {
-	MonoClass* c = mono_object_get_class(vector3);
-	MonoClassField* x_field = mono_class_get_field_from_name(c, "x");
-	MonoClassField* y_field = mono_class_get_field_from_name(c, "y");
-	MonoClassField* z_field = mono_class_get_field_from_name(c, "z");
+	if (currentGameObject != nullptr)
+	{
+		MonoClass* c = mono_object_get_class(vector3);
+		MonoClassField* x_field = mono_class_get_field_from_name(c, "x");
+		MonoClassField* y_field = mono_class_get_field_from_name(c, "y");
+		MonoClassField* z_field = mono_class_get_field_from_name(c, "z");
 
-	float3 new_pos;
+		float3 new_pos;
 
-	if (x_field) mono_field_get_value(vector3, x_field, &new_pos.x);
-	if (y_field) mono_field_get_value(vector3, y_field, &new_pos.y);
-	if (z_field) mono_field_get_value(vector3, z_field, &new_pos.z);
+		if (x_field) mono_field_get_value(vector3, x_field, &new_pos.x);
+		if (y_field) mono_field_get_value(vector3, y_field, &new_pos.y);
+		if (z_field) mono_field_get_value(vector3, z_field, &new_pos.z);
 
-	CompTransform* transform = (CompTransform*)currentGameObject->GetComponentTransform();
-	transform->SetPos(new_pos);
+		CompTransform* transform = (CompTransform*)currentGameObject->GetComponentTransform();
+		transform->SetPos(new_pos);
+	}
 }
