@@ -318,7 +318,7 @@ void CompScript::ShowVariablesInfo()
 			ImGui::Text(" %s", resourcescript->GetCSharpScript()->variables[i]->name); ImGui::SameLine();
 
 			//Show variable VALUE -------------------------
-			ShowVarValue(resourcescript->GetCSharpScript()->variables[i]);
+			ShowVarValue(resourcescript->GetCSharpScript()->variables[i], i);
 
 			ImGui::PopID();
 		}
@@ -357,7 +357,7 @@ void CompScript::ShowVarType(ScriptVariable* var)
 	}
 }
 
-void CompScript::ShowVarValue(ScriptVariable* var)
+void CompScript::ShowVarValue(ScriptVariable* var, int pushi)
 {
 	if (var->type == VarType::Var_INT)
 	{
@@ -396,21 +396,22 @@ void CompScript::ShowVarValue(ScriptVariable* var)
 	{
 		if (var->gameObject == nullptr)
 		{
-			static bool selectGameObject = false;
+			ImGui::PushID(pushi);
 			if (ImGui::Button("Select GO..."))
 			{
-				selectGameObject = true;
+				var->selectGameObject = true;
 			}
 
-			if (selectGameObject)
+			if (var->selectGameObject)
 			{
-				GameObject* temp = App->scene->GetGameObjectfromScene(selectGameObject);
+				GameObject* temp = App->scene->GetGameObjectfromScene(var->selectGameObject);
 				if (temp != nullptr)
 				{
 					var->gameObject = temp;
 					var->SetMonoValue((GameObject*)var->gameObject);
 				}
 			}
+			ImGui::PopID();
 		}
 		else
 		{

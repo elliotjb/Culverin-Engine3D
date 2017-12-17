@@ -56,6 +56,7 @@ public:
 	void* value = nullptr;
 	std::string str_value;
 	GameObject* gameObject = nullptr;
+	bool selectGameObject = false; //Only use for GameObjects
 	VarAccess access = VarAccess::Var_PRIVATE;
 
 private:

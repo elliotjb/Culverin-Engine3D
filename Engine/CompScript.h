@@ -28,7 +28,7 @@ public:
 	void ShowInspectorInfo();
 	void ShowVariablesInfo();
 	void ShowVarType(ScriptVariable* var);
-	void ShowVarValue(ScriptVariable* var);
+	void ShowVarValue(ScriptVariable* var, int i);
 	// -------------------------
 
 	// SAVE - LOAD METHODS ----------------

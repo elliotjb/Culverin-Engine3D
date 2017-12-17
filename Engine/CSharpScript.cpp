@@ -808,7 +808,7 @@ void CSharpScript::Save(JSON_Object* object, std::string name) const
 		{
 			if (variables[i]->gameObject != nullptr)
 			{
-				json_object_dotset_number_with_std(object, name + "Variables GameObject UUID", variables[i]->gameObject->GetUUID());
+				json_object_dotset_number_with_std(object, name + "Variables GameObject UUID " + std::to_string(i), variables[i]->gameObject->GetUUID());
 			}
 		}
 	}
@@ -816,12 +816,12 @@ void CSharpScript::Save(JSON_Object* object, std::string name) const
 
 void CSharpScript::Load(const JSON_Object* object, std::string name)
 {
-	uint temp = json_object_dotget_number_with_std(object, name + "Variables GameObject UUID");
 	gameObjects.clear(); // memory leak
 	for (int i = 0; i < variables.size(); i++)
 	{
 		if (variables[i]->type == VarType::Var_GAMEOBJECT)
 		{
+			uint temp = json_object_dotget_number_with_std(object, name + "Variables GameObject UUID " + std::to_string(i));
 			reLoadValues.push_back(temp);
 		}
 	}
