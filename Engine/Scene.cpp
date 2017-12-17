@@ -147,6 +147,7 @@ update_status Scene::UpdateConfig(float dt)
 bool Scene::CleanUp()
 {
 	skybox->DeleteSkyboxTex();
+	ClearAllVariablesScript();
 	for (uint i = 0; i < gameobjects.size(); i++)
 	{
 		gameobjects[i]->CleanUp();

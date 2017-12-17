@@ -837,4 +837,5 @@ void CSharpScript::LoadValues()
 			variables[i]->SetMonoValue(variables[i]->gameObject);
 		}
 	}
+	reLoadValues.clear();
 }
