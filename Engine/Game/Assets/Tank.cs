@@ -1,37 +1,33 @@
 ﻿using CulverinEditor;
 using CulverinEditor.Debug;
 
+//Attach this script to the tank parent object if you want to see it rotate
 public class myTank
 {
-    public GameObject tank;
+    public float movSpeed = 0.0f;
+    public Vector3 final_mov;
 
     void Update()
     {
-        if (Input.MouseButtonRepeat(1))
+        if (Input.KeyRepeat("W"))
         {
-            Debug.Log("LEFT");
-            tank.GetComponent<Transform>().IncrementRotation(Vector3.Up);
+            final_mov = (movSpeed * Time.DeltaTime()) * Vector3.Forward;
+            GameObject.gameObject.GetComponent<Transform>().Position += final_mov;
         }
-        if (Input.MouseButtonRepeat(3))
+        if (Input.KeyRepeat("A"))
         {
-            Debug.Log("RIGHT");
-            tank.GetComponent<Transform>().IncrementRotation(Vector3.Down);
+            final_mov = (movSpeed * Time.DeltaTime()) * Vector3.Left;
+            GameObject.gameObject.GetComponent<Transform>().Position -= final_mov;
         }
-        if (Input.KeyRepeat("Up"))
+        if (Input.KeyRepeat("S"))
         {
-            tank.GetComponent<Transform>().Position += Vector3.Forward;
+            final_mov = (movSpeed * Time.DeltaTime()) * Vector3.Backward;
+            GameObject.gameObject.GetComponent<Transform>().Position += final_mov;
         }
-        if (Input.KeyRepeat("Down"))
+        if (Input.KeyRepeat("D"))
         {
-            tank.GetComponent<Transform>().Position += Vector3.Backward;
-        }
-        if (Input.KeyRepeat("Left"))
-        {
-            tank.GetComponent<Transform>().Position -= Vector3.Left;
-        }
-        if (Input.KeyRepeat("Right"))
-        {
-            tank.GetComponent<Transform>().Position -= Vector3.Right;
+            final_mov = (movSpeed * Time.DeltaTime()) * Vector3.Right;
+            GameObject.gameObject.GetComponent<Transform>().Position -= final_mov;
         }
     }
 }

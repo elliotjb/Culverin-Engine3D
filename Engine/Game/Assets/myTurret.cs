@@ -1,20 +1,29 @@
 using CulverinEditor;
 using CulverinEditor.Debug;
 
+//Attach this script to the turret parent object if you want to see it rotate
 public class myTurret
 {
-    public GameObject myturret;
+    public float rotSpeed = 0.0f;
+    public Vector3 final_rot;
 
     void Update()
     {
-        if (Input.MouseButtonRepeat(0))
-        {
-            myturret.GetComponent<Transform>().IncrementRotation(Vector3.Left);
-        }
+        //Rotate LEFT
         if (Input.MouseButtonRepeat(1))
         {
-            myturret.GetComponent<Transform>().IncrementRotation(Vector3.Right);
+            final_rot = (rotSpeed * Time.DeltaTime()) * Vector3.Up;
+            GameObject.gameObject.GetComponent<Transform>().RotateAboutAxis(final_rot);
         }
+
+        //Rotate RIGHT
+        if (Input.MouseButtonRepeat(3))
+        {
+            final_rot = (rotSpeed * Time.DeltaTime()) * Vector3.Down;
+            GameObject.gameObject.GetComponent<Transform>().RotateAboutAxis(final_rot);
+        }
+
+        //Shoot!
         if (Input.KeyDown("Space"))
         {
             Debug.Log("BOOOOM!!!");

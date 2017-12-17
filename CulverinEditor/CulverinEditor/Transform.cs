@@ -41,7 +41,7 @@ namespace CulverinEditor
         private extern void SetRotation(Vector3 value);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern void IncrementRotation(Vector3 value);
+        public extern void RotateAboutAxis(Vector3 value);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         private extern Vector3 GetScale();
