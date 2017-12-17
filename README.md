@@ -134,6 +134,7 @@ In your scripts, you can call these specific functions to:
 7) In "target" variable, yot have to set "tank.obj" to follow the tank.
 8) Now, you are ready to enjoy! (Hit PLAY button).
 
+9) Video Tutorial Setup: https://youtu.be/tNWcKUdz2rw
 
 
 - CONTROLS:
