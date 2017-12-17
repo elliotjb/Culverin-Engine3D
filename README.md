@@ -6,14 +6,18 @@ It's created for educational purposes, and we are two students that are studying
 
 Check out our Web: https://github.com/elliotjb/3D-Engine
 
+Download Last Version: 
+
 # VERY IMPORTANT!
 Make sure that you store the Release in a path without spaces, because the system won't detect successfully the path, and you won't be able to compile any script.
+- Correct Path: "C:/User/Desktop/Culverin_v0.8/..."
+- Incorrect Path: "C:/Program Files/Culverin_v0.8/..."
 
 ## Example Street scene:
 ![](https://i.gyazo.com/2fb46188c5188013b7bd76f6e2278bfc.jpg)
 
 # FEATURES
-- Configuration options (Application, Memory Consumption, Window, Camera, Input, Audio, Scene, GUI, Renderer).
+- Configuration options (Application, Memory Consumption, Window, Camera, Input, Audio, Scene, GUI, Renderer, Resources).
 - Game Objects Structure (with components & following a hierarchy of parent-childrens).
 - Basic GameObject Creation (Cube, Empty object).
 - Component options (Select between all loaded meshes(MESH COMPONENT), materials (MATERIAL COMPONENT), reset transforms (TRANSFORM COMPONENT), etc.)
@@ -27,7 +31,7 @@ Make sure that you store the Release in a path without spaces, because the syste
 - Skybox as background of the scene.
 - Editable quadtree that will contain static objects. 
 - Materials and Meshes components uses Resources to load data only once in memory.
-- Scripting System: Unity-like functionality. You have access to the scene gameobjects and acto on them (modifying name, transform (pos, rot, scale),
+- Scripting System: Unity-like functionality. You have access to the scene gameobjects and act on them (modifying name, transform (pos, rot, scale),
   Enabling/Disabling it, etc.).
 
 # HIGH LEVEL SYSTEM: SCRIPTING SYSTEM.
@@ -35,16 +39,11 @@ Make sure that you store the Release in a path without spaces, because the syste
 You can create your own scripts (.cs files), with restricted functionality, and attach them to the GameObjects of the scene.
 
 - By the moment, you can only attach one script per GameObject.
-
 - All the variables of the script are shown in the inspector (for debuging purposes).
-
 - EDITOR OUTPUT VARIABLES: in the inspector, the variables that are recognizable are: INT, FLOAT, STRING, GAMEOBJECT. (other variables will be shown as UNKNOWN TYPE/VALUE).
-
 - You can edit variables from the editor to modify the script.
 - Make sure you don't have compilation errors in your scripts (you won't be able to run the "Game").
-
-- You can modify scripts directly from the inspector, by clicking the "Script button". You will see a new window with the code.
- 
+- You can modify scripts directly from the inspector, by clicking the "< Edit Script >" button. You will see a new window with the code.
   Once you have modified the script, click "File"->"Save".
 - Each script has access to the GameObject that it's attached ("GameObject.gameObject").
 
@@ -52,11 +51,8 @@ You can create your own scripts (.cs files), with restricted functionality, and 
 ## HOW TO CREATE A NEW SCRIPT:
  
 1) Create-> C# Script.
- 
-2) Write the class name to generate the script.
-   
-- WARNING: don't write the same name of an existing script (it won't be generated).
- 
+2) Write the class name to generate the script.  
+- WARNING: don't write the same name of an existing script (it won't be generated). 
 3) Then, your new script is saved into assets folder, and compiled by default.
 
 
@@ -68,49 +64,36 @@ You can drag and drop a script into the engine window to import it. If it has no
 Otherwise you will have to edit it and save changes to recompile it.
 
 
-
 ## EDIT SCRIPTS:
  
 1) To edit it, you have to attach it to a GameObject first: Inspector->Add Component-> Script.
- 
 2) You will have to choose between all imported scripts ("Select script...")
-. 
 3) <Edit Script>: opens a new window with the code will apepear. You can edit it and Save changes (File->Save).
-
 
 
 ## SCRIPTS IN THE INSPECTOR
 
 - <Edit Script>: open editor window to edit the script.
-
 - As a component, script has a checkbox to activate/deactivate it when entering Play Mode.
-
 - NAME: name of the script.
-
 - VARIABLES: a list with all the variables of the script (TYPE, NAME , VALUE).
 
 
 
 ## FUNCTIONS TO USE
-In your scripts, you can call this specific functions to: 
+
+In your scripts, you can call these specific functions to: 
 
 
 1) ACT ON GAMEOBJECTS:
- 
+
 - VOID GameObject.gameObject.SetActive(bool): set active/inactive a object.
- 
 - BOOL GameObject.gameObject.isActive(): check if it's active/inactive.
- 
 - VOID GameObject.gameObject.SetName(string): change name of the object.
- 
 - STRING GameObject.gameObject.GetName(): get name of the object.
- 
 - STRING GameObject.gameObject.GetComponent<Component>: get component specified of the gameobject (only Transform by now).
- 
 - VECTOR3 Transform.Position: position (x, y, z) of the object.
- 
 - VECTOR3 Transform.Rotation: rotation [euler] (x, y, z) of the object.
- 
 - VECTOR3 Transform.RotateAroundAxis(Vector3): rotate the transform around the specified axis.
 
 
@@ -141,35 +124,28 @@ In your scripts, you can call this specific functions to:
 
 # SCENE SETUP
 
-1) From "Models" folder, drag and drop "tank.obj" into the Engine Window. It will be imported.
-
+1) From "Models" folder, drag and drop "tank.obj" into the Engine Window. It will be imported. You can drag folder.
 2) Double click it to load into scene. Delete the "g_default" child objects (they are unnecessary).
-
-3) Now, drag and drop from "Scripts" folder the 3 .cs files (one by one). They will be compiled successfully.
-
+3) Now, drag and drop from "Scripts" folder the 3 .cs files. They will be compiled successfully.
 4) Select "tank.obj" (parent object) and attach it the "Tank" script. 
    You can change the values of rotation speed and movement speed.(Add Component->script, Select script...-> Tank).
-
 5) Select "gTower" child game object and attach it the "myTurret" script. You can change its rotation speed.
 6) Select "MainCamera" object and attach it the "CameraController" script.
-
 7) In "target" variable, yot have to set "tank.obj" to follow the tank.
-
 8) Now, you are ready to enjoy! (Hit PLAY button).
 
 
 
 - CONTROLS:
 
-	
-	-W/A/S/D: move the tank.
-
-	-Left MouseButton/Right MouseButton: rotate the turret.
-	
-	-Spacebar: SHOOT!. (Console message "SHOOT!").
+	- W/A/S/D: move the tank.
+	- Left MouseButton/Right MouseButton: rotate the turret.
+	- Spacebar: SHOOT!. (Console message "SHOOT!").
 
 
 # INNOVATIONS
+
+- We have created our own DLL "CulverinEditor" to load all the assemblies to enable our own c# functions.
 - Basic GameObject Creation: Cube.
 - Entering Play Mode enables the Active Game Camera to see the scene from it.
 - Copy/Paste of GameObjects: by right clicking them (or Ctrl+C and Ctrl+V).
@@ -186,6 +162,7 @@ In your scripts, you can call this specific functions to:
   reappear on the extreme side of the screen.
 
 # IMPORTING/REIMPORTING FILES
+
 To import a model (.fbx/.obj), texture (.png/.jpg/.tga) or a folder to the Engine, just drag it inside the window.
 It will create all necessary resources to apply to GameObjects/Components. 
 To load a model into the scene, double-click the icon that has appeared when the file was dragged. It will create a prefab.
@@ -196,6 +173,7 @@ Helper videos about resource managing:
 - Editing Mesh & Material components: https://youtu.be/rsceOFcBO0c
 
 # CAMERA CONTROLS (Unity-like)
+
 - Right Mouse Button: look around with static position
 - Left Mouse Button + L-Alt: orbit around a selected object.
 - Mouse Wheel: Zoom in / Zoom out.
@@ -203,6 +181,7 @@ Helper videos about resource managing:
 - F: center the Camera on the selected object.
 
 # GIZMOS
+
 Only enabled when Editor Mode is Active.
 When you select a game object, its gizmo will be activated, to edit its transform.
 Controls:
@@ -214,6 +193,7 @@ If you have problems to select a game object by clicking on the scene screen, tr
 camera to get a better vision angle.
 
 # QUADTREE
+
 In Windows->Configuration->Scene you will see QUADTREE options:
 - You can enable/disable its Debug Draw.
 - You can change the size of the root node with the slider.
@@ -222,21 +202,26 @@ In Windows->Configuration->Scene you will see QUADTREE options:
 - The quadtree will correctly be divided and will contain static objects.
 
 # CAMERA CULLING
+
 - Only enabled in Play Mode.
 - To cull static objects you have to set them 'static' first, then update the quadtree. If they are inside the quadtree, culling for
   static objects in Play Mode is enabled.
 
 # GAME OBJECTS / COMPONENT OPTIONS
+
 You can right-click a game object or a component to see which options are enabled that will modify the selected element.
 Warning: for this release, cubes created in the engine hasn't got texture coords, so you won't be able to see the applied texture.
 
 # STATIC OBJECTS
+
 When setting an object 'static', you won't be able to modify its transform when Play Mode is activated.
 
 #VERY IMPORTANT!
+
 Make sure that you store the Release in a path without spaces, because the system won't detect successfully the path, and you won't be able to compile any script.
 
 # UPDATES
+
 - 0.8:
     * Embedded Mono in our application.
     * Created the main structure to link c++ functions with c# functions.
@@ -327,7 +312,8 @@ Make sure that you store the Release in a path without spaces, because the syste
 - 0.1.1:
 	* Implemented Delete Objects in Scene
 
-# Libraries Used: 
+# Libraries Used:
+
 (Not created by us!)
 - MathGeoLib -> http://clb.demon.fi/MathGeoLib/nightly/ 
 - ImGui -> https://github.com/ocornut/imgui 
@@ -338,7 +324,7 @@ Make sure that you store the Release in a path without spaces, because the syste
 - DevIL -> http://openil.sourceforge.net/
 - Mono -> http://www.mono-project.com/
 
-Authors: 
+# Authors: 
 - Elliot Jimenez: https://github.com/elliotjb
 - Jordi Oña: https://github.com/Jordior97
 
