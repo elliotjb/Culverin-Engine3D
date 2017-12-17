@@ -109,7 +109,11 @@ update_status ModuleResourceManager::PreUpdate(float dt)
 		}
 		deleteNow = true;
 	}
-
+	if (reimportedScripts)
+	{
+		scriptsSetNormal = true;
+		reimportedScripts = false;
+	}
 	preUpdate_t = perf_timer.ReadMs();
 	return UPDATE_CONTINUE;
 }
@@ -199,6 +203,21 @@ update_status ModuleResourceManager::PostUpdate(float dt)
 		LOG("Finished Delete Resources");
 		filestoDelete.clear();
 		deleteNow = false;
+	}
+
+	// If a script modificated return to normal stat
+	if (scriptsSetNormal)
+	{
+		scriptsSetNormal = false;
+		std::map<uint, Resource*>::iterator it = resources.begin();
+		for (int i = 0; i < resources.size(); i++)
+		{
+			if (it->second->GetType() == Resource::Type::SCRIPT && it->second->GetState() == Resource::State::REIMPORTEDSCRIPT)
+			{
+				it->second->SetState(Resource::State::LOADED);
+			}
+			it++;
+		}
 	}
 
 	return UPDATE_CONTINUE;
@@ -548,6 +567,7 @@ void ModuleResourceManager::ShowAllResources(bool& active)
 bool ModuleResourceManager::ReImportAllScripts()
 {
 	bool ret = true;
+	reimportedScripts = true;
 	std::map<uint, Resource*>::iterator it = resources.begin();
 	for (int i = 0; i < resources.size(); i++)
 	{
@@ -555,7 +575,12 @@ bool ModuleResourceManager::ReImportAllScripts()
 		{
 			if (((ResourceScript*)it->second)->ReImportScript(((ResourceScript*)it->second)->GetPathdll()) == false)
 			{
+				it->second->SetState(Resource::State::FAILED);
 				ret = false;
+			}
+			else
+			{
+				it->second->SetState(Resource::State::REIMPORTEDSCRIPT);
 			}
 		}
 		it++;

@@ -148,6 +148,50 @@ void GameObject::StartScripts()
 	}
 }
 
+void GameObject::ClearAllVariablesScript()
+{
+	if (active)
+	{
+		//Start Active scripts --------------------------
+		for (uint i = 0; i < components.size(); i++)
+		{
+			if (components[i]->isActive())
+			{
+				if (components[i]->GetType() == Comp_Type::C_SCRIPT)
+				{
+					((CompScript*)components[i])->ClearVariables();
+				}
+			}
+		}
+
+		//Check child Game Objects -------------------
+		for (uint i = 0; i < childs.size(); i++)
+		{
+			if (childs[i]->isActive())
+			{
+				childs[i]->ClearAllVariablesScript();
+			}
+		}
+	}
+}
+
+GameObject* GameObject::GetGameObjectbyuid(uint uid)
+{
+	if (active)
+	{
+		if (GetUUID() == uid)
+		{
+			return this;
+		}
+		//Check child Game Objects -------------------
+		for (uint i = 0; i < childs.size(); i++)
+		{
+			childs[i]->GetGameObjectbyuid(uid);
+		}
+	}
+	return nullptr;
+}
+
 void GameObject::preUpdate(float dt)
 {
 	fixedDelete = false;

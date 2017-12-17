@@ -193,6 +193,34 @@ update_status ModuleInput::PreUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
+int ModuleInput::GetMouseXMotionNormalized()
+{
+	int x_motion = App->input->GetMouseXMotion();
+	if (x_motion > 0)
+	{
+		return 1;
+	}
+	if (x_motion < 0)
+	{
+		return -1;
+	}
+	return 0;
+}
+
+int ModuleInput::GetMouseYMotionNormalized()
+{
+	int y_motion = App->input->GetMouseYMotion();
+	if (y_motion > 0)
+	{
+		return 1;
+	}
+	if (y_motion < 0)
+	{
+		return -1;
+	}
+	return 0;
+}
+
 //update_status ModuleWindow::Update(float dt)
 //{
 //	perf_timer.Start();

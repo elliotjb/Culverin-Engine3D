@@ -851,10 +851,14 @@ void ModuleGUI::UpdateWindows(float dt)
 		{
 			if (App->scene->CheckNoFails())
 			{
+				int exc = App->engineState;
 				App->SetState(EngineState::PLAY); // OR STOP
 
-				//Start all scripts
-				App->scene->StartScripts();
+				if (exc == EngineState::STOP)
+				{
+					//Start all scripts
+					App->scene->StartScripts();
+				}
 			}
 		}
 		ImGui::SameLine(width / 2 - 10);

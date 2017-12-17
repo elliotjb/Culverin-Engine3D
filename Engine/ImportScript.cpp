@@ -478,6 +478,8 @@ void ImportScript::LinkFunctions()
 	mono_add_internal_call("CulverinEditor.GameObject::GetComponent",(const void*)GetComponent);
 	mono_add_internal_call("CulverinEditor.Transform::GetPosition", (const void*)GetPosition);
 	mono_add_internal_call("CulverinEditor.Transform::SetPosition", (const void*)SetPosition);
+	mono_add_internal_call("CulverinEditor.Transform::SetRotation", (const void*)SetRotation);
+	mono_add_internal_call("CulverinEditor.Transform::GetRotation", (const void*)GetRotation);
 
 	//CONSOLE FUNCTIONS ------------------
 	mono_add_internal_call("CulverinEditor.Debug.Debug::Log", (const void*)ConsoleLog);
@@ -488,6 +490,9 @@ void ImportScript::LinkFunctions()
 	mono_add_internal_call("CulverinEditor.Input::MouseButtonDown", (const void*)MouseButtonDown);
 	mono_add_internal_call("CulverinEditor.Input::MouseButtonUp", (const void*)MouseButtonUp);
 	mono_add_internal_call("CulverinEditor.Input::MouseButtonRepeat", (const void*)MouseButtonRepeat);
+	mono_add_internal_call("CulverinEditor.Input::GetMousePosition", (const void*)GetMousePosition);
+	mono_add_internal_call("CulverinEditor.Input::GetMouseXAxis", (const void*)GetMouseXAxis);
+	mono_add_internal_call("CulverinEditor.Input::GetMouseYAxis", (const void*)GetMouseYAxis);
 
 	//TIME FUNCTIONS -------------------
 	mono_add_internal_call("CulverinEditor.Time::DeltaTime", (const void*)GetDeltaTime);
@@ -576,6 +581,21 @@ mono_bool ImportScript::MouseButtonRepeat(int buttonmouse)
 	return false;
 }
 
+MonoObject* ImportScript::GetMousePosition()
+{
+	return current->GetMousePosition();
+}
+
+int ImportScript::GetMouseXAxis()
+{
+	return App->input->GetMouseXMotionNormalized();
+}
+
+int ImportScript::GetMouseYAxis()
+{
+	return App->input->GetMouseYMotionNormalized();
+}
+
 float ImportScript::GetDeltaTime()
 {
 	return App->gameTime.timeScale;
@@ -601,7 +621,7 @@ void ImportScript::SetName(MonoObject* object, MonoString * name)
 	current->SetGOName(object, name);
 }
 
-MonoString* ImportScript::GetName(MonoObject * object)
+MonoString* ImportScript::GetName(MonoObject* object)
 {
 	return current->GetName(object);
 }
@@ -629,4 +649,14 @@ MonoObject* ImportScript::GetPosition(MonoObject* object)
 void ImportScript::SetPosition(MonoObject* object, MonoObject* vector3)
 {
 	current->SetPosition(object, vector3);
+}
+
+MonoObject* ImportScript::GetRotation(MonoObject* object)
+{
+	return current->GetRotation(object);
+}
+
+void ImportScript::SetRotation(MonoObject* object, MonoObject* vector3)
+{
+	current->SetRotation(object, vector3);
 }

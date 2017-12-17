@@ -200,7 +200,6 @@ void Script_editor::SaveScript(bool ReImport)
 	{
 		if (App->importer->iScript->ReImportScript(parent->GetPathAssets(), std::to_string(parent->GetUUID()), parent))
 		{
-			parent->SetState(Resource::State::LOADED);
 			LOG("ReImported Succesfully Script: %s", App->fs->GetOnlyName(parent->GetPathAssets()).c_str());
 		}
 		else

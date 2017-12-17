@@ -1,6 +1,7 @@
 #include "CSharpScript.h"
 #include "Application.h"
 #include "ModuleFS.h"
+#include "ModuleInput.h"
 #include "ModuleImporter.h"
 #include "ImportScript.h"
 #include "CompTransform.h"
@@ -27,7 +28,6 @@ void ScriptVariable::SetMonoValue(void* newVal)
 			script->gameObjects[object] = gameObject;
 		}
 	}
-
 	else
 	{
 		LOG("[error] new value to set was nullptr");
@@ -163,19 +163,25 @@ void CSharpScript::DoFunction(MonoMethod* function, void ** parameter)
 	}
 }
 
-bool CSharpScript::MonoObjectIsValid(MonoObject* object)
+bool CSharpScript::CheckMonoObject(MonoObject* object)
 {
 	if (object != nullptr)
 	{
+		//
 		currentGameObject = gameObjects[object];
 		return true;
 	}
 	return false;
 }
 
-MonoObject * CSharpScript::GetMonoObject() const
+MonoObject* CSharpScript::GetMonoObject() const
 {
 	return CSObject;
+}
+
+MonoClass* CSharpScript::GetMonoClass() const
+{
+	return CSClass;
 }
 
 void CSharpScript::SetDomain(MonoDomain* domain)
@@ -501,9 +507,37 @@ bool CSharpScript::LinkVarToMono(ScriptVariable* variable, MonoClassField * mfie
 	}
 }
 
+MonoObject* CSharpScript::GetMousePosition()
+{
+	if (currentGameObject != nullptr)
+	{
+		MonoClass* classT = mono_class_from_name(App->importer->iScript->GetCulverinImage(), "CulverinEditor", "Vector3");
+		if (classT)
+		{
+			MonoObject* new_object = mono_object_new(App->importer->iScript->GetDomain(), classT);
+			if (new_object)
+			{
+				MonoClassField* x_field = mono_class_get_field_from_name(classT, "x");
+				MonoClassField* y_field = mono_class_get_field_from_name(classT, "y");
+				MonoClassField* z_field = mono_class_get_field_from_name(classT, "z");
+
+				float mouse_x = App->input->GetMouseX();
+				float mouse_y = App->input->GetMouseY();
+
+				if (x_field) mono_field_set_value(new_object, x_field, &mouse_x);
+				if (y_field) mono_field_set_value(new_object, y_field, &mouse_y);
+				if (z_field) mono_field_set_value(new_object, z_field, 0);
+
+				return new_object;
+			}
+		}
+	}
+	return nullptr;
+}
+
 mono_bool CSharpScript::IsGOActive(MonoObject* object)
 {
-	if (!MonoObjectIsValid(object))
+	if (!CheckMonoObject(object))
 	{
 		return false;
 	}
@@ -520,7 +554,7 @@ mono_bool CSharpScript::IsGOActive(MonoObject* object)
 
 void CSharpScript::SetGOActive(MonoObject* object, mono_bool active)
 {
-	if (!MonoObjectIsValid(object))
+	if (!CheckMonoObject(object))
 	{
 		LOG("[error] MonoObject invalid");
 	}
@@ -564,7 +598,7 @@ void CSharpScript::CreateGameObject(MonoObject* object)
 
 bool CSharpScript::DestroyGameObject(MonoObject* object)
 {
-	if (!MonoObjectIsValid(object))
+	if (!CheckMonoObject(object))
 	{
 		return false;
 	}
@@ -582,7 +616,7 @@ bool CSharpScript::DestroyGameObject(MonoObject* object)
 
 void CSharpScript::SetGOName(MonoObject * object, MonoString * name)
 {
-	if (!MonoObjectIsValid(object))
+	if (!CheckMonoObject(object))
 	{
 		LOG("[error] MonoObject invalid");
 	}
@@ -600,7 +634,7 @@ void CSharpScript::SetGOName(MonoObject * object, MonoString * name)
 
 MonoString* CSharpScript::GetName(MonoObject* object)
 {
-	if (!MonoObjectIsValid(object))
+	if (!CheckMonoObject(object))
 	{
 		return nullptr;
 	}
@@ -613,7 +647,7 @@ MonoString* CSharpScript::GetName(MonoObject* object)
 
 MonoObject* CSharpScript::GetComponent(MonoObject* object, MonoReflectionType* type)
 {
-	if (!MonoObjectIsValid(object))
+	if (!CheckMonoObject(object))
 	{
 		return nullptr;
 	}
@@ -633,10 +667,10 @@ MonoObject* CSharpScript::GetComponent(MonoObject* object, MonoReflectionType* t
 		comp_name = "Transform";
 	}
 
-	MonoClass* c = mono_class_from_name(App->importer->iScript->GetCulverinImage(), "CulverinEditor", comp_name);
-	if (c)
+	MonoClass* classT = mono_class_from_name(App->importer->iScript->GetCulverinImage(), "CulverinEditor", comp_name);
+	if (classT)
 	{
-		MonoObject* new_object = mono_object_new(CSdomain, c);
+		MonoObject* new_object = mono_object_new(CSdomain, classT);
 		if (new_object)
 		{
 			return new_object;
@@ -649,15 +683,15 @@ MonoObject* CSharpScript::GetPosition(MonoObject* object)
 {
 	if (currentGameObject != nullptr)
 	{
-		MonoClass* c = mono_class_from_name(App->importer->iScript->GetCulverinImage(), "CulverinEditor", "Vector3");
-		if (c)
+		MonoClass* classT = mono_class_from_name(App->importer->iScript->GetCulverinImage(), "CulverinEditor", "Vector3");
+		if (classT)
 		{
-			MonoObject* new_object = mono_object_new(App->importer->iScript->GetDomain(), c);
+			MonoObject* new_object = mono_object_new(App->importer->iScript->GetDomain(), classT);
 			if (new_object)
 			{
-				MonoClassField* x_field = mono_class_get_field_from_name(c, "x");
-				MonoClassField* y_field = mono_class_get_field_from_name(c, "y");
-				MonoClassField* z_field = mono_class_get_field_from_name(c, "z");
+				MonoClassField* x_field = mono_class_get_field_from_name(classT, "x");
+				MonoClassField* y_field = mono_class_get_field_from_name(classT, "y");
+				MonoClassField* z_field = mono_class_get_field_from_name(classT, "z");
 
 				CompTransform* transform = (CompTransform*)currentGameObject->GetComponentTransform();
 				float3 new_pos;
@@ -679,10 +713,10 @@ void CSharpScript::SetPosition(MonoObject* object, MonoObject* vector3)
 {
 	if (currentGameObject != nullptr)
 	{
-		MonoClass* c = mono_object_get_class(vector3);
-		MonoClassField* x_field = mono_class_get_field_from_name(c, "x");
-		MonoClassField* y_field = mono_class_get_field_from_name(c, "y");
-		MonoClassField* z_field = mono_class_get_field_from_name(c, "z");
+		MonoClass* classT = mono_object_get_class(vector3);
+		MonoClassField* x_field = mono_class_get_field_from_name(classT, "x");
+		MonoClassField* y_field = mono_class_get_field_from_name(classT, "y");
+		MonoClassField* z_field = mono_class_get_field_from_name(classT, "z");
 
 		float3 new_pos;
 
@@ -692,5 +726,93 @@ void CSharpScript::SetPosition(MonoObject* object, MonoObject* vector3)
 
 		CompTransform* transform = (CompTransform*)currentGameObject->GetComponentTransform();
 		transform->SetPos(new_pos);
+	}
+}
+
+MonoObject* CSharpScript::GetRotation(MonoObject* object)
+{
+	if (currentGameObject != nullptr)
+	{
+		MonoClass* classT = mono_class_from_name(App->importer->iScript->GetCulverinImage(), "CulverinEditor", "Vector3");
+		if (classT)
+		{
+			MonoObject* new_object = mono_object_new(App->importer->iScript->GetDomain(), classT);
+			if (new_object)
+			{
+				MonoClassField* x_field = mono_class_get_field_from_name(classT, "x");
+				MonoClassField* y_field = mono_class_get_field_from_name(classT, "y");
+				MonoClassField* z_field = mono_class_get_field_from_name(classT, "z");
+
+				CompTransform* transform = (CompTransform*)currentGameObject->GetComponentTransform();
+				float3 new_pos;
+				new_pos = transform->GetRotEuler();
+
+				if (x_field) mono_field_set_value(new_object, x_field, &new_pos.x);
+				if (y_field) mono_field_set_value(new_object, y_field, &new_pos.y);
+				if (z_field) mono_field_set_value(new_object, z_field, &new_pos.z);
+
+				return new_object;
+			}
+		}
+		return nullptr;
+	}
+}
+
+void CSharpScript::SetRotation(MonoObject* object, MonoObject* vector3)
+{
+	if (currentGameObject != nullptr)
+	{
+		MonoClass* classT = mono_object_get_class(vector3);
+		MonoClassField* x_field = mono_class_get_field_from_name(classT, "x");
+		MonoClassField* y_field = mono_class_get_field_from_name(classT, "y");
+		MonoClassField* z_field = mono_class_get_field_from_name(classT, "z");
+
+		float3 new_pos;
+
+		if (x_field) mono_field_get_value(vector3, x_field, &new_pos.x);
+		if (y_field) mono_field_get_value(vector3, y_field, &new_pos.y);
+		if (z_field) mono_field_get_value(vector3, z_field, &new_pos.z);
+
+		CompTransform* transform = (CompTransform*)currentGameObject->GetComponentTransform();
+		transform->SetRot(new_pos);
+	}
+}
+
+void CSharpScript::Save(JSON_Object* object, std::string name) const
+{
+	for (int i = 0; i < variables.size(); i++)
+	{
+		if (variables[i]->type == VarType::Var_GAMEOBJECT)
+		{
+			if (variables[i]->gameObject != nullptr)
+			{
+				json_object_dotset_number_with_std(object, name + "Variables GameObject UUID", variables[i]->gameObject->GetUUID());
+			}
+		}
+	}
+}
+
+void CSharpScript::Load(const JSON_Object* object, std::string name)
+{
+	uint temp = json_object_dotget_number_with_std(object, name + "Variables GameObject UUID");
+	gameObjects.clear(); // memory leak
+	for (int i = 0; i < variables.size(); i++)
+	{
+		if (variables[i]->type == VarType::Var_GAMEOBJECT)
+		{
+			reLoadValues.push_back(temp);
+		}
+	}
+}
+
+void CSharpScript::LoadValues()
+{
+	for (int i = 0, j = 0; i < variables.size(); i++)
+	{
+		if (variables[i]->type == VarType::Var_GAMEOBJECT)
+		{
+			variables[i]->gameObject = App->scene->GetGameObjectbyuid(reLoadValues[j++]);
+			variables[i]->SetMonoValue(variables[i]->gameObject);
+		}
 	}
 }

@@ -4,6 +4,8 @@
 #include "Globals.h"
 #include <string>
 
+typedef struct json_object_t JSON_Object;
+
 class Resource
 {
 public:
@@ -19,7 +21,8 @@ public:
 		LOADED,
 		REIMPORTED,
 		WANTDELETE,
-		FAILED
+		FAILED,
+		REIMPORTEDSCRIPT
 	};
 
 public:

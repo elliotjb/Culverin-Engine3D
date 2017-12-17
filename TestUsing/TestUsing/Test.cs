@@ -5,30 +5,51 @@ public class Tank_script
 {
 
     public GameObject tank;
+    public float speed;
+    public float rotationSpeed;
 
     void Start()
     {
-
+        speed = 2;
+        rotationSpeed = 2;
     }
 
     void Update()
     {
-        Debug.Log(tank.name);
-        if (Input.KeyRepeat("UP_ARROW"))
+        //test = 2;
+        //Debug.Log("J");
+        //Debug.Log(tank.name);
+        //tank.GetComponent<Transform>().Loge("Elliot");v
+        float translation = Input.GetMouseXAxis() * speed;
+        float rotation = Input.GetMouseYAxis() * rotationSpeed;
+        translation *= Time.DeltaTime();
+        rotation *= Time.DeltaTime();
+
+        Vector3 temp = Vector3.Zero;
+        temp.Set(0, 0, translation);
+        //GameObject.gameObject.GetComponent<Transform>().Position = temp;
+        temp.Set(0, rotation, 0);
+        GameObject.gameObject.GetComponent<Transform>().Rotation += temp;
+
+        if (Input.KeyRepeat("Up"))
         {
-            tank.GetComponent<Transform>().position += Vector3.Forward;
+            tank.GetComponent<Transform>().Position += Vector3.Forward;
+            GameObject.gameObject.GetComponent<Transform>().Position += Vector3.Forward;
         }
-        else if (Input.KeyRepeat("DOWN_ARROW"))
+        if (Input.KeyRepeat("Down"))
         {
-            tank.GetComponent<Transform>().position += Vector3.Backward;
+            tank.GetComponent<Transform>().Position += Vector3.Backward;
+            GameObject.gameObject.GetComponent<Transform>().Position += Vector3.Backward;
         }
-        else if (Input.KeyRepeat("LEFT_ARROW"))
+        if (Input.KeyRepeat("Left"))
         {
-            tank.GetComponent<Transform>().position += Vector3.Left;
+            tank.GetComponent<Transform>().Position -= Vector3.Left;
+            GameObject.gameObject.GetComponent<Transform>().Position -= Vector3.Left;
         }
-        else if (Input.KeyRepeat("RIGHT_ARROW"))
+        if (Input.KeyRepeat("Right"))
         {
-            tank.GetComponent<Transform>().position += Vector3.Right;
+            tank.GetComponent<Transform>().Position -= Vector3.Right;
+            GameObject.gameObject.GetComponent<Transform>().Position -= Vector3.Right;
         }
     }
 }

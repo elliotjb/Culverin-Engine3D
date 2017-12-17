@@ -19,7 +19,7 @@ public:
 
 	void Start();
 	void Update(float dt);
-	void Clear();
+	void ClearVariables();
 	// Play Engine -------
 	bool CheckScript();
 

@@ -183,9 +183,11 @@ void Application::FinishUpdate()
 
 	if (want_to_load == true)
 	{
+		//Before Delete GameObjects Del Variables Scripts GameObject 
+		App->scene->ClearAllVariablesScript();
 		App->scene->DeleteGameObjects(App->scene->gameobjects);
 		Json_seria->LoadScene();
-
+		App->resource_manager->ReImportAllScripts();
 		want_to_load = false;
 	}
 	// ---------------------------------------------

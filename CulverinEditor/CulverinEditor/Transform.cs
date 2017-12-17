@@ -4,11 +4,7 @@ namespace CulverinEditor
 {
     public class Transform : Component
     {
-        //protected Transform();
-
-        //public Quaternion rotation { get; set; }
-        //public Vector3 position { get; set; }
-        
+        //protected Transform();        
         public Vector3 Position {
             get
             {
@@ -17,6 +13,18 @@ namespace CulverinEditor
             set
             {
                 SetPosition(value);
+            }
+        }
+
+        public Vector3 Rotation
+        {
+            get
+            {
+                return GetRotation();
+            }
+            set
+            {
+                SetRotation(value);
             }
         }
 

@@ -57,6 +57,9 @@ private:
 	static mono_bool MouseButtonDown(int buttonmouse);
 	static mono_bool MouseButtonUp(int buttonmouse);
 	static mono_bool MouseButtonRepeat(int buttonmouse);
+	static MonoObject* GetMousePosition();
+	static int GetMouseXAxis();
+	static int GetMouseYAxis();
 
 	/* Time */
 	static float GetDeltaTime();
@@ -72,6 +75,8 @@ private:
 	static MonoObject* GetComponent(MonoObject* object, MonoReflectionType* type);
 	static MonoObject* GetPosition(MonoObject* object);
 	static void SetPosition(MonoObject* object, MonoObject* vector3);
+	static MonoObject* GetRotation(MonoObject* object);
+	static void SetRotation(MonoObject* object, MonoObject* vector3);
 
 private:
 	std::string nameNewScript;

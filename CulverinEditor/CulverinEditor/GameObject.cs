@@ -44,7 +44,7 @@ namespace CulverinEditor
         private extern void CreateGameObject(GameObject go);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern void Destroy(GameObject go);
+        public static extern void Destroy(GameObject go);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern void SetActive(bool go_active);

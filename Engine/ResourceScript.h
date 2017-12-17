@@ -40,6 +40,11 @@ public:
 	bool LoadToMemory();
 	Resource::State IsCompiled();
 
+	// LOAD - SAVE METHODS ------------------
+	void Save(JSON_Object* object, std::string name) const;
+	void Load(const JSON_Object* object, std::string name);
+	void LoadValuesGameObject();
+
 private:
 	std::string path_dll;
 	CSharpScript* csharp = nullptr;

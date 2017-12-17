@@ -259,6 +259,15 @@ void Scene::StartScripts()
 	}
 }
 
+void Scene::ClearAllVariablesScript()
+{
+	//Iterate all GameObjects and, if they have scripts, call their ClearAllVariablesScript
+	for (int i = 0; i < gameobjects.size(); i++)
+	{
+		gameobjects[i]->ClearAllVariablesScript();
+	}
+}
+
 GameObject* Scene::GetGameObjectfromScene(bool& active)
 {
 	if (!ImGui::Begin("GameObjects in Scene", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders))
@@ -280,6 +289,19 @@ GameObject* Scene::GetGameObjectfromScene(bool& active)
 			ImGui::PopID();
 		}
 		ImGui::End();
+	}
+	return nullptr;
+}
+
+GameObject* Scene::GetGameObjectbyuid(uint uid)
+{
+	for (int i = 0; i < gameobjects.size(); i++)
+	{
+		GameObject* ret = gameobjects[i]->GetGameObjectbyuid(uid);
+		if (ret != nullptr)
+		{
+			return ret;
+		}
 	}
 	return nullptr;
 }

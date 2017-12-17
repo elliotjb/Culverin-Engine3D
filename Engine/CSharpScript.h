@@ -5,6 +5,7 @@
 
 #define DefaultParam 0
 
+#include "Globals.h"
 #include <string>
 #include <vector>
 #include <map>
@@ -14,6 +15,7 @@
 
 class CSharpScript;
 class GameObject;
+typedef struct json_object_t JSON_Object;
 
 enum FunctionBase
 {
@@ -58,7 +60,7 @@ public:
 
 private:
 	//Mono properties to link with he script
-	MonoClassField * monoField = nullptr;
+	MonoClassField* monoField = nullptr;
 	MonoType* monoType = nullptr;
 
 	//To access the script
@@ -86,10 +88,11 @@ public:
 	void DoMainFunction(FunctionBase function);
 	void DoFunction(MonoMethod* function, void ** parameter);
 
-	bool MonoObjectIsValid(MonoObject* object);
+	bool CheckMonoObject(MonoObject* object);
 
 	//GET functions ------------------------------------
 	MonoObject* GetMonoObject() const;
+	MonoClass* GetMonoClass() const;
 
 	// Functions set initial info ------------------------
 	void SetDomain(MonoDomain* domain);
@@ -113,6 +116,8 @@ public:
 	void SetVarValue(ScriptVariable* variable, void* new_val);
 	// ------------------------------------------------------------------
 
+	MonoObject* GetMousePosition();
+
 	mono_bool IsGOActive(MonoObject* object);
 	void SetGOActive(MonoObject* object, mono_bool active);
 	MonoObject* GetOwnGameObject();
@@ -126,6 +131,13 @@ public:
 
 	MonoObject* GetPosition(MonoObject* object);
 	void SetPosition(MonoObject* object, MonoObject* vector3);
+	MonoObject* GetRotation(MonoObject* object);
+	void SetRotation(MonoObject* object, MonoObject* vector3);
+
+	// LOAD - SAVE METHODS ------------------
+	void Save(JSON_Object* object, std::string name) const;
+	void Load(const JSON_Object* object, std::string name);
+	void LoadValues();
 
 public:
 	//Variables/Info containers (public to have access through other modules)
@@ -153,6 +165,7 @@ private:
 	MainMonoMethod OnDisable;
 
 	GameObject* currentGameObject = nullptr;
+	std::vector<uint> reLoadValues;
 public:
 	std::map<MonoObject*, GameObject*> gameObjects;
 

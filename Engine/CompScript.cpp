@@ -95,6 +95,11 @@ void CompScript::Start()
 
 void CompScript::Update(float dt)
 {
+	if (resourcescript != nullptr && resourcescript->GetState() == Resource::State::REIMPORTEDSCRIPT)
+	{
+		resourcescript->LoadValuesGameObject();
+		resourcescript->SetOwnGameObject(parent);
+	}
 	if (resourcescript != nullptr && (App->engineState == EngineState::PLAY || App->engineState == EngineState::PLAYFRAME))
 	{
 		App->importer->iScript->SetCurrentScript(resourcescript->GetCSharpScript());
@@ -103,9 +108,12 @@ void CompScript::Update(float dt)
 	}
 }
 
-void CompScript::Clear()
+void CompScript::ClearVariables()
 {
-	resourcescript->GetCSharpScript()->Clear();
+	if (resourcescript != nullptr)
+	{
+		resourcescript->GetCSharpScript()->Clear();
+	}
 }
 
 bool CompScript::CheckScript()
@@ -414,6 +422,8 @@ void CompScript::Save(JSON_Object* object, std::string name, bool saveScene, uin
 	if (resourcescript != nullptr)
 	{
 		json_object_dotset_number_with_std(object, name + "Resource Script UUID", resourcescript->GetUUID());
+		// Now Save Info in CSharp
+		resourcescript->Save(object, name);
 	}
 	json_object_dotset_string_with_std(object, name + "Name Script", nameScript.c_str());
 }
@@ -439,6 +449,9 @@ void CompScript::Load(const JSON_Object* object, std::string name)
 			{
 				App->importer->iScript->LoadResource(std::to_string(resourcescript->GetUUID()).c_str(), resourcescript);
 			}
+			resourcescript->Load(object, name);
+			resourcescript->SetOwnGameObject(parent);
+
 		}
 	}
 	Enable();

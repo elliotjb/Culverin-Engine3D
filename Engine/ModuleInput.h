@@ -28,6 +28,8 @@ public:
 	//update_status PostUpdate(float dt);
 	update_status UpdateConfig(float dt);
 	bool CleanUp();
+	int GetMouseXMotionNormalized();
+	int GetMouseYMotionNormalized();
 
 	SDL_Scancode GetKeyFromName(const char* name);
 

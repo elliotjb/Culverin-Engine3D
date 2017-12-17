@@ -26,6 +26,8 @@ public:
 	// Return if all scripts in scene are compilated correctly.
 	bool CheckScripts(int & numfails);
 	void StartScripts();
+	void ClearAllVariablesScript();
+	GameObject* GetGameObjectbyuid(uint uid);
 
 	void preUpdate(float dt);
 	void Update(float dt);

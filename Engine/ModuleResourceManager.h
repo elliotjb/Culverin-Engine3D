@@ -58,6 +58,8 @@ private:
 	bool reimportNow = false;
 	bool deleteNow = false;
 	bool loadResources = true;
+	bool reimportedScripts = false;
+	bool scriptsSetNormal = false;
 };
 
 #endif

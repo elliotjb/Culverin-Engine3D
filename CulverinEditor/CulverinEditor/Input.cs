@@ -29,5 +29,11 @@ namespace CulverinEditor
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern Vector3 GetMousePosition();
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetMouseXAxis();
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern int GetMouseYAxis();
     }
 }

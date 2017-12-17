@@ -93,7 +93,7 @@ namespace CulverinEditor
         }
 
 
-        public static float Magnitude(Vector3 vector)
+        public float Magnitude(Vector3 vector)
         {
             return Mathf.Sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
         }
@@ -106,7 +106,7 @@ namespace CulverinEditor
             }
         }
 
-        public static Vector3 Normalize(Vector3 vector)
+        public Vector3 Normalize(Vector3 vector)
         {
             Vector3 value;
             float magnitude = Magnitude(vector);
@@ -121,7 +121,7 @@ namespace CulverinEditor
             return value;
         }
 
-        public static float Distance(Vector3 v1, Vector3 v2)
+        public float Distance(Vector3 v1, Vector3 v2)
         {
             Vector3 temp_vector = new Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
             return Mathf.Sqrt(temp_vector.x * temp_vector.x + temp_vector.y * temp_vector.y + temp_vector.z * temp_vector.z);

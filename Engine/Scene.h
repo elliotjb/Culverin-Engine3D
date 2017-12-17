@@ -32,8 +32,10 @@ public:
 	// Scripting utility functions
 	bool CheckNoFails();
 	void StartScripts();
+	void ClearAllVariablesScript();
 
 	GameObject* GetGameObjectfromScene(bool& active);
+	GameObject* GetGameObjectbyuid(uint uid);
 
 	// DRAWING METHODS ---------
 	void DrawPlane();

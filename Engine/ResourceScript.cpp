@@ -116,3 +116,20 @@ Resource::State ResourceScript::IsCompiled()
 {
 	return state;
 }
+
+void ResourceScript::Save(JSON_Object* object, std::string name) const
+{
+	//Save Values
+	csharp->Save(object, name);
+}
+
+void ResourceScript::Load(const JSON_Object* object, std::string name)
+{
+	//Load Values
+	csharp->Load(object, name);
+}
+
+void ResourceScript::LoadValuesGameObject()
+{
+	csharp->LoadValues();
+}
