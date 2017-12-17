@@ -79,6 +79,7 @@ void CompScript::preUpdate(float dt)
 					}
 				}
 				uuidResourceReimported = 0;
+				resourcescript->SetOwnGameObject(parent);
 			}
 		}
 	}
@@ -100,6 +101,11 @@ void CompScript::Update(float dt)
 		resourcescript->SetCurrentGameObject(parent);
 		resourcescript->Update(dt);
 	}
+}
+
+void CompScript::Clear()
+{
+	resourcescript->GetCSharpScript()->Clear();
 }
 
 bool CompScript::CheckScript()
@@ -256,6 +262,7 @@ void CompScript::ShowInspectorInfo()
 				}
 				resourcescript = temp;
 				resourcescript->NumGameObjectsUseMe++;
+				resourcescript->SetOwnGameObject(parent);
 				if (resourcescript->IsCompiled() == Resource::State::UNLOADED)
 				{
 					if (App->importer->iScript->LoadResource(resourcescript->GetPathAssets().c_str(), resourcescript))

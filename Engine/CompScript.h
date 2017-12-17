@@ -19,7 +19,7 @@ public:
 
 	void Start();
 	void Update(float dt);
-
+	void Clear();
 	// Play Engine -------
 	bool CheckScript();
 

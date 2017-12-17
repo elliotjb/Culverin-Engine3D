@@ -467,6 +467,7 @@ void ImportScript::LinkFunctions()
 {
 	//GAMEOBJECT FUNCTIONS ---------------
 	mono_add_internal_call("CulverinEditor.GameObject::CreateGameObject",(const void*)CreateGameObject);
+	mono_add_internal_call("CulverinEditor.GameObject::GetOwnGameObject", (const void*)GetOwnGameObject);
 	/*mono_add_internal_call("CulverinEditor.GameObject::Destroy",(const void*)DestroyGameObject);
 	mono_add_internal_call("CulverinEditor.GameObject::SetActive",(const void*)SetActive);
 	mono_add_internal_call("CulverinEditor.GameObject::IsActive",(const void*)IsActive);
@@ -578,6 +579,11 @@ mono_bool ImportScript::MouseButtonRepeat(int buttonmouse)
 float ImportScript::GetDeltaTime()
 {
 	return App->gameTime.timeScale;
+}
+
+MonoObject* ImportScript::GetOwnGameObject()
+{
+	return current->GetOwnGameObject();
 }
 
 MonoString* ImportScript::GetName(MonoObject * object)

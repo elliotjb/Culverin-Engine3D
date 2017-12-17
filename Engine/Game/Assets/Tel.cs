@@ -1,4 +1,4 @@
-﻿using CulverinEditor;
+using CulverinEditor;
 using CulverinEditor.Debug;
 
 public class Tank_script
@@ -13,24 +13,28 @@ public class Tank_script
 
     void Update()
     {
-        Debug.Log("J");
-        Debug.Log(tank.name);
-        //tank.GetComponent<Transform>().Loge("Elliot");
+        //Debug.Log("J");
+        //Debug.Log(tank.name);
+        //tank.GetComponent<Transform>().Loge("Elliot");v
         if (Input.KeyRepeat("Up"))
         {
             tank.GetComponent<Transform>().Position += Vector3.Forward;
+            GameObject.gameObject.GetComponent<Transform>().Position += Vector3.Forward;
         }
-        else if (Input.KeyRepeat("Down"))
+        if (Input.KeyRepeat("Down"))
         {
             tank.GetComponent<Transform>().Position += Vector3.Backward;
+            GameObject.gameObject.GetComponent<Transform>().Position += Vector3.Backward;
         }
-        else if (Input.KeyRepeat("Left"))
+        if (Input.KeyRepeat("Left"))
         {
-            tank.GetComponent<Transform>().Position += Vector3.Left;
+            tank.GetComponent<Transform>().Position -= Vector3.Left;
+            GameObject.gameObject.GetComponent<Transform>().Position -= Vector3.Left;
         }
-        else if (Input.KeyRepeat("Right"))
+        if (Input.KeyRepeat("Right"))
         {
-            tank.GetComponent<Transform>().Position += Vector3.Right;
+            tank.GetComponent<Transform>().Position -= Vector3.Right;
+            GameObject.gameObject.GetComponent<Transform>().Position -= Vector3.Right;
         }
     }
 }

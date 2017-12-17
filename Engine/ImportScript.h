@@ -62,6 +62,7 @@ private:
 	static float GetDeltaTime();
 
 	/* GameObject */
+	static MonoObject* GetOwnGameObject();
 	static MonoString* GetName(MonoObject* object);
 	static void CreateGameObject(MonoObject* object);
 	static MonoObject* GetComponent(MonoObject* object, MonoReflectionType* type);

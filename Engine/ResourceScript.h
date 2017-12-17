@@ -19,11 +19,11 @@ public:
 	void InitInfo(std::string path_dll_, std::string path_assets_);
 	void SetCSharp(CSharpScript* csharp_);
 
-	void SetCurrentGameObject(GameObject * current_);
-
 	// Name Class = name Script
+	void SetCurrentGameObject(GameObject * current_);
 	void CreateNewScript(std::string nameScript);
 	void SetScriptEditor(std::string nameScript);
+	void SetOwnGameObject(GameObject* owenerofScript);
 	bool ReImportScript(std::string path_dll_);
 
 	bool Start();

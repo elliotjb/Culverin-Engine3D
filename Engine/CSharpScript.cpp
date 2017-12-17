@@ -21,6 +21,11 @@ void ScriptVariable::SetMonoValue(void* newVal)
 	if (newVal != nullptr)
 	{
 		mono_field_set_value(script->GetMonoObject(), monoField, newVal);
+		if (type == VarType::Var_GAMEOBJECT)
+		{
+			MonoObject* object = mono_field_get_value_object(App->importer->iScript->GetDomain(), monoField, script->GetMonoObject());
+			script->gameObjects[object] = gameObject;
+		}
 	}
 
 	else
@@ -162,7 +167,7 @@ bool CSharpScript::MonoObjectIsValid(MonoObject* object)
 {
 	if (object != nullptr)
 	{
-		//currentGameObject = gameObjects[object];
+		currentGameObject = gameObjects[object];
 		return true;
 	}
 	return false;
@@ -246,11 +251,24 @@ bool CSharpScript::ReImport(std::string pathdll)
 	return true;
 }
 
+void CSharpScript::Clear()
+{
+	for (uint i = 0; i < variables.size(); i++)
+	{
+		if (variables[i]->gameObject != nullptr)
+		{
+			variables[i]->gameObject->FixedDelete(true);
+		}
+	}
+}
+
 //Release memory allocated from old variables
 void CSharpScript::ResetScriptVariables()
 {
 	for (uint i = 0; i < variables.size(); i++)
 	{
+		variables[i]->value = nullptr;
+		variables[i]->gameObject = nullptr;
 		RELEASE(variables[i]);
 	}
 
@@ -258,22 +276,22 @@ void CSharpScript::ResetScriptVariables()
 	field_type.clear();
 }
 
-void CSharpScript::SetAttachedGameObject(GameObject * gameobject)
+void CSharpScript::SetOwnGameObject(GameObject* gameobject)
 {
-	attached_gameobject = gameobject;
-	CreateSelfGameObject();
+	ownGameObject = gameobject;
+	CreateOwnGameObject();
 }
 
-void CSharpScript::CreateSelfGameObject()
+void CSharpScript::CreateOwnGameObject()
 {
-	MonoClass* c = mono_class_from_name(App->importer->iScript->GetCulverinImage(), "TheEngine", "TheGameObject");
+	MonoClass* c = mono_class_from_name(App->importer->iScript->GetCulverinImage(), "CulverinEditor", "GameObject");
 	if (c)
 	{
 		MonoObject* new_object = mono_object_new(CSdomain, c);
 		if (new_object)
 		{
 			CSSelfObject = new_object;
-			gameObjects[CSSelfObject] = attached_gameobject;
+			gameObjects[CSSelfObject] = ownGameObject;
 		}
 	}
 }
@@ -483,14 +501,22 @@ bool CSharpScript::LinkVarToMono(ScriptVariable* variable, MonoClassField * mfie
 	}
 }
 
-void CSharpScript::SetVarValue(ScriptVariable * variable, void * new_val)
+MonoObject* CSharpScript::GetOwnGameObject()
 {
-
+	if (CSSelfObject != nullptr && ownGameObject != nullptr)
+	{
+		return CSSelfObject;
+	}
 }
 
 void CSharpScript::SetCurrentGameObject(GameObject* current)
 {
 	currentGameObject = current;
+}
+
+void CSharpScript::SetVarValue(ScriptVariable* variable, void* new_val)
+{
+
 }
 
 void CSharpScript::CreateGameObject(MonoObject* object)

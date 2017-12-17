@@ -37,6 +37,16 @@ void ResourceScript::SetScriptEditor(std::string nameScript)
 	editor->Start(nameScript, false);
 }
 
+void ResourceScript::SetCurrentGameObject(GameObject* current)
+{
+	csharp->SetCurrentGameObject(current);
+}
+
+void ResourceScript::SetOwnGameObject(GameObject* owenerofScript)
+{
+	csharp->SetOwnGameObject(owenerofScript);
+}
+
 bool ResourceScript::ReImportScript(std::string path_dll_)
 {
 	return csharp->ReImport(path_dll_);
@@ -46,11 +56,6 @@ bool ResourceScript::ReImportScript(std::string path_dll_)
 void ResourceScript::SetCSharp(CSharpScript* csharp_)
 {
 	csharp = csharp_;
-}
-
-void ResourceScript::SetCurrentGameObject(GameObject* current)
-{
-	csharp->SetCurrentGameObject(current);
 }
 
 bool ResourceScript::Start()

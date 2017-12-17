@@ -81,7 +81,7 @@ public:
 	//Importing/Reimporting/Initializing --------
 	void LoadScript();
 	bool ReImport(std::string pathdll);
-
+	void Clear();
 	MainMonoMethod CreateMainFunction(std::string function, int parameters, FunctionBase type);
 	void DoMainFunction(FunctionBase function);
 	void DoFunction(MonoMethod* function, void ** parameter);
@@ -102,7 +102,7 @@ public:
 
 	//Variables METHODS -------------------------------------------------
 	void ResetScriptVariables();
-	void CreateSelfGameObject();
+	void CreateOwnGameObject();
 	void GetScriptVariables();
 	void UpdateScriptVariables();
 
@@ -112,8 +112,10 @@ public:
 	bool LinkVarToMono(ScriptVariable* variable, MonoClassField* mfield, MonoType* mtype);
 	void SetVarValue(ScriptVariable* variable, void* new_val);
 	// ------------------------------------------------------------------
+
+	MonoObject* GetOwnGameObject();
 	void SetCurrentGameObject(GameObject* current);
-	void SetAttachedGameObject(GameObject* gameobject);
+	void SetOwnGameObject(GameObject* gameobject);
 	void CreateGameObject(MonoObject* object);
 	MonoString* GetName(MonoObject* object);
 	MonoObject* GetComponent(MonoObject* object, MonoReflectionType* type);
@@ -137,7 +139,7 @@ private:
 	MonoClass* CSClass = nullptr;
 	MonoObject* CSObject = nullptr;
 	MonoObject* CSSelfObject = nullptr;
-	GameObject* attached_gameobject = nullptr;
+	GameObject* ownGameObject = nullptr;
 
 	// Main Functions
 	MainMonoMethod Start;
@@ -147,6 +149,7 @@ private:
 	MainMonoMethod OnDisable;
 
 	GameObject* currentGameObject = nullptr;
+public:
 	std::map<MonoObject*, GameObject*> gameObjects;
 
 };

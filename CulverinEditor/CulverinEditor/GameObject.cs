@@ -29,6 +29,14 @@ namespace CulverinEditor
             }
         }
 
+        public static GameObject gameObject
+        {
+            get
+            {
+                return GetOwnGameObject();
+            }
+        }
+
         //[MethodImpl(MethodImplOptions.InternalCall)]
         //private extern GameObject GetGameObject();
 
@@ -52,6 +60,9 @@ namespace CulverinEditor
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern string GetName();
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        private static extern GameObject GetOwnGameObject();
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern Component AddComponent(Type componentType);
