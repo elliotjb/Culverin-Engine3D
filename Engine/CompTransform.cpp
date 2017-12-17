@@ -63,6 +63,7 @@ void CompTransform::Update(float dt)
 	// Show gizmo when object selected
 	if (((Inspector*)App->gui->winManager[INSPECTOR])->GetSelected() == parent && App->engineState == EngineState::STOP)
 	{
+		ImGuiIO& io = ImGui::GetIO();
 		ImGuizmo::Enable(true);
 
 		static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
@@ -72,18 +73,21 @@ void CompTransform::Update(float dt)
 		// Get global transform of the object and transpose it to edit with Guizmo
 		global_transposed = global_transform.Transposed();
 
-		// SET GUIZMO OPERATION ----------------------------------
-		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		if (io.WantTextInput == false)
 		{
-			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-		}
-		else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-		{
-			mCurrentGizmoOperation = ImGuizmo::ROTATE;
-		}
-		else if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-		{
-			mCurrentGizmoOperation = ImGuizmo::SCALE;
+			// SET GUIZMO OPERATION ----------------------------------
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+			{
+				mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+			{
+				mCurrentGizmoOperation = ImGuizmo::ROTATE;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+			{
+				mCurrentGizmoOperation = ImGuizmo::SCALE;
+			}
 		}
 
 		// EDIT TRANSFORM QITH GUIZMO
