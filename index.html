@@ -192,22 +192,22 @@
                         <p class="lead"> CORE SUBSYSTEMS </p>
 						<p class="lead"> - GameObject/Components Structure </p>
                         <p class="important"> It works like Unity: you can create/delete GameObjects that will be visible in "Hierarchy" window. GameObjects can contain other GameObjects to mantain a child-parent relation. When you select a GameObject, you can see its info in "Inspector" window. You can attach components to it: mesh, material, camera, script, etc.</p>
+						<img class="img-responsive center-block" src="img/GameObjects.png" width="226" height="358">
 						<p class="lead"> - Game Mode </p>
 						<p class="important"> when hitting Play Button, all components that have Game functionality will be activated and updated. The game Time is editable through the Configuration Window.</p>
+						<img class="img-responsive center-block" src="img/PlayMode.png" width="138" height="32">
 						<p class="lead"> - Frustum Culling for the camera </p>
 						<p class="important"> The cameras of the engine are composed by a frustum. You can activate Culling to ignore all meshes outside the frustum of the main camera. This works well with the next sub-system:</p>
 						<p class="lead"> - Quadtree </p>
 						<p class="important"> Editable through configuration window, it will contain static GameObjects of the scene to optimizing the culling when entering Play Mode.</p>
+						<img class="img-responsive center-block" src="img/Quadtree.png" width="872" height="473">
 						<p class="lead"> - Mouse Picking & Gizmos </p>
 						<p class="important"> You can select game objects of the scene, that have a Bounding Box, by clicking their geometry. Once selected, you can modify their position, rotation and scale thanks to Gizmos with buttons 1,2,3, or changing the values of the transform from the "Inspector" window</p>
+						<img class="img-responsive center-block" src="img/Gizmos.gif" width="800" height="430">						
 						<p class="lead"> - Resource Manager </p>
-						<p class="important"> You can import different types of files: fbx, textures, etc. and load them into the scene. The resource manager will control which elements are being used to don't overload the same resource.</p>
-                        <p class="lead">
-                            
-                            <a target="_blank" href="https://github.com/elliotjb/3D-Engine"><img class="img-responsive center-block" src="img/icon_Culverin.png"></a>
-
-                        </p>
-
+						<p class="important"> You can import different types of files: fbx, textures, etc. and load them into the scene. The resource manager will control which elements are being used to don't overload the same resource.</p>          
+			            <img class="img-responsive center-block" src="img/Resources.png" width="1081" height="633">			
+					
                         <h3 class="page-header">
 
                             <p align="center"> HIGH LEVEL SUBSYSTEM: SCRIPTING SYSTEM </p>
@@ -229,6 +229,7 @@
 						<p class="important"> WARNING: don't write the same name of an existing script (it won't be generated).</p>
 						<p class="important"> 2)Write the class name to generate the script.</p>
 						<p class="important"> Then, your new script is saved into assets folder, and compiled by default.</p>
+						<img class="img-responsive center-block" src="img/CompilationScript.gif" width="800" height="526">						
 						
 						<p class="lead"> IMPORT EXTERNAL SCRIPTS: </p>
 						<p class="important"> You can drag and drop a C# script into the engine window to import it.</p>
@@ -238,7 +239,8 @@
 						<p class="important"> 1) To edit it, you have to attach it to a GameObject first: Inspector->Add Component-> Script.</p>
 						<p class="important"> 2) You will have to choose between all imported scripts ("Select script...") </p>
 						<p class="important"> 3) A new window with the code will apepear. You can edit it and Save changes (File->Save).</p>
-
+						<img class="img-responsive center-block" src="img/ShowScript.gif" width="800" height="462">						
+						
 						<p class="lead"> SCRIPTS IN THE INSPECTOR: </p>
 						<p class="important"> - Open editor window to edit the script.</p>
 						<p class="important"> - As a component, script has a checkbox to activate/deactivate it when entering Play Mode. </p>
