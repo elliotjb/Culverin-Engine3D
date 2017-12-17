@@ -20,6 +20,7 @@ It's created for educational purposes, and we are two students that are studying
 - Skybox as background of the scene.
 - Editable quadtree that will contain static objects. 
 - Materials and Meshes components uses Resources to load data only once in memory.
+- Resource Managing: a window to control all resources in the scene: change name, see reference counting...
 - Scripting System: Unity-like functionality. You have access to the scene gameobjects and acto on them (modifying name, transform (pos, rot, scale),
   Enabling/Disabling it, etc.).
 
@@ -45,10 +46,9 @@ You can drag and drop a script into the engine window to import it. If it has no
 Otherwise you will have to edit it and save changes to recompile it.
 
 ## EDIT SCRIPTS:
- 1) To edit it, you have to attach it to a GameObject first:
- - Inspector->Add Component-> Script.
+ 1) To edit it, you have to attach it to a GameObject first: Inspector->Add Component-> Script.
  2) You will have to choose between all imported scripts ("Select script...")
- 3) <Edit Script> -> a new window with the code will apepear. You can edit it and Save changes (File->Save).
+ 3) <Edit Script>: opens a new window with the code will apepear. You can edit it and Save changes (File->Save).
 
 ## SCRIPTS IN THE INSPECTOR
 - <Edit Script>: open editor window to edit the script.
@@ -92,6 +92,7 @@ In your scripts, you can call this specific functions to:
 	3) Meta files: importing a model/texture will create a .meta file with information about the imported elemend and resources it uses.
 	4) Folders Management: you can create, rename (only for empty folders), and remove folders (it will delete resources if they are inside,
 			       so, components that use these resources will be "empty").
+	5) Resource Manager: window to see all resources loaded in the scene: rename them, see reference counting... and more [Access it via: Windows->Resources].
 - Project window like Unity: with resizable icons and same navigation as Unity: folders on the left, files of the folder on the right.
 - Gizmos: enable transform modifications of gameobjects in the scene.
 - Mouse without restrictions: when you are moving the editor camera with right-click, if you reach a screen border, the mouse will

@@ -409,6 +409,7 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::Spacing();
 		// Description
 		ImGui::Text("This is a project consistent of creating a Game Engine,\nthat allows you to use tools to create video games.\nAt this moment, this engine works with a similar structure of Unity:\nGameObjects are containers of Components, and they\nhave a parent-children relation.\nYou can add/remove/edit these type of components:\n -Transform,\n -Material,\n -Mesh\n -Material.");
+		ImGui::Text("SCRIPTING SYSTEM: this engine has integrated this high level system to create your own scripts and play with GameObects in the scene [info in the README]");
 		ImGui::Spacing();
 		ImGui::Separator();
 		ImGui::Spacing();
@@ -461,6 +462,14 @@ update_status ModuleGUI::Update(float dt)
 			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
 			{
 				ShellExecuteA(NULL, "open", "http://openil.sourceforge.net/", NULL, NULL, SW_SHOWNORMAL);
+			}
+		}
+		ImGui::Bullet(); ImGui::SameLine();
+		if (ImGui::MenuItem("Mono"))
+		{
+			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+			{
+				ShellExecuteA(NULL, "open", "http://www.mono-project.com/", NULL, NULL, SW_SHOWNORMAL);
 			}
 		}
 
