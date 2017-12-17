@@ -103,6 +103,7 @@ MainMonoMethod CSharpScript::CreateMainFunction(std::string function, int parame
 	return Newmethod;
 }
 
+//Depending on the function passed, script will perform its actions
 void CSharpScript::DoMainFunction(FunctionBase function)
 {
 	switch (function)
@@ -155,6 +156,7 @@ void CSharpScript::DoMainFunction(FunctionBase function)
 void CSharpScript::DoFunction(MonoMethod* function, void ** parameter)
 {
 	MonoObject* exception = nullptr;
+	
 	// Do Main Function
 	mono_runtime_invoke(function, CSObject, parameter, &exception);
 	if (exception)
@@ -167,7 +169,7 @@ bool CSharpScript::CheckMonoObject(MonoObject* object)
 {
 	if (object != nullptr)
 	{
-		//
+		// Link MonoObject with GameObject to enable script control it
 		currentGameObject = gameObjects[object];
 		return true;
 	}

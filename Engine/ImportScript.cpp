@@ -18,12 +18,12 @@ CSharpScript* ImportScript::current = nullptr;
 
 ImportScript::ImportScript()
 {
-
 }
 
 
 ImportScript::~ImportScript()
 {
+	//ShutdownMono();
 }
 
 bool ImportScript::InitScriptingSystem()
@@ -63,6 +63,12 @@ bool ImportScript::InitScriptingSystem()
 	}
 
 	return false;
+}
+
+void ImportScript::ShutdownMono()
+{
+	Unload_domain();
+	mono_jit_cleanup(mono_domain_get());
 }
 
 bool ImportScript::Import(const char* file, uint uuid)

@@ -22,6 +22,7 @@ public:
 	~ImportScript();
 
 	bool InitScriptingSystem();
+	void ShutdownMono();
 
 	bool Import(const char* file, uint uuid = 0);
 	bool LoadResource(const char* file, ResourceScript* resourceScript);

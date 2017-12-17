@@ -78,8 +78,16 @@ GameObject::~GameObject()
 	delete bounding_box;
 	bounding_box = nullptr;
 	parent = nullptr;
-	components.clear();
-	childs.clear();
+
+	if (components.size() > 0)
+	{
+		components.clear();
+	}
+
+	if(childs.size() > 0)
+	{
+		childs.clear();
+	}
 }
 
 bool GameObject::CheckScripts(int& numfails)
@@ -856,7 +864,8 @@ Component* GameObject::AddComponent(Comp_Type type, bool isFromLoader)
 	bool dupe = false;
 	for (uint i = 0; i < components.size(); i++)
 	{
-		if (components[i]->GetType() == type) //We need to check if the component is ACTIVE first?¿
+		//We need to check if there is already a component of that type (no duplication)
+		if (components[i]->GetType() == type) 
 		{
 			dupe = true;
 			LOG("There's already one component of this type in '%s'.", name);
