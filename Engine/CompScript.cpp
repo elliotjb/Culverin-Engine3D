@@ -113,6 +113,22 @@ void CompScript::Update(float dt)
 	}
 }
 
+bool CompScript::CheckAllVariables()
+{
+	//Access chsharp script, it contains a vector of all variables with their respective info
+	for (uint i = 0; i < resourcescript->GetCSharpScript()->variables.size(); i++)
+	{
+		if (resourcescript->GetCSharpScript()->variables[i]->type == VarType::Var_GAMEOBJECT)
+		{
+			if (resourcescript->GetCSharpScript()->variables[i]->gameObject == nullptr)
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
 void CompScript::ClearVariables()
 {
 	if (resourcescript != nullptr)
@@ -125,8 +141,16 @@ bool CompScript::CheckScript()
 {
 	if (resourcescript != nullptr)
 	{
-		return (resourcescript->IsCompiled() != Resource::State::FAILED &&
-			resourcescript->IsCompiled() != Resource::State::UNLOADED);
+		if (resourcescript->IsCompiled() != Resource::State::FAILED &&
+			resourcescript->IsCompiled() != Resource::State::UNLOADED)
+		{
+			if (CheckAllVariables() == false)
+			{
+				LOG("[error]You have to associate all GameObject of the Script before Run the Game!");
+				return false;
+			}
+			return true;
+		}
 	}
 	return true;
 }
@@ -201,8 +225,8 @@ void CompScript::ShowInspectorInfo()
 		ImGui::EndPopup();
 	}
 
-	ImGui::Text("Script"); ImGui::SameLine();
-	ImGui::Selectable(nameScript.c_str(), false);
+	//ImGui::Text("Script"); ImGui::SameLine();
+	ImGui::Selectable("< Edit Script >", false);
 	static bool activeScript = false;
 	if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
 	{
@@ -390,7 +414,7 @@ void CompScript::ShowVarValue(ScriptVariable* var, int pushi)
 		//{
 		//	var->SetMonoValue((char*)var->value);
 		//}
-		ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f),"%s", var->str_value.c_str());
+		ImGui::TextColored(ImVec4(0.0f, 0.58f, 1.0f, 1.0f), "%s", var->str_value.c_str());
 	}
 	else if (var->type == VarType::Var_GAMEOBJECT)
 	{
@@ -415,7 +439,15 @@ void CompScript::ShowVarValue(ScriptVariable* var, int pushi)
 		}
 		else
 		{
-			ImGui::Text("%s", var->gameObject->GetName());
+			ImGui::Text("%s", var->gameObject->GetName()); ImGui::SameLine();
+			if (App->engineState != EngineState::PLAY)
+			{
+				if (ImGui::ImageButton((ImTextureID*)App->scene->icon_options_transform, ImVec2(13, 13), ImVec2(-1, 1), ImVec2(0, 0)))
+				{
+					var->EreaseMonoValue(var->gameObject);
+					var->selectGameObject = true;
+				}
+			}
 		}
 	}
 	else

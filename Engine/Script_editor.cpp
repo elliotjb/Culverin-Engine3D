@@ -67,7 +67,9 @@ void Script_editor::SetInitInfo(std::string nameScript)
 void Script_editor::Show(bool& active)
 {
 	//ImGui::PushStyleVar() // Center
-	ImGui::Begin(name.c_str(), &active, ImGuiWindowFlags_MenuBar);
+	ImGui::SetNextWindowSize(ImVec2(600, 450), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowPos(ImVec2(200, 200), ImGuiCond_FirstUseEver);
+	ImGui::Begin(name.c_str(), &active, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoSavedSettings);
 	if (ImGui::BeginMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))

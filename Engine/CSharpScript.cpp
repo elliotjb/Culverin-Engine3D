@@ -32,7 +32,19 @@ void ScriptVariable::SetMonoValue(void* newVal)
 	{
 		LOG("[error] new value to set was nullptr");
 	}
+}
 
+void ScriptVariable::EreaseMonoValue(void* newVal)
+{
+	if (newVal != nullptr)
+	{
+		MonoObject* object = mono_field_get_value_object(App->importer->iScript->GetDomain(), monoField, script->GetMonoObject());
+		if (object)
+		{
+			script->gameObjects.erase(script->gameObjects.find(object));
+			gameObject = nullptr;
+		}
+	}
 }
 
 void ScriptVariable::SetMonoField(MonoClassField* mfield)

@@ -22,6 +22,7 @@ public:
 	void ClearVariables();
 	// Play Engine -------
 	bool CheckScript();
+	bool CheckAllVariables();
 
 	// EDITOR METHODS ----------
 	void ShowOptions();

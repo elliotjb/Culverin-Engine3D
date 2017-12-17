@@ -46,7 +46,7 @@ public:
 	virtual ~ScriptVariable();
 
 	void SetMonoValue(void* newVal);
-
+	void EreaseMonoValue(void* newVal);
 	void SetMonoField(MonoClassField* mfield);
 	void SetMonoType(MonoType* mtype);
 
