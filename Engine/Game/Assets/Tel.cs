@@ -3,14 +3,15 @@ using CulverinEditor.Debug;
 
 public class Tank_script
 {
+
     public GameObject tank;
-    //public float speed;
+    public float speed;
     public float rotationSpeed;
 
     void Start()
     {
-        //speed = 2;
-        //rotationSpeed = 2;
+        speed = 2;
+        rotationSpeed = 2;
     }
 
     void Update()
@@ -19,16 +20,23 @@ public class Tank_script
         //Debug.Log("J");
         //Debug.Log(tank.name);
         //tank.GetComponent<Transform>().Loge("Elliot");v
-        //float translation = Input.GetMouseXAxis() * speed;
-        float rotation = Input.GetMouseXAxis() * rotationSpeed;
-        //translation *= Time.DeltaTime();
+        float translation = Input.GetMouseXAxis() * speed;
+        float rotation = Input.GetMouseYAxis() * rotationSpeed;
+        translation *= Time.DeltaTime();
         rotation *= Time.DeltaTime();
 
         Vector3 temp = Vector3.Zero;
-        //temp.Set(0, 0, translation);
+        temp.Set(3, 3, 3);
+
+        tank.GetComponent<Transform>().Rotation += temp;
+
         //GameObject.gameObject.GetComponent<Transform>().Position = temp;
-        temp.Set(0, rotation, 0);
-        GameObject.gameObject.GetComponent<Transform>().Rotation += temp;
+        temp.Set(5, 5, 5);
+        if (Input.KeyRepeat("Space"))
+        {
+            Debug.Log("Rotation");
+            tank.GetComponent<Transform>().Rotation.x += 3;
+        }
         if (Input.KeyRepeat("Up"))
         {
             tank.GetComponent<Transform>().Position += Vector3.Forward;

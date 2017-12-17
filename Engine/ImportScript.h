@@ -78,7 +78,7 @@ private:
 	static void SetPosition(MonoObject* object, MonoObject* vector3);
 	static MonoObject* GetRotation(MonoObject* object);
 	static void SetRotation(MonoObject* object, MonoObject* vector3);
-
+	static void IncrementRotation(MonoObject* object, MonoObject* vector3);
 private:
 	std::string nameNewScript;
 	std::string mono_path;

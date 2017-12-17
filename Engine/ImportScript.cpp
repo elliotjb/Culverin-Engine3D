@@ -107,6 +107,8 @@ bool ImportScript::Import(const char* file, uint uuid)
 				LOG("[error] Script: %s, Not Compiled", App->fs->GetOnlyName(fileassets).c_str());
 				res_script->InitInfo(path_dll, fileassets);
 				res_script->SetState(Resource::State::FAILED);
+				CSharpScript* script = new CSharpScript();
+				res_script->SetCSharp(script);
 				return false;
 			}
 			else
@@ -486,6 +488,7 @@ void ImportScript::LinkFunctions()
 	mono_add_internal_call("CulverinEditor.Transform::SetPosition", (const void*)SetPosition);
 	mono_add_internal_call("CulverinEditor.Transform::SetRotation", (const void*)SetRotation);
 	mono_add_internal_call("CulverinEditor.Transform::GetRotation", (const void*)GetRotation);
+	mono_add_internal_call("CulverinEditor.Transform::IncrementRotation", (const void*)IncrementRotation);
 
 	//CONSOLE FUNCTIONS ------------------
 	mono_add_internal_call("CulverinEditor.Debug.Debug::Log", (const void*)ConsoleLog);
@@ -604,7 +607,7 @@ int ImportScript::GetMouseYAxis()
 
 float ImportScript::GetDeltaTime()
 {
-	return App->gameTime.timeScale;
+	return App->gameTime.timeScale*App->realTime.dt;
 }
 
 mono_bool ImportScript::IsGOActive(MonoObject* object)
@@ -665,4 +668,9 @@ MonoObject* ImportScript::GetRotation(MonoObject* object)
 void ImportScript::SetRotation(MonoObject* object, MonoObject* vector3)
 {
 	current->SetRotation(object, vector3);
+}
+
+void ImportScript::IncrementRotation(MonoObject* object, MonoObject* vector3)
+{
+	current->IncrementRotation(object, vector3);
 }

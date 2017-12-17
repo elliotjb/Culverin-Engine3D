@@ -288,6 +288,13 @@ void CompTransform::SetPos(float3 pos_g)
 	toUpdate = true;
 }
 
+void CompTransform::IncrementRot(float3 rot)
+{
+	float3 new_rot = rotation_euler + rot;
+	rotation = Quat::FromEulerXYZ(new_rot[0] * DEGTORAD, new_rot[1] * DEGTORAD, new_rot[2] * DEGTORAD);
+
+}
+
 void CompTransform::SetRot(Quat rot)
 {
 	rotation_euler = rot.ToEulerXYZ() * RADTODEG;

@@ -769,14 +769,34 @@ void CSharpScript::SetRotation(MonoObject* object, MonoObject* vector3)
 		MonoClassField* y_field = mono_class_get_field_from_name(classT, "y");
 		MonoClassField* z_field = mono_class_get_field_from_name(classT, "z");
 
-		float3 new_pos;
+		float3 new_rot;
 
-		if (x_field) mono_field_get_value(vector3, x_field, &new_pos.x);
-		if (y_field) mono_field_get_value(vector3, y_field, &new_pos.y);
-		if (z_field) mono_field_get_value(vector3, z_field, &new_pos.z);
+		if (x_field) mono_field_get_value(vector3, x_field, &new_rot.x);
+		if (y_field) mono_field_get_value(vector3, y_field, &new_rot.y);
+		if (z_field) mono_field_get_value(vector3, z_field, &new_rot.z);
 
 		CompTransform* transform = (CompTransform*)currentGameObject->GetComponentTransform();
-		transform->SetRot(new_pos);
+		transform->SetRot(new_rot);
+	}
+}
+
+void CSharpScript::IncrementRotation(MonoObject* object, MonoObject* vector3)
+{
+	if (currentGameObject != nullptr)
+	{
+		MonoClass* classT = mono_object_get_class(vector3);
+		MonoClassField* x_field = mono_class_get_field_from_name(classT, "x");
+		MonoClassField* y_field = mono_class_get_field_from_name(classT, "y");
+		MonoClassField* z_field = mono_class_get_field_from_name(classT, "z");
+
+		float3 new_rot;
+
+		if (x_field) mono_field_get_value(vector3, x_field, &new_rot.x);
+		if (y_field) mono_field_get_value(vector3, y_field, &new_rot.y);
+		if (z_field) mono_field_get_value(vector3, z_field, &new_rot.z);
+
+		CompTransform* transform = (CompTransform*)currentGameObject->GetComponentTransform();
+		transform->IncrementRot(new_rot);
 	}
 }
 
@@ -811,7 +831,7 @@ void CSharpScript::LoadValues()
 {
 	for (int i = 0, j = 0; i < variables.size(); i++)
 	{
-		if (variables[i]->type == VarType::Var_GAMEOBJECT)
+		if (variables[i]->type == VarType::Var_GAMEOBJECT && reLoadValues.size() > 0)
 		{
 			variables[i]->gameObject = App->scene->GetGameObjectbyuid(reLoadValues[j++]);
 			variables[i]->SetMonoValue(variables[i]->gameObject);

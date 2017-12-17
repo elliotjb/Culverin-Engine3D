@@ -7,12 +7,14 @@ public class myTank
 
     void Update()
     {
-        if (Input.MouseButtonRepeat(0))
-        {
-            tank.GetComponent<Transform>().IncrementRotation(Vector3.Left);
-        }
         if (Input.MouseButtonRepeat(1))
         {
+            Debug.Log("LEFT");
+            tank.GetComponent<Transform>().IncrementRotation(Vector3.Left);
+        }
+        if (Input.MouseButtonRepeat(2))
+        {
+            Debug.Log("RIGHT");
             tank.GetComponent<Transform>().IncrementRotation(Vector3.Right);
         }
         if (Input.KeyRepeat("Up"))

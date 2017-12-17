@@ -133,6 +133,7 @@ public:
 	void SetPosition(MonoObject* object, MonoObject* vector3);
 	MonoObject* GetRotation(MonoObject* object);
 	void SetRotation(MonoObject* object, MonoObject* vector3);
+	void IncrementRotation(MonoObject* object, MonoObject* vector3);
 
 	// LOAD - SAVE METHODS ------------------
 	void Save(JSON_Object* object, std::string name) const;
