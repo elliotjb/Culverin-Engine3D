@@ -1,4 +1,6 @@
 ﻿using System;
+using CulverinEditor;
+using CulverinEditor.Debug;
 
 namespace Example
 {

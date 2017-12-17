@@ -1,23 +1,41 @@
 ﻿using CulverinEditor;
 using CulverinEditor.Debug;
 
-public class Turret
+//Attach this script to the tank parent object if you want to see it rotate
+public class myTank
 {
-    public GameObject myturret;
+    public float movSpeed = 0.0f;
+    public float rotSpeed = 0.0f;
+    public Vector3 final_mov;
+    public Vector3 final_rot;
 
     void Update()
     {
-        if (Input.MouseButtonRepeat(0))
+        if (Input.KeyRepeat("W"))
         {
-            myturret.GetComponent<Transform>().RotateAroundAxis(Vector3.Left);
+            final_mov = (movSpeed * Time.DeltaTime()) * Vector3.Forward;
+            GameObject.gameObject.GetComponent<Transform>().Position += final_mov;
         }
-        if (Input.MouseButtonRepeat(1))
+        if (Input.KeyRepeat("A"))
         {
-            myturret.GetComponent<Transform>().RotateAroundAxis(Vector3.Right);
+            final_mov = (movSpeed * Time.DeltaTime()) * Vector3.Left;
+            GameObject.gameObject.GetComponent<Transform>().Position -= final_mov;
+
+            final_rot = (rotSpeed * Time.DeltaTime()) * Vector3.Up;
+            GameObject.gameObject.GetComponent<Transform>().RotateAroundAxis(final_rot);
         }
-        if (Input.KeyDown("Space"))
+        if (Input.KeyRepeat("S"))
         {
-            Debug.Log("BOOOOM!!!");
+            final_mov = (movSpeed * Time.DeltaTime()) * Vector3.Backward;
+            GameObject.gameObject.GetComponent<Transform>().Position += final_mov;
+        }
+        if (Input.KeyRepeat("D"))
+        {
+            final_mov = (movSpeed * Time.DeltaTime()) * Vector3.Right;
+            GameObject.gameObject.GetComponent<Transform>().Position -= final_mov;
+
+            final_rot = (rotSpeed * Time.DeltaTime()) * Vector3.Down;
+            GameObject.gameObject.GetComponent<Transform>().RotateAroundAxis(final_rot);
         }
     }
 }
