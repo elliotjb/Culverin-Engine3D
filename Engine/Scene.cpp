@@ -417,7 +417,11 @@ void Scene::DeleteGameObjects(std::vector<GameObject*>& gameobjects, bool isMain
 		GameObject* it = gameobjects[i];
 		if(it != nullptr)
 		{
-			RELEASE(it);
+			if (!it->isDeleteFixed())
+			{
+				RELEASE(it);
+			}
+
 			it = nullptr;
 		}
 	}

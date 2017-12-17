@@ -150,6 +150,8 @@ void GameObject::StartScripts()
 
 void GameObject::preUpdate(float dt)
 {
+	fixedDelete = false;
+
 	if (active)
 	{
 		//preUpdate Components --------------------------
@@ -238,6 +240,16 @@ bool GameObject::CleanUp()
 		childs[i]->CleanUp();
 	}
 	return true;
+}
+
+void GameObject::FixedDelete(bool check_delete)
+{
+	fixedDelete = check_delete;
+}
+
+bool GameObject::isDeleteFixed() const
+{
+	return fixedDelete;
 }
 
 void GameObject::Draw()

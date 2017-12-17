@@ -22,8 +22,6 @@ public:
 	GameObject(const GameObject& copy, bool haveparent = false, GameObject* parent = nullptr);
 	~GameObject();
 
-
-
 	// Play Engine
 	// Return if all scripts in scene are compilated correctly.
 	bool CheckScripts(int & numfails);
@@ -32,6 +30,8 @@ public:
 	void preUpdate(float dt);
 	void Update(float dt);
 	bool CleanUp();
+	void FixedDelete(bool check_delete);
+	bool isDeleteFixed() const;
 	void Draw();
 	bool Enable();
 	bool Disable();
@@ -115,6 +115,7 @@ private:
 	bool visible = false;
 	bool static_obj = false;
 	bool toDelete = false; 
+	bool fixedDelete = false;
 	bool bb_active = false;
 
 	GameObject* parent = nullptr;
