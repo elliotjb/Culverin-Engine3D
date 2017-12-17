@@ -1,6 +1,6 @@
 ﻿# 3D Engine
-This is a project consistent of creating a Game Engine,
-that allows you to use tools to create video games.
+This is a project consistent of creating a Game Engine that allows you to use tools to create video games.
+It's created for educational purposes, and we are two students that are studying a Video Games Development and Design degree at CITM, Terrassa (UPC).
 
 ## Example Street scene:
 ![](https://i.gyazo.com/2fb46188c5188013b7bd76f6e2278bfc.jpg)
@@ -20,6 +20,19 @@ that allows you to use tools to create video games.
 - Skybox as background of the scene.
 - Editable quadtree that will contain static objects. 
 - Materials and Meshes components uses Resources to load data only once in memory.
+- Scripting System: Unity-like functionality. You have access to the scene gameobjects and acto on them (modifying name, transform (pos, rot, scale),
+  Enabling/Disabling it, etc.).
+
+# HIGH LEVEL SYSTEM: SCRIPTING SYSTEM.
+You can create your own scripts (.cs files), with restricted functionality, and attach them to the GameObjects of the scene.
+- By the moment, you can only attach one script per GameObject.
+- All the variables of the script are shown in the inspector (for debuging purposes).
+- EDITOR OUTPUT VARIABLES: in the inspector, the variables that are recognizable are: INT, FLOAT, STRING, GAMEOBJECT. (other variables will be shown as UNKNOWN TYPE/VALUE).
+- You can edit variables from the editor to modify the script.
+- Make sure you don't have compilation errors in your scripts (you won't be able to run the "Game").
+- You can modify scripts directly from the inspector, by clicking the "Script button". You will see a new window with the code.
+  Once you have modified the script, click "File"->"Save".
+- Each script has access to the GameObject that it's attached ("GameObject.gameObject").
 
 # INNOVATIONS
 - Basic GameObject Creation: Cube.
@@ -177,6 +190,7 @@ When setting an object 'static', you won't be able to modify its transform when 
 - parson (json parser) -> https://github.com/kgabis/parson
 - ASSIMP -> http://assimp.sourceforge.net/
 - DevIL -> http://openil.sourceforge.net/
+- Mono -> http://www.mono-project.com/
 
 
 Authors: 
