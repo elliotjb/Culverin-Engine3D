@@ -6,7 +6,7 @@ It's created for educational purposes, and we are two students that are studying
 
 Check out our Web: https://github.com/elliotjb/3D-Engine
 
-Download Last Version: 
+Download Last Version: https://github.com/elliotjb/3D-Engine/releases/tag/Assignment3 
 
 # VERY IMPORTANT!
 Make sure that you store the Release in a path without spaces, because the system won't detect successfully the path, and you won't be able to compile any script.
