@@ -42,7 +42,7 @@ bool ModuleResourceManager::Start()
 
 	// Create Resource Cube
 	CreateResourceCube();
-	//Load();
+	Load();
 
 	Start_t = perf_timer.ReadMs();
 	return true;

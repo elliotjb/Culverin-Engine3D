@@ -278,6 +278,7 @@ bool ImportScript::CreateNewScript(bool& active)
 						LOG("[error] Script: %s, Not Compiled", App->fs->GetOnlyName(fileassets).c_str());
 						res_script->InitInfo(path_dll, fileassets);
 						res_script->SetState(Resource::State::FAILED);
+						ImGui::End();
 						return false;
 					}
 					else
