@@ -102,6 +102,7 @@ public:
 
 	//Variables METHODS -------------------------------------------------
 	void ResetScriptVariables();
+	void CreateSelfGameObject();
 	void GetScriptVariables();
 	void UpdateScriptVariables();
 
@@ -112,13 +113,13 @@ public:
 	void SetVarValue(ScriptVariable* variable, void* new_val);
 	// ------------------------------------------------------------------
 	void SetCurrentGameObject(GameObject* current);
-
+	void SetAttachedGameObject(GameObject* gameobject);
 	void CreateGameObject(MonoObject* object);
-
+	MonoString* GetName(MonoObject* object);
 	MonoObject* GetComponent(MonoObject* object, MonoReflectionType* type);
 
-	MonoObject* GetPosition();
-	void SetPosition(MonoObject* vector3);
+	MonoObject* GetPosition(MonoObject* object);
+	void SetPosition(MonoObject* object, MonoObject* vector3);
 
 public:
 	//Variables/Info containers (public to have access through other modules)
@@ -135,6 +136,8 @@ private:
 	MonoImage* CSimage = nullptr;
 	MonoClass* CSClass = nullptr;
 	MonoObject* CSObject = nullptr;
+	MonoObject* CSSelfObject = nullptr;
+	GameObject* attached_gameobject = nullptr;
 
 	// Main Functions
 	MainMonoMethod Start;

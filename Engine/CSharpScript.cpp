@@ -162,7 +162,7 @@ bool CSharpScript::MonoObjectIsValid(MonoObject* object)
 {
 	if (object != nullptr)
 	{
-		currentGameObject = gameObjects[object];
+		//currentGameObject = gameObjects[object];
 		return true;
 	}
 	return false;
@@ -256,6 +256,26 @@ void CSharpScript::ResetScriptVariables()
 
 	variables.clear();
 	field_type.clear();
+}
+
+void CSharpScript::SetAttachedGameObject(GameObject * gameobject)
+{
+	attached_gameobject = gameobject;
+	CreateSelfGameObject();
+}
+
+void CSharpScript::CreateSelfGameObject()
+{
+	MonoClass* c = mono_class_from_name(App->importer->iScript->GetCulverinImage(), "TheEngine", "TheGameObject");
+	if (c)
+	{
+		MonoObject* new_object = mono_object_new(CSdomain, c);
+		if (new_object)
+		{
+			CSSelfObject = new_object;
+			gameObjects[CSSelfObject] = attached_gameobject;
+		}
+	}
 }
 
 void CSharpScript::GetScriptVariables()
@@ -479,7 +499,20 @@ void CSharpScript::CreateGameObject(MonoObject* object)
 	gameObjects[object] = gameobject;
 }
 
-MonoObject* CSharpScript::GetComponent(MonoObject * object, MonoReflectionType * type)
+MonoString* CSharpScript::GetName(MonoObject* object)
+{
+	if (!MonoObjectIsValid(object))
+	{
+		return nullptr;
+	}
+	if (currentGameObject == nullptr)
+	{
+		return nullptr;
+	}
+	return mono_string_new(CSdomain, currentGameObject->GetName());
+}
+
+MonoObject* CSharpScript::GetComponent(MonoObject* object, MonoReflectionType* type)
 {
 	if (!MonoObjectIsValid(object))
 	{
@@ -513,7 +546,7 @@ MonoObject* CSharpScript::GetComponent(MonoObject * object, MonoReflectionType *
 	return nullptr;
 }
 
-MonoObject* CSharpScript::GetPosition()
+MonoObject* CSharpScript::GetPosition(MonoObject* object)
 {
 	MonoClass* c = mono_class_from_name(App->importer->iScript->GetCulverinImage(), "CulverinEditor", "Vector3");
 	if (c)
@@ -539,7 +572,8 @@ MonoObject* CSharpScript::GetPosition()
 	return nullptr;
 }
 
-void CSharpScript::SetPosition(MonoObject* vector3)
+// We need to pass the MonoObject* to get a reference on act
+void CSharpScript::SetPosition(MonoObject* object, MonoObject* vector3)
 {
 	MonoClass* c = mono_object_get_class(vector3);
 	MonoClassField* x_field = mono_class_get_field_from_name(c, "x");

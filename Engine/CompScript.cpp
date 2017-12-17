@@ -404,7 +404,10 @@ void CompScript::Save(JSON_Object* object, std::string name, bool saveScene, uin
 {
 	json_object_dotset_number_with_std(object, name + "Type", Comp_Type::C_SCRIPT);
 	json_object_dotset_number_with_std(object, name + "UUID", uid);
-	json_object_dotset_number_with_std(object, name + "Resource Script UUID", resourcescript->GetUUID());
+	if (resourcescript != nullptr)
+	{
+		json_object_dotset_number_with_std(object, name + "Resource Script UUID", resourcescript->GetUUID());
+	}
 	json_object_dotset_string_with_std(object, name + "Name Script", nameScript.c_str());
 }
 

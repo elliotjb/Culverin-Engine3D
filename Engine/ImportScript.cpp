@@ -313,6 +313,10 @@ bool ImportScript::CreateNewScript(bool& active)
 	return true;
 }
 
+MonoDomain* ImportScript::GetMainDomain() const
+{
+	return domain;
+}
 
 MonoDomain* ImportScript::GetDomain() const
 {
@@ -419,7 +423,7 @@ CSharpScript* ImportScript::CreateCSharp(MonoImage* image)
 		if (entity)
 		{
 			CSharpScript* csharp = new CSharpScript();
-			csharp->SetDomain(GetDomain());
+			csharp->SetDomain(GetMainDomain());
 			csharp->SetImage(image);
 			csharp->SetClass(entity);
 			csharp->SetClassName(classname);
@@ -471,12 +475,11 @@ void ImportScript::LinkFunctions()
 	mono_add_internal_call("CulverinEditor.GameObject::GetName",(const void*)GetName);
 	//mono_add_internal_call("CulverinEditor.GameObject::AddComponent",(const void*)AddComponent);
 	mono_add_internal_call("CulverinEditor.GameObject::GetComponent",(const void*)GetComponent);
-	mono_add_internal_call("CulverinEditor.Tranform::GetPosition", (const void*)GetPosition);
-	mono_add_internal_call("CulverinEditor.Tranform::SetPosition", (const void*)SetPosition);
+	mono_add_internal_call("CulverinEditor.Transform::GetPosition", (const void*)GetPosition);
+	mono_add_internal_call("CulverinEditor.Transform::SetPosition", (const void*)SetPosition);
 
 	//CONSOLE FUNCTIONS ------------------
 	mono_add_internal_call("CulverinEditor.Debug.Debug::Log", (const void*)ConsoleLog);
-
 	//INPUT FUNCTIONS -------------------
 	mono_add_internal_call("CulverinEditor.Input::KeyDown", (const void*)KeyDown);
 	mono_add_internal_call("CulverinEditor.Input::KeyUp", (const void*)KeyUp);
@@ -592,12 +595,12 @@ MonoObject* ImportScript::GetComponent(MonoObject* object, MonoReflectionType* t
 	return current->GetComponent(object, type);
 }
 
-MonoObject* ImportScript::GetPosition(MonoObject * object)
+MonoObject* ImportScript::GetPosition(MonoObject* object)
 {
 	return current->GetPosition(object);
 }
 
-void ImportScript::SetPosition(MonoObject* vector3)
+void ImportScript::SetPosition(MonoObject* object, MonoObject* vector3)
 {
-	current->SetPosition(vector3);
+	current->SetPosition(object, vector3);
 }

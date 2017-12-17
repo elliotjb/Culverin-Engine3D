@@ -8,7 +8,8 @@ namespace CulverinEditor
 
         //public Quaternion rotation { get; set; }
         //public Vector3 position { get; set; }
-        public Vector3 position {
+        
+        public Vector3 Position {
             get
             {
                 return GetPosition();
@@ -23,7 +24,7 @@ namespace CulverinEditor
         private extern Vector3 GetPosition();
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern void SetPosition(Vector3 value);
+        private extern void SetPosition(Vector3 value);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         private extern Vector3 GetRotation();

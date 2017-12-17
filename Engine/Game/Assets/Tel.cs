@@ -13,24 +13,24 @@ public class Tank_script
 
     void Update()
     {
-        Debug.Log("Jordi");
+        Debug.Log("J");
         Debug.Log(tank.name);
-        //Debug.Log(tank.GetComponent<Transform>().position.ToString());
+        //tank.GetComponent<Transform>().Loge("Elliot");
         if (Input.KeyRepeat("Up"))
         {
-            tank.GetComponent<Transform>().position += Vector3.Forward;
+            tank.GetComponent<Transform>().Position += Vector3.Forward;
         }
         else if (Input.KeyRepeat("Down"))
         {
-            tank.GetComponent<Transform>().position += Vector3.Backward;
+            tank.GetComponent<Transform>().Position += Vector3.Backward;
         }
         else if (Input.KeyRepeat("Left"))
         {
-            tank.GetComponent<Transform>().position += Vector3.Left;
+            tank.GetComponent<Transform>().Position += Vector3.Left;
         }
         else if (Input.KeyRepeat("Right"))
         {
-            tank.GetComponent<Transform>().position += Vector3.Right;
+            tank.GetComponent<Transform>().Position += Vector3.Right;
         }
     }
 }

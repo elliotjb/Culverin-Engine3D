@@ -34,6 +34,7 @@ public:
 	CSharpScript* CreateCSharp(MonoImage* image);
 	MonoClass* GetMonoClassFromImage(MonoImage* image, std::string& name_space, std::string& classname);
 
+	MonoDomain* GetMainDomain() const;
 	MonoDomain* GetDomain() const;
 	MonoImage* GetCulverinImage() const;
 	std::string GetMonoPath() const;
@@ -65,7 +66,7 @@ private:
 	static void CreateGameObject(MonoObject* object);
 	static MonoObject* GetComponent(MonoObject* object, MonoReflectionType* type);
 	static MonoObject* GetPosition(MonoObject* object);
-	static void SetPosition(MonoObject* vector3);
+	static void SetPosition(MonoObject* object, MonoObject* vector3);
 
 private:
 	std::string nameNewScript;
