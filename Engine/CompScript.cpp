@@ -79,7 +79,10 @@ void CompScript::preUpdate(float dt)
 					}
 				}
 				uuidResourceReimported = 0;
-				resourcescript->SetOwnGameObject(parent);
+				if (resourcescript->GetState() != Resource::State::FAILED)
+				{
+					resourcescript->SetOwnGameObject(parent);
+				}
 			}
 		}
 	}
@@ -270,7 +273,6 @@ void CompScript::ShowInspectorInfo()
 				}
 				resourcescript = temp;
 				resourcescript->NumGameObjectsUseMe++;
-				resourcescript->SetOwnGameObject(parent);
 				if (resourcescript->IsCompiled() == Resource::State::UNLOADED)
 				{
 					if (App->importer->iScript->LoadResource(resourcescript->GetPathAssets().c_str(), resourcescript))
@@ -281,6 +283,10 @@ void CompScript::ShowInspectorInfo()
 					{
 						resourcescript->SetState(Resource::State::FAILED);
 					}
+				}
+				if (resourcescript->GetState() != Resource::State::FAILED)
+				{
+					resourcescript->SetOwnGameObject(parent);
 				}
 				Enable();
 			}
@@ -450,7 +456,10 @@ void CompScript::Load(const JSON_Object* object, std::string name)
 				App->importer->iScript->LoadResource(std::to_string(resourcescript->GetUUID()).c_str(), resourcescript);
 			}
 			resourcescript->Load(object, name);
-			resourcescript->SetOwnGameObject(parent);
+			if (resourcescript->GetState() != Resource::State::FAILED)
+			{
+				resourcescript->SetOwnGameObject(parent);
+			}
 
 		}
 	}

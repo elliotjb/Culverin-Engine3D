@@ -470,15 +470,21 @@ Resource*  ModuleResourceManager::ShowResources(bool& active, Resource::Type typ
 			ImGui::PushID(i);
 			if (type == it->second->GetType())
 			{
-				ImGui::ButtonEx(it->second->name);
-				if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
+				if (type == Resource::Type::SCRIPT && it->second->NumGameObjectsUseMe > 0)
 				{
-					if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsMouseHoveringWindow())
+				}
+				else
+				{
+					ImGui::ButtonEx(it->second->name);
+					if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
 					{
-						ImGui::PopID();
-						ImGui::End();
-						active = false;
-						return GetResource(it->second->GetUUID());
+						if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsMouseHoveringWindow())
+						{
+							ImGui::PopID();
+							ImGui::End();
+							active = false;
+							return GetResource(it->second->GetUUID());
+						}
 					}
 				}
 			}

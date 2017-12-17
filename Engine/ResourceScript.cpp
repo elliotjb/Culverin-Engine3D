@@ -39,17 +39,26 @@ void ResourceScript::SetScriptEditor(std::string nameScript)
 
 void ResourceScript::SetCurrentGameObject(GameObject* current)
 {
-	csharp->SetCurrentGameObject(current);
+	if (csharp != nullptr)
+	{
+		csharp->SetCurrentGameObject(current);
+	}
 }
 
 void ResourceScript::SetOwnGameObject(GameObject* owenerofScript)
 {
-	csharp->SetOwnGameObject(owenerofScript);
+	if (csharp != nullptr)
+	{
+		csharp->SetOwnGameObject(owenerofScript);
+	}
 }
 
 bool ResourceScript::ReImportScript(std::string path_dll_)
 {
-	return csharp->ReImport(path_dll_);
+	if (csharp != nullptr)
+	{
+		return csharp->ReImport(path_dll_);
+	}
 }
 
 
@@ -90,7 +99,10 @@ std::string ResourceScript::GetPathdll() const
 
 CSharpScript* ResourceScript::GetCSharpScript()
 {
-	return csharp;
+	if (csharp != nullptr)
+	{
+		return csharp;
+	}
 }
 
 void ResourceScript::ShowEditor(bool& active)
@@ -120,16 +132,25 @@ Resource::State ResourceScript::IsCompiled()
 void ResourceScript::Save(JSON_Object* object, std::string name) const
 {
 	//Save Values
-	csharp->Save(object, name);
+	if (csharp != nullptr)
+	{
+		csharp->Save(object, name);
+	}
 }
 
 void ResourceScript::Load(const JSON_Object* object, std::string name)
 {
 	//Load Values
-	csharp->Load(object, name);
+	if (csharp != nullptr)
+	{
+		csharp->Load(object, name);
+	}
 }
 
 void ResourceScript::LoadValuesGameObject()
 {
-	csharp->LoadValues();
+	if (csharp != nullptr)
+	{
+		csharp->LoadValues();
+	}
 }
