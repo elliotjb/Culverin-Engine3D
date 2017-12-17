@@ -43,9 +43,8 @@ void Script_editor::Start(std::string nameScript, bool isnew)
 void Script_editor::SetInitInfo(std::string nameScript)
 {
 	editor.InsertText("// ------- New Script Culverin Engine 3D ------- \n\n");
-	editor.InsertText("using System.Collections;\n");
-	editor.InsertText("using System.Collections.Generic;\n");
-	editor.InsertText("using CulverinEditor;\n\n");
+	editor.InsertText("using CulverinEditor;\n");
+	editor.InsertText("using CulverinEditor.Debug;\n\n");
 
 	editor.InsertText("public class ");
 	editor.InsertText(nameScript);
