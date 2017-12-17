@@ -279,13 +279,18 @@ GameObject* Scene::GetGameObjectfromScene(bool& active)
 		for (int i = 0; i < gameobjects.size(); i++)
 		{
 			ImGui::PushID(i);
-			if(ImGui::Selectable(gameobjects[i]->GetName()))
+			GameObject* temp = gameobjects[i]->GetGameObjectfromScene(i);
+			if (temp != nullptr)
 			{
 				ImGui::PopID();
 				ImGui::End();
 				active = false;
-				return gameobjects[i];
+				return temp;
 			}
+			//if(ImGui::Selectable(gameobjects[i]->GetName()))
+			//{
+
+			//}
 			ImGui::PopID();
 		}
 		ImGui::End();

@@ -200,6 +200,32 @@ GameObject* GameObject::GetGameObjectbyuid(uint uid)
 	return nullptr;
 }
 
+GameObject* GameObject::GetGameObjectfromScene(int id)
+{
+	if (active)
+	{
+		ImGui::Selectable(GetName());
+		if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
+		{
+			//LOG("%.2f - %.2f  / /  %.2f - %.2f", ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y, ImGui::GetItemRectMax().x, ImGui::GetItemRectMax().y);
+			if (ImGui::IsMouseDoubleClicked(0))
+			{
+				return this;
+			}
+		}
+		//Check child Game Objects -------------------
+		for (uint i = 0; i < childs.size(); i++)
+		{
+			GameObject* temp = childs[i]->GetGameObjectfromScene(id);
+			if (temp != nullptr)
+			{
+				return temp;
+			}
+		}
+	}
+	return nullptr;
+}
+
 void GameObject::preUpdate(float dt)
 {
 	fixedDelete = false;

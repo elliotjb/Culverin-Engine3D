@@ -28,6 +28,7 @@ public:
 	void StartScripts();
 	void ClearAllVariablesScript();
 	GameObject* GetGameObjectbyuid(uint uid);
+	GameObject* GetGameObjectfromScene(int);
 
 	void preUpdate(float dt);
 	void Update(float dt);
