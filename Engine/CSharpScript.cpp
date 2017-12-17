@@ -438,8 +438,15 @@ bool CSharpScript::GetValueFromMono(ScriptVariable* variable, MonoClassField* mf
 			//Set value of the variable by passing it as a reference in this function
 			mono_field_get_value(CSObject, mfield, &str);
 
-			//Copy string into str_value (specific for strings)
-			variable->str_value = mono_string_to_utf8(str);
+			if (str != nullptr)
+			{
+				//Copy string into str_value (specific for strings)
+				variable->str_value = mono_string_to_utf8(str);
+			}
+			else
+			{
+				variable->str_value = "";
+			}
 		}
 		else if (variable->type == VarType::Var_GAMEOBJECT)
 		{
