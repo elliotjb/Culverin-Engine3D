@@ -9,7 +9,7 @@ public class CameraController
 
     void Start()
     {
-        GameObject.gameObject.GetComponent<Transform>().RotateAboutAxis(30 * Vector3.Right);
+        GameObject.gameObject.GetComponent<Transform>().RotateAroundAxis(30 * Vector3.Right);
     }
 
     void Update()

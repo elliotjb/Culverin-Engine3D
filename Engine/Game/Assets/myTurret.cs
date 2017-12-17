@@ -13,14 +13,14 @@ public class myTurret
         if (Input.MouseButtonRepeat(1))
         {
             final_rot = (rotSpeed * Time.DeltaTime()) * Vector3.Up;
-            GameObject.gameObject.GetComponent<Transform>().RotateAboutAxis(final_rot);
+            GameObject.gameObject.GetComponent<Transform>().RotateAroundAxis(final_rot);
         }
 
         //Rotate RIGHT
         if (Input.MouseButtonRepeat(3))
         {
             final_rot = (rotSpeed * Time.DeltaTime()) * Vector3.Down;
-            GameObject.gameObject.GetComponent<Transform>().RotateAboutAxis(final_rot);
+            GameObject.gameObject.GetComponent<Transform>().RotateAroundAxis(final_rot);
         }
 
         //Shoot!

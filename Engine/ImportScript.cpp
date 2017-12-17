@@ -488,7 +488,7 @@ void ImportScript::LinkFunctions()
 	mono_add_internal_call("CulverinEditor.Transform::SetPosition", (const void*)SetPosition);
 	mono_add_internal_call("CulverinEditor.Transform::SetRotation", (const void*)SetRotation);
 	mono_add_internal_call("CulverinEditor.Transform::GetRotation", (const void*)GetRotation);
-	mono_add_internal_call("CulverinEditor.Transform::RotateAboutAxis", (const void*)IncrementRotation);
+	mono_add_internal_call("CulverinEditor.Transform::RotateAroundAxis", (const void*)IncrementRotation);
 
 	//CONSOLE FUNCTIONS ------------------
 	mono_add_internal_call("CulverinEditor.Debug.Debug::Log", (const void*)ConsoleLog);
@@ -607,7 +607,7 @@ int ImportScript::GetMouseYAxis()
 
 float ImportScript::GetDeltaTime()
 {
-	return App->gameTime.timeScale*App->realTime.dt;
+	return App->gameTime.timeScale * App->realTime.dt;
 }
 
 mono_bool ImportScript::IsGOActive(MonoObject* object)

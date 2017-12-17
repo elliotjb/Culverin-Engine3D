@@ -9,11 +9,11 @@ public class Turret
     {
         if (Input.MouseButtonRepeat(0))
         {
-            myturret.GetComponent<Transform>().IncrementRotation(Vector3.Left);
+            myturret.GetComponent<Transform>().RotateAroundAxis(Vector3.Left);
         }
         if (Input.MouseButtonRepeat(1))
         {
-            myturret.GetComponent<Transform>().IncrementRotation(Vector3.Right);
+            myturret.GetComponent<Transform>().RotateAroundAxis(Vector3.Right);
         }
         if (Input.KeyDown("Space"))
         {
