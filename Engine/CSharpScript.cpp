@@ -501,6 +501,43 @@ bool CSharpScript::LinkVarToMono(ScriptVariable* variable, MonoClassField * mfie
 	}
 }
 
+mono_bool CSharpScript::IsGOActive(MonoObject* object)
+{
+	if (!MonoObjectIsValid(object))
+	{
+		return false;
+	}
+
+	if (currentGameObject != nullptr)
+	{
+		return currentGameObject->isActive();
+	}
+	else
+	{ 
+		LOG("[error] GameObject was null.");
+	}
+}
+
+void CSharpScript::SetGOActive(MonoObject* object, mono_bool active)
+{
+	if (!MonoObjectIsValid(object))
+	{
+		LOG("[error] MonoObject invalid");
+	}
+
+	else
+	{
+		if (currentGameObject != nullptr)
+		{
+			currentGameObject->SetActive(active);
+		}
+		else
+		{
+			LOG("[error] GameObject was null.");
+		}
+	}
+}
+
 MonoObject* CSharpScript::GetOwnGameObject()
 {
 	if (CSSelfObject != nullptr && ownGameObject != nullptr)
@@ -523,6 +560,42 @@ void CSharpScript::CreateGameObject(MonoObject* object)
 {
 	GameObject* gameobject = App->scene->CreateGameObject();
 	gameObjects[object] = gameobject;
+}
+
+bool CSharpScript::DestroyGameObject(MonoObject* object)
+{
+	if (!MonoObjectIsValid(object))
+	{
+		return false;
+	}
+
+	if (currentGameObject == nullptr)
+	{
+		return false;
+	}
+
+	else
+	{
+		App->scene->DeleteGameObject(currentGameObject);
+	}
+}
+
+void CSharpScript::SetGOName(MonoObject * object, MonoString * name)
+{
+	if (!MonoObjectIsValid(object))
+	{
+		LOG("[error] MonoObject invalid");
+	}
+	else
+	{
+		if (currentGameObject != nullptr)
+		{
+			currentGameObject->SetName(mono_string_to_utf8(name));
+			std::string temp_name = mono_string_to_utf8(name);
+
+			currentGameObject->NameNotRepeat(temp_name, false, currentGameObject->GetParent());
+		}
+	}
 }
 
 MonoString* CSharpScript::GetName(MonoObject* object)

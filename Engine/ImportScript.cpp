@@ -468,11 +468,11 @@ void ImportScript::LinkFunctions()
 	//GAMEOBJECT FUNCTIONS ---------------
 	mono_add_internal_call("CulverinEditor.GameObject::CreateGameObject",(const void*)CreateGameObject);
 	mono_add_internal_call("CulverinEditor.GameObject::GetOwnGameObject", (const void*)GetOwnGameObject);
-	/*mono_add_internal_call("CulverinEditor.GameObject::Destroy",(const void*)DestroyGameObject);
-	mono_add_internal_call("CulverinEditor.GameObject::SetActive",(const void*)SetActive);
-	mono_add_internal_call("CulverinEditor.GameObject::IsActive",(const void*)IsActive);
-	mono_add_internal_call("CulverinEditor.GameObject::SetParent",(const void*)SetParent);
-	mono_add_internal_call("CulverinEditor.GameObject::SetName",(const void*)SetName);*/
+	mono_add_internal_call("CulverinEditor.GameObject::Destroy",(const void*)DeleteGameObject);
+	mono_add_internal_call("CulverinEditor.GameObject::SetActive",(const void*)SetGOActive);
+	mono_add_internal_call("CulverinEditor.GameObject::IsActive",(const void*)IsGOActive);
+	//mono_add_internal_call("CulverinEditor.GameObject::SetParent",(const void*)SetParent);
+	mono_add_internal_call("CulverinEditor.GameObject::SetName",(const void*)SetName);
 	mono_add_internal_call("CulverinEditor.GameObject::GetName",(const void*)GetName);
 	//mono_add_internal_call("CulverinEditor.GameObject::AddComponent",(const void*)AddComponent);
 	mono_add_internal_call("CulverinEditor.GameObject::GetComponent",(const void*)GetComponent);
@@ -581,9 +581,24 @@ float ImportScript::GetDeltaTime()
 	return App->gameTime.timeScale;
 }
 
+mono_bool ImportScript::IsGOActive(MonoObject* object)
+{
+	return current->IsGOActive(object);
+}
+
+void ImportScript::SetGOActive(MonoObject* object, mono_bool active)
+{
+	current->SetGOActive(object, active);
+}
+
 MonoObject* ImportScript::GetOwnGameObject()
 {
 	return current->GetOwnGameObject();
+}
+
+void ImportScript::SetName(MonoObject* object, MonoString * name)
+{
+	current->SetGOName(object, name);
 }
 
 MonoString* ImportScript::GetName(MonoObject * object)
@@ -594,6 +609,11 @@ MonoString* ImportScript::GetName(MonoObject * object)
 void ImportScript::CreateGameObject(MonoObject* object)
 {
 	current->CreateGameObject(object);
+}
+
+void ImportScript::DeleteGameObject(MonoObject* object)
+{
+	current->DestroyGameObject(object);
 }
 
 MonoObject* ImportScript::GetComponent(MonoObject* object, MonoReflectionType* type)

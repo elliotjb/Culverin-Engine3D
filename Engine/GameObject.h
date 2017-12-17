@@ -49,6 +49,7 @@ public:
 	void ShowFreezeChildsWindow(bool freeze, bool& active);
 	// ----------------------------------
 
+	void SetActive(bool active);
 	void SetVisible(bool visible);
 	void SetStatic(bool set_static);
 

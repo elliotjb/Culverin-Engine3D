@@ -761,6 +761,11 @@ void GameObject::ShowFreezeChildsWindow(bool freeze, bool& active)
 	ImGui::EndPopup();
 }
 
+void GameObject::SetActive(bool active)
+{
+	this->active = active;
+}
+
 void GameObject::SetVisible(bool visible)
 {
 	this->visible = visible;

@@ -62,9 +62,13 @@ private:
 	static float GetDeltaTime();
 
 	/* GameObject */
+	static mono_bool IsGOActive(MonoObject* object);
+	static void SetGOActive(MonoObject* object, mono_bool active);
 	static MonoObject* GetOwnGameObject();
+	static void SetName(MonoObject* object, MonoString* name);
 	static MonoString* GetName(MonoObject* object);
 	static void CreateGameObject(MonoObject* object);
+	static void DeleteGameObject(MonoObject* object);
 	static MonoObject* GetComponent(MonoObject* object, MonoReflectionType* type);
 	static MonoObject* GetPosition(MonoObject* object);
 	static void SetPosition(MonoObject* object, MonoObject* vector3);

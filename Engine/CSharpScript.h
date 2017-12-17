@@ -113,10 +113,14 @@ public:
 	void SetVarValue(ScriptVariable* variable, void* new_val);
 	// ------------------------------------------------------------------
 
+	mono_bool IsGOActive(MonoObject* object);
+	void SetGOActive(MonoObject* object, mono_bool active);
 	MonoObject* GetOwnGameObject();
 	void SetCurrentGameObject(GameObject* current);
 	void SetOwnGameObject(GameObject* gameobject);
 	void CreateGameObject(MonoObject* object);
+	bool DestroyGameObject(MonoObject* object);
+	void SetGOName(MonoObject* object, MonoString* name);
 	MonoString* GetName(MonoObject* object);
 	MonoObject* GetComponent(MonoObject* object, MonoReflectionType* type);
 
