@@ -34,6 +34,53 @@ You can create your own scripts (.cs files), with restricted functionality, and 
   Once you have modified the script, click "File"->"Save".
 - Each script has access to the GameObject that it's attached ("GameObject.gameObject").
 
+## HOW TO CREATE A NEW SCRIPT:
+ 1) Create-> C# Script.
+ 2) Write the class name to generate the script.
+   - WARNING: don't write the same name of an existing script (it won't be generated).
+ 3) Then, your new script is saved into assets folder, and compiled by default.
+
+## IMPORT EXTERNAL SCRIPTS:
+You can drag and drop a script into the engine window to import it. If it has no errors, it will be compiled successfully.
+Otherwise you will have to edit it and save changes to recompile it.
+
+## EDIT SCRIPTS:
+ 1) To edit it, you have to attach it to a GameObject first:
+ - Inspector->Add Component-> Script.
+ 2) You will have to choose between all imported scripts ("Select script...")
+ 3) <Edit Script> -> a new window with the code will apepear. You can edit it and Save changes (File->Save).
+
+## SCRIPTS IN THE INSPECTOR
+- <Edit Script>: open editor window to edit the script.
+- As a component, script has a checkbox to activate/deactivate it when entering Play Mode.
+- NAME: name of the script.
+- VARIABLES: a list with all the variables of the script (TYPE, NAME , VALUE).
+
+## FUNCTIONS TO USE
+In your scripts, you can call this specific functions to: 
+
+1) ACT ON GAMEOBJECTS:
+ - VOID GameObject.gameObject.SetActive(bool): set active/inactive a object.
+ - BOOL GameObject.gameObject.isActive(): check if it's active/inactive.
+ - VOID GameObject.gameObject.SetName(string): change name of the object.
+ - STRING GameObject.gameObject.GetName(): get name of the object.
+ - STRING GameObject.gameObject.GetComponent<Component>: get component specified of the gameobject (only Transform by now).
+ - VECTOR3 Transform.Position: position (x, y, z) of the object.
+ - VECTOR3 Transform.Rotation: rotation [euler] (x, y, z) of the object.
+ - VECTOR3 Transform.RotateAroundAxis(Vector3): rotate the transform around the specified axis.
+
+2) CONSOLE:
+ - VOID Debug.Log(string): Logs the written message into the engine console.
+
+3) INPUT:
+ - BOOL Input.KeyDown(string)/KeyUp(string)/KeyRepeat(string): check the state of the desired keyboard key.
+   [FIND THE NAME OF THE KEY HERE: https://wiki.libsdl.org/SDL_Scancode]
+ - BOOL Input.MouseButtonDown(int)/MouseButtonUp(int)/MouseButtonRepeat(int): check state of mouse buttons.
+   [1: Left button, 2: Middle button, 3:Right button]
+
+4) TIME:
+ - FLOAT Time.DeltaTime(): return delta time of the game (real dt modified by time scale).
+
 # INNOVATIONS
 - Basic GameObject Creation: Cube.
 - Entering Play Mode enables the Active Game Camera to see the scene from it.
