@@ -1,4 +1,4 @@
-﻿# 3D Engine
+﻿# Culverin 3D Engine
 This is a project consistent of creating a Game Engine that allows you to use tools to create video games.
 
 It's created for educational purposes, and we are two students that are studying a Video Games Development and Design degree at CITM, Terrassa (UPC).
