@@ -36,14 +36,14 @@ update_status Hierarchy::Update(float dt)
 			{
 				if (selected != nullptr)
 				{
-					copy = selected;
+					//copy = selected;
 				}
 			}
 			if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
 			{
 				if (selected != nullptr && copy != nullptr)
 				{
-					CopyGameObject(selected);
+					//CopyGameObject(selected);
 				}
 			}
 		}

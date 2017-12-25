@@ -246,7 +246,7 @@ bool ImportScript::CreateNewScript(bool& active)
 	char namedit[50];
 	strcpy_s(namedit, 50, nameNewScript.c_str());
 	ImGui::Bullet();
-	if (ImGui::InputText("##nameModel", namedit, 50, ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue))
+	if (ImGui::InputText("##nameNewScript", namedit, 50, ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue))
 	{
 		if (result == 0)
 		{
