@@ -102,6 +102,15 @@ update_status Scene::PreUpdate(float dt)
 		}
 	}
 
+	//// PreUpdate GameObjects ------------------------
+	//for (uint i = 0; i < gameobjects_inscene->GetNumChilds(); i++)
+	//{
+	//	if (gameobjects_inscene->WanttoDelete() == false) //Scene
+	//	{
+	//		gameobjects_inscene->preUpdate(dt);
+	//	}
+	//}
+
 	preUpdate_t = perf_timer.ReadMs();
 	return UPDATE_CONTINUE;
 }
