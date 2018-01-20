@@ -28,6 +28,10 @@ bool Component::Disable()
 	return active;
 }
 
+void Component::Init()
+{
+}
+
 void Component::preUpdate(float dt)
 {
 }

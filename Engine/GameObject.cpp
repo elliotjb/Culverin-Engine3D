@@ -226,6 +226,10 @@ GameObject* GameObject::GetGameObjectfromScene(int id)
 	return nullptr;
 }
 
+void GameObject::Init()
+{
+}
+
 void GameObject::preUpdate(float dt)
 {
 	fixedDelete = false;
@@ -302,6 +306,10 @@ void GameObject::Update(float dt)
 			}
 		}
 	}
+}
+
+void GameObject::postUpdate()
+{
 }
 
 bool GameObject::CleanUp()

@@ -19,7 +19,7 @@ typedef struct json_object_t JSON_Object;
 
 enum FunctionBase
 {
-	CS_Start, CS_Update, CS_OnGUI, CS_OnEnable, CS_OnDisable
+	CS_Start, CS_Update, CS_FixedUpdate, CS_OnGUI, CS_OnEnable, CS_OnDisable
 };
 
 enum VarType
@@ -163,6 +163,7 @@ private:
 	// Main Functions
 	MainMonoMethod Start;
 	MainMonoMethod Update;
+	MainMonoMethod FixedUpdate;
 	MainMonoMethod OnGUI;
 	MainMonoMethod OnEnable;
 	MainMonoMethod OnDisable;

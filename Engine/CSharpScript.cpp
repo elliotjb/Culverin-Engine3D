@@ -95,6 +95,7 @@ void CSharpScript::LoadScript()
 		//Create main Functions
 		Start = CreateMainFunction("Start", DefaultParam, FunctionBase::CS_Start);
 		Update = CreateMainFunction("Update", DefaultParam, FunctionBase::CS_Update);
+		FixedUpdate = CreateMainFunction("FixedUpdate", DefaultParam, FunctionBase::CS_Update);
 		OnGUI = CreateMainFunction("OnGUI", DefaultParam, FunctionBase::CS_OnGUI);
 		OnEnable = CreateMainFunction("OnEnable", DefaultParam, FunctionBase::CS_OnEnable);
 		OnDisable = CreateMainFunction("OnDisable", DefaultParam, FunctionBase::CS_OnDisable);
@@ -135,6 +136,15 @@ void CSharpScript::DoMainFunction(FunctionBase function)
 		{
 			DoFunction(Update.method, nullptr);
 			UpdateScriptVariables();
+		}
+		break;
+	}
+	case FunctionBase::CS_FixedUpdate:
+	{
+		if (FixedUpdate.method != nullptr)
+		{
+			DoFunction(FixedUpdate.method, nullptr);
+			//UpdateScriptVariables();
 		}
 		break;
 	}

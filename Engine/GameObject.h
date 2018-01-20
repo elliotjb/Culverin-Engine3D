@@ -30,9 +30,12 @@ public:
 	GameObject* GetGameObjectbyuid(uint uid);
 	GameObject* GetGameObjectfromScene(int);
 
+	void Init();
 	void preUpdate(float dt);
 	void Update(float dt);
+	void postUpdate();
 	bool CleanUp();
+
 	void FixedDelete(bool check_delete);
 	bool isDeleteFixed() const;
 	void Draw();
