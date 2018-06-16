@@ -1,9 +1,9 @@
-﻿# Culverin 3D Engine
+# Now we are working in
+**https://github.com/Project3CITM/CulverinEngine-Project3**
+# Culverin 3D Engine
 This is a project consistent of creating a Game Engine that allows you to use tools to create video games.
 
 It's created for educational purposes, and we are two students that are studying a Video Games Development and Design degree at CITM, Terrassa (UPC).
-
-**Now we are working in: https://github.com/Project3CITM/CulverinEngine-Project3**
 
 Check out our Web: https://github.com/elliotjb/3D-Engine
 
